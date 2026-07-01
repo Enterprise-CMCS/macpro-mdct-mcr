@@ -1,37 +1,9 @@
 import { describe, expect, test } from "@jest/globals";
 import {
-  checkbox,
-  checkboxOneOptional,
-  checkboxOptional,
-  checkboxSingle,
-  date,
-  dateOptional,
-  dateMonthYear,
-  dropdown,
-  dropdownOptional,
-  dynamic,
-  dynamicOptional,
-  email,
-  emailOptional,
+  completionSchemaMap as schemaMap,
   endDate,
+  endDateOptional,
   nested,
-  number,
-  numberNotLessThanOne,
-  numberNotLessThanZero,
-  numberNotLessThanZeroOptional,
-  numberOptional,
-  numberOrSuppressed,
-  numberOrSuppressedOrNaNr,
-  numberSuppressible,
-  radio,
-  radioOptional,
-  ratio,
-  text,
-  textOptional,
-  url,
-  urlOptional,
-  validNumber,
-  validNumberOptional,
 } from "./completionSchemas";
 import * as yup from "yup";
 
@@ -143,13 +115,13 @@ describe("Completion schemas", () => {
     ...reject(["    "]),
     ...accept(["any nonempty string"]),
   ])("text() $description -> $expected", ({ value, expected }) => {
-    expect(text().isValidSync(value)).toBe(expected);
+    expect(schemaMap.text.isValidSync(value)).toBe(expected);
   });
 
   test.each([...accept(emptyResponses), ...accept(["any nonempty string"])])(
     "textOptional() $description -> $expected",
     ({ value, expected }) => {
-      expect(textOptional().isValidSync(value)).toBe(expected);
+      expect(schemaMap.textOptional.isValidSync(value)).toBe(expected);
     }
   );
 
@@ -160,7 +132,7 @@ describe("Completion schemas", () => {
     ...accept(negativeNumbers),
     ...accept(notApplicableValues),
   ])("number() $description -> $expected", ({ value, expected }) => {
-    expect(number().isValidSync(value)).toBe(expected);
+    expect(schemaMap.number.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -170,7 +142,7 @@ describe("Completion schemas", () => {
     ...accept(negativeNumbers),
     ...accept(notApplicableValues),
   ])("numberOptional() $description -> $expected", ({ value, expected }) => {
-    expect(numberOptional().isValidSync(value)).toBe(expected);
+    expect(schemaMap.numberOptional.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -184,7 +156,7 @@ describe("Completion schemas", () => {
   ])(
     "numberNotLessThanOne() $description -> $expected",
     ({ value, expected }) => {
-      expect(numberNotLessThanOne().isValidSync(value)).toBe(expected);
+      expect(schemaMap.numberNotLessThanOne.isValidSync(value)).toBe(expected);
     }
   );
 
@@ -199,7 +171,7 @@ describe("Completion schemas", () => {
   ])(
     "numberNotLessThanZero() $description -> $expected",
     ({ value, expected }) => {
-      expect(numberNotLessThanZero().isValidSync(value)).toBe(expected);
+      expect(schemaMap.numberNotLessThanZero.isValidSync(value)).toBe(expected);
     }
   );
 
@@ -213,7 +185,7 @@ describe("Completion schemas", () => {
   ])(
     "numberSuppressible() $description -> $expected",
     ({ value, expected }) => {
-      expect(numberSuppressible().isValidSync(value)).toBe(expected);
+      expect(schemaMap.numberSuppressible.isValidSync(value)).toBe(expected);
     }
   );
 
@@ -228,7 +200,7 @@ describe("Completion schemas", () => {
   ])(
     "numberOrSuppressed() $description -> $expected",
     ({ value, expected }) => {
-      expect(numberOrSuppressed().isValidSync(value)).toBe(expected);
+      expect(schemaMap.numberOrSuppressed.isValidSync(value)).toBe(expected);
     }
   );
 
@@ -243,7 +215,9 @@ describe("Completion schemas", () => {
   ])(
     "numberOrSuppressedOrNaNr() $description -> $expected",
     ({ value, expected }) => {
-      expect(numberOrSuppressedOrNaNr().isValidSync(value)).toBe(expected);
+      expect(schemaMap.numberOrSuppressedOrNaNr.isValidSync(value)).toBe(
+        expected
+      );
     }
   );
 
@@ -258,7 +232,9 @@ describe("Completion schemas", () => {
   ])(
     "numberNotLessThanZeroOptional() $description -> $expected",
     ({ value, expected }) => {
-      expect(numberNotLessThanZeroOptional().isValidSync(value)).toBe(expected);
+      expect(schemaMap.numberNotLessThanZeroOptional.isValidSync(value)).toBe(
+        expected
+      );
     }
   );
 
@@ -269,7 +245,7 @@ describe("Completion schemas", () => {
     ...accept(negativeNumbers),
     ...reject(notApplicableValues),
   ])("validNumber() $description -> $expected", ({ value, expected }) => {
-    expect(validNumber().isValidSync(value)).toBe(expected);
+    expect(schemaMap.validNumber.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -281,7 +257,7 @@ describe("Completion schemas", () => {
   ])(
     "validNumberOptional() $description -> $expected",
     ({ value, expected }) => {
-      expect(validNumberOptional().isValidSync(value)).toBe(expected);
+      expect(schemaMap.validNumberOptional.isValidSync(value)).toBe(expected);
     }
   );
 
@@ -302,7 +278,7 @@ describe("Completion schemas", () => {
       "%@#$!ASDF",
     ]),
   ])("ratio() $description -> $expected", ({ value, expected }) => {
-    expect(ratio().isValidSync(value)).toBe(expected);
+    expect(schemaMap.ratio.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -314,7 +290,7 @@ describe("Completion schemas", () => {
     ]),
     ...reject(["not an email"]),
   ])("email() $description -> $expected", ({ value, expected }) => {
-    expect(email().isValidSync(value)).toBe(expected);
+    expect(schemaMap.email.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -326,7 +302,7 @@ describe("Completion schemas", () => {
     ]),
     ...reject(["not an email"]),
   ])("emailOptional $description -> $expected", ({ value, expected }) => {
-    expect(emailOptional().isValidSync(value)).toBe(expected);
+    expect(schemaMap.emailOptional.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -339,7 +315,7 @@ describe("Completion schemas", () => {
     ]),
     ...reject(["not a url"]),
   ])("url() $description -> $expected", ({ value, expected }) => {
-    expect(url().isValidSync(value)).toBe(expected);
+    expect(schemaMap.url.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -352,7 +328,7 @@ describe("Completion schemas", () => {
     ]),
     ...reject(["not a url"]),
   ])("urlOptional $description -> $expected", ({ value, expected }) => {
-    expect(urlOptional().isValidSync(value)).toBe(expected);
+    expect(schemaMap.urlOptional.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -361,7 +337,7 @@ describe("Completion schemas", () => {
     ...accept(pastDates),
     ...accept(futureDates),
   ])("date() $description -> $expected", ({ value, expected }) => {
-    expect(date().isValidSync(value)).toBe(expected);
+    expect(schemaMap.date.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -370,7 +346,7 @@ describe("Completion schemas", () => {
     ...accept(pastDates),
     ...accept(futureDates),
   ])("dateOptional() $description -> $expected", ({ value, expected }) => {
-    expect(dateOptional().isValidSync(value)).toBe(expected);
+    expect(schemaMap.dateOptional.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -380,7 +356,7 @@ describe("Completion schemas", () => {
     ...reject(["132022", "13/2022", "00/2022"]),
     ...accept(["052022", "05/2022", "01/2030"]),
   ])("dateMonthYear() $description -> $expected", ({ value, expected }) => {
-    expect(dateMonthYear().isValidSync(value)).toBe(expected);
+    expect(schemaMap.dateMonthYear.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -391,7 +367,7 @@ describe("Completion schemas", () => {
     { value: "10/25/2024", description: "day after", expected: true },
   ])("endDate $description -> $expected", ({ value, expected }) => {
     const schema = yup.object().shape({
-      myStartDate: date(),
+      myStartDate: schemaMap.date,
       myEndDate: endDate("myStartDate"),
     });
     const obj = {
@@ -399,6 +375,51 @@ describe("Completion schemas", () => {
       myEndDate: value,
     };
     expect(schema.isValidSync(obj)).toBe(expected);
+  });
+
+  test.each([
+    ...accept(emptyResponses),
+    ...reject(invalidDates),
+    { value: "10/23/2024", description: "day before", expected: false },
+    { value: "10/24/2024", description: "day of", expected: true },
+    { value: "10/25/2024", description: "day after", expected: true },
+  ])("endDateOptional $description -> $expected", ({ value, expected }) => {
+    const schema = yup.object().shape({
+      myStartDate: schemaMap.date,
+      myEndDate: endDateOptional("myStartDate"),
+    });
+    const obj = {
+      myStartDate: "10/24/2024",
+      myEndDate: value,
+    };
+    expect(schema.isValidSync(obj)).toBe(expected);
+  });
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(invalidDates),
+    ...reject(pastDates),
+    ...accept(futureDates),
+  ])("futureDate() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.futureDate.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(invalidDates),
+    ...accept(pastDates),
+    ...reject(futureDates),
+  ])("pastDate() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.pastDate.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...accept(emptyResponses),
+    ...reject(invalidDates),
+    ...accept(pastDates),
+    ...reject(futureDates),
+  ])("pastDateOptional() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.pastDateOptional.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -422,7 +443,7 @@ describe("Completion schemas", () => {
       expected: false,
     },
   ])("dropdown $description -> $expected", ({ value, expected }) => {
-    expect(dropdown().isValidSync(value)).toBe(expected);
+    expect(schemaMap.dropdown.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -454,7 +475,7 @@ describe("Completion schemas", () => {
     "dropdownOptional $description -> $expected",
     async ({ value, expected }) => {
       // Our definition of dropdownOptional does not support `isValidSync`
-      const result = await dropdownOptional().isValid(value);
+      const result = await schemaMap.dropdownOptional.isValid(value);
       expect(result).toBe(expected);
     }
   );
@@ -465,7 +486,7 @@ describe("Completion schemas", () => {
     { value: [choice], description: "one selection", expected: true },
     { value: [choice, choice], description: "two selections", expected: true },
   ])("checkbox $description -> $expected", ({ value, expected }) => {
-    expect(checkbox().isValidSync(value)).toBe(expected);
+    expect(schemaMap.checkbox.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -474,7 +495,7 @@ describe("Completion schemas", () => {
     { value: [choice], description: "one selection", expected: true },
     { value: [choice, choice], description: "two selections", expected: false },
   ])("checkboxOneOptional $description -> $expected", ({ value, expected }) => {
-    expect(checkboxOneOptional().isValidSync(value)).toBe(expected);
+    expect(schemaMap.checkboxOneOptional.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -483,7 +504,7 @@ describe("Completion schemas", () => {
     { value: [choice], description: "one selection", expected: true },
     { value: [choice, choice], description: "two selections", expected: true },
   ])("checkboxOptional $description -> $expected", ({ value, expected }) => {
-    expect(checkboxOptional().isValidSync(value)).toBe(expected);
+    expect(schemaMap.checkboxOptional.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -491,7 +512,7 @@ describe("Completion schemas", () => {
     { value: true, description: "true", expected: true },
     { value: false, description: "false", expected: true },
   ])("checkboxSingle $description -> $expected", ({ value, expected }) => {
-    expect(checkboxSingle().isValidSync(value)).toBe(expected);
+    expect(schemaMap.checkboxSingle.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -500,7 +521,7 @@ describe("Completion schemas", () => {
     { value: [choice], description: "one selection", expected: true },
     { value: [choice, choice], description: "two selections", expected: false },
   ])("radio $description -> $expected", ({ value, expected }) => {
-    expect(radio().isValidSync(value)).toBe(expected);
+    expect(schemaMap.radio.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -509,7 +530,7 @@ describe("Completion schemas", () => {
     { value: [choice], description: "one selection", expected: true },
     { value: [choice, choice], description: "two selections", expected: false },
   ])("radioOptional $description -> $expected", ({ value, expected }) => {
-    expect(radioOptional().isValidSync(value)).toBe(expected);
+    expect(schemaMap.radioOptional.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -529,7 +550,7 @@ describe("Completion schemas", () => {
       expected: true,
     },
   ])("dynamic $description -> $expected", ({ value, expected }) => {
-    expect(dynamic().isValidSync(value)).toBe(expected);
+    expect(schemaMap.dynamic.isValidSync(value)).toBe(expected);
   });
 
   test.each([
@@ -549,7 +570,7 @@ describe("Completion schemas", () => {
       expected: true,
     },
   ])("dynamicOptional $description -> $expected", ({ value, expected }) => {
-    expect(dynamicOptional().isValidSync(value)).toBe(expected);
+    expect(schemaMap.dynamicOptional.isValidSync(value)).toBe(expected);
   });
 
   describe("Nested field validation", () => {

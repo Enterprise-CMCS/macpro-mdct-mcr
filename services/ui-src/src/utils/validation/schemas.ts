@@ -255,6 +255,20 @@ export const endDate = (startDateField: string) =>
     }
   );
 
+export const endDateOptional = (startDateField: string) =>
+  dateOptional().test(
+    "is-after-start-date-optional",
+    error.INVALID_END_DATE,
+    (endDateString, context) => {
+      if (!endDateString) return true;
+
+      const startDateString = context.parent[startDateField];
+      const startDate = new Date(startDateString);
+      const endDate = new Date(endDateString);
+      return endDate >= startDate;
+    }
+  );
+
 export const futureDate = () =>
   date().test(
     "is-after-current-date",
@@ -267,9 +281,37 @@ export const futureDate = () =>
     }
   );
 
+export const pastDate = () =>
+  date().test(
+    "is-before-current-date",
+    error.INVALID_PAST_DATE,
+    (dateString) => {
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString!);
+      return inputtedDate < todaysDate;
+    }
+  );
+
+export const pastDateOptional = () =>
+  dateOptional().test(
+    "is-before-current-date-optional",
+    error.INVALID_PAST_DATE,
+    (dateString) => {
+      if (!dateString) return true;
+
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString);
+      return inputtedDate < todaysDate;
+    }
+  );
+
 // DROPDOWN
 export const dropdown = () =>
   object({ label: text(), value: text() }).required(error.REQUIRED_GENERIC);
+export const dropdownOptional = () =>
+  object({ label: textOptional(), value: textOptional() }).notRequired();
 
 // CHECKBOX
 export const checkbox = () =>
@@ -311,8 +353,7 @@ export const dynamic = () =>
   dynamicSchema()
     .min(1, error.REQUIRED_GENERIC)
     .required(error.REQUIRED_GENERIC);
-export const dynamicOptional = () =>
-  dynamicSchema().min(0).notRequired().nullable();
+export const dynamicOptional = () => array().notRequired().nullable();
 
 // NESTED
 export const nested = (
@@ -344,3 +385,39 @@ const dateMonthYearPattern = String.raw`(\d{2}\/\d{4}|\d{6})`;
 export const dateFormatRegex = new RegExp(`^${datePattern}$`);
 export const dateMonthYearFormatRegex = new RegExp(`^${dateMonthYearPattern}$`);
 export const optionalDateFormatRegex = new RegExp(`^(${datePattern})?$`);
+
+export const schemaMap: any = {
+  checkbox: checkbox(),
+  checkboxOneOptional: checkboxOneOptional(),
+  checkboxOptional: checkboxOptional(),
+  checkboxSingle: checkboxSingle(),
+  date: date(),
+  dateMonthYear: dateMonthYear(),
+  dateOptional: dateOptional(),
+  dropdown: dropdown(),
+  dropdownOptional: dropdownOptional(),
+  dynamic: dynamic(),
+  dynamicOptional: dynamicOptional(),
+  email: email(),
+  emailOptional: emailOptional(),
+  futureDate: futureDate(),
+  number: number(),
+  numberNotLessThanOne: numberNotLessThanOne(),
+  numberNotLessThanZero: numberNotLessThanZero(),
+  numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
+  numberOptional: numberOptional(),
+  numberOrSuppressed: numberOrSuppressed(),
+  numberOrSuppressedOrNaNr: numberOrSuppressedOrNaNr(),
+  numberSuppressible: numberSuppressible(),
+  pastDate: pastDate(),
+  pastDateOptional: pastDateOptional(),
+  radio: radio(),
+  radioOptional: radioOptional(),
+  ratio: ratio(),
+  text: text(),
+  textOptional: textOptional(),
+  url: url(),
+  urlOptional: urlOptional(),
+  validNumber: validNumber(),
+  validNumberOptional: validNumberOptional(),
+};

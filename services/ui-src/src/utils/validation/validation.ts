@@ -1,6 +1,40 @@
-import { nested, endDate } from "./schemas";
-import { schemaMap } from "./schemaMap";
+import { endDate, endDateOptional, nested, schemaMap } from "./schemas";
 import { AnyObject } from "types";
+import { ValidationType } from "types/validations";
+
+// return created endDate schema
+const makeEndDateFieldSchema = (fieldValidationObject: AnyObject) => {
+  const { dependentFieldName } = fieldValidationObject;
+  return endDate(dependentFieldName);
+};
+
+const makeEndDateOptionalFieldSchema = (fieldValidationObject: AnyObject) => {
+  const { dependentFieldName } = fieldValidationObject;
+  return endDateOptional(dependentFieldName);
+};
+
+const makePastEndDateFieldSchema = (fieldValidationObject: AnyObject) => {
+  // oxlint-disable-next-line unicorn/prefer-spread
+  return makeEndDateFieldSchema(fieldValidationObject).concat(
+    schemaMap.pastDate
+  );
+};
+
+const makePastEndDateOptionalFieldSchema = (
+  fieldValidationObject: AnyObject
+) => {
+  // oxlint-disable-next-line unicorn/prefer-spread
+  return makeEndDateOptionalFieldSchema(fieldValidationObject).concat(
+    schemaMap.pastDateOptional
+  );
+};
+
+const dependentSchemas: AnyObject = {
+  [ValidationType.END_DATE]: makeEndDateFieldSchema,
+  [ValidationType.END_DATE_OPTIONAL]: makeEndDateOptionalFieldSchema,
+  [ValidationType.PAST_END_DATE]: makePastEndDateFieldSchema,
+  [ValidationType.PAST_END_DATE_OPTIONAL]: makePastEndDateOptionalFieldSchema,
+};
 
 // map field validation types to validation schema
 export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
@@ -9,37 +43,55 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
   Object.entries(fieldValidationTypes).forEach(
     (fieldValidationType: [string, string | AnyObject]) => {
       const [key, fieldValidation] = fieldValidationType;
+      /**
+       * Legacy: These MLR form fields were created initially without validation
+       * because they are auto-populated. To keep the form fields standard, they
+       * now have validation but older forms will fail because fieldValidation is
+       * undefined. Setting validation manually here if it's missing.
+       */
+      if (
+        [
+          "report_reportingPeriodStartDate",
+          "report_reportingPeriodEndDate",
+        ].includes(key) &&
+        !fieldValidation
+      ) {
+        validationSchema[key] = schemaMap[ValidationType.DATE_OPTIONAL];
+        return;
+      }
+
       // if standard validation type, set corresponding schema from map
       if (typeof fieldValidation === "string") {
         const correspondingSchema = schemaMap[fieldValidation];
         if (correspondingSchema) {
           validationSchema[key] = correspondingSchema;
         }
+        return;
       }
-      // else if nested validation type, make and set nested schema
-      else if (fieldValidation && fieldValidation.nested) {
+
+      // if nested validation type, make and set nested schema
+      if (fieldValidation.nested) {
         validationSchema[key] = makeNestedFieldSchema(fieldValidation);
-        // else if not nested, make and set other dependent field types
-      } else if (fieldValidation?.type === "endDate") {
-        validationSchema[key] = makeEndDateFieldSchema(fieldValidation);
+        return;
+      }
+
+      // if not nested, make and set other dependent field types
+      const getSchema = dependentSchemas[fieldValidation.type];
+      if (getSchema) {
+        validationSchema[key] = getSchema(fieldValidation);
       }
     }
   );
   return validationSchema;
 };
 
-// return created endDate schema
-export const makeEndDateFieldSchema = (fieldValidationObject: AnyObject) => {
-  const { dependentFieldName } = fieldValidationObject;
-  return endDate(dependentFieldName);
-};
-
 // return created nested field schema
 export const makeNestedFieldSchema = (fieldValidationObject: AnyObject) => {
   const { type, parentFieldName, parentOptionId } = fieldValidationObject;
-  if (type === "endDate") {
+  const getSchema = dependentSchemas[type];
+  if (getSchema) {
     return nested(
-      () => makeEndDateFieldSchema(fieldValidationObject),
+      () => getSchema(fieldValidationObject),
       parentFieldName,
       parentOptionId
     );

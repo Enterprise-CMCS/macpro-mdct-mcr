@@ -36,11 +36,26 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
       - name: Remove branchless stacks
-        run: .github/tidy-stacks.ts
+        id: remove-branchless-stacks
+        run: |
+          TIDY_STACKS_OUTPUT="$(.github/tidy-stacks.ts)"
+          echo "$TIDY_STACKS_OUTPUT"
+          if [[ "$TIDY_STACKS_OUTPUT" == *"Previous DELETE_FAILED reason:"* ]]; then
+            DELETE_FAILED_STACK_MESSAGE="${TIDY_STACKS_OUTPUT//$'\n'/ }"
+            echo "delete_failed_stack_message=$DELETE_FAILED_STACK_MESSAGE" >> "$GITHUB_OUTPUT"
+          fi
         env:
           GITHUB_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APP_NAME_LOWER: ${{ vars.APP_NAME_LOWER }}
+      - name: Slack notification
+        if: ${{ always() && steps.remove-branchless-stacks.outputs.delete_failed_stack_message != '' }}
+        uses: rtCamp/action-slack-notify@e31e87e03dd19038e411e38ae27cbad084a90661 # v2
+        env:
+          MSG_MINIMAL: true
+          SLACK_MESSAGE: ${{ steps.remove-branchless-stacks.outputs.delete_failed_stack_message }}
+          SLACK_TITLE: ":github: :warning: CloudFormation stack cleanup unsuccessful in ${{ github.repository }}"
+          SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
   audit:
     environment: dev
     runs-on: ubuntu-latest

@@ -14,7 +14,7 @@ export const createRateField = (id: string, name: string) => ({
   },
   props: {
     label: `${name} results`,
-    hint: "If you are reporting results for this performance rate for this reporting period, enter a number. Enter “NR” if you are suppressing data for data privacy purposes. Enter “N/A” for all other reasons.",
+    hint: "If you are reporting results for this performance rate for this reporting period, enter a number, or enter free text for non-numeric metrics. Enter “NR” if you are suppressing data for data privacy purposes. Enter “N/A” for all other reasons.",
   },
 });
 

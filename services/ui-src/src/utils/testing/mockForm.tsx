@@ -409,6 +409,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
       {
         id: "analysis_method_frequency",
         type: "radio",
+        validation: "radio",
         props: {
           label: "Frequency of analysis",
           choices: [
@@ -420,6 +421,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
       {
         id: "analysis_method_applicable_plans",
         type: "checkbox",
+        validation: "checkbox",
         props: {
           label: "Plans utilizing this method",
           choices: [{ label: "Plan 1" }],

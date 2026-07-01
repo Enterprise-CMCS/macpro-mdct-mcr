@@ -82,16 +82,6 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         },
       },
       {
-        id: "report_otherProgramName",
-        type: ReportFormFieldType.DYNAMIC,
-        validation: ValidationType.DYNAMIC_OPTIONAL,
-        props: {
-          dynamicLabel:
-            "J.a If you don’t see your program listed, please detail the program name as it was during the reporting period.",
-          styleAsOptional: true,
-        },
-      },
-      {
         id: "report_programType",
         type: ReportFormFieldType.CHECKBOX,
         validation: ValidationType.CHECKBOX,
@@ -204,7 +194,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
       {
         id: "report_reportingPeriodStartDate",
         type: ReportFormFieldType.DATE,
-        validation: ValidationType.DATE,
+        validation: ValidationType.PAST_DATE,
         props: {
           label: "N. MLR reporting period start date",
           hint: "Enter the start date of the MLR reporting period. <br/> The MLR reporting period should be a period of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period.",
@@ -214,7 +204,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         id: "report_reportingPeriodEndDate",
         type: ReportFormFieldType.DATE,
         validation: {
-          type: ValidationType.END_DATE,
+          type: ValidationType.PAST_END_DATE,
           dependentFieldName: "report_reportingPeriodStartDate",
         },
         props: {
@@ -501,7 +491,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         type: ReportFormFieldType.SECTION_HEADER,
         props: {
           divider: "top",
-          content: "4. Remittance/Overpayment",
+          content: "4. Remittance",
         },
       },
       {
@@ -518,7 +508,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         validation: ValidationType.RADIO,
         props: {
           label:
-            "4.1 Does the contract include a remittance/overpayment requirement for being below/above a specified MLR?",
+            "4.1 Does the contract include a remittance requirement for being below/above a specified MLR?",
           hint: "This element indicates if a remittance to the state or a payment to a plan is required in an MCO/PIHP/PAHP contract if a minimum MLR is not met.",
           choices: [
             {
@@ -559,7 +549,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   },
                   props: {
                     label:
-                      "4.3 Does the state remittance/overpayment MLR calculation align with the required components and methodology outlined in 438.8(c)?",
+                      "4.3 Does the state remittance MLR calculation align with the required components and methodology outlined in 438.8(c)?",
                     styleAsOptional: true,
                     choices: [
                       {
@@ -603,8 +593,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                     parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
                   },
                   props: {
-                    label:
-                      "4.5 Calculated MLR for remittance/overpayment purposes",
+                    label: "4.5 Calculated MLR for remittance purposes",
                     hint: "Report the calculated MLR for remittance purposes (please enter as a percentage).",
                     mask: "percentage",
                     styleAsOptional: true,
@@ -623,7 +612,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   },
                   props: {
                     label:
-                      "4.6.1 Remittance/overpayment dollar amount owed for MLR reporting period",
+                      "4.6.1 Remittance dollar amount owed for MLR reporting period",
                     hint: "Report the amount of remittances owed by this plan. Enter a zero (0) value if no remittance was owed by a plan. Enter a positive value if a remittance was collected by the state.",
                     mask: "currency",
                   },
@@ -640,8 +629,8 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   },
                   props: {
                     label:
-                      "4.6.1.a Federal Share of remittance/overpayment dollar amount owed by MCO, PIHP, or PAHP",
-                    hint: "Enter the Federal Share of the remittance/overpayment amount reported in 4.6.1.",
+                      "4.6.1.a Federal Share of remittance dollar amount owed by MCO, PIHP, or PAHP",
+                    hint: "Enter the Federal Share of the remittance amount reported in 4.6.1.",
                     mask: "currency",
                     styleAsOptional: true,
                   },
@@ -650,7 +639,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   id: "report_dateStateNotifiedMcoPihpOrPahpOfRemittance",
                   type: ReportFormFieldType.DATE,
                   validation: {
-                    type: ValidationType.DATE_OPTIONAL,
+                    type: ValidationType.PAST_DATE_OPTIONAL,
                     nested: true,
                     parentFieldName:
                       "report_contractIncludesMlrRemittanceRequirement",
@@ -658,8 +647,8 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   },
                   props: {
                     label:
-                      "4.6.1.b Date state notified MCO, PIHP, or PAHP of remittance/overpayment",
-                    hint: "Enter the date the state notified the MCO, PIHP or PAHP that an overpayment was identified due to a remittance collected.",
+                      "4.6.1.b Date state notified MCO, PIHP, or PAHP of remittance",
+                    hint: "Enter the date the state notified the MCO, PIHP or PAHP that a remittance was identified.",
                     styleAsOptional: true,
                   },
                 },
@@ -675,7 +664,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   },
                   props: {
                     label:
-                      "4.6.1.c Remittance/overpayment dollar amount State received from MCO, PIHP, or PAHP",
+                      "4.6.1.c Remittance dollar amount State received from MCO, PIHP, or PAHP",
                     hint: "Enter the total dollar amount collected from the MCO, PIHP or PAHP.",
                     mask: "currency",
                     styleAsOptional: true,
@@ -685,7 +674,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   id: "report_dateStateReceivedRemittanceFromMcoPhipOrPahp",
                   type: ReportFormFieldType.DATE,
                   validation: {
-                    type: ValidationType.DATE_OPTIONAL,
+                    type: ValidationType.PAST_DATE_OPTIONAL,
                     nested: true,
                     parentFieldName:
                       "report_contractIncludesMlrRemittanceRequirement",
@@ -693,7 +682,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   },
                   props: {
                     label:
-                      "4.6.1.d Date state received remittance/overpayment from MCO, PHIP, or PAHP",
+                      "4.6.1.d Date state received remittance from MCO, PHIP, or PAHP",
                     hint: "Enter the date the state received the total dollar amount owed from the MCO, PIHP or PAHP.",
                     styleAsOptional: true,
                   },
@@ -710,7 +699,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   },
                   props: {
                     label:
-                      "4.6.1.e Federal share of remittance/overpayment returned to CMS",
+                      "4.6.1.e Federal share of remittance returned to CMS",
                     hint: "Enter the total dollar amount returned to CMS.",
                     mask: "currency",
                     styleAsOptional: true,
@@ -720,7 +709,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   id: "report_dateFederalShareOfRemittanceReturnedToCms",
                   type: ReportFormFieldType.DATE,
                   validation: {
-                    type: ValidationType.DATE_OPTIONAL,
+                    type: ValidationType.PAST_DATE_OPTIONAL,
                     nested: true,
                     parentFieldName:
                       "report_contractIncludesMlrRemittanceRequirement",
@@ -728,8 +717,8 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   },
                   props: {
                     label:
-                      "4.6.1.f Date the Federal Share of remittance/overpayment returned to CMS",
-                    hint: "Enter the date the state returned the federal share of the remittance/overpayment on the CMS-64.",
+                      "4.6.1.f Date the Federal Share of remittance returned to CMS",
+                    hint: "Enter the date the state returned the federal share of the remittance on the CMS-64.",
                     styleAsOptional: true,
                   },
                 },
@@ -770,6 +759,13 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                 {
                   id: "report_reportingPeriodStartDate",
                   type: ReportFormFieldType.DATE,
+                  validation: {
+                    nested: true,
+                    parentFieldName:
+                      "report_contractIncludesMlrRemittanceRequirement",
+                    type: ValidationType.PAST_DATE_OPTIONAL,
+                    parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
+                  },
                   props: {
                     label: "N. MLR reporting period start date",
                     hint: "Auto-populates from program reporting information.",
@@ -780,6 +776,13 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                 {
                   id: "report_reportingPeriodEndDate",
                   type: ReportFormFieldType.DATE,
+                  validation: {
+                    nested: true,
+                    parentFieldName:
+                      "report_contractIncludesMlrRemittanceRequirement",
+                    type: ValidationType.PAST_DATE_OPTIONAL,
+                    parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
+                  },
                   props: {
                     label: "O. MLR reporting period end date",
                     hint: "Auto-populates from program reporting information.",
@@ -815,7 +818,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                             id: "report_remittancePeriodStartDate",
                             type: ReportFormFieldType.DATE,
                             validation: {
-                              type: ValidationType.DATE_OPTIONAL,
+                              type: ValidationType.PAST_DATE_OPTIONAL,
                               nested: true,
                               parentFieldName:
                                 "report_isRemittancePeriodSameAsMlrReportingPeriod",
@@ -831,7 +834,9 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                             id: "report_remittancePeriodEndDate",
                             type: ReportFormFieldType.DATE,
                             validation: {
-                              type: ValidationType.DATE_OPTIONAL,
+                              type: ValidationType.PAST_END_DATE_OPTIONAL,
+                              dependentFieldName:
+                                "report_remittancePeriodStartDate",
                               nested: true,
                               parentFieldName:
                                 "report_isRemittancePeriodSameAsMlrReportingPeriod",
@@ -859,8 +864,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                     parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
                   },
                   props: {
-                    label:
-                      "4.9 Remittance/overpayment methodology qualitative response",
+                    label: "4.9 Remittance methodology qualitative response",
                     hint: [
                       {
                         type: "span",

@@ -24,7 +24,7 @@
     "core-js": "^3.41.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
-    "dompurify": "^3.4.8",
+    "dompurify": "^3.4.11",
     "framer-motion": "^4.1.17",
     "history": "^5.3.0",
     "html-react-parser": "^3.0.16",
@@ -34,14 +34,14 @@
     "react-error-boundary": "^3.1.4",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.54.2",
-    "react-router": "7.15.0",
+    "react-router": "7.15.1",
     "react-uuid": "^1.0.3",
     "sass": "^1.83.4",
     "yup": "^0.32.11",
     "zustand": "^4.5.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
+    "@babel/core": "^7.29.7",
     "@babel/plugin-transform-react-jsx": "^7.28.6",
     "@babel/preset-env": "^7.29.2",
     "@babel/preset-typescript": "^7.28.5",
@@ -66,7 +66,7 @@
     "pa11y": "^9.0.0",
     "pa11y-runner-htmlcs": "^2.0.1",
     "typescript": "^5.9.3",
-    "vite": "8.0.5",
+    "vite": "8.0.16",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "resolutions": {
