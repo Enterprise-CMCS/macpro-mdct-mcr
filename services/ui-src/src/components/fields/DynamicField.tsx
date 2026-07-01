@@ -29,14 +29,17 @@ import {
 } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
+import addIcon from "assets/icons/icon_add_blue.png";
 
 export const DynamicField = ({
   name,
   label,
   dynamicLabel,
   styleAsOptional,
+  nested,
   isRequired,
   autosave = true,
+  clear,
   ...props
 }: Props) => {
   // state management
@@ -301,6 +304,17 @@ export const DynamicField = ({
   // set initial value to form field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
+    const currentValues = form.getValues(name);
+    if (currentValues?.length) {
+      setDisplayValues(currentValues);
+      return;
+    }
+    // Parent option was just (un)checked: start fresh with one empty row.
+    if (clear) {
+      form.setValue(name, [], { shouldValidate: true });
+      appendNewRecord();
+      return;
+    }
     if (hydrationValue?.length) {
       // guard against autosave refresh error where user can change input values while save operation is still in progress (https://bit.ly/3kiE2eE)
       const newInputAdded = displayValues?.length > hydrationValue?.length;
@@ -325,7 +339,7 @@ export const DynamicField = ({
     form?.formState?.errors?.[name];
 
   return (
-    <Box as="fieldset" sx={sx.fieldset}>
+    <Box as="fieldset" sx={nested ? sx.nestedFieldset : sx.fieldset}>
       {dynamicLabel && (
         <Box as="legend" className="ds-c-label" sx={sx.legend}>
           {styleAsOptional ? labelTextWithOptional(dynamicLabel) : dynamicLabel}
@@ -370,6 +384,7 @@ export const DynamicField = ({
           onClick={appendNewRecord}
         >
           {getButtonVerbiage()}
+          <Image sx={sx.addImage} src={addIcon} alt={""} aria-hidden />
         </Button>
       )}
       <DeleteDynamicFieldRecordModal
@@ -389,15 +404,24 @@ interface Props {
   name: EntityType;
   label: string;
   dynamicLabel?: string;
+  nested?: boolean;
   styleAsOptional?: boolean;
   isRequired?: boolean;
   autosave?: boolean;
+  clear?: boolean;
   [key: string]: any;
 }
 
 const sx = {
   fieldset: {
     marginTop: "spacer3",
+  },
+  nestedFieldset: {
+    marginLeft: "spacer2",
+    marginTop: "1.25rem",
+    paddingLeft: "spacer2",
+    borderInlineStart: "4px solid",
+    borderColor: "primary",
   },
   legend: {
     fontSize: "md",
@@ -410,6 +434,15 @@ const sx = {
     maxWidth: "none",
     width: "1.5rem",
     height: "1.5rem",
+    _hover: {
+      filter: svgFilters.primary_darker,
+    },
+  },
+  addImage: {
+    maxWidth: "none",
+    width: "1rem",
+    height: "1rem",
+    marginLeft: "spacer1",
     _hover: {
       filter: svgFilters.primary_darker,
     },

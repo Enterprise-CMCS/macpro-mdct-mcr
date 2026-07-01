@@ -75,6 +75,7 @@
     {
       "id": "copyFieldDataSourceId",
       "type": "dropdown",
+      "validation": "dropdownOptional",
       "props": {
         "label": "If you want to copy an existing report, select one (optional)",
         "hint": "You may copy over the contents of an existing report from any program for your state for any reason.",

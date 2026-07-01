@@ -19,6 +19,7 @@ const error = {
   INVALID_DATE: "Response must be a valid date",
   INVALID_END_DATE: "End date can't be before start date",
   INVALID_FUTURE_DATE: "Response must be today's date or in the future",
+  INVALID_PAST_DATE: "Response must be before today's date",
   NUMBER_LESS_THAN_ONE: "Response must be greater than or equal to one",
   NUMBER_LESS_THAN_ZERO: "Response must be greater than or equal to zero",
   INVALID_NUMBER: "Response must be a valid number",
@@ -216,7 +217,9 @@ export const dateMonthYear = () =>
       return date.getMonth() === monthIndex && date.getFullYear() === year;
     });
 
-export const dateOptional = () => date();
+export const dateOptional = () =>
+  string().matches(optionalDateFormatRegex, error.INVALID_DATE).notRequired();
+
 export const endDate = (startDateField: string) =>
   date().test(
     "is-after-start-date",
@@ -229,6 +232,20 @@ export const endDate = (startDateField: string) =>
     }
   );
 
+export const endDateOptional = (startDateField: string) =>
+  dateOptional().test(
+    "is-after-start-date-optional",
+    error.INVALID_END_DATE,
+    (endDateString, context) => {
+      if (!endDateString) return true;
+
+      const startDateString = context.parent[startDateField];
+      const startDate = new Date(startDateString);
+      const endDate = new Date(endDateString);
+      return endDate >= startDate;
+    }
+  );
+
 export const futureDate = () =>
   date().test(
     "is-after-current-date",
@@ -238,6 +255,32 @@ export const futureDate = () =>
       todaysDate.setDate(todaysDate.getDate() - 1);
       const inputtedDate = new Date(dateString!);
       return inputtedDate >= todaysDate;
+    }
+  );
+
+export const pastDate = () =>
+  date().test(
+    "is-before-current-date",
+    error.INVALID_PAST_DATE,
+    (dateString) => {
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString!);
+      return inputtedDate < todaysDate;
+    }
+  );
+
+export const pastDateOptional = () =>
+  dateOptional().test(
+    "is-before-current-date-optional",
+    error.INVALID_PAST_DATE,
+    (dateString) => {
+      if (!dateString) return true;
+
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString);
+      return inputtedDate < todaysDate;
     }
   );
 
@@ -315,9 +358,11 @@ export const nested = (
 export const objectArray = () => array().of(mixed());
 
 // REGEX
-export const dateFormatRegex =
-  /^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})|\s$/;
-export const dateMonthYearFormatRegex = /^(\d{2}\/\d{4}|\d{6})$/;
+const datePattern = String.raw`((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})`;
+const dateMonthYearPattern = String.raw`(\d{2}\/\d{4}|\d{6})`;
+export const dateFormatRegex = new RegExp(`^${datePattern}$`);
+export const dateMonthYearFormatRegex = new RegExp(`^${dateMonthYearPattern}$`);
+export const optionalDateFormatRegex = new RegExp(`^(${datePattern})?$`);
 
 // SCHEMA MAP
 export const schemaMap: any = {
@@ -328,20 +373,23 @@ export const schemaMap: any = {
   date: date(),
   dateMonthYear: dateMonthYear(),
   dateOptional: dateOptional(),
-  futureDate: futureDate(),
   dropdown: dropdown(),
   dropdownOptional: dropdownOptional(),
   dynamic: dynamic(),
   dynamicOptional: dynamicOptional(),
   email: email(),
   emailOptional: emailOptional(),
+  futureDate: futureDate(),
   number: number(),
   numberNotLessThanOne: numberNotLessThanOne(),
+  numberNotLessThanZero: numberNotLessThanZero(),
   numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
-  numberOrSuppressed: numberOrSuppressed(),
   numberOptional: numberOptional(),
+  numberOrSuppressed: numberOrSuppressed(),
   numberSuppressible: numberSuppressible(),
   objectArray: objectArray(),
+  pastDate: pastDate(),
+  pastDateOptional: pastDateOptional(),
   radio: radio(),
   radioOptional: radioOptional(),
   ratio: ratio(),
@@ -349,4 +397,6 @@ export const schemaMap: any = {
   textOptional: textOptional(),
   url: url(),
   urlOptional: urlOptional(),
+  validNumber: validNumber(),
+  validNumberOptional: validNumberOptional(),
 };
