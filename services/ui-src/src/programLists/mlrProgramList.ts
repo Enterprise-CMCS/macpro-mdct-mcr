@@ -1,4 +1,4 @@
-import { ProgramList } from "../types";
+import { ProgramList, ReportFormFieldType, ValidationType } from "../types";
 
 // Program List (MLR)
 export const mlrProgramList: ProgramList = {
@@ -823,4 +823,20 @@ export const mlrProgramList: ProgramList = {
 export const notListedOtherProgramChoice = {
   id: "6m3NoHsr5qoHrZ2WnkgHfXj7",
   label: "Not listed / Other",
+  children: [
+    {
+      id: "report_otherProgramName",
+      type: ReportFormFieldType.DYNAMIC,
+      validation: {
+        type: ValidationType.DYNAMIC,
+        nested: true,
+        parentFieldName: "report_programNameList",
+        parentOptionId: "6m3NoHsr5qoHrZ2WnkgHfXj7",
+      },
+      props: {
+        dynamicLabel:
+          "J.a If you don’t see your program listed, please detail the program name as it was during the reporting period.",
+      },
+    },
+  ],
 };
