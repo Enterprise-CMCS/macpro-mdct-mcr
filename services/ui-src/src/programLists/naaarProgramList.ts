@@ -814,4 +814,11 @@ export const naaarProgramList: ProgramList = {
       label: "Wyoming Medicaid's Care Management Entity (CME)",
     },
   ],
+  // ZZ (test state)
+  ZZ: [
+    {
+      id: "Wp9Kd3RnVx7Bm2QtLzYc6Fa4",
+      label: "ZZ Test State Program",
+    },
+  ],
 };
