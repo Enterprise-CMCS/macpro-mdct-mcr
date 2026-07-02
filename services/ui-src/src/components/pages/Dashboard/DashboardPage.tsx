@@ -254,7 +254,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         <title>{`${reportType} - ${APP_TITLE}`}</title>
       </Helmet>
       <Link as={RouterLink} to="/" sx={sx.returnLink}>
-        <Image src={arrowLeftIcon} alt="Arrow left" className="returnIcon" />
+        <Image src={arrowLeftIcon} alt="" className="returnIcon" />
         Return Home
       </Link>
       {errorMessage && <ErrorAlert error={errorMessage} />}
