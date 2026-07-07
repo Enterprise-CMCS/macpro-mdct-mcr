@@ -1,15 +1,12 @@
 import {
   clearPlanMeasureData,
   dataModifications,
-  handlePriorAuthorization,
   updatePlanNames,
   updatePlansInAnalysisMethods,
   updatePlansInExemptions,
 } from "./dataModifications";
 // types
 import { ReportType } from "types";
-import { FieldDataTuple } from "./autosave";
-import { mockPlanLevelIndicators } from "utils/forms/deletePlanData.test";
 
 const testCases = {
   dataToWrite: {
@@ -166,135 +163,6 @@ describe("utils/autosave/dataModifications", () => {
       expect(input).toEqual(
         testCases.updatePlansInAnalysisMethods.expectedResult
       );
-    });
-  });
-
-  describe("handlePriorAuthorization()", () => {
-    const dataToWrite = {
-      id: "mock-id",
-      fieldData: {
-        plans: [
-          {
-            id: "mock-plan-1",
-            name: "Mock Plan 1",
-            plan_totalStandardPriorAuthorizationRequestsReceived: 1,
-          },
-        ],
-      },
-    };
-    const reportFieldData = {
-      plans: [
-        {
-          id: "mock-plan-1",
-          name: "Mock Plan 1",
-          plan_totalStandardPriorAuthorizationRequestsReceived: 1,
-        },
-      ],
-    };
-
-    test("allows prior authorization fields", () => {
-      const formFields = {
-        routes: mockPlanLevelIndicators,
-      };
-      const fieldsToSave = [
-        [
-          "plan_priorAuthorizationReporting",
-          [
-            {
-              key: "mock-choice-yes",
-              value: "Yes",
-            },
-          ],
-        ],
-        [
-          "plans",
-          [
-            {
-              id: "mock-plan-1",
-              name: "Mock Plan 1",
-              plan_totalStandardPriorAuthorizationRequestsReceived: 1,
-            },
-          ],
-        ],
-      ] as FieldDataTuple[];
-      const input = handlePriorAuthorization(
-        dataToWrite,
-        reportFieldData,
-        fieldsToSave,
-        formFields
-      );
-      const expectedResult = {
-        id: "mock-id",
-        fieldData: {
-          plans: [
-            {
-              id: "mock-plan-1",
-              name: "Mock Plan 1",
-              plan_totalStandardPriorAuthorizationRequestsReceived: 1,
-            },
-          ],
-          plan_priorAuthorizationReporting: [
-            {
-              key: "mock-choice-yes",
-              value: "Yes",
-            },
-          ],
-        },
-      };
-
-      expect(input).toEqual(expectedResult);
-    });
-
-    test("removes prior authorization fields", () => {
-      const formFields = {
-        routes: mockPlanLevelIndicators,
-      };
-      const fieldsToSave = [
-        [
-          "plan_priorAuthorizationReporting",
-          [
-            {
-              key: "mock-choice-no",
-              value: "No",
-            },
-          ],
-        ],
-        [
-          "plans",
-          [
-            {
-              id: "mock-plan-1",
-              name: "Mock Plan 1",
-              plan_totalStandardPriorAuthorizationRequestsReceived: 1,
-            },
-          ],
-        ],
-      ] as FieldDataTuple[];
-      const input = handlePriorAuthorization(
-        dataToWrite,
-        reportFieldData,
-        fieldsToSave,
-        formFields
-      );
-      const expectedResult = {
-        id: "mock-id",
-        fieldData: {
-          plans: [
-            {
-              id: "mock-plan-1",
-              name: "Mock Plan 1",
-            },
-          ],
-          plan_priorAuthorizationReporting: [
-            {
-              key: "mock-choice-no",
-              value: "No",
-            },
-          ],
-        },
-      };
-
-      expect(input).toEqual(expectedResult);
     });
   });
 

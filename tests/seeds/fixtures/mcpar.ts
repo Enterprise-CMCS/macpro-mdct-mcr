@@ -304,18 +304,6 @@ export const fillMcpar = (
         ],
       "descriptionOfEventsInReportingPeriodThatNecessitatedUpdateToParityAnalysis-otherText":
         "",
-      plan_patientAccessApiReporting: [
-        {
-          key: "plan_patientAccessApiReporting-taijmIVhoXueygYHFhrx6FrI",
-          value: "Yes",
-        },
-      ],
-      plan_priorAuthorizationReporting: [
-        {
-          key: "plan_priorAuthorizationReporting-bByTWRIwTSTBncyZRUiibagB",
-          value: "Yes",
-        },
-      ],
       program_areServicesProvidedToMcEnrolleesByPihpPahpOrFfsDeliverySystem: [
         {
           key: "program_areServicesProvidedToMcEnrolleesByPihpPahpOrFfsDeliverySystem-FjCDK2ONpqtd0z2DTz8YaGjP",
@@ -455,12 +443,6 @@ export const fillMcpar = (
         },
       ],
       state_ownershipControlDisclosureWebsiteLink: faker.internet.url(),
-      state_priorAuthorizationReporting: [
-        {
-          key: "state_priorAuthorizationReporting-2nAidDjXBvvkzLtaeYyE2RymW4G",
-          value: "Yes",
-        },
-      ],
       state_providerTerminationReportingMonitoringEfforts: [
         {
           key: "state_providerTerminationReportingMonitoringEfforts-WFrdLUutmEujEZkS7rWVqQ",
