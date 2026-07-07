@@ -141,6 +141,11 @@ export const autosaveFieldData = async ({
           ),
         }, // create field data object
       };
+    } else {
+      dataToWrite = {
+        ...dataToWrite,
+        fieldData: Object.fromEntries(fieldsToSave),
+      };
     }
 
     dataToWrite = dataModifications(
