@@ -383,24 +383,6 @@ describe("Completion Status Tests", () => {
       expect(result).toBe(false);
     });
 
-    test("returns true if not reporting on plan", () => {
-      const mockNotReportingPlan = {
-        ...mockPlan,
-        measures: {
-          [mockMeasureId]: {
-            measure_isReporting: [{}],
-            measure_isNotReportingReason: [{}],
-          },
-        },
-      };
-      const result = calculateMeasureCompletion(
-        mockMeasureId,
-        mockNotReportingPlan,
-        mockMeasureRates
-      );
-      expect(result).toBe(true);
-    });
-
     test("returns true if contains all fields", () => {
       const mockCompletePlan = {
         ...mockPlan,

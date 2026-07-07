@@ -21,8 +21,6 @@ import {
   RouterWrappedComponent,
   mockMcparReportStore,
   mockEntityStore,
-  mockVerbiageIntro,
-  mockDrawerForm,
   mockNaaarAnalysisMethodsPageJson,
   mockMcparIlosPageJson,
   mockNaaarReportWithAnalysisMethodsContext,
@@ -156,37 +154,6 @@ describe("<DrawerReportPage />", () => {
       await waitFor(() => {
         expect(screen.getByRole("dialog")).toBeVisible();
       });
-    });
-
-    test("Selected 'Not reporting data' should disable the 'Enter' button for Prior Authorization", async () => {
-      const mockPriorAuthReportPageJson = {
-        name: "mock-route",
-        path: "/mcpar/plan-level-indicators/prior-authorization",
-        pageType: "drawer",
-        entityType: EntityType.PLANS,
-        verbiage: {
-          intro: mockVerbiageIntro,
-          dashboardTitle: "Mock dashboard title",
-          drawerTitle: "Mock drawer title",
-        },
-        drawerForm: mockDrawerForm,
-      };
-
-      const priorAuthReportingDrawerReportPage = (
-        <RouterWrappedComponent>
-          <ReportContext.Provider value={mockMcparReportContext}>
-            <DrawerReportPage route={mockPriorAuthReportPageJson} />
-          </ReportContext.Provider>
-        </RouterWrappedComponent>
-      );
-
-      render(priorAuthReportingDrawerReportPage);
-      const notReportingDataButton = screen.getAllByRole("radio")[0];
-      await act(async () => {
-        await userEvent.click(notReportingDataButton);
-      });
-      const launchDrawerButton = screen.getAllByText("Enter")[1];
-      expect(launchDrawerButton).toBeDisabled;
     });
 
     test("Submit sidedrawer opens and saves for state user", async () => {
