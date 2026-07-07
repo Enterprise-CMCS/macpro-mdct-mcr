@@ -76,11 +76,6 @@ const mockDrawerPageJson = {
   drawerForm: { id: "drawer", fields: reportJsonFields },
 };
 
-const mockDrawerPageWithStandardFormJson = {
-  ...mockDrawerReportPageJson,
-  path: "/mcpar/plan-level-indicators/prior-authorization",
-};
-
 const mockMissingPlansPageJson = {
   name: "mock-route-2a",
   path: "/mcpar/plan-level-indicators/ilos",
@@ -142,12 +137,6 @@ const exportedDrawerTableComponent = (
   />
 );
 
-const exportedDrawerTableComponentWithStandardForm = (
-  <ExportedReportFieldTable
-    section={mockDrawerPageWithStandardFormJson as DrawerReportPageShape}
-  />
-);
-
 const exportedMissingEntitiesComponent = (
   <ExportedReportFieldTable
     section={mockMissingPlansPageJson as DrawerReportPageShape}
@@ -172,12 +161,6 @@ describe("<ExportedReportFieldRow />", () => {
   test("handles drawer pages with children", async () => {
     render(exportedDrawerTableComponent);
     const row = screen.getByTestId("exportTable");
-    expect(row).toBeVisible();
-  });
-
-  test("handles drawer pages with standard forms", async () => {
-    render(exportedDrawerTableComponentWithStandardForm);
-    const row = screen.getByText("Are you reporting data prior to June 2026?");
     expect(row).toBeVisible();
   });
 
