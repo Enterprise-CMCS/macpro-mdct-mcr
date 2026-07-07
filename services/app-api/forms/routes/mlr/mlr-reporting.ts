@@ -692,7 +692,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   },
                   props: {
                     label:
-                      "4.6.1.d Date state received remittance from MCO, PHIP, or PAHP",
+                      "4.6.1.d Date state received remittance from MCO, PIHP, or PAHP",
                     hint: "Enter the date the state received the total dollar amount owed from the MCO, PIHP or PAHP.",
                     styleAsOptional: true,
                   },
