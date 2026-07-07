@@ -1,4 +1,4 @@
-import { deletePlanData, getFieldsToFilter } from "./deletePlanData";
+import { deletePlanData } from "./deletePlanData";
 
 const mockPlanData = [
   {
@@ -40,17 +40,6 @@ const priorAuthorizationFields = [
   "plan_averageTimeToDecisionForExpeditedPriorAuthorizations",
   "plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests",
   "plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe",
-];
-
-const patientAccessApiFields = [
-  "plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer",
-
-  "plan_numberOfUniqueBeneficiariesWithMultipleDataTransfers",
-
-  "plan_urlForPatientAccessApi",
-
-  "plan_urlForPatientResourcesForPatientAccessApi",
-  "plan_urlForPatientResourcesForProviderAccessAndPayerToPayerApi",
 ];
 
 export const mockPlanLevelIndicators = [
@@ -303,22 +292,5 @@ describe("deletePlanData", () => {
     const result = deletePlanData(mockPlanData, priorAuthorizationFields);
     expect(result.length).toBe(1);
     expect(result[0]).toStrictEqual({ id: "mock-id" });
-  });
-  it("should return an array of form field IDs for Prior Authorization", () => {
-    const result = getFieldsToFilter(
-      mockPlanLevelIndicators,
-      "plan_priorAuthorizationReporting"
-    );
-    expect(result.length).toBe(15);
-    expect(result).toEqual(priorAuthorizationFields);
-  });
-
-  it("should return an array of form field IDs for Patient Access API", () => {
-    const result = getFieldsToFilter(
-      mockPlanLevelIndicators,
-      "plan_patientAccessApiReporting"
-    );
-    expect(result.length).toBe(5);
-    expect(result).toEqual(patientAccessApiFields);
   });
 });

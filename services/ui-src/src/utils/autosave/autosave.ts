@@ -8,10 +8,7 @@ import {
   ReportStatus,
 } from "types";
 // utils
-import {
-  dataModifications,
-  handlePriorAuthorization,
-} from "./dataModifications";
+import { dataModifications } from "./dataModifications";
 
 type FieldValue = any;
 
@@ -96,13 +93,7 @@ export const autosaveFieldData = async ({
   user,
   entityContext,
 }: Props) => {
-  const {
-    id,
-    reportType,
-    updateReport,
-    fieldData: reportFieldData,
-    formFields,
-  } = report;
+  const { id, reportType, updateReport, fieldData: reportFieldData } = report;
   const { userName, state } = user;
   // for each passed field, format for autosave payload (if changed)
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
@@ -150,13 +141,6 @@ export const autosaveFieldData = async ({
           ),
         }, // create field data object
       };
-    } else {
-      dataToWrite = handlePriorAuthorization(
-        dataToWrite,
-        reportFieldData,
-        fieldsToSave,
-        formFields
-      );
     }
 
     dataToWrite = dataModifications(

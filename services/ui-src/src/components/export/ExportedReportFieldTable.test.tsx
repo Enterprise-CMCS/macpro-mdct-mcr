@@ -79,30 +79,6 @@ const mockDrawerPageJson = {
 const mockDrawerPageWithStandardFormJson = {
   ...mockDrawerReportPageJson,
   path: "/mcpar/plan-level-indicators/prior-authorization",
-  form: {
-    id: "pa",
-    fields: [
-      {
-        id: "plan_priorAuthorizationReporting",
-        type: "radio",
-        validation: "radio",
-        props: {
-          label: "Are you reporting data prior to June 2026?",
-          hint: "If “Yes”, please complete the following questions under each plan.",
-          choices: [
-            {
-              id: "IELJsTZxQkFDkTMzWQkKocwb",
-              label: "Not reporting data",
-            },
-            {
-              id: "bByTWRIwTSTBncyZRUiibagB",
-              label: "Yes",
-            },
-          ],
-        },
-      },
-    ],
-  },
 };
 
 const mockMissingPlansPageJson = {
