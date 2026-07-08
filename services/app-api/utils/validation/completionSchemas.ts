@@ -20,6 +20,8 @@ export const error = {
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_DATE: "Response must be a valid date",
   INVALID_END_DATE: "End date can't be before start date",
+  INVALID_FUTURE_DATE: "Response must be today's date or in the future",
+  INVALID_PAST_DATE: "Response must be before today's date",
   NUMBER_LESS_THAN_ZERO: "Response must be greater than or equal to zero",
   NUMBER_LESS_THAN_ONE: "Response must be greater than or equal to one",
   INVALID_NUMBER: "Response must be a valid number",
@@ -269,6 +271,58 @@ export const endDate = (startDateField: string) =>
     }
   );
 
+export const endDateOptional = (startDateField: string) =>
+  dateOptional().test(
+    "is-after-start-date-optional",
+    error.INVALID_END_DATE,
+    (endDateString, context) => {
+      if (!endDateString) return true;
+
+      const startDateString = context.parent[startDateField];
+      const startDate = new Date(startDateString);
+      const endDate = new Date(endDateString);
+      return endDate >= startDate;
+    }
+  );
+
+export const futureDate = () =>
+  date().test(
+    "is-after-current-date",
+    error.INVALID_FUTURE_DATE,
+    (dateString) => {
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString!);
+      return inputtedDate >= todaysDate;
+    }
+  );
+
+export const pastDate = () =>
+  date().test(
+    "is-before-current-date",
+    error.INVALID_PAST_DATE,
+    (dateString) => {
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString!);
+      return inputtedDate < todaysDate;
+    }
+  );
+
+export const pastDateOptional = () =>
+  dateOptional().test(
+    "is-before-current-date-optional",
+    error.INVALID_PAST_DATE,
+    (dateString) => {
+      if (!dateString) return true;
+
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString);
+      return inputtedDate < todaysDate;
+    }
+  );
+
 // DROPDOWN
 export const dropdown = () =>
   object({ label: text(), value: text() }).required(error.REQUIRED_GENERIC);
@@ -360,3 +414,39 @@ export const nested = (
 export const dateFormatRegex =
   /^$|^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})$/;
 export const dateMonthYearFormatRegex = /^(\d{2}\/\d{4}|\d{6})$/;
+
+export const completionSchemaMap: any = {
+  checkbox: checkbox(),
+  checkboxOneOptional: checkboxOneOptional(),
+  checkboxOptional: checkboxOptional(),
+  checkboxSingle: checkboxSingle(),
+  date: date(),
+  dateMonthYear: dateMonthYear(),
+  dateOptional: dateOptional(),
+  dropdown: dropdown(),
+  dropdownOptional: dropdownOptional(),
+  dynamic: dynamic(),
+  dynamicOptional: dynamicOptional(),
+  email: email(),
+  emailOptional: emailOptional(),
+  futureDate: futureDate(),
+  number: number(),
+  numberNotLessThanOne: numberNotLessThanOne(),
+  numberNotLessThanZero: numberNotLessThanZero(),
+  numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
+  numberOptional: numberOptional(),
+  numberOrSuppressed: numberOrSuppressed(),
+  numberOrSuppressedOrNaNr: numberOrSuppressedOrNaNr(),
+  numberSuppressible: numberSuppressible(),
+  pastDate: pastDate(),
+  pastDateOptional: pastDateOptional(),
+  radio: radio(),
+  radioOptional: radioOptional(),
+  ratio: ratio(),
+  text: text(),
+  textOptional: textOptional(),
+  url: url(),
+  urlOptional: urlOptional(),
+  validNumber: validNumber(),
+  validNumberOptional: validNumberOptional(),
+};

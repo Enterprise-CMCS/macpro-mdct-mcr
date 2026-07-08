@@ -818,4 +818,11 @@ export const mcparProgramList: ProgramList = {
       label: "Wyoming Medicaid's Care Management Entity (CME)",
     },
   ],
+  // ZZ (test state)
+  ZZ: [
+    {
+      id: "Zq7Td2mKpWvL9Xbn3RcFa8Js",
+      label: "ZZ Test State Program",
+    },
+  ],
 };
