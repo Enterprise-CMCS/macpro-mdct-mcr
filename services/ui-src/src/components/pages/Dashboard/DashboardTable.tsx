@@ -141,7 +141,7 @@ const sx = {
     tableLayout: "fixed",
     marginBottom: "spacer5",
     "th, td": {
-      padding: "0.5rem",
+      padding: "0.5rem 0.25rem",
       borderBottom: "1px solid",
       borderColor: "gray_light",
       textAlign: "left",
@@ -153,7 +153,7 @@ const sx = {
     },
     // Program name column is slightly wider; remaining columns share space evenly
     "th:first-of-type, td:first-of-type": {
-      width: "10rem",
+      width: "8rem",
     },
   },
 };

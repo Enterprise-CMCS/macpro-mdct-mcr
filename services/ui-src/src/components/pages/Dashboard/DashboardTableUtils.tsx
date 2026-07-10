@@ -97,10 +97,17 @@ export const tableBody = (body: TableContentShape, isAdmin: boolean) => {
         name: "Actions",
         align: "center" as const,
         colSpan: isAdmin ? 3 : 2,
+        width: isAdmin ? "18rem" : "13rem",
       };
     }
     if (cell === "#") {
-      return { name: "#", width: "3rem" };
+      return { name: "#", width: "2rem" };
+    }
+    if (cell === "Initial Submission") {
+      return { name: "Initial Submission", width: "5.5rem" };
+    }
+    if (cell === "Due date" || cell === "Last edited") {
+      return { name: cell, width: "6rem" };
     }
     return cell;
   });

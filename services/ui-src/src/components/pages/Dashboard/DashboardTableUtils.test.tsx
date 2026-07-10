@@ -36,7 +36,7 @@ describe("DashboardTableUtils", () => {
 
     test("should return all rows for admin", () => {
       expect(tableBody(body, true)).toEqual({
-        headRow: ["row1", { name: "#", width: "3rem" }],
+        headRow: ["row1", { name: "#", width: "2rem" }],
       });
     });
 
@@ -48,7 +48,7 @@ describe("DashboardTableUtils", () => {
       const result = tableBody({ headRow: ["row1", "Actions"] }, true);
       expect(result.headRow).toEqual([
         "row1",
-        { name: "Actions", align: "center", colSpan: 3 },
+        { name: "Actions", align: "center", colSpan: 3, width: "18rem" },
       ]);
     });
 
@@ -56,7 +56,7 @@ describe("DashboardTableUtils", () => {
       const result = tableBody({ headRow: ["row1", "#", "Actions"] }, false);
       expect(result.headRow).toEqual([
         "row1",
-        { name: "Actions", align: "center", colSpan: 2 },
+        { name: "Actions", align: "center", colSpan: 2, width: "13rem" },
       ]);
     });
 
