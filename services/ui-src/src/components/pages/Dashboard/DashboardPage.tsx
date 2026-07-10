@@ -79,7 +79,7 @@ export const DashboardPage = ({ reportType }: Props) => {
   const [entering, setEntering] = useState<boolean>(false);
   const [releasing, setReleasing] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
-    undefined
+    undefined,
   );
 
   const { dashboardVerbiage: defaultDashboardVerbiage } =
@@ -109,7 +109,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     let newReportsToDisplay = reportsByState;
     if (!userIsAdmin) {
       newReportsToDisplay = reportsByState?.filter(
-        (report: ReportMetadataShape) => !report?.archived
+        (report: ReportMetadataShape) => !report?.archived,
       );
     }
     setReportsToDisplay(newReportsToDisplay);
@@ -140,12 +140,12 @@ export const DashboardPage = ({ reportType }: Props) => {
       const copySourceReport: ReportMetadataShape | undefined =
         reportsByState?.find(
           (item: ReportMetadataShape) =>
-            item.fieldDataId == report.copyFieldDataSourceId
+            item.fieldDataId == report.copyFieldDataSourceId,
         );
       const copyFieldDataSourceId = copySourceReport
         ? {
             label: `${copySourceReport.programName} ${convertDateUtcToEt(
-              report.reportingPeriodEndDate
+              report.reportingPeriodEndDate,
             )}`,
             value: copySourceReport.fieldDataId,
           }
@@ -157,10 +157,10 @@ export const DashboardPage = ({ reportType }: Props) => {
         fieldData: {
           programName: report.programName,
           reportingPeriodEndDate: convertDateUtcToEt(
-            report.reportingPeriodEndDate
+            report.reportingPeriodEndDate,
           ),
           reportingPeriodStartDate: convertDateUtcToEt(
-            report.reportingPeriodStartDate
+            report.reportingPeriodStartDate,
           ),
           combinedData: report.combinedData,
           copyFieldDataSourceId,
@@ -430,32 +430,23 @@ const sx = {
 
 const sxChildStyles = {
   editReportButtonCell: {
-    width: "6.875rem",
     padding: 0,
     button: {
-      width: "6.875rem",
-      height: "1.75rem",
       borderRadius: "spacer_half",
       textAlign: "center",
-      fontSize: "sm",
-      fontWeight: "normal",
+      fontSize: "md",
+      fontWeight: "700",
       color: "primary",
+      padding: 0,
     },
   },
   editReport: {
-    padding: "0",
-    width: "2.5rem",
-    ".tablet &, .mobile &": {
-      width: "2rem",
-    },
-    img: {
-      height: "1.5rem",
-      minWidth: "21px",
-      marginLeft: "spacer1",
-      ".tablet &, .mobile &": {
-        marginLeft: 0,
-      },
-    },
+    display: "block",
+    marginLeft: "auto",
+    width: "fit-content",
+    padding: "0 0.75rem",
+    color: "primary",
+    fontWeight: "700",
   },
   programNameText: {
     fontSize: "md",
@@ -473,8 +464,8 @@ const sxChildStyles = {
     },
   },
   adminActionButton: {
-    minWidth: "4.5rem",
-    fontSize: "sm",
-    fontWeight: "normal",
+    minWidth: "6rem",
+    fontSize: "md",
+    fontWeight: "700",
   },
 };

@@ -31,7 +31,6 @@ export default {
     table: {
       caption: "MCPAR Programs",
       headRow: [
-        { hiddenName: "Edit report name and details" },
         "Program name",
         "Due date",
         "Last edited",
@@ -39,14 +38,9 @@ export default {
         "Status",
         "Initial Submission",
         "#",
-        { hiddenName: "Actions" },
+        "Actions",
       ],
       sortableHeadRow: {
-        edit: {
-          header: "Edit report name and details",
-          hidden: true,
-          stateUser: true,
-        },
         name: { header: "Program name" },
         dueDate: { header: "Due date" },
         lastAltered: { header: "Last edited" },

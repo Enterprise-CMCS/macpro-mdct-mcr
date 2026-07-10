@@ -37,14 +37,6 @@ export const MobileDashboardTable = ({
             {reportType === ReportType.MLR ? "Submission name" : "Program name"}
           </Text>
           <Flex alignContent="flex-start">
-            {isStateLevelUser && !report?.locked && (
-              <EditReportButton
-                report={report}
-                reportType={report.reportType}
-                openAddEditReportModal={openAddEditReportModal}
-                sxOverride={sxOverride}
-              />
-            )}
             <Text sx={sxOverride.programNameText}>{report.programName}</Text>
           </Flex>
         </Box>
@@ -80,7 +72,17 @@ export const MobileDashboardTable = ({
             </Text>
           </Box>
         )}
-        <Flex alignContent="flex-start" gap={2}>
+        <Flex align="center" gap={2}>
+          {isStateLevelUser && !report?.locked && (
+            <Box sx={sxOverride.editReportButtonCell}>
+              <EditReportButton
+                report={report}
+                reportType={report.reportType}
+                openAddEditReportModal={openAddEditReportModal}
+                sxOverride={sxOverride}
+              />
+            </Box>
+          )}
           <Box sx={sxOverride.editReportButtonCell}>
             <ActionButton
               report={report}

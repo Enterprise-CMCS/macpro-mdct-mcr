@@ -1,4 +1,4 @@
-import { Box, Button, Image, Td, Spinner } from "@chakra-ui/react";
+import { Button, Td, Spinner } from "@chakra-ui/react";
 // types
 import {
   AnyObject,
@@ -9,8 +9,6 @@ import {
 } from "types";
 // utils
 import { convertDateUtcToEt } from "utils";
-// assets
-import editIcon from "assets/icons/icon_edit_square_gray.png";
 
 export interface DashboardTableProps {
   reportsByState: ReportMetadataShape[];
@@ -70,7 +68,7 @@ export interface AdminArchiveActionButtonProps extends AdminActionButtonProps {
 export const getStatus = (
   status: string,
   archived?: boolean,
-  submissionCount?: number
+  submissionCount?: number,
 ) => {
   if (archived) {
     return "Archived";
@@ -87,13 +85,19 @@ export const getStatus = (
 
 export const tableBody = (body: TableContentShape, isAdmin: boolean) => {
   const tableContent = { ...body };
-  if (!isAdmin && tableContent.headRow) {
-    tableContent.headRow = tableContent.headRow.filter(
-      (e) => !["Initial Submission", "#"].includes(e as string)
+  let headRow = tableContent.headRow ?? [];
+  if (!isAdmin) {
+    headRow = headRow.filter(
+      (e) => !["Initial Submission", "#"].includes(e as string),
     );
-    return tableContent;
   }
-  return body;
+  headRow = headRow.map((cell) =>
+    cell === "Actions"
+      ? { name: "Actions", align: "center" as const, colSpan: isAdmin ? 3 : 2 }
+      : cell,
+  );
+  tableContent.headRow = headRow;
+  return tableContent;
 };
 
 export const EditReportButton = ({
@@ -103,20 +107,20 @@ export const EditReportButton = ({
   sxOverride,
 }: EditReportProps) => {
   return (
-    <Box display="inline" sx={sxOverride.editReport}>
-      <button onClick={() => openAddEditReportModal(report)}>
-        <Image
-          src={editIcon}
-          alt={
-            reportType !== ReportType.MLR
-              ? `Edit ${report.programName} due ${convertDateUtcToEt(
-                  report.dueDate
-                )} report submission set-up information`
-              : `Edit ${report.programName} report submission set-up information`
-          }
-        />
-      </button>
-    </Box>
+    <Button
+      variant="link"
+      sx={sxOverride.editReport}
+      onClick={() => openAddEditReportModal(report)}
+      aria-label={
+        reportType !== ReportType.MLR
+          ? `Edit ${report.programName} due ${convertDateUtcToEt(
+              report.dueDate,
+            )} report submission set-up information`
+          : `Edit ${report.programName} report submission set-up information`
+      }
+    >
+      Edit reporting
+    </Button>
   );
 };
 
@@ -133,10 +137,12 @@ export const ActionButton = ({
   return (
     <Button
       variant="outline"
+      size="md"
+      sx={{ minWidth: "6rem" }}
       aria-label={
         reportType !== ReportType.MLR
           ? `${editOrView} ${report.programName} due ${convertDateUtcToEt(
-              report.dueDate
+              report.dueDate,
             )} report`
           : `${editOrView} ${report.programName} report`
       }
@@ -174,7 +180,7 @@ export const AdminReleaseButton = ({
       aria-label={
         reportType !== ReportType.MLR
           ? `Unlock ${report.programName} due ${convertDateUtcToEt(
-              report.dueDate
+              report.dueDate,
             )} report`
           : `Unlock ${report.programName} report`
       }
@@ -204,7 +210,7 @@ export const AdminArchiveButton = ({
       aria-label={
         reportType !== ReportType.MLR
           ? `${buttonText} ${report.programName} due ${convertDateUtcToEt(
-              report.dueDate
+              report.dueDate,
             )} report`
           : `${buttonText} ${report.programName} report`
       }

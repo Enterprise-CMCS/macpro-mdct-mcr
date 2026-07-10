@@ -1,5 +1,5 @@
 // components
-import { Td, Tr } from "@chakra-ui/react";
+import { Box, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
 // types
 import { ReportMetadataShape, ReportType } from "types";
@@ -39,17 +39,6 @@ export const DashboardTable = ({
 
       return (
         <Tr key={report.id}>
-          {/* Edit Button */}
-          <Td>
-            {isStateLevelUser && !report?.locked && (
-              <EditReportButton
-                report={report}
-                reportType={report.reportType}
-                openAddEditReportModal={openAddEditReportModal}
-                sxOverride={sxOverride}
-              />
-            )}
-          </Td>
           {/* Report Name */}
           <Td sx={sxOverride.programNameText}>
             {report.submissionName || report.programName}
@@ -59,7 +48,7 @@ export const DashboardTable = ({
             <Td>
               {otherSpecify(
                 report["planTypeIncludedInProgram"]?.[0].value,
-                report["planTypeIncludedInProgram-otherText"]
+                report["planTypeIncludedInProgram-otherText"],
               )}
             </Td>
           )}
@@ -84,6 +73,20 @@ export const DashboardTable = ({
             </>
           )}
           {/* Action Buttons */}
+          {isStateLevelUser && (
+            <Td sx={sxOverride.editReportButtonCell}>
+              {report?.locked ? (
+                <Box sx={sxOverride.editReport} />
+              ) : (
+                <EditReportButton
+                  report={report}
+                  reportType={report.reportType}
+                  openAddEditReportModal={openAddEditReportModal}
+                  sxOverride={sxOverride}
+                />
+              )}
+            </Td>
+          )}
           <Td sx={sxOverride.editReportButtonCell}>
             <ActionButton
               report={report}
@@ -126,6 +129,8 @@ export const DashboardTable = ({
 
 const sx = {
   table: {
+    width: "100%",
+    tableLayout: "fixed",
     marginBottom: "spacer5",
     th: {
       padding: "0.5rem 0",

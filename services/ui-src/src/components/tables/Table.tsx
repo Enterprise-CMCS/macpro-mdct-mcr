@@ -41,25 +41,38 @@ export const Table = ({
             {content.headRow.map(
               (
                 headerCell: string | ScreenReaderCustomHeaderName,
-                index: number
+                index: number,
               ) => (
                 <Th
                   key={index}
                   scope="col"
-                  sx={{ ...sx.tableHeader, ...sxOverride }}
+                  colSpan={
+                    typeof headerCell === "object"
+                      ? headerCell.colSpan
+                      : undefined
+                  }
+                  sx={{
+                    ...sx.tableHeader,
+                    ...sxOverride,
+                    ...(typeof headerCell === "object" && headerCell.align
+                      ? { "&&": { textAlign: headerCell.align } }
+                      : {}),
+                  }}
                 >
                   {typeof headerCell === "object" ? (
                     <>
-                      <VisuallyHidden>
-                        {sanitizeAndParseHtml(headerCell.hiddenName)}
-                      </VisuallyHidden>
+                      {headerCell.hiddenName && (
+                        <VisuallyHidden>
+                          {sanitizeAndParseHtml(headerCell.hiddenName)}
+                        </VisuallyHidden>
+                      )}
                       {headerCell?.name ?? null}
                     </>
                   ) : (
                     sanitizeAndParseHtml(headerCell)
                   )}
                 </Th>
-              )
+              ),
             )}
           </Tr>
         </Thead>
