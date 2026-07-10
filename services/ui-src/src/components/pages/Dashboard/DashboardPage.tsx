@@ -79,7 +79,7 @@ export const DashboardPage = ({ reportType }: Props) => {
   const [entering, setEntering] = useState<boolean>(false);
   const [releasing, setReleasing] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
-    undefined,
+    undefined
   );
 
   const { dashboardVerbiage: defaultDashboardVerbiage } =
@@ -109,7 +109,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     let newReportsToDisplay = reportsByState;
     if (!userIsAdmin) {
       newReportsToDisplay = reportsByState?.filter(
-        (report: ReportMetadataShape) => !report?.archived,
+        (report: ReportMetadataShape) => !report?.archived
       );
     }
     setReportsToDisplay(newReportsToDisplay);
@@ -140,12 +140,12 @@ export const DashboardPage = ({ reportType }: Props) => {
       const copySourceReport: ReportMetadataShape | undefined =
         reportsByState?.find(
           (item: ReportMetadataShape) =>
-            item.fieldDataId == report.copyFieldDataSourceId,
+            item.fieldDataId == report.copyFieldDataSourceId
         );
       const copyFieldDataSourceId = copySourceReport
         ? {
             label: `${copySourceReport.programName} ${convertDateUtcToEt(
-              report.reportingPeriodEndDate,
+              report.reportingPeriodEndDate
             )}`,
             value: copySourceReport.fieldDataId,
           }
@@ -157,10 +157,10 @@ export const DashboardPage = ({ reportType }: Props) => {
         fieldData: {
           programName: report.programName,
           reportingPeriodEndDate: convertDateUtcToEt(
-            report.reportingPeriodEndDate,
+            report.reportingPeriodEndDate
           ),
           reportingPeriodStartDate: convertDateUtcToEt(
-            report.reportingPeriodStartDate,
+            report.reportingPeriodStartDate
           ),
           combinedData: report.combinedData,
           copyFieldDataSourceId,
@@ -451,21 +451,15 @@ const sxChildStyles = {
   programNameText: {
     fontSize: "md",
     fontWeight: "bold",
-    width: "13rem",
-    maxWidth: "13rem",
     ".tablet &, .mobile &": {
       width: "100%",
     },
   },
-  adminActionCell: {
-    width: "2.5rem",
-    ".tablet &, .mobile &": {
-      display: "flex",
-    },
-  },
+  adminActionCell: {},
   adminActionButton: {
-    minWidth: "6rem",
+    minWidth: 0,
     fontSize: "md",
     fontWeight: "700",
+    whiteSpace: "nowrap",
   },
 };

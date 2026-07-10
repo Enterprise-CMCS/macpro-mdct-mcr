@@ -35,7 +35,9 @@ describe("DashboardTableUtils", () => {
     };
 
     test("should return all rows for admin", () => {
-      expect(tableBody(body, true)).toEqual(body);
+      expect(tableBody(body, true)).toEqual({
+        headRow: ["row1", { name: "#", width: "3rem" }],
+      });
     });
 
     test("should remove # row for non-admin", () => {
@@ -51,10 +53,7 @@ describe("DashboardTableUtils", () => {
     });
 
     test("should map Actions header to a centered cell spanning 2 columns for non-admin", () => {
-      const result = tableBody(
-        { headRow: ["row1", "#", "Actions"] },
-        false
-      );
+      const result = tableBody({ headRow: ["row1", "#", "Actions"] }, false);
       expect(result.headRow).toEqual([
         "row1",
         { name: "Actions", align: "center", colSpan: 2 },

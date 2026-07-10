@@ -178,13 +178,13 @@ describe("<DashboardTable />", () => {
           screen.getByRole("heading", {
             level: 1,
             name: `Minnesota ${mcparVerbiage.intro.header}`,
-          }),
+          })
         ).toBeVisible();
         expect(
-          screen.getAllByRole("cell", { name: "testProgram" })[0],
+          screen.getAllByRole("cell", { name: "testProgram" })[0]
         ).toBeVisible();
         expect(
-          screen.queryByText(mcparVerbiage.body.empty),
+          screen.queryByText(mcparVerbiage.body.empty)
         ).not.toBeInTheDocument();
         expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
       });
@@ -201,10 +201,10 @@ describe("<DashboardTable />", () => {
           screen.getByRole("heading", {
             level: 1,
             name: `Minnesota ${mlrVerbiage.intro.header}`,
-          }),
+          })
         ).toBeVisible();
         expect(
-          screen.getAllByRole("cell", { name: "testSubmission" })[0],
+          screen.getAllByRole("cell", { name: "testSubmission" })[0]
         ).toBeVisible();
         expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
       });
@@ -221,7 +221,7 @@ describe("<DashboardTable />", () => {
           screen.getByRole("heading", {
             level: 1,
             name: `Minnesota ${naaarVerbiage.intro.header}`,
-          }),
+          })
         ).toBeVisible();
         expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
       });
@@ -237,7 +237,7 @@ describe("<DashboardTable />", () => {
       });
       await waitFor(async () => {
         expect(mockMcparReportContext.setReportSelection).toHaveBeenCalledTimes(
-          1,
+          1
         );
         expect(mockUseNavigate).toHaveBeenCalledTimes(1);
         expect(mockUseNavigate).toHaveBeenCalledWith("/mock/mock-route-1");
@@ -319,7 +319,7 @@ describe("<DashboardTable />", () => {
       render(dashboardViewWithReports);
       await waitFor(() => {
         expect(
-          screen.queryByRole("cell", { name: "123" }),
+          screen.queryByRole("cell", { name: "123" })
         ).not.toBeInTheDocument();
       });
     });
@@ -365,7 +365,7 @@ describe("<DashboardTable />", () => {
         expect(mockMcparReportContext.archiveReport).toHaveBeenCalledTimes(1);
         // once for render, once for archive
         expect(
-          mockMcparReportContext.fetchReportsByState,
+          mockMcparReportContext.fetchReportsByState
         ).toHaveBeenCalledTimes(2);
       });
     });
@@ -387,7 +387,7 @@ describe("<DashboardTable />", () => {
         expect(mockMcparReportContext.archiveReport).toHaveBeenCalledTimes(1);
         // once for render, once for archive
         expect(
-          mockMcparReportContext.fetchReportsByState,
+          mockMcparReportContext.fetchReportsByState
         ).toHaveBeenCalledTimes(2);
       });
     });
@@ -409,7 +409,7 @@ describe("<DashboardTable />", () => {
         expect(mockMcparReportContext.archiveReport).toHaveBeenCalledTimes(1);
         // once for render, once for archive
         expect(
-          mockMcparReportContext.fetchReportsByState,
+          mockMcparReportContext.fetchReportsByState
         ).toHaveBeenCalledTimes(2);
       });
     });
@@ -424,7 +424,7 @@ describe("<DashboardTable />", () => {
         expect(
           screen.queryByRole("button", {
             name: /Archive/,
-          }),
+          })
         ).not.toBeInTheDocument();
       });
     });
@@ -439,7 +439,7 @@ describe("<DashboardTable />", () => {
         expect(
           screen.queryByRole("button", {
             name: /Archive/,
-          }),
+          })
         ).not.toBeInTheDocument();
       });
     });
@@ -454,7 +454,7 @@ describe("<DashboardTable />", () => {
         expect(
           screen.queryByRole("button", {
             name: /Archive/,
-          }),
+          })
         ).not.toBeInTheDocument();
       });
     });
@@ -488,7 +488,7 @@ describe("<DashboardTable />", () => {
         expect(mockMlrReportContext.releaseReport).toHaveBeenCalledTimes(1);
         // once for render, once for release
         expect(mockMlrReportContext.fetchReportsByState).toHaveBeenCalledTimes(
-          2,
+          2
         );
       });
     });
@@ -541,7 +541,7 @@ describe("<DashboardTable />", () => {
       render(dashboardViewWithError);
       await waitFor(() => {
         expect(
-          screen.getByText(/Something went wrong on our end/),
+          screen.getByText(/Something went wrong on our end/)
         ).toBeVisible();
       });
     });

@@ -41,7 +41,7 @@ export const Table = ({
             {content.headRow.map(
               (
                 headerCell: string | ScreenReaderCustomHeaderName,
-                index: number,
+                index: number
               ) => (
                 <Th
                   key={index}
@@ -54,6 +54,9 @@ export const Table = ({
                   sx={{
                     ...sx.tableHeader,
                     ...sxOverride,
+                    ...(typeof headerCell === "object" && headerCell.width
+                      ? { width: headerCell.width }
+                      : {}),
                     ...(typeof headerCell === "object" && headerCell.align
                       ? { "&&": { textAlign: headerCell.align } }
                       : {}),
@@ -72,7 +75,7 @@ export const Table = ({
                     sanitizeAndParseHtml(headerCell)
                   )}
                 </Th>
-              ),
+              )
             )}
           </Tr>
         </Thead>

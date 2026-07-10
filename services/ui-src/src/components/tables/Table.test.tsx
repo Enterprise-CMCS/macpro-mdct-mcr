@@ -43,7 +43,7 @@ describe("<Table />", () => {
     render(
       <RouterWrappedComponent>
         <Table content={content} variant="striped" />
-      </RouterWrappedComponent>,
+      </RouterWrappedComponent>
     );
     const actionsHeader = screen.getByRole("columnheader", { name: /Actions/ });
     expect(actionsHeader).toBeVisible();
@@ -60,7 +60,7 @@ describe("<Table />", () => {
     render(
       <RouterWrappedComponent>
         <Table content={content} variant="striped" />
-      </RouterWrappedComponent>,
+      </RouterWrappedComponent>
     );
     const actionsHeader = screen.getByRole("columnheader", { name: "Actions" });
     expect(actionsHeader).toBeVisible();

@@ -68,7 +68,7 @@ export interface AdminArchiveActionButtonProps extends AdminActionButtonProps {
 export const getStatus = (
   status: string,
   archived?: boolean,
-  submissionCount?: number,
+  submissionCount?: number
 ) => {
   if (archived) {
     return "Archived";
@@ -88,14 +88,22 @@ export const tableBody = (body: TableContentShape, isAdmin: boolean) => {
   let headRow = tableContent.headRow ?? [];
   if (!isAdmin) {
     headRow = headRow.filter(
-      (e) => !["Initial Submission", "#"].includes(e as string),
+      (e) => !["Initial Submission", "#"].includes(e as string)
     );
   }
-  headRow = headRow.map((cell) =>
-    cell === "Actions"
-      ? { name: "Actions", align: "center" as const, colSpan: isAdmin ? 3 : 2 }
-      : cell,
-  );
+  headRow = headRow.map((cell) => {
+    if (cell === "Actions") {
+      return {
+        name: "Actions",
+        align: "center" as const,
+        colSpan: isAdmin ? 3 : 2,
+      };
+    }
+    if (cell === "#") {
+      return { name: "#", width: "3rem" };
+    }
+    return cell;
+  });
   tableContent.headRow = headRow;
   return tableContent;
 };
@@ -114,7 +122,7 @@ export const EditReportButton = ({
       aria-label={
         reportType !== ReportType.MLR
           ? `Edit ${report.programName} due ${convertDateUtcToEt(
-              report.dueDate,
+              report.dueDate
             )} report submission set-up information`
           : `Edit ${report.programName} report submission set-up information`
       }
@@ -138,11 +146,11 @@ export const ActionButton = ({
     <Button
       variant="outline"
       size="md"
-      sx={{ minWidth: "6rem" }}
+      sx={{ width: "100%", minWidth: 0, paddingX: "0.5rem" }}
       aria-label={
         reportType !== ReportType.MLR
           ? `${editOrView} ${report.programName} due ${convertDateUtcToEt(
-              report.dueDate,
+              report.dueDate
             )} report`
           : `${editOrView} ${report.programName} report`
       }
@@ -180,7 +188,7 @@ export const AdminReleaseButton = ({
       aria-label={
         reportType !== ReportType.MLR
           ? `Unlock ${report.programName} due ${convertDateUtcToEt(
-              report.dueDate,
+              report.dueDate
             )} report`
           : `Unlock ${report.programName} report`
       }
@@ -210,7 +218,7 @@ export const AdminArchiveButton = ({
       aria-label={
         reportType !== ReportType.MLR
           ? `${buttonText} ${report.programName} due ${convertDateUtcToEt(
-              report.dueDate,
+              report.dueDate
             )} report`
           : `${buttonText} ${report.programName} report`
       }

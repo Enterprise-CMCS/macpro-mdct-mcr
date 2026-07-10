@@ -64,6 +64,7 @@ export interface ScreenReaderCustomHeaderName {
   name?: string;
   align?: "left" | "center" | "right";
   colSpan?: number;
+  width?: string;
 }
 
 export interface SortableHeadRow {

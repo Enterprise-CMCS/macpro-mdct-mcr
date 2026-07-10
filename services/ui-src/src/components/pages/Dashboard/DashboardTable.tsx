@@ -48,7 +48,7 @@ export const DashboardTable = ({
             <Td>
               {otherSpecify(
                 report["planTypeIncludedInProgram"]?.[0].value,
-                report["planTypeIncludedInProgram-otherText"],
+                report["planTypeIncludedInProgram-otherText"]
               )}
             </Td>
           )}
@@ -99,26 +99,30 @@ export const DashboardTable = ({
           </Td>
           {isAdmin && (
             <Td>
-              <AdminReleaseButton
-                report={report}
-                reportType={reportType}
-                reportId={reportId}
-                releaseReport={releaseReport}
-                releasing={releasing}
-                sxOverride={sxOverride}
-              />
+              <Box sx={sx.adminActionButtonWrapper}>
+                <AdminReleaseButton
+                  report={report}
+                  reportType={reportType}
+                  reportId={reportId}
+                  releaseReport={releaseReport}
+                  releasing={releasing}
+                  sxOverride={sxOverride}
+                />
+              </Box>
             </Td>
           )}
           {isAdmin && (
             <Td>
-              <AdminArchiveButton
-                report={report}
-                reportType={reportType}
-                reportId={reportId}
-                archiveReport={archiveReport}
-                archiving={archiving}
-                sxOverride={sxOverride}
-              />
+              <Box sx={sx.adminActionButtonWrapper}>
+                <AdminArchiveButton
+                  report={report}
+                  reportType={reportType}
+                  reportId={reportId}
+                  archiveReport={archiveReport}
+                  archiving={archiving}
+                  sxOverride={sxOverride}
+                />
+              </Box>
             </Td>
           )}
         </Tr>
@@ -128,36 +132,28 @@ export const DashboardTable = ({
 );
 
 const sx = {
+  adminActionButtonWrapper: {
+    display: "flex",
+    justifyContent: "center",
+  },
   table: {
     width: "100%",
     tableLayout: "fixed",
     marginBottom: "spacer5",
-    th: {
-      padding: "0.5rem 0",
-      borderBottom: "1px solid",
-      borderColor: "gray_light",
-      color: "gray",
-      fontWeight: "bold",
-    },
-    tr: {
-      borderBottom: "1px solid",
-      borderColor: "gray_light",
-    },
-    td: {
-      minWidth: "6rem",
-      padding: "0.5rem 0.75rem",
-      paddingLeft: 0,
-      borderTop: "1px solid",
+    "th, td": {
+      padding: "0.5rem",
       borderBottom: "1px solid",
       borderColor: "gray_light",
       textAlign: "left",
-      "&:last-of-type": {
-        paddingRight: 0,
-      },
-      "&:first-of-type": {
-        width: "2rem",
-        minWidth: "2rem",
-      },
+      verticalAlign: "middle",
+    },
+    th: {
+      color: "gray",
+      fontWeight: "bold",
+    },
+    // Program name column is slightly wider; remaining columns share space evenly
+    "th:first-of-type, td:first-of-type": {
+      width: "10rem",
     },
   },
 };
