@@ -22,25 +22,21 @@ export default {
     table: {
       caption: "MLR Submissions",
       headRow: [
-        { hiddenName: "Edit report name" },
         "Submission name",
         "Last edited",
         "Edited by",
         "Status",
         "Initial Submission",
         "#",
-        { hiddenName: "Actions" },
+        "Actions",
       ],
       sortableHeadRow: {
-        edit: { header: "Edit report name", hidden: true, stateUser: true },
         name: { header: "Submission name" },
         lastAltered: { header: "Last edited" },
         editedBy: { header: "Edited by" },
         status: { header: "Status" },
         submissionCount: { header: "#", admin: true },
-        actions: { header: "Actions", hidden: true },
-        adminRelease: { header: "Release", admin: true, hidden: true },
-        adminArchive: { header: "Archive", admin: true, hidden: true },
+        actions: { header: "Actions" },
       },
     },
     empty:

@@ -1,5 +1,5 @@
 // components
-import { Td, Tr } from "@chakra-ui/react";
+import { Button, Flex, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
 // types
 import { ReportMetadataShape, ReportType } from "types";
@@ -10,7 +10,6 @@ import {
   AdminReleaseButton,
   DashboardTableProps,
   DateFields,
-  EditReportButton,
   ActionButton,
   getStatus,
   tableBody,
@@ -39,17 +38,6 @@ export const DashboardTable = ({
 
       return (
         <Tr key={report.id}>
-          {/* Edit Button */}
-          <Td>
-            {isStateLevelUser && !report?.locked && (
-              <EditReportButton
-                report={report}
-                reportType={report.reportType}
-                openAddEditReportModal={openAddEditReportModal}
-                sxOverride={sxOverride}
-              />
-            )}
-          </Td>
           {/* Report Name */}
           <Td sx={sxOverride.programNameText}>
             {report.submissionName || report.programName}
@@ -78,46 +66,52 @@ export const DashboardTable = ({
                 {initialSubmissionDate &&
                   convertDateUtcToEt(initialSubmissionDate)}
               </Td>
-              <Td>
+              <Td className="submission-count-cell">
                 {report.submissionCount === 0 ? 1 : report.submissionCount}
               </Td>
             </>
           )}
-          {/* Action Buttons */}
+          {/* Actions */}
           <Td sx={sxOverride.editReportButtonCell}>
-            <ActionButton
-              report={report}
-              reportType={reportType}
-              reportId={reportId}
-              isStateLevelUser={isStateLevelUser}
-              entering={entering}
-              enterSelectedReport={enterSelectedReport}
-            />
+            <Flex align="center" gap="0.5rem">
+              {isStateLevelUser && !report?.locked && (
+                <Button
+                  variant="link"
+                  onClick={() => openAddEditReportModal(report)}
+                >
+                  Edit reporting
+                </Button>
+              )}
+              <ActionButton
+                report={report}
+                reportType={reportType}
+                reportId={reportId}
+                isStateLevelUser={isStateLevelUser}
+                entering={entering}
+                enterSelectedReport={enterSelectedReport}
+              />
+              {isAdmin && (
+                <AdminReleaseButton
+                  report={report}
+                  reportType={reportType}
+                  reportId={reportId}
+                  releaseReport={releaseReport}
+                  releasing={releasing}
+                  sxOverride={sxOverride}
+                />
+              )}
+              {isAdmin && (
+                <AdminArchiveButton
+                  report={report}
+                  reportType={reportType}
+                  reportId={reportId}
+                  archiveReport={archiveReport}
+                  archiving={archiving}
+                  sxOverride={sxOverride}
+                />
+              )}
+            </Flex>
           </Td>
-          {isAdmin && (
-            <Td>
-              <AdminReleaseButton
-                report={report}
-                reportType={reportType}
-                reportId={reportId}
-                releaseReport={releaseReport}
-                releasing={releasing}
-                sxOverride={sxOverride}
-              />
-            </Td>
-          )}
-          {isAdmin && (
-            <Td>
-              <AdminArchiveButton
-                report={report}
-                reportType={reportType}
-                reportId={reportId}
-                archiveReport={archiveReport}
-                archiving={archiving}
-                sxOverride={sxOverride}
-              />
-            </Td>
-          )}
         </Tr>
       );
     })}
@@ -133,6 +127,9 @@ const sx = {
       borderColor: "gray_light",
       color: "gray",
       fontWeight: "bold",
+      "&:last-of-type": {
+        textAlign: "center",
+      },
     },
     tr: {
       borderBottom: "1px solid",
@@ -149,9 +146,8 @@ const sx = {
       "&:last-of-type": {
         paddingRight: 0,
       },
-      "&:first-of-type": {
-        width: "2rem",
-        minWidth: "2rem",
+      "&.submission-count-cell": {
+        minWidth: "auto",
       },
     },
   },

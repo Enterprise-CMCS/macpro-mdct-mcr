@@ -308,7 +308,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               releasing={releasing}
               isStateLevelUser={userIsEndUser!}
               isAdmin={userIsAdmin!}
-              sxOverride={sxChildStyles}
+              sxOverride={sxDesktopStyles}
             />
           )
         ) : (
@@ -475,6 +475,18 @@ const sxChildStyles = {
   adminActionButton: {
     minWidth: "4.5rem",
     fontSize: "sm",
+    fontWeight: "normal",
+  },
+};
+
+const sxDesktopStyles = {
+  ...sxChildStyles,
+  editReportButtonCell: {
+    padding: 0,
+  },
+  adminActionButton: {
+    minWidth: "4.5rem",
+    fontSize: "1rem",
     fontWeight: "normal",
   },
 };

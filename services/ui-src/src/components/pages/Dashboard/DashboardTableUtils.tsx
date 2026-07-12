@@ -133,6 +133,11 @@ export const ActionButton = ({
   return (
     <Button
       variant="outline"
+      sx={{
+        height: "2.5rem",
+        fontSize: "1rem",
+        fontWeight: 700,
+      }}
       aria-label={
         reportType !== ReportType.MLR
           ? `${editOrView} ${report.programName} due ${convertDateUtcToEt(
