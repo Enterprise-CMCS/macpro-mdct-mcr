@@ -73,7 +73,7 @@ export const DashboardTable = ({
           )}
           {/* Actions */}
           <Td sx={sxOverride.editReportButtonCell}>
-            <Flex align="center" gap="0.5rem">
+            <Flex align="center" justify="center" gap="0.5rem">
               {isStateLevelUser && !report?.locked && (
                 <Button
                   variant="link"
@@ -137,7 +137,7 @@ const sx = {
     },
     td: {
       minWidth: "6rem",
-      padding: "0.5rem 0.75rem",
+      padding: "0.5rem",
       paddingLeft: 0,
       borderTop: "1px solid",
       borderBottom: "1px solid",

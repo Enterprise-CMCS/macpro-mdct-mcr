@@ -485,7 +485,6 @@ const sxDesktopStyles = {
     padding: 0,
   },
   adminActionButton: {
-    minWidth: "4.5rem",
     fontSize: "1rem",
     fontWeight: "normal",
   },
