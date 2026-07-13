@@ -431,35 +431,41 @@ const sx = {
 const sxChildStyles = {
   editReportButtonCell: {
     padding: 0,
-    button: {
-      borderRadius: "spacer_half",
-      textAlign: "center",
-      fontSize: "md",
-      fontWeight: "700",
-      color: "primary",
-      padding: 0,
-    },
   },
   editReport: {
-    display: "block",
-    marginLeft: "auto",
-    width: "fit-content",
-    padding: "0 0.75rem",
-    color: "primary",
-    fontWeight: "700",
+    padding: "0",
+    width: "2.5rem",
+    ".tablet &, .mobile &": {
+      width: "2rem",
+    },
+    img: {
+      height: "1.5rem",
+      minWidth: "21px",
+      marginLeft: "spacer1",
+      ".tablet &, .mobile &": {
+        marginLeft: 0,
+      },
+    },
   },
   programNameText: {
     fontSize: "md",
     fontWeight: "bold",
+    width: "13rem",
+    maxWidth: "13rem",
     ".tablet &, .mobile &": {
       width: "100%",
     },
   },
-  adminActionCell: {},
+  adminActionCell: {
+    width: "2.5rem",
+    ".tablet &, .mobile &": {
+      display: "flex",
+      gap: "0.5rem",
+      width: "auto",
+    },
+  },
   adminActionButton: {
-    minWidth: 0,
-    fontSize: "md",
-    fontWeight: "700",
-    whiteSpace: "nowrap",
+    fontSize: "1rem",
+    fontWeight: 700,
   },
 };

@@ -264,7 +264,7 @@ describe("<DashboardTable />", () => {
     test("Clicking the edit reporting button opens the AddEditProgramModal", async () => {
       render(dashboardViewWithReports);
       const addReportButton = screen.getAllByRole("button", {
-        name: /^Edit/,
+        name: "Edit reporting",
       })[0];
       expect(addReportButton).toBeVisible();
       await act(async () => {
@@ -282,10 +282,10 @@ describe("<DashboardTable />", () => {
       });
       render(dashboardViewWithLockedReport);
       await waitFor(() => {
-        const editReportButtons = screen.queryAllByRole("button", {
-          name: /report submission set-up information/,
+        const addReportButtons = screen.queryAllByRole("button", {
+          name: "Edit reporting",
         });
-        expect(editReportButtons).toHaveLength(0);
+        expect(addReportButtons).toHaveLength(0);
       });
     });
 

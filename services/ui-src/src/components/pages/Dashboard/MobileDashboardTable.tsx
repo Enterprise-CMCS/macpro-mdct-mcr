@@ -1,5 +1,5 @@
 // components
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 // types
 import { ReportMetadataShape, ReportType } from "types";
 // utils
@@ -10,7 +10,6 @@ import {
   AdminReleaseButton,
   DashboardTableProps,
   DateFieldProps,
-  EditReportButton,
   getStatus,
 } from "./DashboardTableUtils";
 
@@ -49,7 +48,6 @@ export const MobileDashboardTable = ({
             </Text>
           </Box>
         )}
-
         <Box sx={sx.labelGroup}>
           <Flex alignContent="flex-start">
             <DateFields report={report} reportType={reportType} />
@@ -67,53 +65,55 @@ export const MobileDashboardTable = ({
         </Box>
         {isAdmin && (
           <Box sx={sx.labelGroup}>
-            <Text sx={sx.label}>
+            <Text sx={sx.label}>#</Text>
+            <Text>
               {report.submissionCount === 0 ? 1 : report.submissionCount}
             </Text>
           </Box>
         )}
-        <Flex align="center" gap={2}>
-          {isStateLevelUser && !report?.locked && (
+        <Box sx={sx.labelGroup}>
+          <Text sx={sx.label}>Actions</Text>
+          <Flex align="center" alignContent="flex-start" gap={2}>
+            {isStateLevelUser && !report?.locked && (
+              <Button
+                variant="link"
+                onClick={() => openAddEditReportModal(report)}
+              >
+                Edit reporting
+              </Button>
+            )}
             <Box sx={sxOverride.editReportButtonCell}>
-              <EditReportButton
-                report={report}
-                reportType={report.reportType}
-                openAddEditReportModal={openAddEditReportModal}
-                sxOverride={sxOverride}
-              />
-            </Box>
-          )}
-          <Box sx={sxOverride.editReportButtonCell}>
-            <ActionButton
-              report={report}
-              reportType={reportType}
-              reportId={reportId}
-              isStateLevelUser={isStateLevelUser}
-              entering={entering}
-              enterSelectedReport={enterSelectedReport}
-            />
-          </Box>
-          {isAdmin && (
-            <Box sx={sxOverride.adminActionCell}>
-              <AdminReleaseButton
+              <ActionButton
                 report={report}
                 reportType={reportType}
                 reportId={reportId}
-                releaseReport={releaseReport}
-                releasing={releasing}
-                sxOverride={sxOverride}
-              />
-              <AdminArchiveButton
-                report={report}
-                reportType={reportType}
-                reportId={reportId}
-                archiveReport={archiveReport}
-                archiving={archiving}
-                sxOverride={sxOverride}
+                isStateLevelUser={isStateLevelUser}
+                entering={entering}
+                enterSelectedReport={enterSelectedReport}
               />
             </Box>
-          )}
-        </Flex>
+            {isAdmin && (
+              <Box sx={sxOverride.adminActionCell}>
+                <AdminReleaseButton
+                  report={report}
+                  reportType={reportType}
+                  reportId={reportId}
+                  releaseReport={releaseReport}
+                  releasing={releasing}
+                  sxOverride={sxOverride}
+                />
+                <AdminArchiveButton
+                  report={report}
+                  reportType={reportType}
+                  reportId={reportId}
+                  archiveReport={archiveReport}
+                  archiving={archiving}
+                  sxOverride={sxOverride}
+                />
+              </Box>
+            )}
+          </Flex>
+        </Box>
       </Box>
     ))}
   </>

@@ -1,5 +1,5 @@
 // components
-import { Box, Td, Tr } from "@chakra-ui/react";
+import { Box, Button, Flex, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
 // types
 import { ReportMetadataShape, ReportType } from "types";
@@ -10,7 +10,6 @@ import {
   AdminReleaseButton,
   DashboardTableProps,
   DateFields,
-  EditReportButton,
   ActionButton,
   getStatus,
   tableBody,
@@ -67,39 +66,35 @@ export const DashboardTable = ({
                 {initialSubmissionDate &&
                   convertDateUtcToEt(initialSubmissionDate)}
               </Td>
-              <Td>
+              <Td className="submission-count-cell">
                 {report.submissionCount === 0 ? 1 : report.submissionCount}
               </Td>
             </>
           )}
-          {/* Action Buttons */}
-          {isStateLevelUser && (
-            <Td sx={sxOverride.editReportButtonCell}>
-              {report?.locked ? (
-                <Box sx={sxOverride.editReport} />
-              ) : (
-                <EditReportButton
-                  report={report}
-                  reportType={report.reportType}
-                  openAddEditReportModal={openAddEditReportModal}
-                  sxOverride={sxOverride}
-                />
-              )}
-            </Td>
-          )}
+          {/* Actions */}
           <Td sx={sxOverride.editReportButtonCell}>
-            <ActionButton
-              report={report}
-              reportType={reportType}
-              reportId={reportId}
-              isStateLevelUser={isStateLevelUser}
-              entering={entering}
-              enterSelectedReport={enterSelectedReport}
-            />
-          </Td>
-          {isAdmin && (
-            <Td>
-              <Box sx={sx.adminActionButtonWrapper}>
+            <Flex align="center" justify="center" gap="0.5rem">
+              {isStateLevelUser && (
+                <Box width="7rem" display="flex" justifyContent="flex-end">
+                  {!report?.locked && (
+                    <Button
+                      variant="link"
+                      onClick={() => openAddEditReportModal(report)}
+                    >
+                      Edit reporting
+                    </Button>
+                  )}
+                </Box>
+              )}
+              <ActionButton
+                report={report}
+                reportType={reportType}
+                reportId={reportId}
+                isStateLevelUser={isStateLevelUser}
+                entering={entering}
+                enterSelectedReport={enterSelectedReport}
+              />
+              {isAdmin && (
                 <AdminReleaseButton
                   report={report}
                   reportType={reportType}
@@ -108,12 +103,8 @@ export const DashboardTable = ({
                   releasing={releasing}
                   sxOverride={sxOverride}
                 />
-              </Box>
-            </Td>
-          )}
-          {isAdmin && (
-            <Td>
-              <Box sx={sx.adminActionButtonWrapper}>
+              )}
+              {isAdmin && (
                 <AdminArchiveButton
                   report={report}
                   reportType={reportType}
@@ -122,9 +113,9 @@ export const DashboardTable = ({
                   archiving={archiving}
                   sxOverride={sxOverride}
                 />
-              </Box>
-            </Td>
-          )}
+              )}
+            </Flex>
+          </Td>
         </Tr>
       );
     })}
@@ -132,28 +123,36 @@ export const DashboardTable = ({
 );
 
 const sx = {
-  adminActionButtonWrapper: {
-    display: "flex",
-    justifyContent: "center",
-  },
   table: {
-    width: "100%",
-    tableLayout: "fixed",
     marginBottom: "spacer5",
-    "th, td": {
-      padding: "0.5rem 0.25rem",
+    th: {
+      padding: "0.5rem 0",
+      borderBottom: "1px solid",
+      borderColor: "gray_light",
+      color: "gray",
+      fontWeight: "bold",
+      "&:last-of-type": {
+        textAlign: "center",
+      },
+    },
+    tr: {
+      borderBottom: "1px solid",
+      borderColor: "gray_light",
+    },
+    td: {
+      minWidth: "6rem",
+      padding: "0.5rem",
+      paddingLeft: 0,
+      borderTop: "1px solid",
       borderBottom: "1px solid",
       borderColor: "gray_light",
       textAlign: "left",
-      verticalAlign: "middle",
-    },
-    th: {
-      color: "gray",
-      fontWeight: "bold",
-    },
-    // Program name column is slightly wider; remaining columns share space evenly
-    "th:first-of-type, td:first-of-type": {
-      width: "8rem",
+      "&:last-of-type": {
+        paddingRight: 0,
+      },
+      "&.submission-count-cell": {
+        minWidth: "auto",
+      },
     },
   },
 };

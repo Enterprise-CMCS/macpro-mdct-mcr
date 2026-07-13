@@ -187,9 +187,9 @@ describe("<MobileDashboardTable />", () => {
       });
     });
 
-    test("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {
+    test("Clicking 'Edit reporting' button opens the AddEditProgramModal", async () => {
       const addReportButton = screen.getAllByRole("button", {
-        name: `Edit ${programName} due ${dueDate} report submission set-up information`,
+        name: "Edit reporting",
       })[0];
       expect(addReportButton).toBeVisible();
       await act(async () => {

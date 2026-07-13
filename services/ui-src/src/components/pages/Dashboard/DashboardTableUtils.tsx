@@ -27,13 +27,6 @@ export interface DashboardTableProps {
   sxOverride: SxObject;
 }
 
-export interface EditReportProps {
-  report: ReportMetadataShape;
-  reportType: string;
-  openAddEditReportModal: Function;
-  sxOverride: SxObject;
-}
-
 export interface ActionButtonProps {
   report: ReportMetadataShape;
   reportType: string;
@@ -85,58 +78,13 @@ export const getStatus = (
 
 export const tableBody = (body: TableContentShape, isAdmin: boolean) => {
   const tableContent = { ...body };
-  let headRow = tableContent.headRow ?? [];
-  if (!isAdmin) {
-    headRow = headRow.filter(
+  if (!isAdmin && tableContent.headRow) {
+    tableContent.headRow = tableContent.headRow.filter(
       (e) => !["Initial Submission", "#"].includes(e as string)
     );
+    return tableContent;
   }
-  headRow = headRow.map((cell) => {
-    if (cell === "Actions") {
-      return {
-        name: "Actions",
-        align: "center" as const,
-        colSpan: isAdmin ? 3 : 2,
-        width: isAdmin ? "18rem" : "13rem",
-      };
-    }
-    if (cell === "#") {
-      return { name: "#", width: "2rem" };
-    }
-    if (cell === "Initial Submission") {
-      return { name: "Initial Submission", width: "5.5rem" };
-    }
-    if (cell === "Due date" || cell === "Last edited") {
-      return { name: cell, width: "6rem" };
-    }
-    return cell;
-  });
-  tableContent.headRow = headRow;
-  return tableContent;
-};
-
-export const EditReportButton = ({
-  report,
-  reportType,
-  openAddEditReportModal,
-  sxOverride,
-}: EditReportProps) => {
-  return (
-    <Button
-      variant="link"
-      sx={sxOverride.editReport}
-      onClick={() => openAddEditReportModal(report)}
-      aria-label={
-        reportType !== ReportType.MLR
-          ? `Edit ${report.programName} due ${convertDateUtcToEt(
-              report.dueDate
-            )} report submission set-up information`
-          : `Edit ${report.programName} report submission set-up information`
-      }
-    >
-      Edit reporting
-    </Button>
-  );
+  return body;
 };
 
 export const ActionButton = ({
@@ -152,8 +100,12 @@ export const ActionButton = ({
   return (
     <Button
       variant="outline"
-      size="md"
-      sx={{ width: "100%", minWidth: 0, paddingX: "0.5rem" }}
+      sx={{
+        width: "5rem",
+        height: "2.5rem",
+        fontSize: "1rem",
+        fontWeight: 700,
+      }}
       aria-label={
         reportType !== ReportType.MLR
           ? `${editOrView} ${report.programName} due ${convertDateUtcToEt(
