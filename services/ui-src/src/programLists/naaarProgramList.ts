@@ -421,7 +421,7 @@ export const naaarProgramList: ProgramList = {
     },
     {
       id: "7g1UowXbZ73W2B7jnmBpWcL3",
-      label: "Nesbraska Dental Benefit Program",
+      label: "Nebraska Dental Benefit Program",
     },
   ],
   // Nevada
