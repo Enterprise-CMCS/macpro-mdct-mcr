@@ -10,7 +10,7 @@ export const stateAndProgramInformationRoute: ParentRoute = {
   children: [
     stateInformationAndReportingScenarioRoute,
     addPlansRoute,
-    providerTypeCoverageRoute,
     analysisMethodsRoute,
+    providerTypeCoverageRoute,
   ],
 };
