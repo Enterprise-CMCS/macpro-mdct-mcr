@@ -466,6 +466,6 @@ const sxChildStyles = {
   },
   adminActionButton: {
     fontSize: "1rem",
-    fontWeight: "normal",
+    fontWeight: 700,
   },
 };
