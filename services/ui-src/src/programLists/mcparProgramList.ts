@@ -63,14 +63,6 @@ export const mcparProgramList: ProgramList = {
       label: "Dental Managed Care",
     },
     {
-      id: "PXQ7xGVIZW84eNab6LPgPnKe",
-      label: "Dental Managed Care / Los Angeles",
-    },
-    {
-      id: "FW8bSde3cTHUlhIIZqInQRnL",
-      label: "Dental Managed Care / Sacramento",
-    },
-    {
       id: "M2E1tIoBn385OMRwaMkzYQZz",
       label: "Drug MediCal - Organized Delivery System",
     },
@@ -92,6 +84,10 @@ export const mcparProgramList: ProgramList = {
     {
       id: "xtGIS3aubFMaiVCtspgb7P0q",
       label: "Child Health Plan Plus (CHP+) Dental Care",
+    },
+    {
+      id: "oMiN7yEnhEXhbA5BYLw9dXGL",
+      label: "RAE Accountable Care Collaborative",
     },
   ],
   // Connecticut
@@ -130,10 +126,6 @@ export const mcparProgramList: ProgramList = {
   // Florida
   FL: [
     {
-      id: "zBNITS4ZCnacayCXlSoNHhuW",
-      label: "Statewide Medicaid Managed Care - Dental",
-    },
-    {
       id: "5eIQYBClSAZXOM74ypcyBhfh",
       label: "Comprehensive Plans",
     },
@@ -150,10 +142,6 @@ export const mcparProgramList: ProgramList = {
       label: "LTC Plus",
     },
     {
-      id: "ohYU7kGAPf0EvJ77VPKbug2u",
-      label: "Statewide Medicaid Managed Care - MMA",
-    },
-    {
       id: "m8k0Pn3iMcnceKx9ywtR49GT",
       label: "MMA+CIDD or LTC Services",
     },
@@ -164,6 +152,14 @@ export const mcparProgramList: ProgramList = {
     {
       id: "GtPVr3OIOsuwly2q6jRZsGU2",
       label: "MomCare",
+    },
+    {
+      id: "zBNITS4ZCnacayCXlSoNHhuW",
+      label: "Statewide Medicaid Managed Care - Dental",
+    },
+    {
+      id: "ohYU7kGAPf0EvJ77VPKbug2u",
+      label: "Statewide Medicaid Managed Care - MMA",
     },
   ],
   // Georgia
@@ -297,10 +293,6 @@ export const mcparProgramList: ProgramList = {
   // Louisiana
   LA: [
     {
-      id: "MM0zZ54gkSGd4QCEm4pPQETq",
-      label: "Behavioral Health Only (BHO)",
-    },
-    {
       id: "bNWq7iTImJo7fdpWxFdGX0EB",
       label: "Dental Benefit Program (DBP)",
     },
@@ -309,8 +301,8 @@ export const mcparProgramList: ProgramList = {
       label: "Healthy Louisiana",
     },
     {
-      id: "eNURfrWCAVqJsKD8GHBgBnJ7",
-      label: "Healthy Louisiana Coordinated System of Care Program (CSoC)",
+      id: "2or9uYoV3N3nDsmuBD92tvzW",
+      label: "Coordinated System of Care Program (CSoC)",
     },
   ],
   // Maine
@@ -392,10 +384,6 @@ export const mcparProgramList: ProgramList = {
       label: "Minnesota Senior Health Options (MSHO)",
     },
     {
-      id: "YdKa3xY2iqdVAsQfHd7O5g6Y",
-      label: "MinnesotaCare",
-    },
-    {
       id: "Kvaa1JvEIoT1Vl15InEUjIOy",
       label: "PMAP",
     },
@@ -434,10 +422,6 @@ export const mcparProgramList: ProgramList = {
     {
       id: "cr3LVfku8XlI5No4OyntQnu0",
       label: "Nesbraska Dental Benefit Program",
-    },
-    {
-      id: "HLIEvPjm8smRb4qZNTGHQ2lE",
-      label: "Substance Use Disorder Program",
     },
   ],
   // Nevada
@@ -504,8 +488,8 @@ export const mcparProgramList: ProgramList = {
       label: "Health and Recovery Plan (HARP)",
     },
     {
-      id: "DXphgy0JLdIo0Tquc5wOLBwB",
-      label: "HIV Special Needs Plan (HIV SNP)",
+      id: "52g0yMHfskFd0MSsPx7ine6O",
+      label: "Human Immunodeficiency Virus Special Needs Plan (HIV SNP)",
     },
     {
       id: "VtDtt5Oi1aL0C83I8J1L0k7K",
@@ -558,6 +542,10 @@ export const mcparProgramList: ProgramList = {
       id: "qnh3FrWp7qUnReQLr8Asb7Rt",
       label: "ND Medicaid Expansion",
     },
+    {
+      id: "tCO2OxomlOBJAMHEGfepWbAv",
+      label: "Primary Care Case Management (PCCM)",
+    },
   ],
   // Ohio
   OH: [
@@ -570,12 +558,12 @@ export const mcparProgramList: ProgramList = {
       label: "Ohio Medicaid Managed Care Program (MMC)",
     },
     {
-      id: "OvZP8eoV2y9UmW9W0bOPAl7u",
-      label: "Single Pharmacy Benefit Manager (SBPM)",
-    },
-    {
       id: "fzzOnYSm5xvGrr7h3qXhXV2g",
       label: "Ohio RISE (Resilience through Integrated Systems and Excellence)",
+    },
+    {
+      id: "OvZP8eoV2y9UmW9W0bOPAl7u",
+      label: "Single Pharmacy Benefit Manager (SBPM)",
     },
   ],
   // Oklahoma
@@ -643,6 +631,11 @@ export const mcparProgramList: ProgramList = {
     {
       id: "ms06psoxFdf1OsNZlFAG9YSW",
       label: "RIteSmiles Program (Rhode Island)",
+    },
+    {
+      id: "STRCcsihFPgzYh97Kmcezf80",
+      label:
+        "Rhode Island Medicaid Managed Care Fully Integrated Dual Special Needs Plan Program",
     },
   ],
   // South Carolina
@@ -752,6 +745,10 @@ export const mcparProgramList: ProgramList = {
       id: "ZgCafZ3lNccivlYchQZ98PKL",
       label: "Commonwealth Coordinated Care Plus (CCC Plus)",
     },
+    {
+      id: "ejPQk09xG4QsNoOtLekfo79c",
+      label: "Medallion 4.0",
+    },
   ],
   // Washington
   WA: [
@@ -767,10 +764,6 @@ export const mcparProgramList: ProgramList = {
     {
       id: "i0qV5Y7MpOtHHfarqqZNEaVI",
       label: "Apple Health Integrated Managed Care (IMC)",
-    },
-    {
-      id: "F5NiWADoBRlwatzj375oMwGq",
-      label: "Behavioral Health Only Services (BHSO)",
     },
   ],
   // West Virginia
@@ -793,6 +786,10 @@ export const mcparProgramList: ProgramList = {
     {
       id: "UQWdTmmkEJbHFGZqrsaIrtYr",
       label: "Care 4 Kids",
+    },
+    {
+      id: "pnItwbDRxApNYsnjrS08ABdX",
+      label: "Children Come First (CCF)",
     },
     {
       id: "jRU1SSVvTWgOiNgBsteRou0K",
