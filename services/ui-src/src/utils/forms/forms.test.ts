@@ -16,7 +16,7 @@ import {
 // constants
 import { suppressionText } from "../../constants";
 // types
-import { Choice, FormField, ReportFormFieldType } from "types";
+import { AnyObject, Choice, FormField, ReportFormFieldType } from "types";
 // utils
 import {
   mockDateField,
@@ -344,8 +344,15 @@ describe("utils/forms", () => {
     it("Correctly generates MLR program list choices", () => {
       const result = initializeChoiceListFields(mockMlrProgramListFields);
       const generatedProgramListChoices = result[0].props?.choices;
-      expect(generatedProgramListChoices).toHaveLength(4);
-      expect(generatedProgramListChoices[3].value).toBe("Not listed / Other");
+      const values = generatedProgramListChoices.map(
+        (item: AnyObject) => item.value
+      );
+      expect(values).toEqual([
+        "Accountable Care Collaborative (ACC)",
+        "Child Health Plan Plus (CHP+) Dental Care",
+        "RAE Accountable Care Collaborative",
+        "Not listed / Other",
+      ]);
     });
   });
 
