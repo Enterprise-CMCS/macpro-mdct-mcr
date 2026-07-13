@@ -183,6 +183,11 @@ class KafkaSourceLib {
         // Handle any S3 events
         const s3Record = record as S3EventRecord;
         const key: string = s3Record.s3.object.key;
+        if (key.split("/")?.[1] === "ZZ") {
+          console.log("Skipping s3 records for test state 'ZZ'");
+
+          continue;
+        }
         topicName = this.determineS3TopicName(s3Record.s3.bucket.arn, key);
 
         // Filter for only the response info
@@ -206,6 +211,10 @@ class KafkaSourceLib {
           String(record.eventSourceARN.toString())
         );
         if (!topicName) continue;
+        if (record.dynamodb?.Keys?.state?.S === "ZZ") {
+          console.log("Skipping DynamoDB records for test state 'ZZ'");
+          continue;
+        }
         payload = this.createDynamoPayload(record);
       }
 

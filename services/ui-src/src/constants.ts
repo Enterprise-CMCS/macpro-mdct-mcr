@@ -75,6 +75,7 @@ export enum States {
   WV = "West Virginia",
   WI = "Wisconsin",
   WY = "Wyoming",
+  ZZ = "Test State",
 }
 
 // ILOS
