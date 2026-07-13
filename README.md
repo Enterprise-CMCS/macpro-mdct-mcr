@@ -226,6 +226,24 @@ MCR pipes updates from fieldData and the report object tables to BigMac for down
   - Any new table with come with streaming (tables are defined here: `deployment/data.ts`)
 - `services/app-api/handlers/kafka/post/postKafkaData.ts` - Add the bucket and table names into the appropriate arrays. They will be parsed with their event types accordingly.
 - `services/topics/createTopics.js` - Declare the new topic names. Both the stream name for the bucket and table should be added here.
+-
+
+### MCR Reporting Templates
+
+There are three (3) Excel reporting templates that live in **Amazon S3 buckets**:
+
+- MCPAR: `mcpar-reporting-template.xlsx`
+- MLR: `mlr-reporting-template.xlsx`
+- NAAAR: `naaar-reporting-template.xlsx`
+
+During releases, these templates may need to be updated to the latest versions:
+
+- **mdct-mcr-dev** (DEV) environment
+  - Search for `mcr-main-uibucket` and navigate to `templates/`
+- **mdct-mcr-impl** (VAL) environment
+  - Search for `mcr-val-uibucket` and navigate to `templates/`
+- **mdct-mcr-prod** (PROD) environment
+  - Search for `mcr-production-uibucket` and navigate to `templates/`
 
 ### Test State (ZZ)
 
