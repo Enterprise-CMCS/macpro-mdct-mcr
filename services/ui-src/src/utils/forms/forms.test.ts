@@ -344,8 +344,8 @@ describe("utils/forms", () => {
     it("Correctly generates MLR program list choices", () => {
       const result = initializeChoiceListFields(mockMlrProgramListFields);
       const generatedProgramListChoices = result[0].props?.choices;
-      expect(generatedProgramListChoices).toHaveLength(3);
-      expect(generatedProgramListChoices[2].value).toBe("Not listed / Other");
+      expect(generatedProgramListChoices).toHaveLength(4);
+      expect(generatedProgramListChoices[3].value).toBe("Not listed / Other");
     });
   });
 
