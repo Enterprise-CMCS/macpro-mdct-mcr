@@ -124,7 +124,6 @@ export default {
     table: {
       caption: "NAAAR Submissions",
       headRow: [
-        { hiddenName: "Edit report name and details" },
         "Program name",
         "Plan type",
         "Last edited",
@@ -132,14 +131,9 @@ export default {
         "Status",
         "Initial Submission",
         "#",
-        { hiddenName: "Actions" },
+        "Actions",
       ],
       sortableHeadRow: {
-        edit: {
-          header: "Edit report name and details",
-          hidden: true,
-          stateUser: true,
-        },
         name: { header: "Program name" },
         planType: { header: "Plan type" },
         lastAltered: { header: "Last edited" },

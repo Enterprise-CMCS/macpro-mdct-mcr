@@ -230,20 +230,13 @@ MCR pipes updates from fieldData and the report object tables to BigMac for down
 
 ### MCR Reporting Templates
 
-There are three (3) Excel reporting templates that live in **Amazon S3 buckets**:
+There are three (3) Excel reporting templates that live in the MCR codebase:
 
 - MCPAR: `mcpar-reporting-template.xlsx`
 - MLR: `mlr-reporting-template.xlsx`
 - NAAAR: `naaar-reporting-template.xlsx`
 
-During releases, these templates may need to be updated to the latest versions:
-
-- **mdct-mcr-dev** (DEV) environment
-  - Search for `mcr-main-uibucket` and navigate to `templates/`
-- **mdct-mcr-impl** (VAL) environment
-  - Search for `mcr-val-uibucket` and navigate to `templates/`
-- **mdct-mcr-prod** (PROD) environment
-  - Search for `mcr-production-uibucket` and navigate to `templates/`
+During releases, these templates may need to be updated by replacing the files in `services/ui-src/public/templates` (via a pull request) and deploying the app so `/templates/*.xlsx` serves the new versions.
 
 ### Test State (ZZ)
 
