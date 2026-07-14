@@ -22,7 +22,7 @@ export const mlrProgramList: ProgramList = {
     {
       id: "pnvjVf7Ytwn6SqjZj7xGBTVI",
       label:
-        "AHCCS Complete Care Regional Behavioral Health Agreements (AHCCS ACC-RHBA)",
+        "AHCCCS Complete Care Regional Behavioral Health Agreements (AHCCS ACC-RHBA)",
     },
     {
       id: "lUWihRWfgNLokAlZ2YmZLO59",
@@ -254,7 +254,7 @@ export const mlrProgramList: ProgramList = {
     },
     {
       id: "fU3VmlsTKpsbPUMnNZHmoDfS",
-      label: "Pathways for Aging",
+      label: "PathWays for Aging",
     },
   ],
   // Iowa
