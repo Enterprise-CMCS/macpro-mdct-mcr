@@ -236,7 +236,7 @@ There are three (3) Excel reporting templates that live in the MCR codebase:
 - MLR: `mlr-reporting-template.xlsx`
 - NAAAR: `naaar-reporting-template.xlsx`
 
-During releases, these templates may need to be updated by uploading the newest versions to `services/ui-src/public/templates` and deploying these changes.
+During releases, these templates may need to be updated by replacing the files in `services/ui-src/public/templates` (via a PR) and deploying the UI so `/templates/*.xlsx` serves the new versions.
 
 ### Test State (ZZ)
 
