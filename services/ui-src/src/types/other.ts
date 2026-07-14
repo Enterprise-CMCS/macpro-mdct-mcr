@@ -60,8 +60,11 @@ export enum PageTypes {
 export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
 export interface ScreenReaderCustomHeaderName {
-  hiddenName: string;
+  hiddenName?: string;
   name?: string;
+  align?: "left" | "center" | "right";
+  colSpan?: number;
+  width?: string;
 }
 
 export interface SortableHeadRow {

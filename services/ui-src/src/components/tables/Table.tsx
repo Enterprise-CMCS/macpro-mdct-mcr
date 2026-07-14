@@ -46,13 +46,29 @@ export const Table = ({
                 <Th
                   key={index}
                   scope="col"
-                  sx={{ ...sx.tableHeader, ...sxOverride }}
+                  colSpan={
+                    typeof headerCell === "object"
+                      ? headerCell.colSpan
+                      : undefined
+                  }
+                  sx={{
+                    ...sx.tableHeader,
+                    ...sxOverride,
+                    ...(typeof headerCell === "object" && headerCell.width
+                      ? { width: headerCell.width }
+                      : {}),
+                    ...(typeof headerCell === "object" && headerCell.align
+                      ? { "&&": { textAlign: headerCell.align } }
+                      : {}),
+                  }}
                 >
                   {typeof headerCell === "object" ? (
                     <>
-                      <VisuallyHidden>
-                        {sanitizeAndParseHtml(headerCell.hiddenName)}
-                      </VisuallyHidden>
+                      {headerCell.hiddenName && (
+                        <VisuallyHidden>
+                          {sanitizeAndParseHtml(headerCell.hiddenName)}
+                        </VisuallyHidden>
+                      )}
                       {headerCell?.name ?? null}
                     </>
                   ) : (

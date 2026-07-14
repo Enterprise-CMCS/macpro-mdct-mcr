@@ -1,4 +1,4 @@
-import { Box, Button, Image, Td, Spinner } from "@chakra-ui/react";
+import { Button, Td, Spinner } from "@chakra-ui/react";
 // types
 import {
   AnyObject,
@@ -9,8 +9,6 @@ import {
 } from "types";
 // utils
 import { convertDateUtcToEt } from "utils";
-// assets
-import editIcon from "assets/icons/icon_edit_square_gray.png";
 
 export interface DashboardTableProps {
   reportsByState: ReportMetadataShape[];
@@ -26,13 +24,6 @@ export interface DashboardTableProps {
   isStateLevelUser: boolean;
   releaseReport: Function;
   releasing?: boolean | undefined;
-  sxOverride: SxObject;
-}
-
-export interface EditReportProps {
-  report: ReportMetadataShape;
-  reportType: string;
-  openAddEditReportModal: Function;
   sxOverride: SxObject;
 }
 
@@ -96,30 +87,6 @@ export const tableBody = (body: TableContentShape, isAdmin: boolean) => {
   return body;
 };
 
-export const EditReportButton = ({
-  report,
-  reportType,
-  openAddEditReportModal,
-  sxOverride,
-}: EditReportProps) => {
-  return (
-    <Box display="inline" sx={sxOverride.editReport}>
-      <button onClick={() => openAddEditReportModal(report)}>
-        <Image
-          src={editIcon}
-          alt={
-            reportType !== ReportType.MLR
-              ? `Edit ${report.programName} due ${convertDateUtcToEt(
-                  report.dueDate
-                )} report submission set-up information`
-              : `Edit ${report.programName} report submission set-up information`
-          }
-        />
-      </button>
-    </Box>
-  );
-};
-
 export const ActionButton = ({
   report,
   reportType,
@@ -133,6 +100,12 @@ export const ActionButton = ({
   return (
     <Button
       variant="outline"
+      sx={{
+        width: "5rem",
+        height: "2.5rem",
+        fontSize: "1rem",
+        fontWeight: 700,
+      }}
       aria-label={
         reportType !== ReportType.MLR
           ? `${editOrView} ${report.programName} due ${convertDateUtcToEt(
