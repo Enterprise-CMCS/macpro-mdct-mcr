@@ -7,7 +7,7 @@ import {
   UNIT_PERCENT,
 } from "../../constants";
 // types
-import { EntityShape, ReportShape } from "types";
+import { AnalysisMethods, EntityShape, ReportShape } from "types";
 
 const analysisMethodKeys = [
   { method: "Geomapping", filterKey: "_geomappingComplianceFrequency" },
@@ -21,7 +21,7 @@ const analysisMethodKeys = [
   },
 ];
 
-const analysisMethodData = {
+const analysisMethodData: AnalysisMethods = {
   Geomapping: [
     // percent of enrollees quarterly
     {
@@ -84,10 +84,26 @@ const analysisMethodData = {
     { label: "Q3 (optional)", key: "_q3NumberOfNetworkProviders" },
     { label: "Q4 (optional)", key: "_q4NumberOfNetworkProviders" },
     // provider to enrollee ratio quarterly
-    { label: "Q1 (optional)", key: "_q1ProviderToEnrolleeRatio" },
-    { label: "Q2 (optional)", key: "_q2ProviderToEnrolleeRatio" },
-    { label: "Q3 (optional)", key: "_q3ProviderToEnrolleeRatio" },
-    { label: "Q4 (optional)", key: "_q4ProviderToEnrolleeRatio" },
+    {
+      label: "Q1 (optional)",
+      key: "_q1ProviderToEnrolleeRatio",
+      unit: UNIT_PERCENT,
+    },
+    {
+      label: "Q2 (optional)",
+      key: "_q2ProviderToEnrolleeRatio",
+      unit: UNIT_PERCENT,
+    },
+    {
+      label: "Q3 (optional)",
+      key: "_q3ProviderToEnrolleeRatio",
+      unit: UNIT_PERCENT,
+    },
+    {
+      label: "Q4 (optional)",
+      key: "_q4ProviderToEnrolleeRatio",
+      unit: UNIT_PERCENT,
+    },
     // number of network providers annually
     {
       label: "Annual (optional)",
@@ -105,6 +121,7 @@ const analysisMethodData = {
     {
       label: "Date of analysis of annual snapshot (optional)",
       key: "_annualProviderToEnrolleeRatioDate",
+      unit: undefined,
     },
   ],
   "Secret Shopper: Appointment Availability": [
@@ -221,22 +238,14 @@ const getAnalysisMethodData = (
   addComplianceDisplayInfo(displayInfo, plan, methodKeys, method);
 
   // get the rest of the nested data entered
-  for (const { label, key } of analysisMethodData[
+  for (const { label, key, unit } of analysisMethodData[
     method as keyof typeof analysisMethodData
   ]) {
     const value = findEntityDataByKey(plan, methodKeys, key);
     if (value) {
-      if (key.includes("Dist")) {
-        displayInfo.push(`${label}: ${value} miles`);
-      } else if (key.includes("Time") && !label.includes("Date")) {
-        displayInfo.push(`${label}: ${value} minutes`);
-      } else if (key.includes("Percent") && !label.includes("Date")) {
-        displayInfo.push(`${label}: ${value} %`);
-      } else if (key.includes("Ssaa") && !label.includes("Date")) {
-        displayInfo.push(`${label}: ${value} %`);
-      } else {
-        displayInfo.push(`${label}: ${value}`);
-      }
+      displayInfo.push(
+        unit ? `${label}: ${value} ${unit}` : `${label}: ${value}`
+      );
     }
   }
   return displayInfo;
