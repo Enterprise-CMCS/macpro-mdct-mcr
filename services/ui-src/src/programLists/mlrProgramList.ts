@@ -725,7 +725,7 @@ export const mlrProgramList: ProgramList = {
     },
     {
       id: "Nhswm4SdC3JIlZhiGlW9MXVn",
-      label: "Utah Medicaid Integrated Counties (UMIC)",
+      label: "Utah Medicaid Integrated Care (UMIC)",
     },
   ],
   // Vermont
