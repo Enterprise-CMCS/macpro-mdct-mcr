@@ -121,8 +121,7 @@ const analysisMethodData: AnalysisMethods = {
     {
       label: "Date of analysis of annual snapshot (optional)",
       key: "_annualProviderToEnrolleeRatioDate",
-      unit: undefined,
-    },
+    }
   ],
   "Secret Shopper: Appointment Availability": [
     // quarterly
