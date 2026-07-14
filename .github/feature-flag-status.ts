@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import * as LD from "@launchdarkly/node-server-sdk";
 
 async function run() {
