@@ -84,7 +84,7 @@ export class StatePage extends BasePage {
 
   async updateMCPAR(programName: string, newProgramName: string) {
     const row = this.page.getByRole("row", { name: programName });
-    row.getByRole("button").first().click();
+    row.getByRole("button", { name: "Edit reporting" }).first().click();
     const dialog = this.page.getByRole("dialog");
     await dialog.waitFor({ state: "visible" });
     await dialog
@@ -126,7 +126,7 @@ export class StatePage extends BasePage {
     const row = this.page.getByRole("row", { name: originalProgramName });
     row
       .getByRole("button", {
-        name: `Edit ${originalProgramName} report submission set-up information`,
+        name: "Edit reporting",
       })
       .click();
     const dialog = this.page.getByRole("dialog");

@@ -200,10 +200,19 @@ const getAnalysisMethodData = (
   ]) {
     const value = findEntityDataByKey(plan, methodKeys, key);
     if (value) {
-      displayInfo.push(`${label}: ${value}`);
+      if (key.includes("Dist")) {
+        displayInfo.push(`${label}: ${value} miles`);
+      } else if (key.includes("Time") && !label.includes("Date")) {
+        displayInfo.push(`${label}: ${value} minutes`);
+      } else if (key.includes("Percent") && !label.includes("Date")) {
+        displayInfo.push(`${label}: ${value} %`);
+      } else if (key.includes("Ssaa") && !label.includes("Date")) {
+        displayInfo.push(`${label}: ${value} %`);
+      } else {
+        displayInfo.push(`${label}: ${value}`);
+      }
     }
   }
-
   return displayInfo;
 };
 

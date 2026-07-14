@@ -254,7 +254,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         <title>{`${reportType} - ${APP_TITLE}`}</title>
       </Helmet>
       <Link as={RouterLink} to="/" sx={sx.returnLink}>
-        <Image src={arrowLeftIcon} alt="Arrow left" className="returnIcon" />
+        <Image src={arrowLeftIcon} alt="" className="returnIcon" />
         Return Home
       </Link>
       {errorMessage && <ErrorAlert error={errorMessage} />}
@@ -430,17 +430,7 @@ const sx = {
 
 const sxChildStyles = {
   editReportButtonCell: {
-    width: "6.875rem",
     padding: 0,
-    button: {
-      width: "6.875rem",
-      height: "1.75rem",
-      borderRadius: "spacer_half",
-      textAlign: "center",
-      fontSize: "sm",
-      fontWeight: "normal",
-      color: "primary",
-    },
   },
   editReport: {
     padding: "0",
@@ -470,11 +460,12 @@ const sxChildStyles = {
     width: "2.5rem",
     ".tablet &, .mobile &": {
       display: "flex",
+      gap: "0.5rem",
+      width: "auto",
     },
   },
   adminActionButton: {
-    minWidth: "4.5rem",
-    fontSize: "sm",
-    fontWeight: "normal",
+    fontSize: "1rem",
+    fontWeight: 700,
   },
 };
