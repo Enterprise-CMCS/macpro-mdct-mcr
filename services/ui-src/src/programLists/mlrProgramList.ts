@@ -302,7 +302,7 @@ export const mlrProgramList: ProgramList = {
     },
     {
       id: "e1ENnqXSxZsj4RPQq4KQ7RIC",
-      label: "Coordinated System of Care Program (CSoC)",
+      label: "Coordinated System of Care (CSoC)",
     },
   ],
   // Maine
@@ -501,7 +501,7 @@ export const mlrProgramList: ProgramList = {
     },
     {
       id: "8JilieWEKpypVgfmHU8Xpq0S",
-      label: "Mainstream Managed Care (MMC)",
+      label: "Medicaid Managed Care (MMC)",
     },
   ],
   // North Carolina
@@ -517,7 +517,7 @@ export const mlrProgramList: ProgramList = {
     },
     {
       id: "vNzQgX7eBUHVmsdLuVZIkgmV",
-      label: "Children and Families Speciality Plan",
+      label: "Children and Families Specialty Plan",
     },
     {
       id: "sIfMLksuB8MY59fRFoIDz1nK",
@@ -563,7 +563,7 @@ export const mlrProgramList: ProgramList = {
     },
     {
       id: "NmdrKPHLwaJNaZp74uQV4obo",
-      label: "Single Pharmacy Benefit Manager (SBPM)",
+      label: "Single Pharmacy Benefit Manager (SPBM)",
     },
   ],
   // Oklahoma
@@ -574,7 +574,7 @@ export const mlrProgramList: ProgramList = {
     },
     {
       id: "o4urVcvJTKHkq82RAMK2fZeV",
-      label: "SoonerCare Dental",
+      label: "SoonerSelect Dental",
     },
     {
       id: "3eXKRyDsOHEqCiGf2qDwYsTA",
@@ -774,7 +774,7 @@ export const mlrProgramList: ProgramList = {
     },
     {
       id: "mgFuo08ZlsUDSAaX2QjbQbGp",
-      label: "Mountain Heath Promise (MHP)",
+      label: "Mountain Health Promise (MHP)",
     },
   ],
   // Wisconsin
