@@ -39,7 +39,6 @@ function getLinesWithFlags(featureFlagNames: string[]) {
     if (!matches) return;
 
     const [_, fileName, lineNumber, matchingCode] = matches;
-
     const trimmedCode = matchingCode.trim();
 
     // Skip lines that are commented out
@@ -73,7 +72,7 @@ export const fixedMessage = [
   commentTag,
   "### Feature Flag Leaks",
   "",
-  "No feature flag leaks found ✅ ",
+  "No feature flag leaks found ✅",
 ].join("\n");
 
 export function formatPrComment(featureFlagNames: string[]) {
