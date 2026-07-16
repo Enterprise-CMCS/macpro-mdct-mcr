@@ -89,7 +89,7 @@ export const fixedMessage = [
   "No feature flag leaks found ✅",
 ].join("\n");
 
-export function formatPrComment(featureFlagNames: string[]) {
+export function formatLeaksComment(featureFlagNames: string[]) {
   const lines = getLinesWithFlags(featureFlagNames);
 
   if (lines.length > 0) {
@@ -98,7 +98,7 @@ export function formatPrComment(featureFlagNames: string[]) {
         const url = `${repoBaseUrl}${fileName}#L${lineNumber}`;
         // Markdown columns are separated by |
         return [
-          // Markdown URL format: [label](https://example.com)
+          // Markdown link format: [label](https://example.com)
           `[${fileName}](${url})`,
           lineNumber,
           flagName,
@@ -122,7 +122,7 @@ export function formatPrComment(featureFlagNames: string[]) {
   return null;
 }
 
-export function formatSlackMessage(featureFlagNames: string[]) {
+export function formatLeaksMessage(featureFlagNames: string[]) {
   const lines = getLinesWithFlags(featureFlagNames);
 
   if (lines.length > 0) {
@@ -130,7 +130,7 @@ export function formatSlackMessage(featureFlagNames: string[]) {
       ({ fileName, flagName, lineNumber, repoBaseUrl }) => {
         const url = `${repoBaseUrl}${fileName}#L${lineNumber}`;
         const label = `${fileName}:${lineNumber}`;
-        // Slack URL format: <https://example.com|label>
+        // Slack link format: <https://example.com|label>
         return `<${url}|${label}>: ${flagName}`;
       }
     );

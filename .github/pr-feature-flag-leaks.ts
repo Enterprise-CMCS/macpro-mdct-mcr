@@ -4,7 +4,7 @@ import { createActionAuth } from "@octokit/auth-action";
 import {
   commentTag,
   fixedMessage,
-  formatPrComment,
+  formatLeaksComment,
   getLaunchDarklyClient,
 } from "./feature-flags.ts";
 
@@ -27,7 +27,7 @@ async function run() {
   const octokit = new Octokit({ auth: authentication.token });
 
   try {
-    const message = formatPrComment(featureFlagNames);
+    const message = formatLeaksComment(featureFlagNames);
     const { data: comments } = await octokit.rest.issues.listComments({
       owner,
       repo,

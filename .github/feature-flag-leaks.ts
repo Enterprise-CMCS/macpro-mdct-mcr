@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { formatSlackMessage, getLaunchDarklyClient } from "./feature-flags.ts";
+import { formatLeaksMessage, getLaunchDarklyClient } from "./feature-flags.ts";
 
 async function run() {
   const ldClient = await getLaunchDarklyClient();
@@ -14,7 +14,7 @@ async function run() {
   ldClient.close();
 
   try {
-    const message = formatSlackMessage(featureFlagNames);
+    const message = formatLeaksMessage(featureFlagNames);
     console.log(message);
   } catch (error) {
     console.error(error);
