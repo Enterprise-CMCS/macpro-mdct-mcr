@@ -110,7 +110,8 @@ export function formatPrComment(featureFlagNames: string[]) {
       commentTag,
       "### Feature Flag Leaks",
       "",
-      `⚠️ ${warningMessage}\n`,
+      `⚠️ ${warningMessage}`,
+      "",
       "",
       "|File|Line|Flag|",
       "|----|----|----|",
@@ -134,7 +135,7 @@ export function formatSlackMessage(featureFlagNames: string[]) {
       }
     );
 
-    return [`:warning: ${warningMessage}\n`, ...formattedLines].join("\n");
+    return [`:warning: ${warningMessage}`, "", ...formattedLines].join("\n");
   }
 
   return "";
