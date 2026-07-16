@@ -3,6 +3,7 @@ import { EntityStatusIcon, Table } from "components";
 import { Box, Image, Td, Text, Tr } from "@chakra-ui/react";
 // types
 import {
+  AnyObject,
   EntityShape,
   EntityType,
   ModalOverlayReportPageShape,
@@ -97,6 +98,11 @@ export function renderModalOverlayTableBody(
           reportingPeriod,
         ] = getProgramInfo(entity);
         const entityComplete = getEntityStatus(entity, report, entityType);
+        const programTypes =
+          entity.report_programType?.map(
+            (programType: AnyObject) => programType.value
+          ) || [];
+        const displayProgramTypes = programTypes.join(", ") || "Not entered";
 
         return (
           <Tr key={idx}>
@@ -115,7 +121,7 @@ export function renderModalOverlayTableBody(
               </Text>
             </Td>
             <Td>
-              <Text>{entity.report_programType[0].value ?? "Not entered"}</Text>
+              <Text>{displayProgramTypes}</Text>
             </Td>
             <Td>
               <Text>

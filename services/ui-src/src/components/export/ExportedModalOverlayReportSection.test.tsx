@@ -45,8 +45,12 @@ const mockMlrProgram = {
   report_programName: "Test",
   report_programType: [
     {
-      key: "report_programType",
-      value: "Behavioral Health Only",
+      key: "report_programType1",
+      value: "Mock program type 1",
+    },
+    {
+      key: "report_programType2",
+      value: "Mock program type 2",
     },
   ],
   report_eligibilityGroup: [
@@ -66,7 +70,7 @@ const mockMlrProgram = {
   ],
   "report_eligibilityGroup-otherText": "",
   report_reportingPeriodDiscrepancyExplanation: "",
-  report_inurredClaims: "1",
+  report_incurredClaims: "1",
   report_healthCareQualityActivities: "1",
   report_mlrNumerator: "1",
   report_mlrNumeratorExplanation: "Test",
@@ -111,7 +115,7 @@ const mockMlrProgramOther = {
   "report_eligibilityGroup-otherText": "Eligibility group explanation",
   report_reportingPeriodDiscrepancyExplanation:
     "My reporting period discrepancy explanation",
-  report_inurredClaims: "1",
+  report_incurredClaims: "1",
   report_healthCareQualityActivities: "1",
   report_mlrNumerator: "1",
   report_mlrNumeratorExplanation: "Test",
@@ -147,58 +151,50 @@ describe("<ExportedModalOverlayReportSection />", () => {
   });
 
   describe("Test renderModalOverlayTableBody", () => {
-    test("Should render data correctly for mlr", async () => {
+    test("Should render data correctly for MLR", () => {
       mockReportContext.report.fieldData.program = [mockMlrProgram];
-      const { container, findByText } = render(
-        exportedModalOverlayReportSectionComponent
-      );
-      expect(await container.querySelectorAll("th").length).toEqual(
-        mlrTableHeader.length
-      );
+      render(exportedModalOverlayReportSectionComponent);
 
       // All table headers are present
-      expect(container.querySelectorAll("th").length).toBe(6);
+      expect(screen.getAllByRole("columnheader").length).toBe(
+        mlrTableHeader.length
+      );
+      expect(screen.getAllByRole("columnheader").length).toBe(6);
 
       // Every entity has a row (+1 for header)
-      expect(container.querySelectorAll("tr").length).toBe(
+      expect(screen.getAllByRole("rowgroup").length).toBe(
         mockReportContext.report.fieldData.program.length + 1
       );
 
       // Correct index
-      expect(await findByText("1")).toBeVisible();
+      expect(screen.getByRole("cell", { name: "1" })).toBeVisible();
 
       // Correct info column
       expect(
-        await findByText(mockMlrProgram.report_programName, { exact: false })
-      ).toBeVisible();
-      expect(
-        await findByText(mockMlrProgram.report_eligibilityGroup[0].value, {
-          exact: false,
+        screen.getByRole("cell", {
+          name: "Test Test Standalone CHIP 11/03/1992 to 12/01/1993",
         })
-      ).toBeVisible();
-      expect(
-        await findByText(
-          `${mockMlrProgram.report_reportingPeriodStartDate} to ${mockMlrProgram.report_reportingPeriodEndDate}`,
-          { exact: false }
-        )
-      ).toBeVisible();
-      expect(
-        await findByText(mockMlrProgram.report_planName, { exact: false })
       ).toBeVisible();
 
       // Correct program type
       expect(
-        await findByText(mockMlrProgram.report_programType[0].value)
+        screen.getByRole("cell", {
+          name: "Mock program type 1, Mock program type 2",
+        })
       ).toBeVisible();
 
       // Correct discrepancy
-      expect(await findByText(`N/A`)).toBeVisible();
+      expect(screen.getByRole("cell", { name: "N/A" })).toBeVisible();
 
       // Correct notes
-      expect(await findByText(mockMlrProgram.report_miscellaneousNotes));
+      expect(
+        screen.getByRole("cell", {
+          name: mockMlrProgram.report_miscellaneousNotes,
+        })
+      ).toBeVisible();
     });
 
-    test("Should render data correctly for naaar", async () => {
+    test("Should render data correctly for NAAAR", () => {
       mockedUseStore.mockReturnValue(mockNaaarReportStore);
       render(exportedNaaarStandardsComponent);
 
@@ -246,7 +242,7 @@ describe("<ExportedModalOverlayReportSection />", () => {
       expect(screen.getByRole("cell", { name: "Metro" })).toBeVisible();
     });
 
-    test("Should render message for naaar with no standards", async () => {
+    test("Should render message for NAAAR with no standards", async () => {
       const mockEmptyStandardsNaaarStore = {
         ...mockNaaarReportStore,
       };
@@ -265,39 +261,39 @@ describe("<ExportedModalOverlayReportSection />", () => {
       );
     });
 
-    test('Should render "other" explanations if they are filled.', async () => {
+    test('Should render "other" explanations if they are filled', () => {
       mockReportContextOther.report.fieldData.program = [mockMlrProgramOther];
 
-      const { findByText } = render(
-        exportedModalOverlayReportSectionComponentOther
-      );
-
+      render(exportedModalOverlayReportSectionComponentOther);
+      // Correct info column
       expect(
-        await findByText(
-          mockMlrProgramOther["report_eligibilityGroup-otherText"],
-          {
-            exact: false,
-          }
-        )
+        screen.getByRole("cell", {
+          name: "Test MCO Name Test Program Eligibility group explanation 01/01/2021 to 01/01/2022",
+        })
       ).toBeVisible();
 
+      // Correct program type
       expect(
-        await findByText(
-          mockMlrProgramOther["report_reportingPeriodDiscrepancyExplanation"],
-          {
-            exact: false,
-          }
-        )
+        screen.getByRole("cell", {
+          name: mockMlrProgramOther.report_programType[0].value,
+        })
+      ).toBeVisible();
+
+      // Correct discrepancy
+      expect(
+        screen.getByRole("cell", {
+          name: mockMlrProgramOther[
+            "report_reportingPeriodDiscrepancyExplanation"
+          ],
+        })
       ).toBeVisible();
     });
 
-    test("Should render empty state with no entities.", async () => {
+    test("Should render empty state with no entities.", () => {
       mockReportContextOther.report.fieldData.program = [];
-      const { findByText } = render(
-        exportedModalOverlayReportSectionComponentOther
-      );
-
-      expect(await findByText("No entities found.")).toBeVisible();
+      render(exportedModalOverlayReportSectionComponentOther);
+      expect(screen.queryAllByRole("cell").length).toBe(0);
+      expect(screen.getByText("No entities found.")).toBeVisible();
     });
   });
   testA11yAct(exportedModalOverlayReportSectionComponent);
