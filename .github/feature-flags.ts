@@ -78,7 +78,7 @@ function getLinesWithFlags(featureFlagNames: string[]) {
 }
 
 const warningMessage =
-  "This app references feature flags that do not exist in Production. Verify whether code is valid or if flag needs to be created.";
+  "This app references feature flags that are not in Production. Please verify code or create missing flags.";
 
 export const commentTag = "<!-- pr-feature-flag-leaks -->";
 
