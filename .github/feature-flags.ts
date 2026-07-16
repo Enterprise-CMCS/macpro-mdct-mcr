@@ -18,63 +18,67 @@ function getLinesWithFlags(featureFlagNames: string[]) {
     /isFeatureFlagEnabled\(["]([a-zA-Z0-9_-]+)["]\)/g,
   ];
 
-  // Grep services folders for matches, excluding test files
-  const rawGrepOutput = execFileSync(
-    "git",
-    [
-      "grep",
-      "-n",
-      "-E",
-      String.raw`useFlags\(\)\??\.[a-zA-Z0-9_-]+|isFeatureFlagEnabled\("[a-zA-Z0-9_-]+"\)`,
-      "--",
-      "services/**",
-      ":(exclude)*.test.*",
-    ],
-    { encoding: "utf8" }
-  );
+  try {
+    // Grep services folders for matches, excluding test files
+    const rawGrepOutput = execFileSync(
+      "git",
+      [
+        "grep",
+        "-n",
+        "-E",
+        String.raw`useFlags\(\)\??\.[a-zA-Z0-9_-]+|isFeatureFlagEnabled\("[a-zA-Z0-9_-]+"\)`,
+        "--",
+        "services/**",
+        ":(exclude)*.test.*",
+      ],
+      { encoding: "utf8" }
+    );
 
-  const rawLines = rawGrepOutput.split("\n").filter(Boolean);
-  const lines: {
-    fileName: string;
-    flagName: string;
-    lineNumber: string;
-    repoBaseUrl: string;
-  }[] = [];
+    const rawLines = rawGrepOutput.split("\n").filter(Boolean);
+    const lines: {
+      fileName: string;
+      flagName: string;
+      lineNumber: string;
+      repoBaseUrl: string;
+    }[] = [];
 
-  rawLines.forEach((line) => {
-    /**
-     * Verify match has a file and line reference
-     * e.g. services/path/file.tsx:1: useFlags()?.someFlagName
-     */
-    const matches = line.match(/^([^:]+):([^:]+):(.*)$/);
-    if (!matches) return;
+    rawLines.forEach((line) => {
+      /**
+       * Verify match has a file and line reference
+       * e.g. services/path/file.tsx:1: useFlags()?.someFlagName
+       */
+      const matches = line.match(/^([^:]+):([^:]+):(.*)$/);
+      if (!matches) return;
 
-    const [_, fileName, lineNumber, matchingCode] = matches;
-    const trimmedCode = matchingCode.trim();
+      const [_, fileName, lineNumber, matchingCode] = matches;
+      const trimmedCode = matchingCode.trim();
 
-    // Skip lines that are commented out
-    if (
-      trimmedCode.startsWith("//") ||
-      trimmedCode.startsWith("/*") ||
-      trimmedCode.startsWith("*")
-    ) {
-      return;
-    }
-
-    searchPatterns.forEach((pattern) => {
-      let match;
-      pattern.lastIndex = 0;
-
-      while ((match = pattern.exec(matchingCode)) !== null) {
-        const flagName = match[1];
-        if (!featureFlagNames.includes(flagName)) {
-          lines.push({ fileName, flagName, lineNumber, repoBaseUrl });
-        }
+      // Skip lines that are commented out
+      if (
+        trimmedCode.startsWith("//") ||
+        trimmedCode.startsWith("/*") ||
+        trimmedCode.startsWith("*")
+      ) {
+        return;
       }
-    });
-  });
 
-  return lines;
+      searchPatterns.forEach((pattern) => {
+        let match;
+        pattern.lastIndex = 0;
+
+        while ((match = pattern.exec(matchingCode)) !== null) {
+          const flagName = match[1];
+          if (!featureFlagNames.includes(flagName)) {
+            lines.push({ fileName, flagName, lineNumber, repoBaseUrl });
+          }
+        }
+      });
+    });
+
+    return lines;
+  } catch {
+    return [];
+  }
 }
 
 const warningMessage =
