@@ -263,8 +263,8 @@ describe("<ExportedModalOverlayReportSection />", () => {
 
     test('Should render "other" explanations if they are filled', () => {
       mockReportContextOther.report.fieldData.program = [mockMlrProgramOther];
-
       render(exportedModalOverlayReportSectionComponentOther);
+
       // Correct info column
       expect(
         screen.getByRole("cell", {
