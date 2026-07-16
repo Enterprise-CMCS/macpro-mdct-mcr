@@ -7,18 +7,25 @@ function getLinesWithFlags(featureFlagNames: string[]) {
   const repoName = process.env.GITHUB_REPOSITORY;
   const repoBaseUrl = `${serverUrl}/${repoName}/blob/${commitSha}/`;
 
+  /**
+   * Regex matches for:
+   * useFlags()?.someFlagName
+   * useFlags().someFlagName
+   * isFeatureFlagEnabled("someFlagName")
+   */
   const searchPatterns = [
-    /useFlags\(\)(?:\?\.)?([a-zA-Z0-9_]+)/g,
-    /isFeatureFlagEnabled\(['"`]([a-zA-Z0-9_]+)['"`]\)/g,
+    /useFlags\(\)(?:\?)?\.([a-zA-Z0-9_-]+)/g,
+    /isFeatureFlagEnabled\(["]([a-zA-Z0-9_-]+)["]\)/g,
   ];
 
+  // Grep services folders for matches, excluding test files
   const rawGrepOutput = execFileSync(
     "git",
     [
       "grep",
       "-n",
       "-E",
-      "useFlags\\(\\)|isFeatureFlagEnabled\\((['\"`])[^'\"`]+(['\"`])\\)",
+      String.raw`useFlags\(\)\??\.[a-zA-Z0-9_-]+|isFeatureFlagEnabled\("[a-zA-Z0-9_-]+"\)`,
       "--",
       "services/**",
       ":(exclude)*.test.*",
@@ -29,12 +36,16 @@ function getLinesWithFlags(featureFlagNames: string[]) {
   const rawLines = rawGrepOutput.split("\n").filter(Boolean);
   const lines: {
     fileName: string;
-    flag: string;
+    flagName: string;
     lineNumber: string;
     repoBaseUrl: string;
   }[] = [];
 
   rawLines.forEach((line) => {
+    /**
+     * Verify match has a file and line reference
+     * e.g. services/path/file.tsx:1: useFlags()?.someFlagName
+     */
     const matches = line.match(/^([^:]+):([^:]+):(.*)$/);
     if (!matches) return;
 
@@ -55,9 +66,9 @@ function getLinesWithFlags(featureFlagNames: string[]) {
       pattern.lastIndex = 0;
 
       while ((match = pattern.exec(matchingCode)) !== null) {
-        const flag = match[1];
-        if (!featureFlagNames.includes(flag)) {
-          lines.push({ fileName, flag, lineNumber, repoBaseUrl });
+        const flagName = match[1];
+        if (!featureFlagNames.includes(flagName)) {
+          lines.push({ fileName, flagName, lineNumber, repoBaseUrl });
         }
       }
     });
@@ -65,6 +76,9 @@ function getLinesWithFlags(featureFlagNames: string[]) {
 
   return lines;
 }
+
+const warningMessage =
+  "This app references feature flags that do not exist in Production. Verify whether code is valid or if flag needs to be created.";
 
 export const commentTag = "<!-- pr-feature-flag-leaks -->";
 
@@ -79,9 +93,16 @@ export function formatPrComment(featureFlagNames: string[]) {
   const lines = getLinesWithFlags(featureFlagNames);
 
   if (lines.length > 0) {
-    const formattedLines = lines.map(
-      ({ fileName, flag, lineNumber, repoBaseUrl }) => {
-        return `[${fileName}](${repoBaseUrl}${fileName}#L${lineNumber})|${lineNumber}|${flag}`;
+    const rows = lines.map(
+      ({ fileName, flagName, lineNumber, repoBaseUrl }) => {
+        const url = `${repoBaseUrl}${fileName}#L${lineNumber}`;
+        // Markdown columns are separated by |
+        return [
+          // Markdown URL format: [label](https://example.com)
+          `[${fileName}](${url})`,
+          lineNumber,
+          flagName,
+        ].join("|");
       }
     );
 
@@ -89,11 +110,11 @@ export function formatPrComment(featureFlagNames: string[]) {
       commentTag,
       "### Feature Flag Leaks",
       "",
-      "⚠️ This app references feature flags that do not exist in Production. Verify whether code is valid or if flag needs to be created.\n",
+      `⚠️ ${warningMessage}\n`,
       "",
       "|File|Line|Flag|",
       "|----|----|----|",
-      ...formattedLines,
+      ...rows,
     ].join("\n");
   }
 
@@ -105,15 +126,15 @@ export function formatSlackMessage(featureFlagNames: string[]) {
 
   if (lines.length > 0) {
     const formattedLines = lines.map(
-      ({ fileName, flag, lineNumber, repoBaseUrl }) => {
-        return `<${repoBaseUrl}${fileName}#L${lineNumber}|${fileName}:${lineNumber}>: ${flag}`;
+      ({ fileName, flagName, lineNumber, repoBaseUrl }) => {
+        const url = `${repoBaseUrl}${fileName}#L${lineNumber}`;
+        const label = `${fileName}:${lineNumber}`;
+        // Slack URL format: <https://example.com|label>
+        return `<${url}|${label}>: ${flagName}`;
       }
     );
 
-    return [
-      ":warning: This app references feature flags that do not exist in Production. Verify whether code is valid or if flag needs to be created.\n",
-      ...formattedLines,
-    ].join("\n");
+    return [`:warning: ${warningMessage}\n`, ...formattedLines].join("\n");
   }
 
   return "";
