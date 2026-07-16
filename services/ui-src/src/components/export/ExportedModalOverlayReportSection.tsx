@@ -86,9 +86,11 @@ export function renderModalOverlayTableBody(
   const reportType = report.reportType;
   switch (reportType) {
     case ReportType.MCPAR:
-      return entities.map((entity) => {
-        <Box>{entity.name}</Box>;
-      });
+      return entities.map((entity, idx) => (
+        <Tr key={idx}>
+          <Td>{entity.name}</Td>
+        </Tr>
+      ));
     case ReportType.MLR:
       return entities.map((entity, idx) => {
         const [
@@ -114,7 +116,7 @@ export function renderModalOverlayTableBody(
             </Td>
             <Td>
               <Text sx={sx.entityList}>
-                {reportPlanName ?? "Not entered"} <br />
+                {reportPlanName || "Not entered"} <br />
                 {reportProgramName} <br />
                 {eligibilityGroup} <br />
                 {reportingPeriod}
@@ -130,7 +132,7 @@ export function renderModalOverlayTableBody(
               </Text>
             </Td>
             <Td>
-              <Text>{entity.report_miscellaneousNotes ?? "N/A"}</Text>
+              <Text>{entity.report_miscellaneousNotes || "N/A"}</Text>
             </Td>
           </Tr>
         );
