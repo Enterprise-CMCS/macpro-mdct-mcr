@@ -7,9 +7,15 @@ import {
   StackSummary,
 } from "@aws-sdk/client-cloudformation";
 
-const client = new CloudFormationClient({ region: "us-east-1" });
+const client = new CloudFormationClient({
+  region: "us-east-1",
+  maxAttempts: 10,
+});
+let cachedStacks: StackSummary[] | undefined;
 
 async function getAllStacks(): Promise<StackSummary[]> {
+  if (cachedStacks) return cachedStacks;
+
   const stacks: StackSummary[] = [];
 
   for await (const page of paginateListStacks(
@@ -23,6 +29,7 @@ async function getAllStacks(): Promise<StackSummary[]> {
     stacks.push(...page.StackSummaries!);
   }
 
+  cachedStacks = stacks;
   return stacks;
 }
 
