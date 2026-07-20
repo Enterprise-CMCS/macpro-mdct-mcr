@@ -205,6 +205,43 @@ describe("<ExportedReportFieldRow />", () => {
     expect(row).toBeVisible();
   });
 
+  test("includes drawerForm fields when user selects 'Yes' for Prior Authorization reporting", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockMcparReportStore,
+      report: {
+        ...mockMcparReportStore.report!,
+        fieldData: {
+          plan_priorAuthorizationReporting: [
+            { key: "plan_priorAuthorizationReporting-yes", value: "Yes" },
+          ],
+          plans: [{ id: "123", name: "Test Plan" }],
+        },
+      },
+    });
+
+    const pageWithDrawerFields = {
+      ...mockDrawerPageWithStandardFormJson,
+      drawerForm: {
+        id: "dpa",
+        fields: [
+          {
+            id: "testField",
+            type: "text",
+            props: { label: "Test Field Label" },
+          },
+        ],
+      },
+    };
+
+    render(
+      <ExportedReportFieldTable
+        section={pageWithDrawerFields as DrawerReportPageShape}
+      />
+    );
+
+    expect(screen.getByText("Test Field Label")).toBeVisible();
+  });
+
   test("handles drawer pages with missing plans", async () => {
     const missingEntitiesStore = {
       ...mockMcparReportStore,
