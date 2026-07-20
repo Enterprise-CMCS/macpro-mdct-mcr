@@ -9,7 +9,7 @@ import {
 } from "./feature-flags.ts";
 
 const [owner, repo] = process.env.GITHUB_REPO!.split("/");
-const prNumber = process.env.PR_NUMBER!;
+const prNumber = Number(process.env.PR_NUMBER!);
 
 async function run() {
   const ldClient = await getLaunchDarklyClient();
@@ -31,7 +31,7 @@ async function run() {
     const { data: comments } = await octokit.rest.issues.listComments({
       owner,
       repo,
-      issue_number: Number(prNumber),
+      issue_number: prNumber,
     });
     const existingComment = comments.find((c) => c.body?.includes(commentTag));
 
@@ -47,7 +47,7 @@ async function run() {
       await octokit.rest.issues.createComment({
         owner,
         repo,
-        issue_number: Number(prNumber),
+        issue_number: prNumber,
         body: message,
       });
     }
