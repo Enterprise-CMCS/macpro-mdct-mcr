@@ -308,7 +308,7 @@ describe("<ExportedModalOverlayReportSection />", () => {
         mockedUseStore.mockReturnValue(mockMcparReportStore);
       });
 
-      test("Should render data correctly for MCPAR", () => {
+      test("Should render data correctly for unknown report type", () => {
         mockMcparReportContext.report.reportType = "unknown";
 
         expect(() =>
