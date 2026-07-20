@@ -22,7 +22,7 @@ export const addPlansRoute: FormRoute = {
         {
           type: "p",
           content:
-            "Plan names should match the plan names used in your Managed Care Plan Annual Report (MCPAR) for this program for the same reporting period.",
+            "Plan names should match the plan names used in your Managed Care Program Annual Report (MCPAR) for this program for the same reporting period.",
         },
       ],
     },

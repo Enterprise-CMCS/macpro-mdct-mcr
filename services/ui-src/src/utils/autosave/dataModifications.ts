@@ -1,8 +1,5 @@
 // types
 import { AnyObject, EntityShape, ReportType } from "types";
-import { FieldDataTuple } from "./autosave";
-// utils
-import { deletePlanData, getFieldsToFilter, routeChecker } from "utils";
 
 export const dataModifications = (
   reportType: string = "",
@@ -17,51 +14,6 @@ export const dataModifications = (
   }
 
   return dataToWrite;
-};
-
-export const handlePriorAuthorization = (
-  dataToWrite: AnyObject,
-  reportFieldData: AnyObject = {},
-  fieldsToSave: FieldDataTuple[],
-  formFields?: AnyObject
-) => {
-  // create field data object
-  const fieldData = Object.fromEntries(fieldsToSave);
-  let updatedDataToWrite = {
-    ...dataToWrite,
-    fieldData,
-  };
-
-  // handle Prior Authorization and Patient Access API cases
-  let reportingOnPriorAuthOrPatientAccessApi: boolean = true;
-  const reportingOn: string = fieldsToSave[0][0];
-  const notReporting = [
-    "plan_priorAuthorizationReporting",
-    "plan_patientAccessApiReporting",
-  ];
-
-  if (
-    notReporting.includes(reportingOn) &&
-    fieldsToSave[0][1][0].value !== "Yes"
-  ) {
-    reportingOnPriorAuthOrPatientAccessApi = false;
-  }
-  if (!reportingOnPriorAuthOrPatientAccessApi) {
-    const planLevelIndicators = formFields?.routes.filter((route: any) =>
-      routeChecker.isPlanLevelIndicatorsPage(route)
-    );
-    const fieldsToFilter = getFieldsToFilter(planLevelIndicators, reportingOn);
-    const filteredFieldData = deletePlanData(
-      reportFieldData.plans,
-      fieldsToFilter
-    );
-    updatedDataToWrite = {
-      ...updatedDataToWrite,
-      fieldData: { ...fieldData, plans: filteredFieldData },
-    };
-  }
-
-  return updatedDataToWrite;
 };
 
 export const updatePlansInAnalysisMethods = (
