@@ -205,7 +205,7 @@ describe("<ExportedReportFieldRow />", () => {
     expect(row).toBeVisible();
   });
 
-  test("includes drawerForm fields when user selects 'Yes' for Prior Authorization reporting", async () => {
+  test("includes drawerForm fields when user selects 'Yes' for Prior Authorization reporting", () => {
     mockedUseStore.mockReturnValue({
       ...mockMcparReportStore,
       report: {
@@ -239,7 +239,9 @@ describe("<ExportedReportFieldRow />", () => {
       />
     );
 
-    expect(screen.getByText("Test Field Label")).toBeVisible();
+    expect(
+      screen.getByRole("cell", { name: "Test Field Label" })
+    ).toBeVisible();
   });
 
   test("handles drawer pages with missing plans", async () => {
