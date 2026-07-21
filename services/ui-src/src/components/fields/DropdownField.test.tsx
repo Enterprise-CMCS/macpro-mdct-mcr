@@ -313,4 +313,34 @@ describe("<DropdownField />", () => {
   testA11yAct(dropdownComponentWithOptions, () => {
     mockGetValues(undefined);
   });
+
+  describe("Dropdown connects error message to select for accessibility", () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test("Sets aria-invalid and aria-describedby, and renders the error text, when validation fails", () => {
+      mockUseFormContext.mockImplementation((): any => ({
+        ...mockRhfMethods,
+        getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(undefined),
+        formState: {
+          errors: {
+            testDropdown: { value: { message: "A response is required" } },
+          },
+        },
+      }));
+
+      render(dropdownComponentWithOptions);
+      const dropdown = screen.getByLabelText("test-dropdown-label");
+
+      expect(dropdown).toHaveAttribute("aria-invalid", "true");
+
+      const describedById = dropdown.getAttribute("aria-describedby");
+      expect(describedById).toContain("testDropdown__error");
+
+      const errorEl = document.getElementById("testDropdown__error");
+      expect(errorEl).toBeInTheDocument();
+      expect(errorEl).toHaveTextContent("A response is required");
+    });
+  });
 });
