@@ -139,8 +139,7 @@ const mcparQmCreationEvent: APIGatewayProxyEvent = {
       lastAlteredBy: "Thelonious States",
       fieldDataId: "mockReportFieldData",
       formTemplateId: "mockReportJson",
-      newQualityMeasuresSectionEnabled: false,
-      summer2026SansQm: true,
+      newQualityMeasuresSectionEnabled: true,
     },
   }),
 };

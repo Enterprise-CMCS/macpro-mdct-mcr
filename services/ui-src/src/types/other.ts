@@ -172,6 +172,12 @@ export type ProgramList = {
   [key in State]: ProgramChoice[];
 };
 
+export type AnalysisMethodEntry = { label: string; key: string; unit?: string };
+
+export type AnalysisMethods = {
+  [key: string]: AnalysisMethodEntry[];
+};
+
 // HELPER FUNCTIONS
 
 export const isState = (state: unknown): state is State => {

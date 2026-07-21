@@ -53,19 +53,6 @@ export const renderDataCell = (
         : undefined;
     }
 
-    if (
-      formField.id === "plan_patientAccessApiReporting" ||
-      formField.id === "plan_priorAuthorizationReporting"
-    ) {
-      const fieldResponseData = allResponseData[formField.id];
-      return renderResponseData(
-        formField,
-        fieldResponseData,
-        allResponseData,
-        pageType
-      );
-    }
-
     return renderDrawerDataCell(
       formField,
       entityResponseData,

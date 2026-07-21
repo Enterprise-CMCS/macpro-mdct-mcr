@@ -199,7 +199,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         type: ReportFormFieldType.CHECKBOX,
         validation: ValidationType.CHECKBOX,
         props: {
-          label: "D2.VII.5 Activities the quality measure is used in ",
+          label: "D2.VII.5 Activities the quality measure is used in ",
           hint: "Which pay-for-performance, quality, or evaluation efforts is this measure used in? Select all that apply.",
           choices: [
             {
@@ -294,7 +294,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         validation: ValidationType.RADIO,
         props: {
           label: "D2.VII.7 Are you reporting results for this measure?",
-          hint: "If the plan is unable to report for this measure for this reporting period, select “Not reporting” below and provide a justification.",
+          hint: "If the plan is unable to report for this measure for this reporting period, select “Not reporting” below and provide a justification.",
           choices: [
             {
               id: "xvBx2RGFpvmUf2Wk5bLe9u",

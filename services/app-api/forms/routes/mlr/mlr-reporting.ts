@@ -1,7 +1,7 @@
 import {
-  EntityType,
   ModalOverlayRoute,
   PageTypes,
+  EntityType,
   ReportFormFieldType,
   ValidationType,
 } from "../../../utils/types";
@@ -72,12 +72,23 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         },
       },
       {
-        id: "report_programName",
-        type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        id: "report_programNameList",
+        type: ReportFormFieldType.CHECKBOX,
+        validation: ValidationType.CHECKBOX,
         props: {
           label: "J. Program name",
-          hint: "Enter the name of the program(s) for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should list all relevant program names in the field below, separated by commas.",
+          hint: "Select an existing program for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should select all relevant program names.",
+          choices: [],
+        },
+      },
+      {
+        id: "report_otherProgramName",
+        type: ReportFormFieldType.DYNAMIC,
+        validation: ValidationType.DYNAMIC_OPTIONAL,
+        props: {
+          dynamicLabel:
+            "J.a If you don’t see your program listed, please detail the program name as it was during the reporting period.",
+          styleAsOptional: true,
         },
       },
       {
@@ -235,7 +246,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   },
                   props: {
                     label: "P.2 Explanation of reporting period discrepancy",
-                    hint: "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year.",
+                    hint: "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year.",
                   },
                 },
               ],
@@ -507,7 +518,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         validation: ValidationType.RADIO,
         props: {
           label:
-            "4.1 Does the contract include a remittance/payment requirement for being below/above a specified MLR?",
+            "4.1 Does the contract include a remittance requirement for being below/above a specified MLR?",
           hint: "This element indicates if a remittance to the state or a payment to a plan is required in an MCO/PIHP/PAHP contract if a minimum MLR is not met.",
           choices: [
             {
@@ -614,6 +625,111 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                       "4.6.1 Remittance dollar amount owed for MLR reporting period",
                     hint: "Report the amount of remittances owed by this plan. Enter a zero (0) value if no remittance was owed by a plan. Enter a positive value if a remittance was collected by the state.",
                     mask: "currency",
+                  },
+                },
+                {
+                  id: "report_federalShareOfRemittanceDollarAmountOwed",
+                  type: ReportFormFieldType.NUMBER,
+                  validation: {
+                    type: ValidationType.NUMBER_OPTIONAL,
+                    nested: true,
+                    parentFieldName:
+                      "report_contractIncludesMlrRemittanceRequirement",
+                    parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
+                  },
+                  props: {
+                    label:
+                      "4.6.1.a Federal Share of remittance dollar amount owed by MCO, PIHP, or PAHP",
+                    hint: "Enter the Federal Share of the remittance amount reported in 4.6.1.",
+                    mask: "currency",
+                    styleAsOptional: true,
+                  },
+                },
+                {
+                  id: "report_dateStateNotifiedMcoPihpOrPahpOfRemittance",
+                  type: ReportFormFieldType.DATE,
+                  validation: {
+                    type: ValidationType.DATE_OPTIONAL,
+                    nested: true,
+                    parentFieldName:
+                      "report_contractIncludesMlrRemittanceRequirement",
+                    parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
+                  },
+                  props: {
+                    label:
+                      "4.6.1.b Date state notified MCO, PIHP, or PAHP of remittance",
+                    hint: "Enter the date the state notified the MCO, PIHP or PAHP that a remittance was identified.",
+                    styleAsOptional: true,
+                  },
+                },
+                {
+                  id: "report_remittanceDollarAmountStateReceivedFromMcoPihpOrPahp",
+                  type: ReportFormFieldType.NUMBER,
+                  validation: {
+                    type: ValidationType.NUMBER_OPTIONAL,
+                    nested: true,
+                    parentFieldName:
+                      "report_contractIncludesMlrRemittanceRequirement",
+                    parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
+                  },
+                  props: {
+                    label:
+                      "4.6.1.c Remittance dollar amount State received from MCO, PIHP, or PAHP",
+                    hint: "Enter the total dollar amount collected from the MCO, PIHP or PAHP.",
+                    mask: "currency",
+                    styleAsOptional: true,
+                  },
+                },
+                {
+                  id: "report_dateStateReceivedRemittanceFromMcoPhipOrPahp",
+                  type: ReportFormFieldType.DATE,
+                  validation: {
+                    type: ValidationType.DATE_OPTIONAL,
+                    nested: true,
+                    parentFieldName:
+                      "report_contractIncludesMlrRemittanceRequirement",
+                    parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
+                  },
+                  props: {
+                    label:
+                      "4.6.1.d Date state received remittance from MCO, PIHP, or PAHP",
+                    hint: "Enter the date the state received the total dollar amount owed from the MCO, PIHP or PAHP.",
+                    styleAsOptional: true,
+                  },
+                },
+                {
+                  id: "report_federalShareOfRemittanceReturnedToCms",
+                  type: ReportFormFieldType.NUMBER,
+                  validation: {
+                    type: ValidationType.NUMBER_OPTIONAL,
+                    nested: true,
+                    parentFieldName:
+                      "report_contractIncludesMlrRemittanceRequirement",
+                    parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
+                  },
+                  props: {
+                    label:
+                      "4.6.1.e Federal share of remittance returned to CMS",
+                    hint: "Enter the total dollar amount returned to CMS.",
+                    mask: "currency",
+                    styleAsOptional: true,
+                  },
+                },
+                {
+                  id: "report_dateFederalShareOfRemittanceReturnedToCms",
+                  type: ReportFormFieldType.DATE,
+                  validation: {
+                    type: ValidationType.DATE_OPTIONAL,
+                    nested: true,
+                    parentFieldName:
+                      "report_contractIncludesMlrRemittanceRequirement",
+                    parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
+                  },
+                  props: {
+                    label:
+                      "4.6.1.f Date the Federal Share of remittance returned to CMS",
+                    hint: "Enter the date the state returned the federal share of the remittance on the CMS-64.",
+                    styleAsOptional: true,
                   },
                 },
                 {

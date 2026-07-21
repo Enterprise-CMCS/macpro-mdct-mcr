@@ -1,4 +1,5 @@
 import { ParentRoute } from "../../../../../utils/types";
+import { appealsByReasonRoute } from "./appeals-by-reason";
 import { appealsByServiceRoute } from "./appeals-by-service";
 import { appealsOverviewRoute } from "./appeals-overview";
 import { grievancesByReasonRoute } from "./grievances-by-reason";
@@ -11,6 +12,7 @@ export const appealsStateFairHearingsAndGrievancesRoute: ParentRoute = {
   path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances",
   children: [
     appealsOverviewRoute,
+    appealsByReasonRoute,
     appealsByServiceRoute,
     stateFairHearingsRoute,
     grievancesOverviewRoute,
