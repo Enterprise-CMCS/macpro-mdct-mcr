@@ -96,6 +96,15 @@ const dropdownComponentWithYoYCopyNoSubmittedReports = (
   </RouterWrappedComponent>
 );
 
+const dropdownComponentWithHint = (
+  <DropdownField
+    name="testDropdown"
+    label="test-dropdown-label"
+    hint="Select the option that applies"
+    options={mockDropdownOptions}
+  />
+);
+
 describe("<DropdownField />", () => {
   describe("Test DropdownField basic functionality", () => {
     test("Dropdown renders", () => {
@@ -103,6 +112,7 @@ describe("<DropdownField />", () => {
       render(dropdownComponentWithOptions);
       const dropdown = screen.getByLabelText("test-dropdown-label");
       expect(dropdown).toBeVisible();
+      expect(dropdown).toHaveAttribute("aria-invalid", "false");
     });
 
     test("DropdownField calls onChange function successfully", async () => {
@@ -310,15 +320,7 @@ describe("<DropdownField />", () => {
     });
   });
 
-  testA11yAct(dropdownComponentWithOptions, () => {
-    mockGetValues(undefined);
-  });
-
   describe("Dropdown connects error message to select for accessibility", () => {
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-
     test("Sets aria-invalid and aria-describedby, and renders the error text, when validation fails", () => {
       mockUseFormContext.mockImplementation((): any => ({
         ...mockRhfMethods,
@@ -334,13 +336,29 @@ describe("<DropdownField />", () => {
       const dropdown = screen.getByLabelText("test-dropdown-label");
 
       expect(dropdown).toHaveAttribute("aria-invalid", "true");
+      // no hint present, so aria-describedby only includes the error id
+      expect(dropdown).toHaveAttribute(
+        "aria-describedby",
+        "testDropdown__error"
+      );
+      expect(dropdown).toHaveClass("ds-c-field", "ds-c-field--error");
 
-      const describedById = dropdown.getAttribute("aria-describedby");
-      expect(describedById).toContain("testDropdown__error");
-
-      const errorEl = document.getElementById("testDropdown__error");
-      expect(errorEl).toBeInTheDocument();
-      expect(errorEl).toHaveTextContent("A response is required");
+      const errorEl = screen.getByText("A response is required");
+      expect(errorEl).toHaveAttribute("id", "testDropdown__error");
     });
+
+    test("Includes the hint id in aria-describedby when a hint is present", () => {
+      mockGetValues(undefined);
+      render(dropdownComponentWithHint);
+      const dropdown = screen.getByLabelText("test-dropdown-label");
+      expect(dropdown).toHaveAttribute(
+        "aria-describedby",
+        "testDropdown__error testDropdown-hint"
+      );
+    });
+  });
+
+  testA11yAct(dropdownComponentWithOptions, () => {
+    mockGetValues(undefined);
   });
 });
