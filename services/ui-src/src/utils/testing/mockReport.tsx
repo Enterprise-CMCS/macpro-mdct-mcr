@@ -339,7 +339,7 @@ export const mockMlrReportFieldData = {
       ],
       "report_eligibilityGroup-otherText": "",
       report_reportingPeriodDiscrepancyExplanation: "",
-      report_inurredClaims: "1",
+      report_incurredClaims: "1",
       report_healthCareQualityActivities: "1",
       report_mlrNumerator: "1",
       report_mlrNumeratorExplanation: "Test",
