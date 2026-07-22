@@ -217,18 +217,6 @@ export const mockReportFieldData = {
       name: "mock-ilos-name-1",
     },
   ],
-  plan_priorAuthorizationReporting: [
-    {
-      key: "mock-key",
-      value: "Yes",
-    },
-  ],
-  plan_patientAccessApiReporting: [
-    {
-      key: "mock-key",
-      value: "Yes",
-    },
-  ],
   text: "text-input",
   number: 0,
   radio: ["option1"],

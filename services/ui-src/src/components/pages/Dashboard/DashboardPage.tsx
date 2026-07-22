@@ -1,7 +1,6 @@
 import { ComponentClass, useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router";
 import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import {
   Box,
@@ -42,7 +41,6 @@ import {
 import { APP_TITLE, States } from "../../../constants";
 // verbiage
 import accordion from "verbiage/pages/accordion";
-import Summer2026SansQmNaaarDashboardVerbiage from "verbiage/pages/naaar/flags/summer2026SansQm/naaar-dashboard";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
@@ -68,7 +66,6 @@ export const DashboardPage = ({ reportType }: Props) => {
     userIsReadOnly,
   } = useStore().user ?? {};
   const { reportsByState } = useStore();
-  const summer2026SansQm = useFlags()?.summer2026SansQm;
 
   const { isTablet, isMobile } = useBreakpoint();
   const [reportsToDisplay, setReportsToDisplay] = useState<
@@ -82,13 +79,9 @@ export const DashboardPage = ({ reportType }: Props) => {
     undefined
   );
 
-  const { dashboardVerbiage: defaultDashboardVerbiage } =
-    getReportVerbiage(reportType);
-  const dashboardVerbiage =
-    reportType === ReportType.NAAAR && summer2026SansQm
-      ? Summer2026SansQmNaaarDashboardVerbiage
-      : defaultDashboardVerbiage;
-  const { intro, body } = dashboardVerbiage;
+  const {
+    dashboardVerbiage: { intro, body },
+  } = getReportVerbiage(reportType);
 
   // if an admin or a read-only user has selected a state, retrieve it from local storage
   const selectedState = localStorage.getItem("selectedState") || undefined;
@@ -254,7 +247,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         <title>{`${reportType} - ${APP_TITLE}`}</title>
       </Helmet>
       <Link as={RouterLink} to="/" sx={sx.returnLink}>
-        <Image src={arrowLeftIcon} alt="Arrow left" className="returnIcon" />
+        <Image src={arrowLeftIcon} alt="" className="returnIcon" />
         Return Home
       </Link>
       {errorMessage && <ErrorAlert error={errorMessage} />}
@@ -430,17 +423,7 @@ const sx = {
 
 const sxChildStyles = {
   editReportButtonCell: {
-    width: "6.875rem",
     padding: 0,
-    button: {
-      width: "6.875rem",
-      height: "1.75rem",
-      borderRadius: "spacer_half",
-      textAlign: "center",
-      fontSize: "sm",
-      fontWeight: "normal",
-      color: "primary",
-    },
   },
   editReport: {
     padding: "0",
@@ -470,11 +453,12 @@ const sxChildStyles = {
     width: "2.5rem",
     ".tablet &, .mobile &": {
       display: "flex",
+      gap: "0.5rem",
+      width: "auto",
     },
   },
   adminActionButton: {
-    minWidth: "4.5rem",
-    fontSize: "sm",
-    fontWeight: "normal",
+    fontSize: "1rem",
+    fontWeight: 700,
   },
 };

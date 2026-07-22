@@ -383,24 +383,6 @@ describe("Completion Status Tests", () => {
       expect(result).toBe(false);
     });
 
-    test("returns true if not reporting on plan", () => {
-      const mockNotReportingPlan = {
-        ...mockPlan,
-        measures: {
-          [mockMeasureId]: {
-            measure_isReporting: [{}],
-            measure_isNotReportingReason: [{}],
-          },
-        },
-      };
-      const result = calculateMeasureCompletion(
-        mockMeasureId,
-        mockNotReportingPlan,
-        mockMeasureRates
-      );
-      expect(result).toBe(true);
-    });
-
     test("returns true if contains all fields", () => {
       const mockCompletePlan = {
         ...mockPlan,
@@ -528,72 +510,6 @@ describe("Completion Status Tests", () => {
         };
         const result = await calculateRouteCompletion(
           mockIlosRoute,
-          testData,
-          {},
-          {}
-        );
-        expect(result).toEqual(undefined);
-      });
-
-      test("If user is not reporting Prior Authorization (Section B) data, they're not required to complete that section", async () => {
-        const testData = {
-          state_priorAuthorizationReporting: [
-            {
-              key: "mock-key",
-              value: "Not reporting data",
-            },
-          ],
-        };
-        const mockPriorAuthRoute = {
-          ...mockDrawerReportPageJson,
-          path: "/mcpar/state-level-indicators/prior-authorization",
-        };
-        const result = await calculateRouteCompletion(
-          mockPriorAuthRoute,
-          testData,
-          {},
-          {}
-        );
-        expect(result).toEqual(undefined);
-      });
-
-      test("If user is not reporting Prior Authorization (Section D) data, they're not required to complete that section", async () => {
-        const testData = {
-          plan_priorAuthorizationReporting: [
-            {
-              key: "mock-key",
-              value: "Not reporting data",
-            },
-          ],
-        };
-        const mockPriorAuthRoute = {
-          ...mockDrawerReportPageJson,
-          path: "/mcpar/plan-level-indicators/prior-authorization",
-        };
-        const result = await calculateRouteCompletion(
-          mockPriorAuthRoute,
-          testData,
-          {},
-          {}
-        );
-        expect(result).toEqual(undefined);
-      });
-
-      test("If user is not reporting Patient Access API data, they're not required to complete that section", async () => {
-        const testData = {
-          plan_patientAccessApiReporting: [
-            {
-              key: "mock-key",
-              value: "Not reporting data",
-            },
-          ],
-        };
-        const mockPatientAccessApiRoute = {
-          ...mockDrawerReportPageJson,
-          path: "/mcpar/plan-level-indicators/patient-access-api",
-        };
-        const result = await calculateRouteCompletion(
-          mockPatientAccessApiRoute,
           testData,
           {},
           {}

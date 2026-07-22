@@ -76,35 +76,6 @@ const mockDrawerPageJson = {
   drawerForm: { id: "drawer", fields: reportJsonFields },
 };
 
-const mockDrawerPageWithStandardFormJson = {
-  ...mockDrawerReportPageJson,
-  path: "/mcpar/plan-level-indicators/prior-authorization",
-  form: {
-    id: "pa",
-    fields: [
-      {
-        id: "plan_priorAuthorizationReporting",
-        type: "radio",
-        validation: "radio",
-        props: {
-          label: "Are you reporting data prior to June 2026?",
-          hint: "If “Yes”, please complete the following questions under each plan.",
-          choices: [
-            {
-              id: "IELJsTZxQkFDkTMzWQkKocwb",
-              label: "Not reporting data",
-            },
-            {
-              id: "bByTWRIwTSTBncyZRUiibagB",
-              label: "Yes",
-            },
-          ],
-        },
-      },
-    ],
-  },
-};
-
 const mockMissingPlansPageJson = {
   name: "mock-route-2a",
   path: "/mcpar/plan-level-indicators/ilos",
@@ -166,12 +137,6 @@ const exportedDrawerTableComponent = (
   />
 );
 
-const exportedDrawerTableComponentWithStandardForm = (
-  <ExportedReportFieldTable
-    section={mockDrawerPageWithStandardFormJson as DrawerReportPageShape}
-  />
-);
-
 const exportedMissingEntitiesComponent = (
   <ExportedReportFieldTable
     section={mockMissingPlansPageJson as DrawerReportPageShape}
@@ -199,9 +164,18 @@ describe("<ExportedReportFieldRow />", () => {
     expect(row).toBeVisible();
   });
 
-  test("handles drawer pages with standard forms", async () => {
-    render(exportedDrawerTableComponentWithStandardForm);
-    const row = screen.getByText("Are you reporting data prior to June 2026?");
+  test("handles drawer pages with missing plans", async () => {
+    const missingEntitiesStore = {
+      ...mockMcparReportStore,
+      report: {
+        fieldData: {},
+      },
+    };
+    mockedUseStore.mockReturnValue({
+      ...missingEntitiesStore,
+    });
+    render(exportedMissingEntitiesComponent);
+    const row = screen.getByTestId("missingEntityMessage");
     expect(row).toBeVisible();
   });
 
@@ -220,7 +194,7 @@ describe("<ExportedReportFieldRow />", () => {
     });
 
     const pageWithDrawerFields = {
-      ...mockDrawerPageWithStandardFormJson,
+      ...mockDrawerReportPageJson,
       drawerForm: {
         id: "dpa",
         fields: [
@@ -242,21 +216,6 @@ describe("<ExportedReportFieldRow />", () => {
     expect(
       screen.getByRole("cell", { name: "Test Field Label" })
     ).toBeVisible();
-  });
-
-  test("handles drawer pages with missing plans", async () => {
-    const missingEntitiesStore = {
-      ...mockMcparReportStore,
-      report: {
-        fieldData: {},
-      },
-    };
-    mockedUseStore.mockReturnValue({
-      ...missingEntitiesStore,
-    });
-    render(exportedMissingEntitiesComponent);
-    const row = screen.getByTestId("missingEntityMessage");
-    expect(row).toBeVisible();
   });
 
   test("handles a table with no form fields", async () => {

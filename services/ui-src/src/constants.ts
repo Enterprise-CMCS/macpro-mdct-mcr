@@ -75,6 +75,7 @@ export enum States {
   WV = "West Virginia",
   WI = "Wisconsin",
   WY = "Wyoming",
+  ZZ = "Test State",
 }
 
 // ILOS
@@ -159,3 +160,8 @@ export const planComplianceStandardExceptionsLabel =
   "III.C.3a Exceptions granted under 42 C.F.R. § 438.68(d)";
 
 export const suppressionText = "Suppressed for data privacy purposes";
+
+// MEASURE INDICATORS
+export const UNIT_MILES = "miles";
+export const UNIT_MINUTES = "minutes";
+export const UNIT_PERCENT = "%";

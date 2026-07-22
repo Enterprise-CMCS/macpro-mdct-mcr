@@ -1,3 +1,4 @@
+# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 name: Production Feature Flag Status
 
 on:
@@ -27,7 +28,7 @@ jobs:
       - name: Create temporary package.json
         run: echo '{"type":"module"}' > package.json
       - name: Install LaunchDarkly SDK
-        run: npm install @launchdarkly/node-server-sdk
+        run: npm install @launchdarkly/node-server-sdk@9.11.3
       - name: Create status report
         run: |
           echo "status<<EOF" >> $GITHUB_ENV

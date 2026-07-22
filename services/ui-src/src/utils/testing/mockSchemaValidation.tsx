@@ -79,9 +79,17 @@ export const goodValidDateTestCases = ["01/01/2023", "05/15/2023"];
 
 export const badValidDateTestCases = ["02/30/2023", "09/31/2023"];
 
+const todaysDate = dateTimeFormat.format(new Date());
+const tomorrowsDate = dateTimeFormat.format(
+  new Date(new Date().setDate(new Date().getDate() + 1))
+);
+const yesterdaysDate = dateTimeFormat.format(
+  new Date(new Date().setDate(new Date().getDate() - 1))
+);
+
 export const goodFutureDateTestCases = [
-  dateTimeFormat.format(new Date()), //Todays Date
-  dateTimeFormat.format(new Date(new Date().setDate(new Date().getDate() + 1))), //Tomorrows Date
+  todaysDate,
+  tomorrowsDate,
   "12/29/2095", //Will eventually fail in 70 years but if it does we've got bigger problems.
 ];
 
@@ -91,8 +99,19 @@ export const badFutureDateTestCases = [
   "0/0/99",
   "0/01/2023",
   "42/42/4242",
-  dateTimeFormat.format(new Date(new Date().setDate(new Date().getDate() - 1))), //Yesterdays Date
+  yesterdaysDate,
 ];
+
+export const goodPastDateTestCases = [yesterdaysDate];
+
+export const badPastDateTestCases = [
+  ...badFutureDateTestCases.slice(0, -1),
+  ...goodFutureDateTestCases,
+];
+
+export const goodPastDateOptionalTestCases = ["", ...goodPastDateTestCases];
+
+export const badPastDateOptionalTestCases = badPastDateTestCases.slice(1);
 
 export const goodValidNumberTestCases = [1, "1", "100000", "1,000,000"];
 
@@ -101,3 +120,10 @@ export const badValidNumberTestCases = ["N/A", "number", "foo"];
 export const goodRequiredTextTestCases = ["a", " a ", ".", "string"];
 export const goodOptionalTextTestCases = ["", ...goodRequiredTextTestCases];
 export const badRequiredTextTestCases = ["", "   ", undefined];
+
+export const goodDropdownOptionalTestCases = [
+  { label: "Option 1", value: "option1" },
+  { label: "", value: "" },
+  { label: undefined, value: undefined },
+];
+export const badDropdownOptionalTestCases = ["Not an object", []];

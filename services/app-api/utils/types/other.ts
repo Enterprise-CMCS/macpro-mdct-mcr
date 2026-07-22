@@ -207,6 +207,7 @@ const states = [
   "WV",
   "WI",
   "WY",
+  "ZZ",
 ] as const;
 export type State = (typeof states)[number];
 

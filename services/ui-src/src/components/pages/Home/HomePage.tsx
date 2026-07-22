@@ -1,6 +1,5 @@
 import { ComponentClass, useEffect } from "react";
 import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
 import {
@@ -19,7 +18,6 @@ export const HomePage = () => {
   const Helmet = HelmetImport as ComponentClass<HelmetProps>;
   const { bannerData, bannerActive, setBannerActive } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
-  const summer2026SansQm = useFlags()?.summer2026SansQm;
 
   useEffect(() => {
     let bannerActivity = false;
@@ -34,9 +32,6 @@ export const HomePage = () => {
 
   const showBanner = !!bannerData?.key && bannerActive;
   const { intro, cards } = verbiage;
-  const naaarCard = summer2026SansQm
-    ? cards.NAAAR_summer2026SansQm
-    : cards.NAAAR;
 
   return (
     <>
@@ -75,7 +70,7 @@ export const HomePage = () => {
             />
             <TemplateCard
               templateName="NAAAR"
-              verbiage={naaarCard}
+              verbiage={cards.NAAAR}
               cardprops={sx.card}
             />
           </>

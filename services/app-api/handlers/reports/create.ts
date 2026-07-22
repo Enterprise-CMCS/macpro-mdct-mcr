@@ -69,7 +69,6 @@ export const createReport = handler(async (event, _context) => {
   const isPccm = unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
   const newQualityMeasuresSectionEnabled =
     unvalidatedMetadata?.newQualityMeasuresSectionEnabled === true;
-  const summer2026SansQm = unvalidatedMetadata?.summer2026SansQm === true;
 
   /* eslint-disable no-useless-catch */
   try {
@@ -80,7 +79,6 @@ export const createReport = handler(async (event, _context) => {
         hasNaaarSubmission,
         isPccm,
         newQualityMeasuresSectionEnabled,
-        summer2026SansQm,
       }
     ));
   } catch (error) {
@@ -144,15 +142,6 @@ export const createReport = handler(async (event, _context) => {
 
   // prefill MCPAR quality measures if not copying report
   if (newQualityMeasuresSectionEnabled && !copyFieldDataSourceId) {
-    newFieldData = populateQualityMeasures(
-      newFieldData,
-      state,
-      unvalidatedMetadata.programName
-    );
-  }
-
-  // prefill summer2026SansQm content if not copying report
-  if (summer2026SansQm && !copyFieldDataSourceId) {
     newFieldData = populateQualityMeasures(
       newFieldData,
       state,

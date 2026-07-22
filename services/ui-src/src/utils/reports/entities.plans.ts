@@ -1,7 +1,13 @@
 // constants
-import { exceptionsStatus, nonComplianceStatus } from "../../constants";
+import {
+  exceptionsStatus,
+  nonComplianceStatus,
+  UNIT_MILES,
+  UNIT_MINUTES,
+  UNIT_PERCENT,
+} from "../../constants";
 // types
-import { EntityShape, ReportShape } from "types";
+import { AnalysisMethods, EntityShape, ReportShape } from "types";
 
 const analysisMethodKeys = [
   { method: "Geomapping", filterKey: "_geomappingComplianceFrequency" },
@@ -15,37 +21,57 @@ const analysisMethodKeys = [
   },
 ];
 
-const analysisMethodData = {
+const analysisMethodData: AnalysisMethods = {
   Geomapping: [
     // percent of enrollees quarterly
-    { label: "Q1 (optional)", key: "_q1PercentMetStandard" },
-    { label: "Q2 (optional)", key: "_q2PercentMetStandard" },
-    { label: "Q3 (optional)", key: "_q3PercentMetStandard" },
-    { label: "Q4 (optional)", key: "_q4PercentMetStandard" },
+    {
+      label: "Q1 (optional)",
+      key: "_q1PercentMetStandard",
+      unit: UNIT_PERCENT,
+    },
+    {
+      label: "Q2 (optional)",
+      key: "_q2PercentMetStandard",
+      unit: UNIT_PERCENT,
+    },
+    {
+      label: "Q3 (optional)",
+      key: "_q3PercentMetStandard",
+      unit: UNIT_PERCENT,
+    },
+    {
+      label: "Q4 (optional)",
+      key: "_q4PercentMetStandard",
+      unit: UNIT_PERCENT,
+    },
     // actual max time quarterly
-    { label: "Q1 (optional)", key: "_q1ActualMaxTime" },
-    { label: "Q2 (optional)", key: "_q2ActualMaxTime" },
-    { label: "Q3 (optional)", key: "_q3ActualMaxTime" },
-    { label: "Q4 (optional)", key: "_q4ActualMaxTime" },
+    { label: "Q1 (optional)", key: "_q1ActualMaxTime", unit: UNIT_MINUTES },
+    { label: "Q2 (optional)", key: "_q2ActualMaxTime", unit: UNIT_MINUTES },
+    { label: "Q3 (optional)", key: "_q3ActualMaxTime", unit: UNIT_MINUTES },
+    { label: "Q4 (optional)", key: "_q4ActualMaxTime", unit: UNIT_MINUTES },
     // actual max distance quarterly
-    { label: "Q1 (optional)", key: "_q1ActualMaxDist" },
-    { label: "Q2 (optional)", key: "_q2ActualMaxDist" },
-    { label: "Q3 (optional)", key: "_q3ActualMaxDist" },
-    { label: "Q4 (optional)", key: "_q4ActualMaxDist" },
+    { label: "Q1 (optional)", key: "_q1ActualMaxDist", unit: UNIT_MILES },
+    { label: "Q2 (optional)", key: "_q2ActualMaxDist", unit: UNIT_MILES },
+    { label: "Q3 (optional)", key: "_q3ActualMaxDist", unit: UNIT_MILES },
+    { label: "Q4 (optional)", key: "_q4ActualMaxDist", unit: UNIT_MILES },
     // percent of enrollees annually
-    { label: "Annual (optional)", key: "_annualPercentMetStandard" },
+    {
+      label: "Annual (optional)",
+      key: "_annualPercentMetStandard",
+      unit: UNIT_PERCENT,
+    },
     {
       label: "Date of analysis of annual snapshot (optional)",
       key: "_annualPercentMetStandardDate",
     },
     // actual max time annually
-    { label: "Annual (optional)", key: "_annualMaxTime" },
+    { label: "Annual (optional)", key: "_annualMaxTime", unit: UNIT_MINUTES },
     {
       label: "Date of analysis of annual snapshot (optional)",
       key: "_annualMaxTimeDate",
     },
     // actual max distance annually
-    { label: "Annual (optional)", key: "_actualMaxDistance" },
+    { label: "Annual (optional)", key: "_actualMaxDistance", unit: UNIT_MILES },
     {
       label: "Date of analysis of annual snapshot (optional)",
       key: "_actualMaxDistanceDate",
@@ -58,10 +84,26 @@ const analysisMethodData = {
     { label: "Q3 (optional)", key: "_q3NumberOfNetworkProviders" },
     { label: "Q4 (optional)", key: "_q4NumberOfNetworkProviders" },
     // provider to enrollee ratio quarterly
-    { label: "Q1 (optional)", key: "_q1ProviderToEnrolleeRatio" },
-    { label: "Q2 (optional)", key: "_q2ProviderToEnrolleeRatio" },
-    { label: "Q3 (optional)", key: "_q3ProviderToEnrolleeRatio" },
-    { label: "Q4 (optional)", key: "_q4ProviderToEnrolleeRatio" },
+    {
+      label: "Q1 (optional)",
+      key: "_q1ProviderToEnrolleeRatio",
+      unit: UNIT_PERCENT,
+    },
+    {
+      label: "Q2 (optional)",
+      key: "_q2ProviderToEnrolleeRatio",
+      unit: UNIT_PERCENT,
+    },
+    {
+      label: "Q3 (optional)",
+      key: "_q3ProviderToEnrolleeRatio",
+      unit: UNIT_PERCENT,
+    },
+    {
+      label: "Q4 (optional)",
+      key: "_q4ProviderToEnrolleeRatio",
+      unit: UNIT_PERCENT,
+    },
     // number of network providers annually
     {
       label: "Annual (optional)",
@@ -83,12 +125,12 @@ const analysisMethodData = {
   ],
   "Secret Shopper: Appointment Availability": [
     // quarterly
-    { label: "Q1 (optional)", key: "_q1Ssaa" },
-    { label: "Q2 (optional)", key: "_q2Ssaa" },
-    { label: "Q3 (optional)", key: "_q3Ssaa" },
-    { label: "Q4 (optional)", key: "_q4Ssaa" },
+    { label: "Q1 (optional)", key: "_q1Ssaa", unit: UNIT_PERCENT },
+    { label: "Q2 (optional)", key: "_q2Ssaa", unit: UNIT_PERCENT },
+    { label: "Q3 (optional)", key: "_q3Ssaa", unit: UNIT_PERCENT },
+    { label: "Q4 (optional)", key: "_q4Ssaa", unit: UNIT_PERCENT },
     // number of network providers annually
-    { label: "Annual (optional)", key: "_annualSsaa" },
+    { label: "Annual (optional)", key: "_annualSsaa", unit: UNIT_PERCENT },
     {
       label: "Date of analysis of annual snapshot (optional)",
       key: "_annualDateSsaa",
@@ -195,15 +237,16 @@ const getAnalysisMethodData = (
   addComplianceDisplayInfo(displayInfo, plan, methodKeys, method);
 
   // get the rest of the nested data entered
-  for (const { label, key } of analysisMethodData[
+  for (const { label, key, unit } of analysisMethodData[
     method as keyof typeof analysisMethodData
   ]) {
     const value = findEntityDataByKey(plan, methodKeys, key);
     if (value) {
-      displayInfo.push(`${label}: ${value}`);
+      displayInfo.push(
+        unit ? `${label}: ${value} ${unit}` : `${label}: ${value}`
+      );
     }
   }
-
   return displayInfo;
 };
 

@@ -138,50 +138,6 @@ describe("autosaveFieldData", () => {
       }
     );
   });
-
-  it("should handle Prior Authorization use case", async () => {
-    const priorAuthFields = [
-      {
-        name: "plan_priorAuthorizationReporting",
-        type: "radio",
-        value: "Not reporting on data",
-        hydrationValue: "Yes",
-        defaultValue: "",
-        overrideCheck: false,
-      },
-    ];
-    const reportWithPlans = {
-      id: "reportId",
-      reportType: "MCPAR",
-      fieldData: {
-        plans: [],
-      },
-      updateReport: jest.fn().mockResolvedValue(true),
-    };
-    mockTrigger.mockResolvedValue(true);
-    await autosaveFieldData({
-      form: mockForm,
-      fields: priorAuthFields,
-      report: reportWithPlans,
-      user,
-    });
-    expect(mockForm.trigger).toHaveBeenCalledWith(
-      "plan_priorAuthorizationReporting"
-    );
-    expect(reportWithPlans.updateReport).toHaveBeenCalledWith(
-      { reportType: "MCPAR", id: "reportId", state: "MN" },
-      {
-        metadata: {
-          status: "In progress",
-          lastAlteredBy: "stateuser@test.com",
-        },
-        fieldData: {
-          plans: [],
-          plan_priorAuthorizationReporting: "Not reporting on data",
-        },
-      }
-    );
-  });
 });
 
 it("should handle NAAAR plans use case", async () => {

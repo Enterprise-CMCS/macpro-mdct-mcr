@@ -38,5 +38,20 @@ describe("DashboardTableUtils", () => {
     test("should remove # row for non-admin", () => {
       expect(tableBody(body, false)).toEqual(stateBody);
     });
+
+    test("should remove Initial Submission row for non-admin", () => {
+      expect(
+        tableBody({ headRow: ["row1", "Initial Submission", "#"] }, false)
+      ).toEqual(stateBody);
+    });
+
+    test("should return the body unchanged for admin", () => {
+      const adminBody = { headRow: ["row1", "Initial Submission", "#"] };
+      expect(tableBody(adminBody, true)).toEqual(adminBody);
+    });
+
+    test("should handle a missing headRow", () => {
+      expect(tableBody({}, false)).toEqual({});
+    });
   });
 });
