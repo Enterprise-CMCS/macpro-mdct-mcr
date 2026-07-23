@@ -20,7 +20,50 @@
       "validation": "text",
       "props": {
         "label": "Description text",
-        "hint": "Description text can be formatted for plain text and bulleted lists. To create a bulleted list, include HTML tags around the list and before and after each list item.",
+        "hint": [
+          {
+            "type": "span",
+            "content": "Formatting is supported with these HTML tags:"
+          },
+          {
+            "type": "ul",
+            "props": {
+              "style": {
+                "paddingLeft": "1rem"
+              }
+            },
+            "children": [
+              {
+                "type": "li",
+                "content": "&lt;strong&gt;"
+              },
+              {
+                "type": "li",
+                "content": "&lt;em&gt;"
+              },
+              {
+                "type": "li",
+                "content": "&lt;p&gt;"
+              },
+              {
+                "type": "li",
+                "content": "&lt;ul&gt;"
+              },
+              {
+                "type": "li",
+                "content": "&lt;ol&gt;"
+              },
+              {
+                "type": "li",
+                "content": "&lt;li&gt;"
+              },
+              {
+                "type": "li",
+                "content": "&lt;a&gt;"
+              }
+            ]
+          }
+        ],
         "placeholder": "New banner description"
       }
     },
