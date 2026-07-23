@@ -111,3 +111,12 @@ export const sanitizeAndParseHtml = (html: string) => {
 
 export const labelTextWithOptional = (label: string) =>
   parseCustomHtml(label + "<span class='optional-text'> (optional)</span>");
+
+/** Parse HTML string, sanitize, and return React elements. */
+export const parseHtml = (html: string) => {
+  const sanitizedHtml = DOMPurify.sanitize(html, {
+    ALLOWED_ATTR: ["href", "alt", "target", "class", "src"],
+  });
+  const parsedHtml = parse(sanitizedHtml);
+  return parsedHtml;
+};

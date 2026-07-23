@@ -1,6 +1,7 @@
 // components
 import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import { Alert as AlertRoot } from "@cmsgov/design-system";
+import { ReactNode } from "react";
 // types
 import { AlertTypes, CustomHtmlElement } from "types";
 // utils
@@ -9,6 +10,7 @@ import { parseCustomHtml } from "utils";
 export const Alert = ({
   status,
   title,
+  children,
   description,
   link,
   className,
@@ -22,7 +24,7 @@ export const Alert = ({
               {title}
             </Heading>
           )}
-          {description && (
+          {description ? (
             <>
               <Text sx={sx.descriptionText}>
                 {parseCustomHtml(description)}
@@ -33,6 +35,17 @@ export const Alert = ({
                 </Link>
               )}
             </>
+          ) : (
+            children && (
+              <>
+                <Text sx={sx.descriptionText}>{children}</Text>
+                {link && (
+                  <Link href={link} isExternal>
+                    {link}
+                  </Link>
+                )}
+              </>
+            )
           )}
         </Box>
       </Flex>
@@ -43,6 +56,7 @@ export const Alert = ({
 interface Props {
   status?: AlertTypes;
   title?: string;
+  children?: ReactNode;
   description?: string | CustomHtmlElement[];
   link?: string;
   className?: string;
