@@ -1,7 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { CustomHtmlElement } from "types";
 // utils
-import { labelTextWithOptional, parseCustomHtml } from "utils";
+import {
+  labelTextWithOptional,
+  parseAllowedHtml,
+  parseCustomHtml,
+} from "utils";
 
 jest.mock("dompurify", () => ({
   sanitize: jest.fn((el) => el),
@@ -71,6 +75,7 @@ const testComponent = <div>{parseCustomHtml(testElementArray)}</div>;
 const testComponentWithChildren = (
   <div>{parseCustomHtml(mockElementsWithChildren)}</div>
 );
+
 describe("Test parseCustomHtml", () => {
   beforeEach(() => {
     render(testComponent);
@@ -132,5 +137,15 @@ describe("Test external link parsing", () => {
       "target",
       "_blank"
     );
+  });
+});
+
+describe("Test parseAllowedHtml", () => {
+  test("Should render allowed <strong> and <em> HTML tags", () => {
+    const text = `<strong>strong</strong> \n <em>em</em>`;
+    const sanitized = parseAllowedHtml(text);
+    render(sanitized);
+    expect(screen.getByText("strong")).toBeVisible();
+    expect(screen.getByText("em")).toBeVisible();
   });
 });
