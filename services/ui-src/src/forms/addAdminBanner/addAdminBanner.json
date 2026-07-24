@@ -39,7 +39,15 @@
               },
               {
                 "type": "li",
+                "content": "&lt;b&gt;"
+              },
+              {
+                "type": "li",
                 "content": "&lt;em&gt;"
+              },
+              {
+                "type": "li",
+                "content": "&lt;i&gt;"
               },
               {
                 "type": "li",
