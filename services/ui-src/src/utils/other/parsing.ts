@@ -129,7 +129,7 @@ export const parseAllowedHtml = (html: string) => {
       "p",
     ],
     // On those tags, only these attributes are allowed
-    ALLOWED_ATTR: ["href", "target", "class"],
+    ALLOWED_ATTR: ["href", "target"],
   });
   const parsedHtml = parse(sanitizedHtml);
   return parsedHtml;
