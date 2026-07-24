@@ -12,8 +12,10 @@ const safeUndefined = undefined;
 
 const cleanString = "test";
 
-const dirtyLinkString = "<ul><li><a href=//google.com>click</ul>";
-const cleanLinkString = '<ul><li><a href="//google.com">click</a></li></ul>';
+const dirtyLinkString =
+  "<ul><li><a href=//google.com><strong>click</strong></ul>";
+const cleanLinkString =
+  '<ul><li><a href="//google.com"><strong>click</strong></a></li></ul>';
 
 // ARRAYS
 

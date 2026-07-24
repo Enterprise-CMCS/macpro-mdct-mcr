@@ -141,11 +141,30 @@ describe("Test external link parsing", () => {
 });
 
 describe("Test parseAllowedHtml", () => {
-  test("Should render allowed <strong> and <em> HTML tags", () => {
-    const text = `<strong>strong</strong> \n <em>em</em>`;
+  test("Should render allowed HTML tags", () => {
+    const text = `<strong>strong</strong>
+    <em>em</em>
+    <a href="https://mock.com/" target="_blank" title="notAllowed">Link</a>
+    <img src="mock.jpg" class="mock" alt="mock image" id="notAllowed">
+    <input type="text" name="notAllowed>"`;
     const sanitized = parseAllowedHtml(text);
     render(sanitized);
-    expect(screen.getByText("strong")).toBeVisible();
-    expect(screen.getByText("em")).toBeVisible();
+
+    const strong = screen.getByText("strong");
+    expect(strong.tagName).toBe("STRONG");
+
+    const em = screen.getByText("em");
+    expect(em.tagName).toBe("EM");
+
+    const link = screen.getByRole("link");
+    expect(link).toHaveAttribute("href", "https://mock.com/");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).not.toHaveAttribute("title");
+
+    const img = screen.queryByRole("img");
+    expect(img).not.toBeInTheDocument();
+
+    const input = screen.queryByRole("input");
+    expect(input).not.toBeInTheDocument();
   });
 });

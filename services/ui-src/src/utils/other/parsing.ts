@@ -115,7 +115,21 @@ export const labelTextWithOptional = (label: string) =>
 /** Parse HTML string, sanitize, and return React elements. */
 export const parseAllowedHtml = (html: string) => {
   const sanitizedHtml = DOMPurify.sanitize(html, {
-    ALLOWED_ATTR: ["href", "alt", "target", "class", "src"],
+    // Only these tags will be allowed through
+    ALLOWED_TAGS: [
+      "ul",
+      "ol",
+      "li",
+      "a",
+      "#text",
+      "strong",
+      "b",
+      "em",
+      "i",
+      "p",
+    ],
+    // On those tags, only these attributes are allowed
+    ALLOWED_ATTR: ["href", "target", "class"],
   });
   const parsedHtml = parse(sanitizedHtml);
   return parsedHtml;

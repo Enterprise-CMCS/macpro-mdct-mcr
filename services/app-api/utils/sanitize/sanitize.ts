@@ -13,9 +13,9 @@ const DOMPurify = createDOMPurify(windowEmulator);
  */
 DOMPurify.setConfig({
   // Only these tags will be allowed through
-  ALLOWED_TAGS: ["ul", "ol", "li", "a", "#text", "strong", "b", "em", "i"],
+  ALLOWED_TAGS: ["ul", "ol", "li", "a", "#text", "strong", "b", "em", "i", "p"],
   // On those tags, only these attributes are allowed
-  ALLOWED_ATTR: ["href", "alt", "target", "class", "src"],
+  ALLOWED_ATTR: ["href", "target", "class"],
   // If a tag is removed, so will all its child elements & text
   KEEP_CONTENT: false,
 });
