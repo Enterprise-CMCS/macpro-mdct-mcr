@@ -15,6 +15,7 @@ export const Alert = ({
   link,
   className,
 }: Props) => {
+  const content = description ? parseCustomHtml(description) : children;
   return (
     <AlertRoot variation={status} className={className}>
       <Flex>
@@ -24,28 +25,15 @@ export const Alert = ({
               {title}
             </Heading>
           )}
-          {description ? (
+          {content && (
             <>
-              <Text sx={sx.descriptionText}>
-                {parseCustomHtml(description)}
-              </Text>
+              <Text sx={sx.descriptionText}>{content}</Text>
               {link && (
                 <Link href={link} isExternal>
                   {link}
                 </Link>
               )}
             </>
-          ) : (
-            children && (
-              <>
-                <Text sx={sx.descriptionText}>{children}</Text>
-                {link && (
-                  <Link href={link} isExternal>
-                    {link}
-                  </Link>
-                )}
-              </>
-            )
           )}
         </Box>
       </Flex>

@@ -4,7 +4,7 @@ import { Alert } from "components";
 // types
 import { BannerData } from "types/banners";
 // utils
-import { parseHtml } from "utils";
+import { parseAllowedHtml } from "utils";
 
 export const Banner = ({ bannerData, ...props }: Props) => {
   if (bannerData) {
@@ -12,7 +12,7 @@ export const Banner = ({ bannerData, ...props }: Props) => {
     return (
       bannerData && (
         <Alert status={status} title={title} link={link} {...props}>
-          <Box>{parseHtml(description)}</Box>
+          <Box>{parseAllowedHtml(description)}</Box>
         </Alert>
       )
     );
