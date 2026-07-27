@@ -1,12 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { CustomHtmlElement } from "types";
 // utils
-import { labelTextWithOptional, parseCustomHtml } from "utils";
-
-jest.mock("dompurify", () => ({
-  sanitize: jest.fn((el) => el),
-  ...jest.requireActual("dompurify"),
-}));
+import {
+  labelTextWithOptional,
+  parseAllowedHtml,
+  parseCustomHtml,
+} from "utils";
 
 const mockHtmlString = "<span script='foo'><em>whatever</em></span>";
 const testElementArray = [
@@ -71,6 +70,7 @@ const testComponent = <div>{parseCustomHtml(testElementArray)}</div>;
 const testComponentWithChildren = (
   <div>{parseCustomHtml(mockElementsWithChildren)}</div>
 );
+
 describe("Test parseCustomHtml", () => {
   beforeEach(() => {
     render(testComponent);
@@ -132,5 +132,38 @@ describe("Test external link parsing", () => {
       "target",
       "_blank"
     );
+  });
+});
+
+describe("Test parseAllowedHtml", () => {
+  test("Should render allowed HTML tags", () => {
+    const text = `<strong>strong</strong>
+    <em>em</em>
+    <a href="https://mock.com/" target="_blank" title="notAllowed">Link</a>
+    <img src="mock.jpg" class="mock" alt="mock image" id="notAllowed">
+    <input type="text" name="notAllowed>
+    <div>Not Allowed</div>"`;
+    const sanitized = parseAllowedHtml(text);
+    render(sanitized);
+
+    const strong = screen.getByText("strong");
+    expect(strong.tagName).toBe("STRONG");
+
+    const em = screen.getByText("em");
+    expect(em.tagName).toBe("EM");
+
+    const link = screen.getByRole("link");
+    expect(link).toHaveAttribute("href", "https://mock.com/");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).not.toHaveAttribute("title");
+
+    const img = screen.queryByRole("img");
+    expect(img).not.toBeInTheDocument();
+
+    const input = screen.queryByRole("input");
+    expect(input).not.toBeInTheDocument();
+
+    const divText = screen.queryByText("Not Allowed");
+    expect(divText).not.toBeInTheDocument();
   });
 });
