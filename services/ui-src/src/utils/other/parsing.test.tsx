@@ -166,5 +166,8 @@ describe("Test parseAllowedHtml", () => {
 
     const input = screen.queryByRole("input");
     expect(input).not.toBeInTheDocument();
+
+    const divText = screen.queryByText("Not Allowed");
+    expect(divText).not.toBeInTheDocument();
   });
 });

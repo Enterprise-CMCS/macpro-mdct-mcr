@@ -56,6 +56,14 @@ const sx = {
   },
   descriptionText: {
     marginTop: "spacer_half",
+    a: {
+      textDecoration: "underline",
+      color: "primary",
+      ":hover": {
+        color: "primary_darker",
+        textDecorationColor: "primary_darker",
+      },
+    },
   },
   contentBox: {
     marginLeft: "spacer2",

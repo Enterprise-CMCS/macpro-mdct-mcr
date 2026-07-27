@@ -130,6 +130,8 @@ export const parseAllowedHtml = (html: string) => {
     ],
     // On those tags, only these attributes are allowed
     ALLOWED_ATTR: ["href", "target"],
+    // If a tag is removed, so will all its child elements & text
+    KEEP_CONTENT: false,
   });
   const parsedHtml = parse(sanitizedHtml);
   return parsedHtml;
