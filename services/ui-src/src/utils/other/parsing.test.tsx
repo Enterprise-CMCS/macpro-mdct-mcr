@@ -146,7 +146,8 @@ describe("Test parseAllowedHtml", () => {
     <em>em</em>
     <a href="https://mock.com/" target="_blank" title="notAllowed">Link</a>
     <img src="mock.jpg" class="mock" alt="mock image" id="notAllowed">
-    <input type="text" name="notAllowed>"`;
+    <input type="text" name="notAllowed>
+    <div>Not Allowed</div>"`;
     const sanitized = parseAllowedHtml(text);
     render(sanitized);
 
