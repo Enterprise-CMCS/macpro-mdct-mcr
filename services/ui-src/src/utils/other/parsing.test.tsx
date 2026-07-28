@@ -141,8 +141,8 @@ describe("Test parseAllowedHtml", () => {
     <em>em</em>
     <a href="https://mock.com/" target="_blank" title="notAllowed">Link</a>
     <img src="mock.jpg" class="mock" alt="mock image" id="notAllowed">
-    <input type="text" name="notAllowed>
-    <div>Not Allowed</div>"`;
+    <input type="text" name="notAllowed">
+    <div>Not Allowed</div>`;
     const sanitized = parseAllowedHtml(text);
     render(sanitized);
 
@@ -160,7 +160,7 @@ describe("Test parseAllowedHtml", () => {
     const img = screen.queryByRole("img");
     expect(img).not.toBeInTheDocument();
 
-    const input = screen.queryByRole("input");
+    const input = screen.queryByRole("textbox");
     expect(input).not.toBeInTheDocument();
 
     const divText = screen.queryByText("Not Allowed");
