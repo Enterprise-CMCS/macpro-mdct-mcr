@@ -12,7 +12,7 @@ const safeUndefined = undefined;
 
 const cleanString = "test";
 
-const dirtyTaggedString = `<div>Not Allowed</div><strong>strong</strong><em>em</em><a href="https://mock.com/" target="_blank" title="notAllowed">Link</a><img src="mock.jpg" class="mock" alt="mock image" id="notAllowed"><input type="text" name="notAllowed>"`;
+const dirtyTaggedString = `<div>Not Allowed</div><strong>strong</strong><em>em</em><a href="https://mock.com/" target="_blank" title="notAllowed">Link</a><img src="mock.jpg" class="mock" alt="mock image" id="notAllowed"><input type="text" name="notAllowed">`;
 const cleanTaggedString = `<strong>strong</strong><em>em</em><a href="https://mock.com/" target="_blank">Link</a>`;
 
 const dirtyLinkString =
