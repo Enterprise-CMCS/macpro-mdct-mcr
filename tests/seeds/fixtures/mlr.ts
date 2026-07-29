@@ -39,9 +39,9 @@ export const newMlr = (
 export const fillMlr = (flags: {
   [key: string]: true;
 }): SeedFillReportShape => {
-  const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
-  const newReportingPeriodEndDate = faker.date.future({
-    refDate: newReportingPeriodStartDate,
+  const newReportingPeriodEndDate = faker.date.past();
+  const newReportingPeriodStartDate = faker.date.past({
+    refDate: newReportingPeriodEndDate,
   });
 
   if (Object.keys(flags).length > 0) {
@@ -95,6 +95,12 @@ export const fillMlr = (flags: {
           report_nonClaimsCosts: numberFloat(),
           report_premiumRevenue: numberFloat(),
           report_programName: faker.music.album(),
+          report_programNameList: [
+            {
+              key: "report_programNameList-5ee1jWcL3CSJqUAY3uMTbPUz",
+              value: "Minnesota Senior Care Plus (MSC+)",
+            },
+          ],
           report_programType: [
             {
               key: "report_programType-G4inXZJWYFsDZYGk75cW7L",

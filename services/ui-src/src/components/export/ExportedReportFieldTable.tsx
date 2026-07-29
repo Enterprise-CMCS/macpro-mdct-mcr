@@ -31,7 +31,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
 
   const renderNotReportingFields = (field: FormField | FormLayoutElement) => {
     formFields =
-      report?.fieldData[field.id]?.value === "Yes"
+      report?.fieldData[field.id]?.[0]?.value === "Yes"
         ? [field, ...(formFields || [])]
         : section.form?.fields;
   };

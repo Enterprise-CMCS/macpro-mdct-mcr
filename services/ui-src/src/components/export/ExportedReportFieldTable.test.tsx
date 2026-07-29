@@ -179,6 +179,45 @@ describe("<ExportedReportFieldRow />", () => {
     expect(row).toBeVisible();
   });
 
+  test("includes drawerForm fields when user selects 'Yes' for Prior Authorization reporting", () => {
+    mockedUseStore.mockReturnValue({
+      ...mockMcparReportStore,
+      report: {
+        ...mockMcparReportStore.report!,
+        fieldData: {
+          plan_priorAuthorizationReporting: [
+            { key: "plan_priorAuthorizationReporting-yes", value: "Yes" },
+          ],
+          plans: [{ id: "123", name: "Test Plan" }],
+        },
+      },
+    });
+
+    const pageWithDrawerFields = {
+      ...mockDrawerReportPageJson,
+      drawerForm: {
+        id: "dpa",
+        fields: [
+          {
+            id: "testField",
+            type: "text",
+            props: { label: "Test Field Label" },
+          },
+        ],
+      },
+    };
+
+    render(
+      <ExportedReportFieldTable
+        section={pageWithDrawerFields as DrawerReportPageShape}
+      />
+    );
+
+    expect(
+      screen.getByRole("cell", { name: "Test Field Label" })
+    ).toBeVisible();
+  });
+
   test("handles a table with no form fields", async () => {
     render(emptyTableComponent);
     const row = screen.getByTestId("exportTable");
