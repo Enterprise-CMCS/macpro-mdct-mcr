@@ -12,8 +12,13 @@ const safeUndefined = undefined;
 
 const cleanString = "test";
 
-const dirtyLinkString = "<ul><li><a href=//google.com>click</ul>";
-const cleanLinkString = '<ul><li><a href="//google.com">click</a></li></ul>';
+const dirtyTaggedString = `<div>Not Allowed</div><strong>strong</strong><em>em</em><a href="https://mock.com/" target="_blank" title="notAllowed">Link</a><img src="mock.jpg" class="mock" alt="mock image" id="notAllowed"><input type="text" name="notAllowed">`;
+const cleanTaggedString = `<strong>strong</strong><em>em</em><a href="https://mock.com/" target="_blank">Link</a>`;
+
+const dirtyLinkString =
+  "<ul><li><a href=//google.com><strong>click</strong></ul>";
+const cleanLinkString =
+  '<ul><li><a href="//google.com"><strong>click</strong></a></li></ul>';
 
 // ARRAYS
 
@@ -65,6 +70,7 @@ describe("Test sanitizeString", () => {
   });
 
   test("Test sanitizeString cleans dirty strings", () => {
+    expect(sanitizeString(dirtyTaggedString)).toEqual(cleanTaggedString);
     expect(sanitizeString(dirtyLinkString)).toEqual(cleanLinkString);
   });
 });

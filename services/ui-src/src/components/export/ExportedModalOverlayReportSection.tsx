@@ -3,6 +3,7 @@ import { EntityStatusIcon, Table } from "components";
 import { Box, Image, Td, Text, Tr } from "@chakra-ui/react";
 // types
 import {
+  AnyObject,
   EntityShape,
   EntityType,
   ModalOverlayReportPageShape,
@@ -85,9 +86,11 @@ export function renderModalOverlayTableBody(
   const reportType = report.reportType;
   switch (reportType) {
     case ReportType.MCPAR:
-      return entities.map((entity) => {
-        <Box>{entity.name}</Box>;
-      });
+      return entities.map((entity, idx) => (
+        <Tr key={idx}>
+          <Td>{entity.name}</Td>
+        </Tr>
+      ));
     case ReportType.MLR:
       return entities.map((entity, idx) => {
         const [
@@ -97,6 +100,11 @@ export function renderModalOverlayTableBody(
           reportingPeriod,
         ] = getProgramInfo(entity);
         const entityComplete = getEntityStatus(entity, report, entityType);
+        const programTypes =
+          entity.report_programType?.map(
+            (programType: AnyObject) => programType.value
+          ) || [];
+        const displayProgramTypes = programTypes.join(", ") || "Not entered";
 
         return (
           <Tr key={idx}>
@@ -108,14 +116,14 @@ export function renderModalOverlayTableBody(
             </Td>
             <Td>
               <Text sx={sx.entityList}>
-                {reportPlanName ?? "Not entered"} <br />
+                {reportPlanName || "Not entered"} <br />
                 {reportProgramName} <br />
                 {eligibilityGroup} <br />
                 {reportingPeriod}
               </Text>
             </Td>
             <Td>
-              <Text>{entity.report_programType[0].value ?? "Not entered"}</Text>
+              <Text>{displayProgramTypes}</Text>
             </Td>
             <Td>
               <Text>
@@ -124,7 +132,7 @@ export function renderModalOverlayTableBody(
               </Text>
             </Td>
             <Td>
-              <Text>{entity.report_miscellaneousNotes ?? "N/A"}</Text>
+              <Text>{entity.report_miscellaneousNotes || "N/A"}</Text>
             </Td>
           </Tr>
         );
