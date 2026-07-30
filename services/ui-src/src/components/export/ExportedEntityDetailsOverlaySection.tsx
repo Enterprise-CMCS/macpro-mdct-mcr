@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import uuid from "react-uuid";
 // components
 import { ExportedSectionHeading, ExportedEntityDetailsTable } from "components";
 import { Box, Heading } from "@chakra-ui/react";
@@ -103,7 +102,7 @@ export function getEntityTableComponents(
     };
 
     return (
-      <Box key={uuid()}>
+      <Box key={crypto.randomUUID()}>
         <Box sx={sx.entityInformation}>
           <Heading sx={sx.entityHeading} as="h3" fontSize={"xl"}>
             {entityHeading}

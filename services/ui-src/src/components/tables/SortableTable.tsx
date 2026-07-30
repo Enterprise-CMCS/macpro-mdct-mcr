@@ -32,7 +32,6 @@ import { SortableHeadRow, TableContentShape } from "types";
 import downArrowIcon from "assets/icons/icon_arrow_alt_down_solid.png";
 import upArrowIcon from "assets/icons/icon_arrow_alt_up_solid.png";
 import upDownArrowIcon from "assets/icons/icon_arrows_alt_v_solid.png";
-import uuid from "react-uuid";
 
 export const SortableTable = ({
   border,
@@ -45,7 +44,7 @@ export const SortableTable = ({
   ...props
 }: Props) => {
   const headerRefs = useRef<{ [key: string]: HTMLElement }>({});
-  const tableInstanceId = uuid();
+  const tableInstanceId = crypto.randomUUID();
   const [sorting, setSorting] = useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [headerLabels, setHeaderLabels] = useState<{ [key: string]: string }>(

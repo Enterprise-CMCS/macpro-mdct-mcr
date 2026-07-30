@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import uuid from "react-uuid";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
@@ -127,7 +126,7 @@ export const DynamicField = ({
   };
 
   const appendNewRecord = () => {
-    const newEntity = { id: uuid(), name: "" };
+    const newEntity = { id: crypto.randomUUID(), name: "" };
     append(newEntity);
     const newDisplayValues = [...displayValues, newEntity];
     setDisplayValues(newDisplayValues);
@@ -283,7 +282,7 @@ export const DynamicField = ({
     let newDisplayValues = [...displayValues];
     newDisplayValues.splice(index, 1);
     if (newDisplayValues.length === 0) {
-      const newEntity = { id: uuid(), name: "" };
+      const newEntity = { id: crypto.randomUUID(), name: "" };
       append(newEntity);
       newDisplayValues = [newEntity];
     }
