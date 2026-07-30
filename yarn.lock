@@ -12378,7 +12378,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-environment-jsdom@npm:^30.3.0":
+"jest-environment-jsdom@npm:30.4.1":
   version: 30.4.1
   resolution: "jest-environment-jsdom@npm:30.4.1"
   dependencies:
@@ -13451,7 +13451,6 @@ __metadata:
     constructs: "npm:~10.5.0"
     dotenv: "npm:^16.6.1"
     esbuild: "npm:^0.28.1"
-    jest-environment-jsdom: "npm:^30.3.0"
     jsdom: "npm:^26.1.0"
     oxfmt: "npm:^0.24.0"
     oxlint: "npm:^1.41.0"
@@ -15921,7 +15920,7 @@ __metadata:
     html-react-parser: "npm:^3.0.16"
     jest: "npm:30.4.2"
     jest-axe: "npm:^6.0.0"
-    jest-environment-jsdom: "npm:^30.3.0"
+    jest-environment-jsdom: "npm:30.4.1"
     jest-launchdarkly-mock: "npm:^2.0.3"
     launchdarkly-react-client-sdk: "npm:^3.9.3"
     pa11y: "npm:^9.0.0"
