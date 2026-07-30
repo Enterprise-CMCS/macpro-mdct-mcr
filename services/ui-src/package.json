@@ -56,8 +56,8 @@
     "@types/react-helmet": "^6.1.6",
     "@vitejs/plugin-react": "^5.0.3",
     "axe-core": "^4.10.3",
-    "babel-jest": "^30.3.0",
-    "jest": "^30.3.0",
+    "babel-jest": "30.4.1",
+    "jest": "30.4.2",
     "jest-axe": "^6.0.0",
     "jest-environment-jsdom": "^30.3.0",
     "jest-launchdarkly-mock": "^2.0.3",
@@ -66,9 +66,6 @@
     "typescript": "^5.9.3",
     "vite": "8.0.16",
     "vite-tsconfig-paths": "^5.1.4"
-  },
-  "resolutions": {
-    "@tootallnate/once": "^3.0.1"
   },
   "browserslist": {
     "production": [

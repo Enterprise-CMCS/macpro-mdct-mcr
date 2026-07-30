@@ -39,7 +39,7 @@
     "@types/node": "^22.19.0",
     "@types/prompts": "^2.4.9",
     "aws-sdk-client-mock": "~4.1.0",
-    "jest": "30.3.0",
+    "jest": "30.4.2",
     "prompts": "^2.4.2",
     "ts-jest": "29.4.6",
     "ts-node": "^10.9.2",
