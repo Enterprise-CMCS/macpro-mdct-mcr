@@ -8,11 +8,13 @@ import {
   EntityDetailsTableVerbiage,
   EntityShape,
   FormJson,
+  ReportShape,
 } from "types";
 // utils
 import {
   mockEntityDetailsMultiformOverlayJson,
   mockEntityStore,
+  mockNaaarAnalysisMethods,
   mockNaaarReport,
   mockNaaarStandards,
   mockStateUserStore,
@@ -35,10 +37,17 @@ const mockVerbiage = details?.forms![1].verbiage as EntityDetailsTableVerbiage;
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
 
+const reportWithAnalysisMethods = (analysisMethods: any[]) =>
+  ({
+    ...mockNaaarReport,
+    fieldData: { ...mockNaaarReport.fieldData, analysisMethods },
+  }) as ReportShape;
+
 const planComplianceTableOverlayComponent = (
   disabled: boolean = false,
   submitting: boolean = false,
-  selectedEntity: any = mockEntityStore.selectedEntity
+  selectedEntity: any = mockEntityStore.selectedEntity,
+  report: ReportShape = mockNaaarReport
 ) => (
   <RouterWrappedComponent>
     <OverlayProvider>
@@ -53,7 +62,7 @@ const planComplianceTableOverlayComponent = (
         table={mockTable}
         validateOnRender={false}
         verbiage={mockVerbiage}
-        report={mockNaaarReport}
+        report={report}
       />
     </OverlayProvider>
   </RouterWrappedComponent>
@@ -207,6 +216,69 @@ describe("<PlanComplianceTableOverlay />", () => {
         name: "Edit",
       })
     ).toBeVisible();
+  });
+
+  describe("analysis method choices", () => {
+    const openNonComplianceForm = async () => {
+      await act(async () => {
+        await userEvent.click(screen.getByRole("button", { name: "Enter" }));
+      });
+      await act(async () => {
+        await userEvent.click(screen.getByRole("radio", { name: "Mock Yes" }));
+      });
+    };
+
+    test("renders methods applied to the selected plan, even when the stored plan name is stale", async () => {
+      render(
+        planComplianceTableOverlayComponent(
+          undefined,
+          undefined,
+          undefined,
+          reportWithAnalysisMethods(mockNaaarAnalysisMethods)
+        )
+      );
+
+      await openNonComplianceForm();
+
+      expect(
+        screen.getByRole("checkbox", { name: "Mock Method 1" })
+      ).toBeVisible();
+      expect(
+        screen.getByRole("checkbox", { name: "Mock Method 2" })
+      ).toBeVisible();
+    });
+
+    test("explains the empty list when no method applies to both the plan and the standard", async () => {
+      const methodsForAnotherPlan = mockNaaarAnalysisMethods.map((method) => ({
+        ...method,
+        analysis_method_applicable_plans: [
+          {
+            key: "analysis_method_applicable_plans-mock-plan-id-2",
+            value: "mock-plan-1",
+          },
+        ],
+      }));
+
+      render(
+        planComplianceTableOverlayComponent(
+          undefined,
+          undefined,
+          undefined,
+          reportWithAnalysisMethods(methodsForAnotherPlan)
+        )
+      );
+
+      await openNonComplianceForm();
+
+      expect(
+        screen.queryByRole("checkbox", { name: "Mock Method 1" })
+      ).not.toBeInTheDocument();
+      expect(
+        screen.getByText(
+          /No analysis methods apply to both this plan and this standard/
+        )
+      ).toBeVisible();
+    });
   });
 
   test("closes overlay", async () => {

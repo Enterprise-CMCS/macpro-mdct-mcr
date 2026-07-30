@@ -7,12 +7,20 @@ import {
 } from "../../constants";
 // types
 import {
+  AnalysisMethodEntity,
   AnyObject,
+  Choice,
   EntityShape,
   FormJson,
   NaaarStandardsTableShape,
+  ValidationType,
 } from "types";
 import { availableAnalysisMethods } from "./dynamicItemFields";
+
+const applicablePlansPrefix = "analysis_method_applicable_plans-";
+
+// An analysis method reduced to what the compliance form needs to render a choice
+type AnalysisMethodChoice = { id: string; name?: string };
 
 export const hasComplianceDetails = (
   exceptionsNonCompliance: string[],
@@ -31,11 +39,8 @@ export const addAnalysisMethods = (
   form: FormJson,
   standardKeyPrefix: string,
   selectedStandard: EntityShape,
-  createdAnalysisMethods: {
-    analysis_method_applicable_plans: AnyObject[];
-    name: string;
-  }[],
-  selectedPlanName?: string
+  createdAnalysisMethods?: AnalysisMethodEntity[],
+  selectedPlanId?: string
 ) => {
   // First we'll create a copy of the form to make future changes to
   const updatedForm = structuredClone(form);
@@ -55,20 +60,23 @@ export const addAnalysisMethods = (
    * },
    * ]
    */
-  const associatedAnalysisMethodsWithSelectedPlan: AnyObject[] =
-    createdAnalysisMethods?.map((analysisMethod: AnyObject) => {
-      if (!analysisMethod?.analysis_method_applicable_plans) return [];
-      for (const method of analysisMethod.analysis_method_applicable_plans) {
-        if (method.value == selectedPlanName) {
-          return {
+  const isAppliedToSelectedPlan = (analysisMethod: AnalysisMethodEntity) =>
+    (analysisMethod?.analysis_method_applicable_plans ?? []).some(
+      (plan) =>
+        typeof plan?.key === "string" &&
+        plan.key.split(applicablePlansPrefix).pop() === selectedPlanId
+    );
+
+  const associatedAnalysisMethodsWithSelectedPlan: AnalysisMethodChoice[] =
+    selectedPlanId
+      ? (createdAnalysisMethods ?? [])
+          .filter(isAppliedToSelectedPlan)
+          .map((analysisMethod) => ({
             id: analysisMethod.id,
             name:
               analysisMethod.custom_analysis_method_name ?? analysisMethod.name,
-          };
-        }
-      }
-      return [];
-    });
+          }))
+      : [];
 
   // Step 2: Grab all the Analysis Methods associated with the selected Standard
   /*
@@ -81,7 +89,7 @@ export const addAnalysisMethods = (
    * }
    * ]
    */
-  let utilizedAnalysisMethodsWithSelectedStandard: AnyObject[] = [];
+  let utilizedAnalysisMethodsWithSelectedStandard: Choice[] = [];
   const analysisMethodsKey = Object.keys(selectedStandard).find((key) =>
     key.startsWith("standard_analysisMethodsUtilized-")
   );
@@ -102,12 +110,13 @@ export const addAnalysisMethods = (
    * ]
    * Since Geomapping is an Analysis Method in both the Plan and the Standard
    */
-  const associatedMethodsBetweenStandardsAndPlan =
-    associatedAnalysisMethodsWithSelectedPlan?.filter((plan) =>
-      utilizedAnalysisMethodsWithSelectedStandard?.some((standard) =>
-        standard?.key?.endsWith(plan.id)
+  const associatedMethodsBetweenStandardsAndPlan = analysisMethodsKey
+    ? associatedAnalysisMethodsWithSelectedPlan.filter((method) =>
+        utilizedAnalysisMethodsWithSelectedStandard?.some(
+          (standard) => standard?.key === `${analysisMethodsKey}-${method.id}`
+        )
       )
-    );
+    : [];
 
   // Step 4: Go through and find any associated questions relating to the Analysis Methods and inject those choices into the form
   /*
@@ -128,11 +137,25 @@ export const addAnalysisMethods = (
         `${standardKeyPrefix}-${selectedStandard.id}-nonComplianceAnalyses`
       ) {
         // creating and injecting the analysis method choices into the form
-        obj.props.choices = availableAnalysisMethods(
+        const choices = availableAnalysisMethods(
           obj.id,
           associatedMethodsBetweenStandardsAndPlan,
           obj.props.choices
         );
+        obj.props.choices = choices;
+
+        if (choices.length === 0) {
+          /*
+           * No analysis method is applied to both this plan (I.D) and this standard (II).
+           * Rendering zero checkboxes under a required schema makes the form unsubmittable
+           * with no visible control, so downgrade to optional and explain the empty list.
+           */
+          obj.validation = ValidationType.CHECKBOX_OPTIONAL;
+          obj.props.hint =
+            "No analysis methods apply to both this plan and this standard. " +
+            "To report analyses here, return to “I.D Analysis methods” to apply a method to this plan, " +
+            "or to “II. Program-level access and network adequacy standards” to update the methods used for this standard.";
+        }
       }
     });
   }

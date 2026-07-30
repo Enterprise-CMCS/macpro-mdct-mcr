@@ -218,8 +218,8 @@ export const mockNaaarAnalysisMethods: EntityShape[] = [
     name: "Mock Method 1",
     analysis_method_applicable_plans: [
       {
-        key: "mock-plan-id-1",
-        name: "mock-plan-1",
+        key: "analysis_method_applicable_plans-mock-plan-id-1",
+        value: "mock-plan-1",
       },
     ],
   },
@@ -228,8 +228,8 @@ export const mockNaaarAnalysisMethods: EntityShape[] = [
     name: "Mock Method 2",
     analysis_method_applicable_plans: [
       {
-        key: "mock-plan-id-1",
-        name: "mock-plan-1",
+        key: "analysis_method_applicable_plans-mock-plan-id-1",
+        value: "mock-plan-1",
       },
     ],
   },

@@ -1090,7 +1090,7 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
                         validation: "textOptional",
                       },
                       {
-                        id: "planCompliance43868_standard-mockStandard-nonComplianceAnalyses",
+                        id: "planCompliance43868_standard-nonComplianceAnalyses",
                         type: "checkbox",
                         validation: "checkboxOneOptional",
                         props: {
