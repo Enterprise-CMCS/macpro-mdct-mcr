@@ -1,7 +1,11 @@
 import { expect, test } from "./fixtures/base";
 import { archiveAllReportsForState } from "../utils/requests";
 import { stateAbbreviation } from "../utils";
-import { mlrEligibilityGroups, mlrProgramTypes } from "../utils/consts";
+import {
+  mlrEligibilityGroups,
+  mlrProgramTypes,
+  tnMlrPrograms,
+} from "../utils/consts";
 import { faker } from "@faker-js/faker";
 
 test.describe("MLR Dashboard Page", () => {
@@ -70,7 +74,7 @@ test.describe("MLR Dashboard Page", () => {
       );
       await statePage.addMLRProgramReportInfo(
         "TestPlan",
-        "TestProgram",
+        tnMlrPrograms[0],
         mlrProgramTypes[0],
         mlrEligibilityGroups[0],
         faker.date.recent().toLocaleDateString("en-US", {

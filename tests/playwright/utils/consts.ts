@@ -64,6 +64,13 @@ export const naaarNonCompliantAssurance = {
     "No, the plan does not comply with all standards based on all analyses or exceptions granted",
 };
 
+export const tnMlrPrograms = [
+  "CoverKids Program",
+  "TennCare",
+  "TennCare Dental",
+  "TennCare Select",
+];
+
 export const mlrProgramTypes = [
   "Comprehensive MCO",
   "PIHP",

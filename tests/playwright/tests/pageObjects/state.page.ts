@@ -474,8 +474,8 @@ export class StatePage extends BasePage {
     await dialog.waitFor({ state: "visible" });
     await dialog.locator('input[name="report_planName"]').fill(planName);
     await dialog
-      .locator('textarea[name="report_programName"]')
-      .fill(programName);
+      .locator(`input[name="report_programNameList"][value="${programName}"]`)
+      .check();
     await dialog
       .locator(`input[name="report_programType"][value="${programType}"]`)
       .check();
