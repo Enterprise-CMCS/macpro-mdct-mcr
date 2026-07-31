@@ -7,7 +7,6 @@ import {
 } from "../../constants";
 // types
 import {
-  Choice,
   EntityShape,
   FormField,
   FormJson,
@@ -370,22 +369,12 @@ describe("utils/forms/naaarPlanCompliance", () => {
       );
     });
 
-    test("should ignore methods without usable applicable plan data", () => {
+    test("should ignore methods not yet applied to any plan", () => {
       const result = addAnalysisMethods(
         mockForm(),
         standardKeyPrefix,
         selectedStandard,
-        [
-          { id: "mockUUID1", name: "Geomapping" },
-          {
-            id: "mockUUID1",
-            name: "Geomapping",
-            // intentionally malformed (no `key`) to exercise the runtime guard
-            analysis_method_applicable_plans: [
-              { value: "Stale Plan Name" },
-            ] as Choice[],
-          },
-        ],
+        [{ id: "mockUUID1", name: "Geomapping" }],
         plan1Id
       );
 

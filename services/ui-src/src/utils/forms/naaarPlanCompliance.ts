@@ -62,9 +62,7 @@ export const addAnalysisMethods = (
    */
   const isAppliedToSelectedPlan = (analysisMethod: AnalysisMethodEntity) =>
     (analysisMethod?.analysis_method_applicable_plans ?? []).some(
-      (plan) =>
-        typeof plan?.key === "string" &&
-        plan.key.split(applicablePlansPrefix).pop() === selectedPlanId
+      (plan) => plan.key.split(applicablePlansPrefix).pop() === selectedPlanId
     );
 
   const associatedAnalysisMethodsWithSelectedPlan: AnalysisMethodChoice[] =
