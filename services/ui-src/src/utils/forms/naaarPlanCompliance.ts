@@ -93,14 +93,11 @@ export const addAnalysisMethods = (
    * }
    * ]
    */
-  let utilizedAnalysisMethodsWithSelectedStandard: Choice[] = [];
   const analysisMethodsKey = Object.keys(selectedStandard).find((key) =>
     key.startsWith("standard_analysisMethodsUtilized-")
   );
-  if (analysisMethodsKey) {
-    utilizedAnalysisMethodsWithSelectedStandard =
-      selectedStandard[analysisMethodsKey];
-  }
+  const utilizedAnalysisMethodsWithSelectedStandard: Choice[] =
+    analysisMethodsKey ? (selectedStandard[analysisMethodsKey] ?? []) : [];
 
   // Step 3: Grab the intersection of Analysis Methods associated with Plans and Standards
   /*
@@ -114,13 +111,12 @@ export const addAnalysisMethods = (
    * ]
    * Since Geomapping is an Analysis Method in both the Plan and the Standard
    */
-  const associatedMethodsBetweenStandardsAndPlan = analysisMethodsKey
-    ? associatedAnalysisMethodsWithSelectedPlan.filter((method) =>
-        utilizedAnalysisMethodsWithSelectedStandard?.some(
-          (standard) => standard?.key === `${analysisMethodsKey}-${method.id}`
-        )
+  const associatedMethodsBetweenStandardsAndPlan =
+    associatedAnalysisMethodsWithSelectedPlan.filter((method) =>
+      utilizedAnalysisMethodsWithSelectedStandard.some(
+        (standard) => standard.key === `${analysisMethodsKey}-${method.id}`
       )
-    : [];
+    );
 
   // Step 4: Go through and find any associated questions relating to the Analysis Methods and inject those choices into the form
   /*
