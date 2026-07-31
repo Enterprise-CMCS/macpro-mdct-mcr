@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { expect, Page } from "@playwright/test";
 import { BasePage } from "./base.page";
 
 export class StatePage extends BasePage {
@@ -495,10 +495,9 @@ export class StatePage extends BasePage {
         `input[name="report_reportingPeriodDiscrepancy"][value="${reportingPeriodDiscrepancy}"]`
       )
       .check();
-    const putResponse = this.waitForResponse("/reports/MLR/", "PUT", 200);
-    Promise.all([
+    await Promise.all([
+      this.waitForResponse("/reports/MLR/", "PUT", 200),
       dialog.getByRole("button", { name: "Save" }).click(),
-      putResponse,
       dialog.waitFor({ state: "hidden" }),
     ]);
   }
@@ -531,7 +530,17 @@ export class StatePage extends BasePage {
         `input[name="report_contractIncludesMlrRemittanceRequirement"][value="${contractIncludesRemittance}"]`
       )
       .check();
-    await this.page.getByRole("button", { name: "Save & return" }).click();
+    /*
+     * "Save & return" is what actually persists the plan's MLR data. It has to
+     * be awaited here: the MLR Reporting page's "Continue" is navigation-only
+     * (ReportPageFooter gets no form prop), so nothing downstream will wait for
+     * this write, and submitting before it lands makes the API reject with 409
+     * REPORT_INCOMPLETE.
+     */
+    await Promise.all([
+      this.waitForResponse("/reports/MLR/", "PUT", 200),
+      this.page.getByRole("button", { name: "Save & return" }).click(),
+    ]);
   }
 
   async goToMlrReportSubmissionForm(mlrProgramName: string) {
@@ -546,7 +555,16 @@ export class StatePage extends BasePage {
   }
 
   async submitMlrReport() {
-    await this.page.getByRole("button", { name: "Submit MLR" }).click();
+    /*
+     * ReviewSubmitPage snapshots its error state from the DOM once on mount, so
+     * if any section is still incomplete when it renders, "Submit MLR" stays
+     * disabled for the life of the page. Asserting first turns that into a
+     * 15s "expected enabled" failure instead of a click that silently waits out
+     * the whole 60s test timeout.
+     */
+    const submitButton = this.page.getByRole("button", { name: "Submit MLR" });
+    await expect(submitButton).toBeEnabled();
+    await submitButton.click();
     // There is an intermittent unexplained 409 conflict returned from the MLR submission POST
     const postResponseAfterSubmit = this.page.waitForResponse(
       async (response) => {
