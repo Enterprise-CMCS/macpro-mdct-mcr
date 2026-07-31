@@ -150,9 +150,7 @@ export const addAnalysisMethods = (
            */
           obj.validation = ValidationType.CHECKBOX_OPTIONAL;
           obj.props.hint =
-            "No analysis methods apply to both this plan and this standard. " +
-            "To report analyses here, return to “I.D Analysis methods” to apply a method to this plan, " +
-            "or to “II. Program-level access and network adequacy standards” to update the methods used for this standard.";
+            "No analysis methods apply to both this plan and this standard. To report analyses here, return to “I.D Analysis methods” to apply a method to this plan, or to “II. Program-level access and network adequacy standards” to update the methods used for this standard.";
         }
       }
     });
