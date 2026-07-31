@@ -6,7 +6,14 @@ import { adminUserAuth, stateName, stateUserAuth } from "../../utils/consts";
 import { AdminPage } from "../pageObjects/admin.page";
 import { StatePage } from "../pageObjects/state.page";
 import { postReport, archiveReport, putReport } from "../../utils/requests";
-import { newMlr, fillMlr, newMcpar } from "../../../seeds/fixtures";
+import {
+  newMlr,
+  fillMlr,
+  newMcpar,
+  newNaaar,
+  fillNaaar,
+  naaarSeedPlanName,
+} from "../../../seeds/fixtures";
 import { stateAbbreviation } from "../../utils";
 
 type CustomFixtures = {
@@ -19,6 +26,9 @@ type CustomFixtures = {
   inProgressMlrProgramName: string;
   mcparProgramName: string;
   archivedMcparProgramName: string;
+  naaarProgramName: string;
+  archivedNaaarProgramName: string;
+  inProgressNaaarProgramName: string;
 };
 
 export const test = base.extend<CustomFixtures>({
@@ -83,6 +93,27 @@ export const test = base.extend<CustomFixtures>({
     const reportData = newMcpar({}, stateName, stateAbbreviation);
     const response = await postReport("MCPAR", reportData, stateAbbreviation);
     await archiveReport("MCPAR", stateAbbreviation, response.id);
+    await use(reportData.metadata.programName);
+  },
+
+  naaarProgramName: async ({}, use) => {
+    const reportData = newNaaar({}, stateName, stateAbbreviation);
+    await postReport("NAAAR", reportData, stateAbbreviation);
+    await use(reportData.metadata.programName);
+  },
+
+  archivedNaaarProgramName: async ({}, use) => {
+    const reportData = newNaaar({}, stateName, stateAbbreviation);
+    const response = await postReport("NAAAR", reportData, stateAbbreviation);
+    await archiveReport("NAAAR", stateAbbreviation, response.id);
+    await use(reportData.metadata.programName);
+  },
+
+  inProgressNaaarProgramName: async ({}, use) => {
+    const reportData = newNaaar({}, stateName, stateAbbreviation);
+    const response = await postReport("NAAAR", reportData, stateAbbreviation);
+    const naaarReportPut = fillNaaar({}, { planName: naaarSeedPlanName });
+    await putReport("NAAAR", naaarReportPut, stateAbbreviation, response.id);
     await use(reportData.metadata.programName);
   },
 });

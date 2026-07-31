@@ -10,6 +10,12 @@ import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
 const analysisMethods = [...DEFAULT_ANALYSIS_METHODS];
 
+/**
+ * Plan name used by seeded in-progress NAAAR reports, so e2e specs can address
+ * the plan without having to read it back out of the DOM.
+ */
+export const naaarSeedPlanName = "Automation Plan";
+
 export const newNaaar = (
   flags: { [key: string]: true },
   stateName: string,
@@ -118,12 +124,13 @@ export const newNaaarNewProgram = (
   return newNaaar(flags, stateName, state, { isNewProgram: true });
 };
 
-export const fillNaaar = (flags: {
-  [key: string]: true;
-}): SeedFillReportShape => {
+export const fillNaaar = (
+  flags: { [key: string]: true },
+  options: { planName?: string } = {}
+): SeedFillReportShape => {
   const planId = crypto.randomUUID();
   const standardId = crypto.randomUUID();
-  const planName = faker.animal.cat();
+  const planName = options.planName ?? faker.animal.cat();
   const providerTypeId = "UZK4hxPVnuYGcIgNzYFHCk";
   const standardTypeId = "kIrheUXLpOwF7OEypso8Ylhs";
 

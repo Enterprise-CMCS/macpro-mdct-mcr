@@ -2,6 +2,8 @@ import { Page } from "@playwright/test";
 import { formatDate } from "../../utils/date-helpers";
 import { BasePage } from "./base.page";
 
+type ReportType = "MCPAR" | "MLR" | "NAAAR";
+
 export class AdminPage extends BasePage {
   constructor(page: Page) {
     super(page);
@@ -13,7 +15,7 @@ export class AdminPage extends BasePage {
 
   async navigateToReportDashboard(
     stateAbbreviation: string,
-    reportType: "MCPAR" | "MLR" | "NAAAR"
+    reportType: ReportType
   ) {
     await this.page.goto("/");
     await this.page
@@ -35,21 +37,21 @@ export class AdminPage extends BasePage {
     ]);
   }
 
-  async archiveMCPAR(programName: string) {
+  async archiveReport(reportType: ReportType, programName: string) {
     const reportRow = await this.getReportRow(programName);
     await Promise.all([
-      this.waitForResponse("/reports/archive/MCPAR/", "PUT", 200),
-      this.waitForResponse("/reports/MCPAR/", "GET", 200),
-      reportRow.getByRole("button", { name: /Archive/ }).click(),
+      this.waitForResponse(`/reports/archive/${reportType}/`, "PUT", 200),
+      this.waitForResponse(`/reports/${reportType}/`, "GET", 200),
+      reportRow.getByRole("button", { name: /^Archive/ }).click(),
     ]);
   }
 
-  async unarchiveMCPAR(programName: string) {
+  async unarchiveReport(reportType: ReportType, programName: string) {
     const reportRow = await this.getReportRow(programName);
     await Promise.all([
-      this.waitForResponse("/reports/archive/MCPAR/", "PUT", 200),
-      this.waitForResponse("/reports/MCPAR/", "GET", 200),
-      reportRow.getByRole("button", { name: /Unarchive/ }).click(),
+      this.waitForResponse(`/reports/archive/${reportType}/`, "PUT", 200),
+      this.waitForResponse(`/reports/${reportType}/`, "GET", 200),
+      reportRow.getByRole("button", { name: /^Unarchive/ }).click(),
     ]);
   }
 
