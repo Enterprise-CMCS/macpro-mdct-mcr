@@ -64,7 +64,7 @@ export const newNaaar = (
   const { isNewProgram } = options;
 
   const planIndex = randomIndex(enums.planTypeIncludedInProgram.length);
-  const generatedProgramName = `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`;
+  const generatedProgramName = `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}${new Date().toISOString()}`;
 
   // Pick an existing program name
   const existingPrograms =
@@ -72,8 +72,16 @@ export const newNaaar = (
   const existingProgramName =
     existingPrograms[randomIndex(existingPrograms.length)].label;
 
-  // Check for new program name
-  const programName = isNewProgram ? generatedProgramName : existingProgramName;
+  /*
+   * Check for new program name. Both paths are timestamped, as in newMcpar:
+   * admins see archived reports, so the admin dashboard accumulates every
+   * report ever seeded and can never be cleaned up between runs. Without this,
+   * row lookups by program name match reports left over from earlier runs, and
+   * TN only has four NAAAR programs to draw from.
+   */
+  const programName = isNewProgram
+    ? generatedProgramName
+    : `${existingProgramName}${new Date().toISOString()}`;
   const existingProgramNameSelection = isNewProgram
     ? undefined
     : { value: existingProgramName, label: "existingProgramNameSelection" };
