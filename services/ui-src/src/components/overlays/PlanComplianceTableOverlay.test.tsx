@@ -43,22 +43,25 @@ const reportWithAnalysisMethods = (analysisMethods: any[]) =>
     fieldData: { ...mockNaaarReport.fieldData, analysisMethods },
   }) as ReportShape;
 
-const planComplianceTableOverlayComponent = (
-  disabled: boolean = false,
-  submitting: boolean = false,
-  selectedEntity: any = mockEntityStore.selectedEntity,
-  report: ReportShape = mockNaaarReport
-) => (
+interface OverlayOverrides {
+  selectedEntity?: EntityShape;
+  report?: ReportShape;
+}
+
+const planComplianceTableOverlayComponent = ({
+  selectedEntity = mockEntityStore.selectedEntity,
+  report = mockNaaarReport,
+}: OverlayOverrides = {}) => (
   <RouterWrappedComponent>
     <OverlayProvider>
       <PlanComplianceTableOverlay
         closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
-        disabled={disabled}
+        disabled={false}
         standards={mockNaaarStandards}
         form={mockForm}
         onSubmit={mockOnSubmit}
         selectedEntity={selectedEntity}
-        submitting={submitting}
+        submitting={false}
         table={mockTable}
         validateOnRender={false}
         verbiage={mockVerbiage}
@@ -141,11 +144,9 @@ describe("<PlanComplianceTableOverlay />", () => {
     } as EntityShape;
 
     render(
-      planComplianceTableOverlayComponent(
-        undefined,
-        undefined,
-        mockSelectedEntity
-      )
+      planComplianceTableOverlayComponent({
+        selectedEntity: mockSelectedEntity,
+      })
     );
 
     // Table
@@ -198,11 +199,9 @@ describe("<PlanComplianceTableOverlay />", () => {
     } as EntityShape;
 
     render(
-      planComplianceTableOverlayComponent(
-        undefined,
-        undefined,
-        mockSelectedEntity
-      )
+      planComplianceTableOverlayComponent({
+        selectedEntity: mockSelectedEntity,
+      })
     );
 
     // Table
@@ -230,12 +229,9 @@ describe("<PlanComplianceTableOverlay />", () => {
 
     test("renders methods applied to the selected plan, even when the stored plan name is stale", async () => {
       render(
-        planComplianceTableOverlayComponent(
-          undefined,
-          undefined,
-          undefined,
-          reportWithAnalysisMethods(mockNaaarAnalysisMethods)
-        )
+        planComplianceTableOverlayComponent({
+          report: reportWithAnalysisMethods(mockNaaarAnalysisMethods),
+        })
       );
 
       await openNonComplianceForm();
@@ -260,12 +256,9 @@ describe("<PlanComplianceTableOverlay />", () => {
       }));
 
       render(
-        planComplianceTableOverlayComponent(
-          undefined,
-          undefined,
-          undefined,
-          reportWithAnalysisMethods(methodsForAnotherPlan)
-        )
+        planComplianceTableOverlayComponent({
+          report: reportWithAnalysisMethods(methodsForAnotherPlan),
+        })
       );
 
       await openNonComplianceForm();
