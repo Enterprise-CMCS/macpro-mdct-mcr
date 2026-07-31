@@ -22,6 +22,21 @@ const applicablePlansPrefix = "analysis_method_applicable_plans-";
 // An analysis method reduced to what the compliance form needs to render a choice
 type AnalysisMethodChoice = { id: string; name?: string };
 
+const isAppliedToPlan = (
+  analysisMethod: AnalysisMethodEntity,
+  planId: string
+) =>
+  (analysisMethod.analysis_method_applicable_plans ?? []).some(
+    (plan) => plan.key === `${applicablePlansPrefix}${planId}`
+  );
+
+const toAnalysisMethodChoice = (
+  analysisMethod: AnalysisMethodEntity
+): AnalysisMethodChoice => ({
+  id: analysisMethod.id,
+  name: analysisMethod.custom_analysis_method_name ?? analysisMethod.name,
+});
+
 export const hasComplianceDetails = (
   exceptionsNonCompliance: string[],
   standardKeyPrefix: string,
@@ -39,7 +54,7 @@ export const addAnalysisMethods = (
   form: FormJson,
   standardKeyPrefix: string,
   selectedStandard: EntityShape,
-  createdAnalysisMethods?: AnalysisMethodEntity[],
+  createdAnalysisMethods: AnalysisMethodEntity[] = [],
   selectedPlanId?: string
 ) => {
   // First we'll create a copy of the form to make future changes to
@@ -60,20 +75,11 @@ export const addAnalysisMethods = (
    * },
    * ]
    */
-  const isAppliedToSelectedPlan = (analysisMethod: AnalysisMethodEntity) =>
-    (analysisMethod?.analysis_method_applicable_plans ?? []).some(
-      (plan) => plan.key.split(applicablePlansPrefix).pop() === selectedPlanId
-    );
-
   const associatedAnalysisMethodsWithSelectedPlan: AnalysisMethodChoice[] =
     selectedPlanId
-      ? (createdAnalysisMethods ?? [])
-          .filter(isAppliedToSelectedPlan)
-          .map((analysisMethod) => ({
-            id: analysisMethod.id,
-            name:
-              analysisMethod.custom_analysis_method_name ?? analysisMethod.name,
-          }))
+      ? createdAnalysisMethods
+          .filter((method) => isAppliedToPlan(method, selectedPlanId))
+          .map(toAnalysisMethodChoice)
       : [];
 
   // Step 2: Grab all the Analysis Methods associated with the selected Standard
