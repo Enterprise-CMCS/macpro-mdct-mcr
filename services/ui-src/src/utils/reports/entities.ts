@@ -14,7 +14,6 @@ import {
   translate,
 } from "utils";
 import { getFormattedPlanData } from "./entities.plans";
-import uuid from "react-uuid";
 
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   return otherSpecify(
@@ -119,7 +118,7 @@ export const getMeasureResults = (
             notReporting: true,
             notReportingReason: [
               {
-                key: `measure_isNotReportingReason-${uuid()}`,
+                key: `measure_isNotReportingReason-${crypto.randomUUID()}`,
                 value: notReportingReason,
               },
             ],

@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import uuid from "react-uuid";
 // components
 import {
   DropdownChangeObject,
@@ -231,7 +230,7 @@ export const DropdownField = ({
         {...props}
       >
         {formattedOptions.map((option: DropdownOptions) => (
-          <option key={uuid()} value={option.value}>
+          <option key={crypto.randomUUID()} value={option.value}>
             {option.label}
           </option>
         ))}

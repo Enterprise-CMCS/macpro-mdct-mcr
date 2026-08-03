@@ -233,6 +233,12 @@ describe("availableAnalysisMethods for NAAAR plan compliance", () => {
       },
     ]);
   });
+  it("should return no choices when no items are available", () => {
+    const mockObjectId =
+      "planCompliance43868_standard-id-nonComplianceAnalyses";
+    const result = availableAnalysisMethods(mockObjectId, [], mockNestedForms);
+    expect(result).toEqual([]);
+  });
   it("should append a child form if the item is Geomapping", () => {
     const mockObjectId =
       "planCompliance43868_standard-id-nonComplianceAnalyses";

@@ -1,5 +1,4 @@
 import { ComponentClass, useContext, useEffect, useState } from "react";
-import uuid from "react-uuid";
 import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import { Box, Button, Image, Heading, useDisclosure } from "@chakra-ui/react";
@@ -209,7 +208,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
 
       const newEntity = {
-        ...(selectedEntity || { id: uuid() }),
+        ...(selectedEntity || { id: crypto.randomUUID() }),
         ...filteredFormData,
       };
 
