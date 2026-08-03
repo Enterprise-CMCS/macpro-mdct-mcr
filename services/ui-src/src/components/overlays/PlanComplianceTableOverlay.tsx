@@ -98,7 +98,7 @@ export const PlanComplianceTableOverlay = ({
         standardKeyPrefix,
         entity,
         report?.fieldData.analysisMethods,
-        selectedEntity?.name
+        selectedEntity?.id
       );
     }
 

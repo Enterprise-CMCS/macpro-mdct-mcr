@@ -6,7 +6,12 @@ import {
   planComplianceStandardKey,
 } from "../../constants";
 // types
-import { EntityShape, FormJson, NaaarStandardsTableShape } from "types";
+import {
+  EntityShape,
+  FormField,
+  FormJson,
+  NaaarStandardsTableShape,
+} from "types";
 // utils
 import {
   addAnalysisMethods,
@@ -172,67 +177,232 @@ describe("utils/forms/naaarPlanCompliance", () => {
   });
 
   describe("addAnalysisMethods", () => {
-    test("should inject associated analysis methods into the correct form field", () => {
-      const mockForm = {
-        id: "mockId",
-        fields: [
-          {
-            id: "planCompliance43868-standard-id-nonComplianceAnalyses",
+    const standardKeyPrefix = "planCompliance43868";
+    const entityId = "standard-id";
+    const analysisMethodsFieldId =
+      "standard_analysisMethodsUtilized-mockStandardTypeId";
+    const nonComplianceAnalysesId = `${standardKeyPrefix}-${entityId}-nonComplianceAnalyses`;
+    const applicablePlansPrefix = "analysis_method_applicable_plans-";
+    const plan1Id = "mock-plan-id-1";
+    const plan2Id = "mock-plan-id-2";
+
+    const mockForm = () => ({
+      id: "mockId",
+      fields: [
+        {
+          id: nonComplianceAnalysesId,
+          type: "checkbox",
+          validation: {
             type: "checkbox",
-            props: {
-              choices: [
-                {
-                  label: "Geomapping",
-                  children: [],
-                },
-              ],
-            },
+            nested: true,
+            parentFieldName: "planCompliance43868_standard",
+            parentOptionId: "mockParentOptionId",
           },
-        ],
-      };
-
-      const standardKeyPrefix = "planCompliance43868";
-      const entityId = "standard-id";
-      const selectedPlanName = "Plan 1";
-
-      const createdAnalysisMethods = [
-        {
-          id: "mockUUID1",
-          name: "Geomapping",
-          analysis_method_applicable_plans: [{ value: "Plan 1" }],
-        },
-        {
-          id: "mockUUID2",
-          name: "MockItem2",
-          analysis_method_applicable_plans: [{ value: "Plan 2" }],
-        },
-      ];
-
-      const selectedStandard = {
-        id: "standard-id",
-        [`standard_analysisMethodsUtilized-${entityId}-mockUUID1`]: [
-          {
-            key: `standard_analysisMethodsUtilized-${entityId}-mockUUID1`,
-            value: "Geomapping",
+          props: {
+            hint: "Indicate which analyses reflect the deficiencies.",
+            choices: [
+              {
+                label: "Geomapping",
+                children: [],
+              },
+            ],
           },
-        ],
-      };
+        },
+      ],
+    });
 
+    // Applied to plan 1, with a stale display value (the plan has since been renamed)
+    const geomapping = {
+      id: "mockUUID1",
+      name: "Geomapping",
+      analysis_method_applicable_plans: [
+        { key: `${applicablePlansPrefix}${plan1Id}`, value: "Stale Plan Name" },
+      ],
+    };
+
+    // Applied to plan 2 only
+    const otherMethod = {
+      id: "mockUUID2",
+      name: "MockItem2",
+      analysis_method_applicable_plans: [
+        { key: `${applicablePlansPrefix}${plan2Id}`, value: "Plan 2" },
+      ],
+    };
+
+    const selectedStandard = {
+      id: entityId,
+      [analysisMethodsFieldId]: [
+        {
+          key: `${analysisMethodsFieldId}-mockUUID1`,
+          value: "Geomapping",
+        },
+      ],
+    };
+
+    const geomappingChoice = {
+      id: `${nonComplianceAnalysesId}_mockUUID1`,
+      label: "Geomapping",
+      children: expect.any(Array),
+    };
+
+    test("should inject associated analysis methods into the correct form field", () => {
       const result = addAnalysisMethods(
-        mockForm,
+        mockForm(),
         standardKeyPrefix,
         selectedStandard,
-        createdAnalysisMethods,
-        selectedPlanName
+        [geomapping, otherMethod],
+        plan1Id
+      );
+
+      expect(result.fields[0]?.props?.choices).toEqual([geomappingChoice]);
+    });
+
+    test("should match applicable plans by id even when the stored plan name is stale", () => {
+      const result = addAnalysisMethods(
+        mockForm(),
+        standardKeyPrefix,
+        selectedStandard,
+        [
+          {
+            ...geomapping,
+            analysis_method_applicable_plans: [
+              {
+                key: `${applicablePlansPrefix}${plan1Id}`,
+                value: "A Name No Plan Has",
+              },
+            ],
+          },
+        ],
+        plan1Id
+      );
+
+      expect(result.fields[0]?.props?.choices).toEqual([geomappingChoice]);
+    });
+
+    test("should match plan ids containing dashes", () => {
+      const dashedPlanId = "6235f12-4b1a-4c3d-9e8f-38a36a8d7e8c";
+      const result = addAnalysisMethods(
+        mockForm(),
+        standardKeyPrefix,
+        selectedStandard,
+        [
+          {
+            ...geomapping,
+            analysis_method_applicable_plans: [
+              {
+                key: `${applicablePlansPrefix}${dashedPlanId}`,
+                value: "Stale Plan Name",
+              },
+            ],
+          },
+        ],
+        dashedPlanId
+      );
+
+      expect(result.fields[0]?.props?.choices).toEqual([geomappingChoice]);
+    });
+
+    test("should use the custom analysis method name when present", () => {
+      const result = addAnalysisMethods(
+        mockForm(),
+        standardKeyPrefix,
+        selectedStandard,
+        [{ ...geomapping, custom_analysis_method_name: "Mock Custom Method" }],
+        plan1Id
       );
 
       expect(result.fields[0]?.props?.choices).toEqual([
         {
-          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID1",
-          label: "Geomapping",
-          children: expect.any(Array),
+          id: `${nonComplianceAnalysesId}_mockUUID1`,
+          label: "Mock Custom Method",
         },
       ]);
+    });
+
+    test("should exclude methods applied to a different plan", () => {
+      const result = addAnalysisMethods(
+        mockForm(),
+        standardKeyPrefix,
+        {
+          id: entityId,
+          [analysisMethodsFieldId]: [
+            { key: `${analysisMethodsFieldId}-mockUUID1`, value: "Geomapping" },
+            { key: `${analysisMethodsFieldId}-mockUUID2`, value: "MockItem2" },
+          ],
+        },
+        [geomapping, otherMethod],
+        plan1Id
+      );
+
+      expect(result.fields[0]?.props?.choices).toEqual([geomappingChoice]);
+    });
+
+    test("should make the field optional and explain when no methods apply", () => {
+      const result = addAnalysisMethods(
+        mockForm(),
+        standardKeyPrefix,
+        selectedStandard,
+        [otherMethod],
+        plan1Id
+      );
+
+      const field = result.fields[0] as FormField;
+      expect(field?.props?.choices).toEqual([]);
+      expect(field?.validation).toBe("checkboxOptional");
+      expect(field?.props?.hint).toContain(
+        "No analysis methods apply to both this plan and this standard."
+      );
+    });
+
+    test("should return no choices when no plan is selected", () => {
+      const result = addAnalysisMethods(
+        mockForm(),
+        standardKeyPrefix,
+        selectedStandard,
+        [geomapping, otherMethod],
+        undefined
+      );
+
+      expect(result.fields[0]?.props?.choices).toEqual([]);
+      expect((result.fields[0] as FormField)?.validation).toBe(
+        "checkboxOptional"
+      );
+    });
+
+    test("should ignore methods not yet applied to any plan", () => {
+      const result = addAnalysisMethods(
+        mockForm(),
+        standardKeyPrefix,
+        selectedStandard,
+        [{ id: "mockUUID1", name: "Geomapping" }],
+        plan1Id
+      );
+
+      expect(result.fields[0]?.props?.choices).toEqual([]);
+    });
+
+    test("should return no choices when there are no analysis methods", () => {
+      const result = addAnalysisMethods(
+        mockForm(),
+        standardKeyPrefix,
+        selectedStandard,
+        undefined,
+        plan1Id
+      );
+
+      expect(result.fields[0]?.props?.choices).toEqual([]);
+    });
+
+    test("should return no choices when the standard utilizes no analysis methods", () => {
+      const result = addAnalysisMethods(
+        mockForm(),
+        standardKeyPrefix,
+        { id: entityId },
+        [geomapping],
+        plan1Id
+      );
+
+      expect(result.fields[0]?.props?.choices).toEqual([]);
     });
   });
 

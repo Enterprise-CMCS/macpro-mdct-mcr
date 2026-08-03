@@ -7,7 +7,13 @@ import {
 import { mcparQualityMeasuresList } from "../data/mcparQualityMeasuresList";
 import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplates";
 import s3Lib, { getFieldDataKey } from "../s3/s3-lib";
-import { AnyObject, EntityType, ReportType, State } from "../types";
+import {
+  AnyObject,
+  EntityShape,
+  EntityType,
+  ReportType,
+  State,
+} from "../types";
 
 /**
  *
@@ -147,3 +153,16 @@ export function cleanupOtherTextFields(fieldData: AnyObject): AnyObject {
   }
   return fieldDataCopy;
 }
+
+export const getPlansNotExemptFromQualityMeasures = (
+  plans: EntityShape[] = [],
+  exemptPlans: AnyObject[] = []
+): EntityShape[] => {
+  const exemptedPlanIds = exemptPlans.map((exemption) =>
+    exemption.key.replace("plansExemptFromQualityMeasures-", "")
+  );
+
+  return plans.filter(
+    (plan: EntityShape) => !exemptedPlanIds.includes(plan.id)
+  );
+};
