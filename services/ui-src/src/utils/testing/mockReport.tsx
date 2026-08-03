@@ -402,7 +402,7 @@ export const mockNaaarReportFieldData = {
       ],
       analysis_method_applicable_plans: [
         {
-          key: "analysis_method_applicable_plans-mock-id1",
+          key: "analysis_method_applicable_plans-id1",
           value: "plan",
         },
       ],
@@ -419,7 +419,7 @@ export const mockNaaarReportFieldData = {
       ],
       analysis_method_applicable_plans: [
         {
-          key: "analysis_method_applicable_plans-mock-id2",
+          key: "analysis_method_applicable_plans-id2",
           value: "1",
         },
       ],
