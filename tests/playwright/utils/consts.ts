@@ -37,6 +37,40 @@ export const tnMcparPrograms = [
   "TennCare Select",
 ];
 
+export const tnNaaarPrograms = [
+  "CoverKids Program",
+  "TennCare",
+  "TennCare Dental",
+  "TennCare Select",
+];
+
+export const naaarPlanTypes = ["MCO", "PIHP", "PAHP", "MMP", "Other, specify"];
+
+// Mirrors DEFAULT_ANALYSIS_METHODS in services/ui-src/src/constants.ts
+export const naaarAnalysisMethods = [
+  "Geomapping",
+  "Plan Provider Directory Review",
+  "Secret Shopper: Network Participation",
+  "Secret Shopper: Appointment Availability",
+  "Electronic Visit Verification Data Analysis",
+  "Review of Grievances Related to Access",
+  "Encounter Data Analysis",
+];
+
+export const naaarNonCompliantAssurance = {
+  planCompliance43868:
+    "No, the plan does not comply on all standards based on all analyses or exceptions granted",
+  planCompliance438206:
+    "No, the plan does not comply with all standards based on all analyses or exceptions granted",
+};
+
+export const tnMlrPrograms = [
+  "CoverKids Program",
+  "TennCare",
+  "TennCare Dental",
+  "TennCare Select",
+];
+
 export const mlrProgramTypes = [
   "Comprehensive MCO",
   "PIHP",
