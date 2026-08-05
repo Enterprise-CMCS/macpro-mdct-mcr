@@ -196,7 +196,7 @@ export const KS: Programs = {
     },
     {
       measure_name:
-        "Increase The Rate Of Members Who Indicated A Desire To Be Discharged From A NF Or NFMH Facility To A Community Setting Who Were Discharged ",
+        "Increase The Rate Of Members Who Indicated A Desire To Be Discharged From A NF Or NFMH Facility To A Community Setting Who Were Discharged",
       measure_identifier: measureIdentifiers.neither,
     },
     {

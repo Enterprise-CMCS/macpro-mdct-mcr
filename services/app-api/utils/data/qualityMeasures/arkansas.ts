@@ -44,11 +44,11 @@ export const AR: Programs = {
       measure_identifier: measureIdentifiers.neither,
     },
     {
-      measure_name: "Oral evaluation dental services: Adult\n",
+      measure_name: "Oral evaluation dental services: Adult",
       measure_identifier: measureIdentifiers.neither,
     },
     {
-      measure_name: "Oral evaluation dental services: Child (under age 21)\n",
+      measure_name: "Oral evaluation dental services: Child (under age 21)",
       measure_identifier: measureIdentifiers.neither,
     },
   ],
