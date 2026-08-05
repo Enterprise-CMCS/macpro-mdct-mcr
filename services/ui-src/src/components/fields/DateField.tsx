@@ -221,7 +221,7 @@ const sx = {
   ".optional-text": {
     fontWeight: "lighter",
   },
-  // warning message styling - appears between label and hint/input
+
   warningText: {
     display: "block",
     fontSize: "sm",
