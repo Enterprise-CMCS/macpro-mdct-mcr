@@ -339,7 +339,7 @@ export const mockMlrReportFieldData = {
       ],
       "report_eligibilityGroup-otherText": "",
       report_reportingPeriodDiscrepancyExplanation: "",
-      report_inurredClaims: "1",
+      report_incurredClaims: "1",
       report_healthCareQualityActivities: "1",
       report_mlrNumerator: "1",
       report_mlrNumeratorExplanation: "Test",
@@ -402,7 +402,7 @@ export const mockNaaarReportFieldData = {
       ],
       analysis_method_applicable_plans: [
         {
-          key: "analysis_method_applicable_plans-mock-id1",
+          key: "analysis_method_applicable_plans-id1",
           value: "plan",
         },
       ],
@@ -419,7 +419,7 @@ export const mockNaaarReportFieldData = {
       ],
       analysis_method_applicable_plans: [
         {
-          key: "analysis_method_applicable_plans-mock-id2",
+          key: "analysis_method_applicable_plans-id2",
           value: "1",
         },
       ],

@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import uuid from "react-uuid";
 // components
 import {
   DropdownChangeObject,
@@ -204,7 +203,9 @@ export const DropdownField = ({
   const formErrorState: AnyObject = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.value.message;
   const parsedHint = hint && parseCustomHtml(hint);
+  const ariaDescribedBy = `${name}__error${parsedHint ? ` ${name}-hint` : ""}`;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
+  const selectClasses = `ds-c-field${errorMessage ? " ds-c-field--error" : ""}`;
   const labelClass = !label ? "no-label" : "";
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
@@ -214,21 +215,22 @@ export const DropdownField = ({
       <Label htmlFor={name} id={`${name}-label`}>
         {labelText || ""}
       </Label>
-      {parsedHint && <Hint id={name}>{parsedHint}</Hint>}
-      {errorMessage && <InlineError>{errorMessage}</InlineError>}
+      {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
+      <InlineError id={`${name}__error`}>{errorMessage}</InlineError>
       <select
         name={name}
         id={name}
+        aria-describedby={ariaDescribedBy}
         aria-label={labelText ? undefined : name}
-        aria-invalid="false"
+        aria-invalid={!!errorMessage}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         value={displayValue?.value}
-        className="ds-c-field"
+        className={selectClasses}
         {...props}
       >
         {formattedOptions.map((option: DropdownOptions) => (
-          <option key={uuid()} value={option.value}>
+          <option key={crypto.randomUUID()} value={option.value}>
             {option.label}
           </option>
         ))}

@@ -13,6 +13,7 @@ import {
   EntityShape,
 } from "../types";
 // utils
+import { getPlansNotExemptFromQualityMeasures } from "../reports/reports";
 import { validateFieldData } from "./completionValidation";
 
 export const isComplete = (completionStatus: CompletionData): Boolean => {
@@ -285,11 +286,14 @@ export const calculateRouteCompletion = async (
         route.drawerForm
       ) {
         const qualityMeasures = fieldData.qualityMeasures || [];
-        const plans = fieldData.plans || [];
+        const filteredPlans = getPlansNotExemptFromQualityMeasures(
+          fieldData.plans,
+          fieldData.plansExemptFromQualityMeasures
+        );
 
-        if (qualityMeasures.length > 0 && plans.length > 0) {
+        if (qualityMeasures.length > 0 && filteredPlans.length > 0) {
           isComplete = qualityMeasures.every((measure: EntityShape) =>
-            plans.every((plan: EntityShape) =>
+            filteredPlans.every((plan: EntityShape) =>
               calculateMeasureCompletion(
                 measure.id,
                 plan,

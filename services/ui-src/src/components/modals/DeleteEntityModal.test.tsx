@@ -22,8 +22,6 @@ import { useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 import { EntityType } from "types";
 
-jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
-
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
@@ -95,6 +93,13 @@ const { deleteModalTitle, deleteModalConfirmButtonText } =
   mockModalDrawerReportPageVerbiage;
 
 describe("<DeleteEntityModal />", () => {
+  beforeAll(() => {
+    Object.defineProperty(global, "crypto", {
+      value: {
+        randomUUID: jest.fn(() => "mock-id-2"),
+      },
+    });
+  });
   afterEach(() => {
     jest.clearAllMocks();
   });

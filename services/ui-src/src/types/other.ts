@@ -1,6 +1,6 @@
 import { SystemStyleObject } from "@chakra-ui/react";
 import React from "react";
-import { EntityShape } from "./formFields";
+import { Choice, EntityShape } from "./formFields";
 
 // GLOBAL
 
@@ -99,6 +99,19 @@ export interface NaaarStandardsTableShape {
   edit?: null;
   delete?: null;
   actions?: null;
+}
+
+/**
+ * An analysis method entity, as created in
+ * Part 1: State and program information, D. Analysis methods.
+ * Predefined methods carry `name`; state-added methods carry
+ * `custom_analysis_method_name` instead.
+ */
+export interface AnalysisMethodEntity {
+  id: string;
+  name?: string;
+  custom_analysis_method_name?: string;
+  analysis_method_applicable_plans?: Choice[];
 }
 
 export interface ErrorVerbiage {

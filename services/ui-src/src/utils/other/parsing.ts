@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 // types
 import { CustomHtmlElement } from "types";
-import uuid from "react-uuid";
 
 const customElementMap: any = {
   externalLink: Link,
@@ -41,7 +40,7 @@ export const parseCustomHtml = (element: CustomHtmlElement[] | string) => {
       let { type, content, as, props } = element;
       const elementType: string = customElementMap[type] || type;
       const elementProps = {
-        key: type + uuid(),
+        key: type + crypto.randomUUID(),
         as,
         ...props,
       };
@@ -70,7 +69,7 @@ export function createElementWithChildren(
   const { type, content, as, props } = element;
   const elementType: string = customElementMap[type] || type;
   const elementProps = {
-    key: type + uuid(),
+    key: type + crypto.randomUUID(),
     as,
     ...props,
   };
@@ -111,3 +110,28 @@ export const sanitizeAndParseHtml = (html: string) => {
 
 export const labelTextWithOptional = (label: string) =>
   parseCustomHtml(label + "<span class='optional-text'> (optional)</span>");
+
+/** Parse HTML string, sanitize, and return React elements. */
+export const parseAllowedHtml = (html: string) => {
+  const sanitizedHtml = DOMPurify.sanitize(html, {
+    // Only these tags will be allowed through
+    ALLOWED_TAGS: [
+      "ul",
+      "ol",
+      "li",
+      "a",
+      "#text",
+      "strong",
+      "b",
+      "em",
+      "i",
+      "p",
+    ],
+    // On those tags, only these attributes are allowed
+    ALLOWED_ATTR: ["href", "target"],
+    // If a tag is removed, so will all its child elements & text
+    KEEP_CONTENT: false,
+  });
+  const parsedHtml = parse(sanitizedHtml);
+  return parsedHtml;
+};

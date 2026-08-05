@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import uuid from "react-uuid";
 // components
 import { Form, Modal, ReportContext } from "components";
 import { Text, Spinner } from "@chakra-ui/react";
@@ -97,7 +96,10 @@ export const AddEditEntityModal = ({
     } else {
       // create new entity
       dataToWrite.fieldData = {
-        [entityType]: [...currentEntities, { id: uuid(), ...filteredFormData }],
+        [entityType]: [
+          ...currentEntities,
+          { id: crypto.randomUUID(), ...filteredFormData },
+        ],
       };
       await updateReport(reportKeys, dataToWrite);
     }

@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { Box, Text } from "@chakra-ui/react";
-import uuid from "react-uuid";
 // types
 import {
   AnyObject,
@@ -43,7 +42,7 @@ export const renderDataCell = (
       );
       entityResponseData = [
         {
-          id: uuid(),
+          id: crypto.randomUUID(),
           name: mcparExportVerbiage.missingEntry.missingPlans,
         },
       ];
