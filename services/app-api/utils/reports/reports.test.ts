@@ -5,13 +5,14 @@ import {
   makePCCMModifications,
   populateQualityMeasures,
 } from "./reports";
+// constants
+import { uuidRegex } from "../constants/constants";
+import { MN } from "../data/qualityMeasures";
 // utils
 import { mockReportJson } from "../../utils/testing/setupJest";
 import s3Lib from "../s3/s3-lib";
-import { uuidRegex } from "../constants/constants";
 // types
 import { ReportJson, ReportType } from "../../utils/types";
-import { MN } from "../data/qualityMeasures";
 
 describe("reports.ts", () => {
   describe("makePCCMModifications()", () => {

@@ -723,7 +723,7 @@ export const MI: Programs = {
       measure_identifier: measureIdentifiers.neither,
     },
     {
-      measure_name: "Hepatititis C Screening During Pregnancy",
+      measure_name: "Hepatitis C Screening During Pregnancy",
       measure_identifier: measureIdentifiers.neither,
     },
     {
