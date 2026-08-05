@@ -156,7 +156,7 @@ export const MO: Programs = {
       measure_identifier: measureIdentifiers.neither,
     },
     {
-      measure_name: "Rate Of Preventable Hospitalization Among Chidlren",
+      measure_name: "Rate Of Preventable Hospitalization Among Children",
       measure_identifier: measureIdentifiers.neither,
     },
   ],

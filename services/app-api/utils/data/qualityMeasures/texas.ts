@@ -78,7 +78,7 @@ export const TX: Programs = {
       measure_identifier: measureIdentifiers.neither,
     },
     {
-      measure_name: "Thsteps Dental Checkups",
+      measure_name: "THSteps Dental Checkups",
       measure_identifier: measureIdentifiers.neither,
     },
     {

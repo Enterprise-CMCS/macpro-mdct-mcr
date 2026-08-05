@@ -112,7 +112,7 @@ export const WY: Programs = {
     },
     {
       measure_name:
-        "Prompt And Oversee That Families Complete The Agencyâ€™S WFI-EZ And Prepare Families To Submit Six Months After Enrollment.",
+        "Prompt And Oversee That Families Complete The Agency's WFI-EZ And Prepare Families To Submit Six Months After Enrollment.",
       measure_identifier: measureIdentifiers.neither,
     },
     {

@@ -219,7 +219,7 @@ describe("mcparQualityMeasuresList", () => {
   };
   const totals = {
     states: 53,
-    programs: 112,
+    programs: 113,
     measures: 2906,
   };
 
@@ -253,16 +253,16 @@ describe("mcparQualityMeasuresList", () => {
 
   test("Total program and measure counts are correct", () => {
     const data = mcparQualityMeasuresList;
-    const states = Object.keys(data).length;
-    const programs = new Set(
-      Object.values(data).flatMap((stateObj) => Object.keys(stateObj))
-    ).size;
+    const states = Object.keys(data);
+    const programs = Object.values(data).flatMap((stateObj) =>
+      Object.keys(stateObj)
+    );
     const measures = Object.values(data)
       .flatMap((stateObj) => Object.values(stateObj))
-      .flat().length;
+      .flat();
 
-    expect(states).toBe(totals.states);
-    expect(programs).toBe(totals.programs);
-    expect(measures).toBe(totals.measures);
+    expect(states).toHaveLength(totals.states);
+    expect(programs).toHaveLength(totals.programs);
+    expect(measures).toHaveLength(totals.measures);
   });
 });

@@ -68,25 +68,25 @@ export const AZ: Programs = {
       measure_identifierCmit: "80",
     },
     {
-      measure_name: "Child And Adolescent Well-Care Visits (HEDIS WCV),",
+      measure_name: "Child And Adolescent Well-Care Visits (HEDIS WCV)",
       measure_identifier: measureIdentifiers.yes,
       measure_identifierCmit: "23",
     },
     {
       measure_name:
-        "Follow Up After Emergency Department Visit For Mental Illness (HEDIS FUM),",
+        "Follow Up After Emergency Department Visit For Mental Illness (HEDIS FUM)",
       measure_identifier: measureIdentifiers.yes,
       measure_identifierCmit: "65",
     },
     {
       measure_name:
-        "Children Who Receive A Comprehensive Or Periodic Oral Evaluation (HEDIS OED),",
+        "Children Who Receive A Comprehensive Or Periodic Oral Evaluation (HEDIS OED)",
       measure_identifier: measureIdentifiers.yes,
       measure_identifierCmit: "97",
     },
     {
       measure_name:
-        "Glycemic Status Assessment for Patients With Diabetes (HEDIS GSD),Y",
+        "Glycemic Status Assessment for Patients With Diabetes (HEDIS GSD)",
       measure_identifier: measureIdentifiers.yes,
       measure_identifierCmit: "20",
     },
@@ -117,7 +117,7 @@ export const AZ: Programs = {
       },
       {
         measure_name:
-          "Glycemic Status Assessment for Patients With Diabetes (HEDIS GSD),",
+          "Glycemic Status Assessment for Patients With Diabetes (HEDIS GSD)",
         measure_identifier: measureIdentifiers.yes,
         measure_identifierCmit: "20",
       },
