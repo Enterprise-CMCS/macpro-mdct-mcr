@@ -43,6 +43,8 @@ export const validationErrors = {
   REQUIRED_GENERIC: "A response is required",
   REQUIRED_CHECKBOX: "Select at least one response",
   REQUIRED_ONE_CHECKBOX: "Select only one response",
+  REQUIRED_PLAN_COMPLIANCE_CHECKBOX:
+    "At least one response required for III.B.2 through III.B.4",
   INVALID_GENERIC: "Response must be valid",
   INVALID_EMAIL: "Response must be a valid email address",
   INVALID_URL: "Response must be a valid hyperlink/URL",

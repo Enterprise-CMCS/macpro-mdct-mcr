@@ -330,6 +330,11 @@ export const checkboxOptional = () =>
     .of(object({ key: text(), value: text() }))
     .notRequired()
     .nullable();
+export const checkboxPlanCompliance = () =>
+  array()
+    .min(1, error.REQUIRED_PLAN_COMPLIANCE_CHECKBOX)
+    .of(object({ key: text(), value: text() }))
+    .required(error.REQUIRED_PLAN_COMPLIANCE_CHECKBOX);
 export const checkboxSingle = () => boolean();
 
 // RADIO
@@ -391,6 +396,7 @@ export const schemaMap: any = {
   checkboxOneOptional: checkboxOneOptional(),
   checkboxOptional: checkboxOptional(),
   checkboxSingle: checkboxSingle(),
+  checkboxPlanCompliance: checkboxPlanCompliance(),
   date: date(),
   dateMonthYear: dateMonthYear(),
   dateOptional: dateOptional(),

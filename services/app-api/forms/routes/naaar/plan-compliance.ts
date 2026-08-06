@@ -1050,7 +1050,7 @@ export const planComplianceRoute: MultiformRoute = {
                                             validation:
                                               ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                             props: {
-                                              label: "III.6.5a - Q1 (optional)",
+                                              label: "III.D.6a - Q1 (optional)",
                                               mask: "percentage",
                                               decimalPlacesToRoundTo: 2,
                                             },
@@ -1061,7 +1061,7 @@ export const planComplianceRoute: MultiformRoute = {
                                             validation:
                                               ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                             props: {
-                                              label: "III.6.5b - Q2 (optional)",
+                                              label: "III.D.6b - Q2 (optional)",
                                               mask: "percentage",
                                               decimalPlacesToRoundTo: 2,
                                             },
@@ -1072,7 +1072,7 @@ export const planComplianceRoute: MultiformRoute = {
                                             validation:
                                               ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                             props: {
-                                              label: "III.6.5c - Q3 (optional)",
+                                              label: "III.D.6c - Q3 (optional)",
                                               mask: "percentage",
                                               decimalPlacesToRoundTo: 2,
                                             },
@@ -1083,7 +1083,7 @@ export const planComplianceRoute: MultiformRoute = {
                                             validation:
                                               ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                             props: {
-                                              label: "III.6.5d - Q4 (optional)",
+                                              label: "III.D.6d - Q4 (optional)",
                                               mask: "percentage",
                                               decimalPlacesToRoundTo: 2,
                                             },
@@ -1102,7 +1102,7 @@ export const planComplianceRoute: MultiformRoute = {
                                               ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                             props: {
                                               label:
-                                                "III.6.5e - Annual (optional)",
+                                                "III.D.6e - Annual (optional)",
                                               mask: "percentage",
                                               decimalPlacesToRoundTo: 2,
                                             },
@@ -1114,7 +1114,7 @@ export const planComplianceRoute: MultiformRoute = {
                                               ValidationType.DATE_OPTIONAL,
                                             props: {
                                               label:
-                                                "III.6.5f - Date of analysis of annual snapshot (optional)",
+                                                "III.D.6f - Date of analysis of annual snapshot (optional)",
                                             },
                                           },
                                         ],
@@ -1464,7 +1464,7 @@ export const planComplianceRoute: MultiformRoute = {
               groupId: "planCompliance438206_requirements",
               id: "delivery",
               type: ReportFormFieldType.CHECKBOX,
-              validation: ValidationType.CHECKBOX,
+              validation: ValidationType.CHECKBOX_PLAN_COMPLIANCE,
               props: {
                 label: "III.B.2 Delivery network-related requirements:",
                 choices: [
@@ -1510,7 +1510,7 @@ export const planComplianceRoute: MultiformRoute = {
               groupId: "planCompliance438206_requirements",
               id: "timely",
               type: ReportFormFieldType.CHECKBOX,
-              validation: ValidationType.CHECKBOX,
+              validation: ValidationType.CHECKBOX_PLAN_COMPLIANCE,
               props: {
                 label:
                   "III.B.3 Furnishing of services; timely access-related requirements:",
@@ -1552,7 +1552,7 @@ export const planComplianceRoute: MultiformRoute = {
               groupId: "planCompliance438206_requirements",
               id: "other",
               type: ReportFormFieldType.CHECKBOX,
-              validation: ValidationType.CHECKBOX,
+              validation: ValidationType.CHECKBOX_PLAN_COMPLIANCE,
               props: {
                 label: "III.B.4 Other requirements:",
                 choices: [
