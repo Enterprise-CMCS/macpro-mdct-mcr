@@ -67,6 +67,20 @@ export default {
             },
           ],
         },
+        {
+          type: "p",
+          children: [
+            {
+              type: "html",
+              content: "<b>Reporting depth</b>",
+            },
+          ],
+        },
+        {
+          type: "p",
+          content:
+            "Depending on how measures are defined, a single measure may be made up of several different “rates” or “sub-measures” (e.g., rates for different age groups, etc.). Where a measure steward has specified several rates, the state should not report all possible rates for the measure in the MCPAR. Instead, follow the decision tree located in Figure 1 of the Technical Guide found here on Medicaid.gov to determine which rates to report.",
+        },
       ],
       text: "",
     },
