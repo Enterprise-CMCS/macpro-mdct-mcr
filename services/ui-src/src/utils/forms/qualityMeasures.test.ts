@@ -1,3 +1,4 @@
+import { ReportFormFieldType, ValidationType } from "types";
 import {
   addRatesToForm,
   createRateField,
@@ -67,9 +68,9 @@ describe("qualityMeasures utils", () => {
         mockMeasure.measure_rates[0].name
       );
       expect(rateField.id).toEqual(`${RATE_ID_PREFIX}mock-rate-1`);
-      expect(rateField.type).toEqual("text");
+      expect(rateField.type).toEqual(ReportFormFieldType.TEXT);
       expect(rateField.validation).toEqual({
-        type: "text",
+        type: ValidationType.TEXT,
         nested: true,
         parentFieldName: "measure_isReporting",
         parentOptionId: "xvBx2RGFpvmUf2Wk5bLe9u",
