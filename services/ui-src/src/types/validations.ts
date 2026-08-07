@@ -33,3 +33,12 @@ export enum ValidationType {
   URL = "url",
   URL_OPTIONAL = "urlOptional",
 }
+
+export interface CustomValidation {
+  type: ValidationType;
+  options?: ChoiceOptions;
+}
+
+export interface ChoiceOptions {
+  errorMessage?: string;
+}

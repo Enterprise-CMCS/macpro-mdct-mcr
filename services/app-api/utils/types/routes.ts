@@ -2,6 +2,7 @@ import { EntityType } from "./formFields";
 import { PageTypes, TableContentShape } from "./other";
 import { EntityDetailsTableContentShape, ReportType } from "./reports";
 import {
+  CustomValidation,
   EndDateValidation,
   NestedValidation,
   ValidationType,
@@ -54,7 +55,7 @@ export interface ReportFormField {
   props?: ReportFormFieldProps;
   repeat?: string;
   type: ReportFormFieldType;
-  validation?: ValidationType | EndDateValidation;
+  validation?: ValidationType | CustomValidation | EndDateValidation;
 }
 
 export interface ReportFormFieldProps {
