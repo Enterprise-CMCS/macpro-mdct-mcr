@@ -24,5 +24,6 @@
   "ts-node": {
     "files": true
   },
-  "include": ["db/custom.d.ts", "handlers", "utils"]
+  "include": ["db/custom.d.ts", "handlers", "utils"],
+  "exclude": ["utils/data/mcparQualityMeasuresList.test.ts"]
 }

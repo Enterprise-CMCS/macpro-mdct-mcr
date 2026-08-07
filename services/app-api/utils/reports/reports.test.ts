@@ -5,10 +5,12 @@ import {
   makePCCMModifications,
   populateQualityMeasures,
 } from "./reports";
+// constants
+import { uuidRegex } from "../constants/constants";
+import { MN } from "../data/qualityMeasures";
 // utils
 import { mockReportJson } from "../../utils/testing/setupJest";
 import s3Lib from "../s3/s3-lib";
-import { uuidRegex } from "../constants/constants";
 // types
 import { ReportJson, ReportType } from "../../utils/types";
 
@@ -106,18 +108,14 @@ describe("reports.ts", () => {
 
         test("Test populateQualityMeasures sets correct field data", () => {
           let testFieldData = {};
-          testFieldData = populateQualityMeasures(
-            testFieldData,
-            "MN",
-            "Minnesota Senior Health Options (MSHO)"
-          );
+          testFieldData = populateQualityMeasures(testFieldData, "MN", "PMAP");
+          const qualityMeasures = MN.PMAP.map((item) => ({
+            ...item,
+            id: expect.stringMatching(uuidRegex),
+          }));
+
           expect(testFieldData).toEqual({
-            qualityMeasures: [
-              {
-                id: expect.stringMatching(uuidRegex),
-                measure_name: "MSHO measure 1",
-              },
-            ],
+            qualityMeasures,
           });
         });
 
