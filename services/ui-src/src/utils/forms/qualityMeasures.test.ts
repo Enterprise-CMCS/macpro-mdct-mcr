@@ -67,9 +67,9 @@ describe("qualityMeasures utils", () => {
         mockMeasure.measure_rates[0].name
       );
       expect(rateField.id).toEqual(`${RATE_ID_PREFIX}mock-rate-1`);
-      expect(rateField.type).toEqual("number");
+      expect(rateField.type).toEqual("text");
       expect(rateField.validation).toEqual({
-        type: "number",
+        type: "text",
         nested: true,
         parentFieldName: "measure_isReporting",
         parentOptionId: "xvBx2RGFpvmUf2Wk5bLe9u",
