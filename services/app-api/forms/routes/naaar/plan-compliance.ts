@@ -1464,7 +1464,13 @@ export const planComplianceRoute: MultiformRoute = {
               groupId: "planCompliance438206_requirements",
               id: "delivery",
               type: ReportFormFieldType.CHECKBOX,
-              validation: ValidationType.CHECKBOX_PLAN_COMPLIANCE,
+              validation: {
+                type: ValidationType.CHECKBOX,
+                options: {
+                  errorMessage:
+                    "At least one response required for III.B.2 through III.B.4",
+                },
+              },
               props: {
                 label: "III.B.2 Delivery network-related requirements:",
                 choices: [
@@ -1510,7 +1516,13 @@ export const planComplianceRoute: MultiformRoute = {
               groupId: "planCompliance438206_requirements",
               id: "timely",
               type: ReportFormFieldType.CHECKBOX,
-              validation: ValidationType.CHECKBOX_PLAN_COMPLIANCE,
+              validation: {
+                type: ValidationType.CHECKBOX,
+                options: {
+                  errorMessage:
+                    "At least one response required for III.B.2 through III.B.4",
+                },
+              },
               props: {
                 label:
                   "III.B.3 Furnishing of services; timely access-related requirements:",
@@ -1552,7 +1564,13 @@ export const planComplianceRoute: MultiformRoute = {
               groupId: "planCompliance438206_requirements",
               id: "other",
               type: ReportFormFieldType.CHECKBOX,
-              validation: ValidationType.CHECKBOX_PLAN_COMPLIANCE,
+              validation: {
+                type: ValidationType.CHECKBOX,
+                options: {
+                  errorMessage:
+                    "At least one response required for III.B.2 through III.B.4",
+                },
+              },
               props: {
                 label: "III.B.4 Other requirements:",
                 choices: [

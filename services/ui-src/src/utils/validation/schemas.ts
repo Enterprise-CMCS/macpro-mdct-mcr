@@ -2,7 +2,7 @@ import { array, boolean, mixed, object, string } from "yup";
 // constants
 import { suppressionText } from "../../constants";
 // types
-import { Choice } from "types";
+import { Choice, ChoiceOptions } from "types";
 // utils
 import {
   checkStandardNumberInputAgainstRegexes,
@@ -314,11 +314,12 @@ export const dropdownOptional = () =>
   object({ label: textOptional(), value: textOptional() }).notRequired();
 
 // CHECKBOX
-export const checkbox = () =>
+export const checkbox = (options?: ChoiceOptions) => {
   array()
-    .min(1, error.REQUIRED_CHECKBOX)
+    .min(1, options?.errorMessage || error.REQUIRED_CHECKBOX)
     .of(object({ key: text(), value: text() }))
-    .required(error.REQUIRED_CHECKBOX);
+    .required(options?.errorMessage || error.REQUIRED_CHECKBOX);
+};
 export const checkboxOneOptional = () =>
   array()
     .max(1, error.REQUIRED_ONE_CHECKBOX)
@@ -330,11 +331,6 @@ export const checkboxOptional = () =>
     .of(object({ key: text(), value: text() }))
     .notRequired()
     .nullable();
-export const checkboxPlanCompliance = () =>
-  array()
-    .min(1, error.REQUIRED_PLAN_COMPLIANCE_CHECKBOX)
-    .of(object({ key: text(), value: text() }))
-    .required(error.REQUIRED_PLAN_COMPLIANCE_CHECKBOX);
 export const checkboxSingle = () => boolean();
 
 // RADIO
@@ -392,11 +388,10 @@ export const dateMonthYearFormatRegex = new RegExp(`^${dateMonthYearPattern}$`);
 export const optionalDateFormatRegex = new RegExp(`^(${datePattern})?$`);
 
 export const schemaMap: any = {
-  checkbox: checkbox(),
+  checkbox: (options: ChoiceOptions) => checkbox(options),
   checkboxOneOptional: checkboxOneOptional(),
   checkboxOptional: checkboxOptional(),
   checkboxSingle: checkboxSingle(),
-  checkboxPlanCompliance: checkboxPlanCompliance(),
   date: date(),
   dateMonthYear: dateMonthYear(),
   dateOptional: dateOptional(),

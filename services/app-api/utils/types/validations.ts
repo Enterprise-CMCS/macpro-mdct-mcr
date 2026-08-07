@@ -35,6 +35,7 @@ export enum ValidationType {
   URL_OPTIONAL = "urlOptional",
 }
 
+// CUSTOM VALIDATIONS
 export interface EndDateValidation {
   dependentFieldName: string;
   type: ValidationType.END_DATE | ValidationType.PAST_END_DATE;
@@ -46,4 +47,14 @@ export interface NestedValidation {
   parentFieldName: string;
   parentOptionId?: string;
   type: ValidationType;
+}
+
+export interface CustomValidation {
+  type: ValidationType;
+  options?: ChoiceOptions;
+}
+
+// OPTIONS
+export interface ChoiceOptions {
+  errorMessage?: string;
 }
