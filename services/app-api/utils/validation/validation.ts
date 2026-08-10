@@ -99,9 +99,13 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
       // if standard validation type, set corresponding schema from map
       if (typeof fieldValidation === "string") {
         const correspondingSchema = schemaMap[fieldValidation];
-        if (correspondingSchema) {
-          validationSchema[key] = correspondingSchema;
-        }
+        if (!correspondingSchema) return;
+
+        validationSchema[key] =
+          typeof correspondingSchema === "function"
+            ? correspondingSchema()
+            : correspondingSchema;
+
         return;
       }
 
@@ -134,9 +138,10 @@ export const makeNestedFieldSchema = (fieldValidationObject: AnyObject) => {
     );
   } else {
     const correspondingSchema = schemaMap[type];
-    const fieldValidationSchema = options
-      ? correspondingSchema(options)
-      : correspondingSchema;
+    const fieldValidationSchema =
+      typeof correspondingSchema === "function"
+        ? correspondingSchema(options)
+        : correspondingSchema;
     return nested(() => fieldValidationSchema, parentFieldName, parentOptionId);
   }
 };

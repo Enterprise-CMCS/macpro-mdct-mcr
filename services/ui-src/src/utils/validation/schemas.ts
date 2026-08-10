@@ -2,7 +2,7 @@ import { array, boolean, mixed, object, string } from "yup";
 // constants
 import { suppressionText } from "../../constants";
 // types
-import { Choice, ChoiceOptions } from "types";
+import { Choice } from "types";
 // utils
 import {
   checkStandardNumberInputAgainstRegexes,
@@ -314,11 +314,11 @@ export const dropdownOptional = () =>
   object({ label: textOptional(), value: textOptional() }).notRequired();
 
 // CHECKBOX
-export const checkbox = (options?: ChoiceOptions) => {
+export const checkbox = () => {
   array()
-    .min(1, options?.errorMessage || error.REQUIRED_CHECKBOX)
+    .min(1, error.REQUIRED_CHECKBOX)
     .of(object({ key: text(), value: text() }))
-    .required(options?.errorMessage || error.REQUIRED_CHECKBOX);
+    .required(error.REQUIRED_CHECKBOX);
 };
 export const checkboxOneOptional = () =>
   array()
@@ -388,7 +388,7 @@ export const dateMonthYearFormatRegex = new RegExp(`^${dateMonthYearPattern}$`);
 export const optionalDateFormatRegex = new RegExp(`^(${datePattern})?$`);
 
 export const schemaMap: any = {
-  checkbox: (options: ChoiceOptions) => checkbox(options),
+  checkbox: checkbox(),
   checkboxOneOptional: checkboxOneOptional(),
   checkboxOptional: checkboxOptional(),
   checkboxSingle: checkboxSingle(),
