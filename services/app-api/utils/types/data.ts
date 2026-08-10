@@ -1,6 +1,6 @@
 import { State } from "./other";
 
-type Measure = {
+export type Measure = {
   measure_name: string;
   measure_identifier?: any;
   measure_identifierCbe?: string;
