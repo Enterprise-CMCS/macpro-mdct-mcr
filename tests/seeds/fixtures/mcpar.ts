@@ -209,7 +209,9 @@ export const fillMcpar = (
     name: faker.animal.dog(),
   }));
 
-  const plans = planIds.map((planId, index) => createPlan(planId, ilos[index]));
+  const plans = planIds.map((planId, index) =>
+    createPlan(planId, ilos[index], flags)
+  );
 
   const qualityMeasures = Array.from({ length: numberOfExamples }, () =>
     createQualityMeasure(planIds)
@@ -622,7 +624,11 @@ const createPlanPCCM = (planId: string) => ({
   plan_parentOrganization: faker.lorem.sentence(),
 });
 
-const createPlan = (planId: string, ilos: { id: string; name: string }) => {
+const createPlan = (
+  planId: string,
+  ilos: { id: string; name: string },
+  flags: { [key: string]: true }
+) => {
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
   const newReportingPeriodEndDate = faker.date.future({
     refDate: newReportingPeriodStartDate,
@@ -667,23 +673,7 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
       numberFloat(),
     plan_medianTimeToDecisionOnStandardPriorAuthorizations: numberFloat(),
     plan_medicaidEnrollmentSharePercentage: suppressionText,
-    plan_medicalLossRatioPercentage: numberInt(),
-    plan_medicalLossRatioPercentageAggregationLevel: [
-      {
-        key: "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
-        value: "Program-specific statewide",
-      },
-    ],
-    plan_medicalLossRatioReportingPeriod: [
-      {
-        key: "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
-        value: "Yes",
-      },
-    ],
-    plan_medicalLossRatioReportingPeriodEndDate: newReportingPeriodEndDate,
-    plan_medicalLossRatioReportingPeriodStartDate: newReportingPeriodStartDate,
     plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
-    plan_parentOrganization: faker.lorem.sentence(),
     plan_mfcuProgramIntegrityReferrals: numberInt(),
     plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer: numberInt(),
     plan_numberOfUniqueBeneficiariesWithMultipleDataTransfers: numberInt(),
@@ -697,6 +687,7 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
     plan_overpaymentReportingToStateStartDate: dateFormat.format(
       newReportingPeriodStartDate
     ),
+    plan_parentOrganization: faker.lorem.sentence(),
     plan_percentageOfExpeditedPriorAuthorizationRequestsApproved: numberFloat(),
     plan_percentageOfExpeditedPriorAuthorizationRequestsDenied: numberFloat(),
     plan_percentageOfStandardPriorAuthorizationRequestsApproved: numberFloat(),
@@ -818,6 +809,47 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
     program_encounterDataSubmissionTimelinessStandardDefinition:
       faker.lorem.sentence(),
   };
+
+  if (flags.newQualityMeasuresSectionEnabled) {
+    data = {
+      ...data,
+      plan_medicalLossRatioPercentage: numberInt(),
+      plan_medicalLossRatioPercentageAggregationLevel: [
+        {
+          key: "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
+          value: "Program-specific statewide",
+        },
+      ],
+      plan_medicalLossRatioReportingPeriod: [
+        {
+          key: "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
+          value: "Yes",
+        },
+      ],
+      plan_medicalLossRatioReportingPeriodEndDate: dateFormat.format(
+        newReportingPeriodEndDate
+      ),
+      plan_medicalLossRatioReportingPeriodStartDate: dateFormat.format(
+        newReportingPeriodStartDate
+      ),
+    };
+  } else {
+    data = {
+      ...data,
+      plan_mlrDataReceived: [
+        {
+          key: "plan_mlrDataReceived-xY7zW9vU3tS1rQ5pO8nM2k",
+          value: "Yes",
+        },
+      ],
+      plan_mlrDataValidated: [
+        {
+          key: "plan_mlrDataValidated-aB4cD6eF8gH0iJ2kL4mN6o",
+          value: "Yes",
+        },
+      ],
+    };
+  }
 
   return data;
 };
