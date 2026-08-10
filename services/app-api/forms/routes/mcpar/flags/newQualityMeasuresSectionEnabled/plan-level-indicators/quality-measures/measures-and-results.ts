@@ -83,9 +83,9 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
               children: [
                 {
                   id: "measure_identifierCmit",
-                  type: ReportFormFieldType.NUMBER,
+                  type: ReportFormFieldType.TEXT,
                   validation: {
-                    type: ValidationType.NUMBER,
+                    type: ValidationType.TEXT,
                     nested: true,
                     parentFieldName: "measure_identifier",
                     parentOptionId: "lIqRkso1nUidNG1Gh7Ll0A",
@@ -102,9 +102,9 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
               children: [
                 {
                   id: "measure_identifierCbe",
-                  type: ReportFormFieldType.NUMBER,
+                  type: ReportFormFieldType.TEXT,
                   validation: {
-                    type: ValidationType.NUMBER,
+                    type: ValidationType.TEXT,
                     nested: true,
                     parentFieldName: "measure_identifier",
                     parentOptionId: "eqVgpF8hmsma9ibcvwVqCb",

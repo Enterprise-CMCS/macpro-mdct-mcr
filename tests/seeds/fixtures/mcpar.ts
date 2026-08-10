@@ -874,7 +874,7 @@ const createNewQualityMeasure = (index: number, measure?: Measure) => {
           value: "Yes",
         },
       ],
-      measure_identifierCmit: numberInt(),
+      measure_identifierCmit: `${numberInt()}-${numberInt()}`,
     },
     {
       measure_identifier: [
@@ -883,7 +883,7 @@ const createNewQualityMeasure = (index: number, measure?: Measure) => {
           value: "Consensus Based Entity (CBE) number",
         },
       ],
-      measure_identifierCbe: numberInt(),
+      measure_identifierCbe: `${numberInt()}.0`,
     },
     {
       measure_identifier: [
