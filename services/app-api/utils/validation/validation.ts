@@ -123,7 +123,8 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
 
 // return created nested field schema
 export const makeNestedFieldSchema = (fieldValidationObject: AnyObject) => {
-  const { type, parentFieldName, parentOptionId } = fieldValidationObject;
+  const { options, type, parentFieldName, parentOptionId } =
+    fieldValidationObject;
   const getSchema = dependentSchemas[type];
   if (getSchema) {
     return nested(
@@ -132,7 +133,10 @@ export const makeNestedFieldSchema = (fieldValidationObject: AnyObject) => {
       parentOptionId
     );
   } else {
-    const fieldValidationSchema = schemaMap[type];
+    const correspondingSchema = schemaMap[type];
+    const fieldValidationSchema = options
+      ? correspondingSchema(options)
+      : correspondingSchema;
     return nested(() => fieldValidationSchema, parentFieldName, parentOptionId);
   }
 };
