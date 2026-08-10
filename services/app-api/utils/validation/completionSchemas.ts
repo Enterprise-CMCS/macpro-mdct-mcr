@@ -353,7 +353,7 @@ export const checkbox = () =>
 export const checkboxCustom = (options: ChoiceOptions) =>
   array()
     .min(1, options.errorMessage)
-    .of(object({ key: text(), value: text() }))
+    .of(object({ key: textSchema(), value: textSchema() }))
     .required(options.errorMessage);
 export const checkboxOneOptional = () =>
   array()

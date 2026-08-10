@@ -320,11 +320,12 @@ export const checkbox = () => {
     .of(object({ key: text(), value: text() }))
     .required(error.REQUIRED_CHECKBOX);
 };
-export const checkboxCustom = (options: ChoiceOptions) =>
+export const checkboxCustom = (options: ChoiceOptions) => {
   array()
     .min(1, options.errorMessage)
     .of(object({ key: text(), value: text() }))
     .required(options.errorMessage);
+};
 export const checkboxOneOptional = () =>
   array()
     .max(1, error.REQUIRED_ONE_CHECKBOX)
