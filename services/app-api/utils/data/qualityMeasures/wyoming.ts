@@ -52,7 +52,7 @@ export const WY: Programs = {
     },
     {
       measure_name:
-        "Conduct Initial Provider Training And Certification As An FCC, FSP, YSP, Or Respite Provider Prior To Being Activated To Provide CME Service.",
+        "Conduct Initial Provider Training And Certification As An FCC, FSP, YSP, Or Respite Provider Prior To Being Activated To Provide CME Service",
       measure_identifier: measureIdentifiers.neither,
     },
     {
@@ -91,7 +91,7 @@ export const WY: Programs = {
       measure_identifier: measureIdentifiers.neither,
     },
     {
-      measure_name: "Member Handbook To All New Enrollees And Their Guardians.",
+      measure_name: "Member Handbook To All New Enrollees And Their Guardians",
       measure_identifier: measureIdentifiers.neither,
     },
     {
@@ -107,12 +107,12 @@ export const WY: Programs = {
       measure_identifier: measureIdentifiers.neither,
     },
     {
-      measure_name: "Process All Referrals Received By The Contractor.",
+      measure_name: "Process All Referrals Received By The Contractor",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "Prompt And Oversee That Families Complete The Agency's WFI-EZ And Prepare Families To Submit Six Months After Enrollment.",
+        "Prompt And Oversee That Families Complete The Agency's WFI-EZ And Prepare Families To Submit Six Months After Enrollment",
       measure_identifier: measureIdentifiers.neither,
     },
     {

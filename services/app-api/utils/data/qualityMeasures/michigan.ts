@@ -321,7 +321,7 @@ export const MI: Programs = {
     },
     {
       measure_name:
-        "Members With Individual Integrated Care And Supports Plans Completed.",
+        "Members With Individual Integrated Care And Supports Plans Completed",
       measure_identifier: measureIdentifiers.neither,
     },
     {
@@ -331,17 +331,17 @@ export const MI: Programs = {
     },
     {
       measure_name:
-        "Number & Percent Of Enrollees Records That Reflect The ICO Is Making Monthly Contact W/Beneficiary For Each Month Of Waiver Enrollment.",
+        "Number & Percent Of Enrollees Records That Reflect The ICO Is Making Monthly Contact W/Beneficiary For Each Month Of Waiver Enrollment",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "Number And Percent Of Enrollee IICSPs That Are Updated As The Enrollee'S Needs Change.",
+        "Number And Percent Of Enrollee IICSPs That Are Updated As The Enrollee'S Needs Change",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "Number And Percent Of Enrollee IICSPs That Are Updated Within 12 Months Of Last IICSP.",
+        "Number And Percent Of Enrollee IICSPs That Are Updated Within 12 Months Of Last IICSP",
       measure_identifier: measureIdentifiers.neither,
     },
     {
@@ -351,17 +351,17 @@ export const MI: Programs = {
     },
     {
       measure_name:
-        "Number And Percent Of Enrollees Whose IICSP Addressed Their Assessed Health And Safety Risks.",
+        "Number And Percent Of Enrollees Whose IICSP Addressed Their Assessed Health And Safety Risks",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "Number And Percent Of Enrollees Whose IICSPs Document Choice Was Offered Among Waiver Services.",
+        "Number And Percent Of Enrollees Whose IICSPs Document Choice Was Offered Among Waiver Services",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "Number And Percent Of Enrollees Whose IICSPs Include Services And Supports Which Align With Their Assessed Needs.",
+        "Number And Percent Of Enrollees Whose IICSPs Include Services And Supports Which Align With Their Assessed Needs",
       measure_identifier: measureIdentifiers.neither,
     },
     {
@@ -371,12 +371,12 @@ export const MI: Programs = {
     },
     {
       measure_name:
-        "Number And Percent Of Enrollees With IICSP Containing Documented Discussion Of Their Rights And Choices For Providers.",
+        "Number And Percent Of Enrollees With IICSP Containing Documented Discussion Of Their Rights And Choices For Providers",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "Number And Percent Of Enrollees With IICSPs That Include At Least One Individualized Personal Goal.",
+        "Number And Percent Of Enrollees With IICSPs That Include At Least One Individualized Personal Goal",
       measure_identifier: measureIdentifiers.neither,
     },
     {
@@ -385,17 +385,17 @@ export const MI: Programs = {
       measure_identifier: measureIdentifiers.neither,
     },
     {
-      measure_name: "Number And Percent Of IICPs That Supported Paid Services.",
+      measure_name: "Number And Percent Of IICPs That Supported Paid Services",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "Number And Percent Of Level Of Care Determinations Made By A Qualified Evaluator.",
+        "Number And Percent Of Level Of Care Determinations Made By A Qualified Evaluator",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "Number And Percent Of New MI Health Link HCBS Waiver Enrollees Who Meet The NFLOC Criteria Prior To The Receipt Of Waiver Services.",
+        "Number And Percent Of New MI Health Link HCBS Waiver Enrollees Who Meet The NFLOC Criteria Prior To The Receipt Of Waiver Services",
       measure_identifier: measureIdentifiers.neither,
     },
     {
@@ -436,7 +436,7 @@ export const MI: Programs = {
     },
     {
       measure_name:
-        "Unduplicated Members Receiving HCBS And Unduplicated Members Receiving Nursing Facility Services.",
+        "Unduplicated Members Receiving HCBS And Unduplicated Members Receiving Nursing Facility Services",
       measure_identifier: measureIdentifiers.neither,
     },
   ],
@@ -854,42 +854,42 @@ export const MI: Programs = {
     },
     {
       measure_name:
-        "The Percent Of HSW Enrollees During The Quarter With Encounters In Data Warehouse Who Are Receiving At Least One HSW Service Per Month That Is Not Supports Coordination.",
+        "The Percent Of HSW Enrollees During The Quarter With Encounters In Data Warehouse Who Are Receiving At Least One HSW Service Per Month That Is Not Supports Coordination",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "The Percent Of Medicaid Recipients Having Received PIHP Managed Services.",
+        "The Percent Of Medicaid Recipients Having Received PIHP Managed Services",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "The Percentage Of Discharges From A Psychiatric Inpatient Unit During The Quarter That Were Seen For Follow-Up Care Within 7 Days.",
+        "The Percentage Of Discharges From A Psychiatric Inpatient Unit During The Quarter That Were Seen For Follow-Up Care Within 7 Days",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "The Percentage Of Discharges From A Substance Abuse Detox Unit During The Quarter That Were Seen For Follow-Up Care Within 7 Days.",
+        "The Percentage Of Discharges From A Substance Abuse Detox Unit During The Quarter That Were Seen For Follow-Up Care Within 7 Days",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "The Percentage Of New Persons During The Quarter Receiving A Completed Biopsychosocial Assessment Within 14 Calendar Days Of A Non-Emergency Request For Service.",
+        "The Percentage Of New Persons During The Quarter Receiving A Completed Biopsychosocial Assessment Within 14 Calendar Days Of A Non-Emergency Request For Service",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "The Percentage Of New Persons During The Quarter Starting Any Medically Necessary Ongoing Covered Service Within 14 Days Of Completing A Non-Emergent Biopsychosocial Assessment.",
+        "The Percentage Of New Persons During The Quarter Starting Any Medically Necessary Ongoing Covered Service Within 14 Days Of Completing A Non-Emergent Biopsychosocial Assessment",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "The Percentage Of Persons During The Quarter Receiving A Pre-Admission Screening For Psychiatric Inpatient Care For Whom The Disposition Was Completed Within Three Hours.",
+        "The Percentage Of Persons During The Quarter Receiving A Pre-Admission Screening For Psychiatric Inpatient Care For Whom The Disposition Was Completed Within Three Hours",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "The Percentage Of Readmissions Of MI And I/DD Children And Adults During The Quarter To An Inpatient Psychiatric Unit Within 30 Days Of Discharge.",
+        "The Percentage Of Readmissions Of MI And I/DD Children And Adults During The Quarter To An Inpatient Psychiatric Unit Within 30 Days Of Discharge",
       measure_identifier: measureIdentifiers.neither,
     },
   ],

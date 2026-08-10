@@ -21,8 +21,8 @@ describe("mcparQualityMeasuresList", () => {
       measures: 11,
     },
     CA: {
-      programs: 6,
-      measures: 60,
+      programs: 4,
+      measures: 36,
     },
     CO: {
       programs: 1,
@@ -219,8 +219,8 @@ describe("mcparQualityMeasuresList", () => {
   };
   const totals = {
     states: 53,
-    programs: 113,
-    measures: 2906,
+    programs: 111,
+    measures: 2882,
   };
 
   (Object.keys(counts) as State[]).forEach((key) => {
@@ -236,15 +236,7 @@ describe("mcparQualityMeasuresList", () => {
       expect(measures).toHaveLength(counts[key].measures);
     });
 
-    // TODO: Remove filter after clarification
-    const filteredPrograms = programsWithMeasures.filter((program) => {
-      return ![
-        "Dental Managed Care/ Los Angeles",
-        "Dental Managed Care/ Sacramento",
-      ].includes(program);
-    });
-
-    filteredPrograms.forEach((programName) => {
+    programsWithMeasures.forEach((programName) => {
       test(`${key} - ${programName} is in program list`, () => {
         expect(stateProgramList).toContain(programName);
       });

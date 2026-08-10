@@ -509,7 +509,7 @@ export const GA: Programs = {
     },
     {
       measure_name:
-        "Individuals Who Were Presented The Pathways Screens, Requested Reasonable Modifications Due To Disability At Application, And Were Eligible For Pathways.",
+        "Individuals Who Were Presented The Pathways Screens, Requested Reasonable Modifications Due To Disability At Application, And Were Eligible For Pathways",
       measure_identifier: measureIdentifiers.neither,
     },
     {
@@ -531,7 +531,7 @@ export const GA: Programs = {
     },
     {
       measure_name:
-        "Pathways Applicants Who Elected To Be Considered For Pathways And Acknowledged That They Read The Requirements Of The Program.",
+        "Pathways Applicants Who Elected To Be Considered For Pathways And Acknowledged That They Read The Requirements Of The Program",
       measure_identifier: measureIdentifiers.neither,
     },
     {

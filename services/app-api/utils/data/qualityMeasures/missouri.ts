@@ -147,12 +147,12 @@ export const MO: Programs = {
     },
     {
       measure_name:
-        "Percentage Of Primary Care Provider Offices That Met The Urgent Appointment Standard.",
+        "Percentage Of Primary Care Provider Offices That Met The Urgent Appointment Standard",
       measure_identifier: measureIdentifiers.neither,
     },
     {
       measure_name:
-        "Percentage Of Psychiatrist Offices That Met The Two-Week Appointment Standard For Routine Behavioral Health And Substance Use Services Without Symptoms.",
+        "Percentage Of Psychiatrist Offices That Met The Two-Week Appointment Standard For Routine Behavioral Health And Substance Use Services Without Symptoms",
       measure_identifier: measureIdentifiers.neither,
     },
     {
