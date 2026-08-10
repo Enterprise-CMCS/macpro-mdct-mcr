@@ -1465,7 +1465,7 @@ export const planComplianceRoute: MultiformRoute = {
               id: "delivery",
               type: ReportFormFieldType.CHECKBOX,
               validation: {
-                type: ValidationType.CHECKBOX,
+                type: ValidationType.CHECKBOX_CUSTOM,
                 options: {
                   errorMessage:
                     "At least one response required for III.B.2 through III.B.4",
@@ -1517,7 +1517,7 @@ export const planComplianceRoute: MultiformRoute = {
               id: "timely",
               type: ReportFormFieldType.CHECKBOX,
               validation: {
-                type: ValidationType.CHECKBOX,
+                type: ValidationType.CHECKBOX_CUSTOM,
                 options: {
                   errorMessage:
                     "At least one response required for III.B.2 through III.B.4",
@@ -1565,7 +1565,7 @@ export const planComplianceRoute: MultiformRoute = {
               id: "other",
               type: ReportFormFieldType.CHECKBOX,
               validation: {
-                type: ValidationType.CHECKBOX,
+                type: ValidationType.CHECKBOX_CUSTOM,
                 options: {
                   errorMessage:
                     "At least one response required for III.B.2 through III.B.4",

@@ -1,5 +1,6 @@
 export enum ValidationType {
   CHECKBOX = "checkbox",
+  CHECKBOX_CUSTOM = "checkboxCustom",
   CHECKBOX_ONE_OPTIONAL = "checkboxOneOptional",
   CHECKBOX_OPTIONAL = "checkboxOptional",
   DATE = "date",
