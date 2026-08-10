@@ -99,13 +99,9 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
       // if standard validation type, set corresponding schema from map
       if (typeof fieldValidation === "string") {
         const correspondingSchema = schemaMap[fieldValidation];
-        if (!correspondingSchema) return;
-
-        validationSchema[key] =
-          typeof correspondingSchema === "function"
-            ? correspondingSchema()
-            : correspondingSchema;
-
+        if (correspondingSchema) {
+          validationSchema[key] = correspondingSchema;
+        }
         return;
       }
 
@@ -119,7 +115,6 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
       const getSchema = dependentSchemas[fieldValidation.type];
       if (getSchema) {
         validationSchema[key] = getSchema(fieldValidation);
-        return;
       }
     }
   );
