@@ -69,8 +69,17 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
         return;
       }
 
+      // else if custom validation type with options
+      else if (fieldValidation?.options && !fieldValidation?.nested) {
+        const correspondingSchema = schemaMap[fieldValidation.type];
+        if (correspondingSchema) {
+          validationSchema[key] = correspondingSchema(fieldValidation.options);
+        }
+        return;
+      }
+
       // if nested validation type, make and set nested schema
-      if (fieldValidation.nested) {
+      else if (fieldValidation.nested) {
         validationSchema[key] = makeNestedFieldSchema(fieldValidation);
         return;
       }
@@ -79,8 +88,8 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
       const getSchema = dependentSchemas[fieldValidation.type];
       if (getSchema) {
         validationSchema[key] = getSchema(fieldValidation);
-        return;
       }
+      return;
     }
   );
   return validationSchema;
