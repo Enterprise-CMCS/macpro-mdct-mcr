@@ -10,7 +10,7 @@ import {
 // constants
 import { suppressionText } from "../constants/constants";
 // types
-import { Choice } from "../types";
+import { Choice, ChoiceOptions } from "../types";
 
 const error = {
   REQUIRED_GENERIC: "A response is required",
@@ -306,6 +306,11 @@ export const checkbox = () =>
   array()
     .min(0)
     .of(object({ key: text(), value: text() }));
+export const checkboxCustom = (options: ChoiceOptions) =>
+  array()
+    .min(1, options.errorMessage)
+    .of(object({ key: text(), value: text() }))
+    .required(options.errorMessage);
 export const checkboxOptional = () =>
   array()
     .of(object({ key: text(), value: text() }))
@@ -367,6 +372,7 @@ export const optionalDateFormatRegex = new RegExp(`^(${datePattern})?$`);
 // SCHEMA MAP
 export const schemaMap: any = {
   checkbox: checkbox(),
+  checkboxCustom: (options: ChoiceOptions) => checkboxCustom(options),
   checkboxOneOptional: checkboxOneOptional(),
   checkboxOptional: checkboxOptional(),
   checkboxSingle: checkboxSingle(),

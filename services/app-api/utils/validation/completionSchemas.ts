@@ -9,7 +9,7 @@ import {
 // constants
 import { suppressionText } from "../constants/constants";
 // types
-import { Choice } from "../types";
+import { Choice, ChoiceOptions } from "../types";
 
 export const error = {
   REQUIRED_GENERIC: "A response is required",
@@ -350,6 +350,11 @@ export const checkbox = () =>
     .min(1, error.REQUIRED_CHECKBOX)
     .of(object({ key: textSchema(), value: textSchema() }))
     .required(error.REQUIRED_CHECKBOX);
+export const checkboxCustom = (options: ChoiceOptions) =>
+  array()
+    .min(1, options.errorMessage)
+    .of(object({ key: textSchema(), value: textSchema() }))
+    .required(options.errorMessage);
 export const checkboxOneOptional = () =>
   array()
     .max(1, error.REQUIRED_ONE_CHECKBOX)
@@ -417,6 +422,7 @@ export const dateMonthYearFormatRegex = /^(\d{2}\/\d{4}|\d{6})$/;
 
 export const completionSchemaMap: any = {
   checkbox: checkbox(),
+  checkboxCustom: (options: ChoiceOptions) => checkboxCustom(options),
   checkboxOneOptional: checkboxOneOptional(),
   checkboxOptional: checkboxOptional(),
   checkboxSingle: checkboxSingle(),

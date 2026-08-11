@@ -490,6 +490,19 @@ describe("Completion schemas", () => {
   });
 
   test.each([
+    { value: undefined, description: "undefined", expected: false },
+    { value: [], description: "empty array", expected: false },
+    { value: [choice], description: "one selection", expected: true },
+    { value: [choice, choice], description: "two selections", expected: true },
+  ])("checkboxCustom $description -> $expected", ({ value, expected }) => {
+    expect(
+      schemaMap
+        .checkboxCustom({ errorMessage: "mock error message" })
+        .isValidSync(value)
+    ).toBe(expected);
+  });
+
+  test.each([
     { value: undefined, description: "undefined", expected: true },
     { value: [], description: "empty array", expected: true },
     { value: [choice], description: "one selection", expected: true },
