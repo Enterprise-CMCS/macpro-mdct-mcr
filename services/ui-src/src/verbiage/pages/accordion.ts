@@ -28,10 +28,6 @@ export default {
         },
         {
           type: "p",
-          content: "",
-        },
-        {
-          type: "p",
           children: [
             {
               type: "html",
@@ -113,32 +109,7 @@ export default {
             {
               type: "html",
               content:
-                " on Medicaid.gov to determine which rates to report under “Naming of Rates.",
-            },
-          ],
-        },
-        {
-          type: "p",
-          children: [
-            {
-              type: "html",
-              content:
-                "Depending on how measures are defined, a single measure may be made up of several different “rates” or “sub-measures” (e.g., rates for different age groups, etc.). Where a measure steward has specified several rates, the state should not report all possible rates for the measure in the MCPAR. Instead, follow the decision tree located in Figure 1 of the Technical Guide found ",
-            },
-            {
-              type: "externalLink",
-              content: "here",
-              props: {
-                href: "https://www.medicaid.gov/medicaid/managed-care/downloads/MCPAR-Quality-Technical-Guide.docx",
-                target: "_blank",
-                "aria-label":
-                  "MCPAR Quality Technical Guide download (link opens in new tab)",
-              },
-            },
-            {
-              type: "html",
-              content:
-                " on Medicaid.gov to determine which rates to report under “Naming of Rates.",
+                " on Medicaid.gov to determine which rates to report under “Naming of Rates”.",
             },
           ],
         },
