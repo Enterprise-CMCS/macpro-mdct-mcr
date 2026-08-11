@@ -1,3 +1,5 @@
+import { Choice } from "../types";
+
 export const error = {
   // generic errors
   UNAUTHORIZED: "User is not authorized to access this resource.",
@@ -132,7 +134,7 @@ export const states = [
   "ZZ",
 ] as const;
 
-export const measureIdentifiers = {
+export const measureIdentifiers: { [key: string]: [Choice] } = {
   yes: [
     {
       key: "measure_identifier-lIqRkso1nUidNG1Gh7Ll0A", // pragma: allowlist secret

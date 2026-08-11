@@ -1,8 +1,9 @@
+import { Choice } from "./formFields";
 import { State } from "./other";
 
 export type Measure = {
   measure_name: string;
-  measure_identifier?: any;
+  measure_identifier?: [Choice];
   measure_identifierCbe?: string;
   measure_identifierCmit?: string;
   measure_identifierDefinition?: string;
