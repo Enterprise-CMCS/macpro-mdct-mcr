@@ -14,6 +14,7 @@ import { Choice, ChoiceOptions } from "../types";
 
 const error = {
   REQUIRED_GENERIC: "A response is required",
+  REQUIRED_CHECKBOX: "Select at least one response",
   INVALID_EMAIL: "Response must be a valid email address",
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_DATE: "Response must be a valid date",
@@ -308,9 +309,9 @@ export const checkbox = () =>
     .of(object({ key: text(), value: text() }));
 export const checkboxCustom = (options: ChoiceOptions) =>
   array()
-    .min(1, options.errorMessage)
+    .min(1, options?.errorMessage || error.REQUIRED_CHECKBOX)
     .of(object({ key: text(), value: text() }))
-    .required(options.errorMessage);
+    .required(options?.errorMessage || error.REQUIRED_CHECKBOX);
 export const checkboxOptional = () =>
   array()
     .of(object({ key: text(), value: text() }))
