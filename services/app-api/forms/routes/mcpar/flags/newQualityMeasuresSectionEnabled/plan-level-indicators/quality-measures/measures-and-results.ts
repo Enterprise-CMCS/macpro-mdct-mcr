@@ -152,7 +152,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
                 {
                   type: "html",
                   content:
-                    "If the state is reporting for a period other than the required measurement year, select “yes.”  To determine which calendar year to use for your report, reference the MCPAR Technical Guidance: Quality Measures (“Technical Guide”) found ",
+                    "If the state is reporting for a period other than the required measurement year, select “yes.” To determine which calendar year to use for your report, reference the MCPAR Technical Guidance: Quality Measures (“Technical Guide”) found ",
                 },
                 {
                   type: "externalLink",
@@ -326,7 +326,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
             {
               type: "span",
               content:
-                "For each rate the state is reporting for this measure, enter the name of the rate as defined by the measure steward. If there is only a single rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.6. ",
+                "For each rate the state is reporting for this measure, enter the name of the rate as defined by the measure steward. If there is only a single rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.6.",
             },
           ],
         },

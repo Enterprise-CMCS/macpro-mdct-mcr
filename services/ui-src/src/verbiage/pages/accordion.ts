@@ -32,7 +32,7 @@ export default {
             {
               type: "html",
               content:
-                "Starting December 26, 2026, CMS requires states to report this data per calendar year. Moving all states, programs, and plans onto the same reporting timeframe will help standardize data, make it easier to compare, and align it with other CMS systems.  To determine which calendar year to use for your report, reference the MCPAR Technical Guidance: Quality Measures (“Technical Guide”) found ",
+                "Starting December 26, 2026, CMS requires states to report this data per calendar year. Moving all states, programs, and plans onto the same reporting timeframe will help standardize data, make it easier to compare, and align it with other CMS systems. To determine which calendar year to use for your report, reference the MCPAR Technical Guidance: Quality Measures (“Technical Guide”) found ",
             },
             {
               type: "externalLink",
