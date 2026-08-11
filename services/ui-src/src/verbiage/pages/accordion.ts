@@ -109,7 +109,7 @@ export default {
             {
               type: "html",
               content:
-                " on Medicaid.gov to determine which rates to report under “Naming of Rates”.",
+                " on Medicaid.gov to determine which rates to report under “Naming of Rates.”",
             },
           ],
         },
