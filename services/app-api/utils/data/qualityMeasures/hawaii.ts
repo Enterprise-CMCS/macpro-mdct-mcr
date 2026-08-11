@@ -1,0 +1,344 @@
+import { measureIdentifiers } from "../../constants/constants";
+import { Programs } from "../../types";
+
+export const HI: Programs = {
+  "Community Care Services (CCS)": [
+    {
+      measure_name:
+        "Adherence To Antipsychotic Medications For Individuals With Schizophrenia (HEDIS SAA)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "18",
+    },
+    {
+      measure_name:
+        "Ambulatory Care - Emergency Department and Outpatient Visits (HEDIS AMB)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "49",
+    },
+    {
+      measure_name: "Antidepressant Medication Management (HEDIS AMM)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "63",
+    },
+    {
+      measure_name:
+        "Follow Up After Emergency Department Visit For Alcohol & Other Drug Abuse/Dependence (HEDIS FUA)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "264",
+    },
+    {
+      measure_name:
+        "Follow Up After Emergency Department Visit For Mental Illness (HEDIS FUM)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "265",
+    },
+    {
+      measure_name:
+        "Follow-Up After Hospitalization For Mental Illness (HEDIS FUH)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "268",
+    },
+    {
+      measure_name:
+        "Initiation And Engagement Of Substance Use Disorder Treatment (HEDIS IET)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "394",
+    },
+    {
+      measure_name: "Diagnosed Mental Health Disorders (HEDIS DMH)",
+      measure_identifier: measureIdentifiers.neither,
+    },
+  ],
+  "Hawaii's QUEST Integration": [
+    {
+      measure_name:
+        "Adherence To Antipsychotic Medications For Individuals With Schizophrenia (HEDIS SAA)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "18",
+    },
+    {
+      measure_name:
+        "Ambulatory Care - Emergency Department and Outpatient Visits (HEDIS AMB)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "49",
+    },
+    {
+      measure_name: "Antidepressant Medication Management (HEDIS AMM)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "63",
+    },
+    {
+      measure_name: "Asthma Medication Ratio (HEDIS AMR)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "80",
+    },
+    {
+      measure_name:
+        "Avoidance Of Antibiotic Treatment For Acute Bronchitis/Bronchiolitis (HEDIS AAB)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "84",
+    },
+    {
+      measure_name: "Breast Cancer Screening (HEDIS BCS)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "93",
+    },
+    {
+      measure_name: "Cervical Cancer Screening (HEDIS CCS)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "118",
+    },
+    {
+      measure_name: "Child And Adolescent Well-Care Visits (HEDIS WCV)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "123",
+    },
+    {
+      measure_name: "Childhood Immunization Status (HEDIS CIS)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "124",
+    },
+    {
+      measure_name: "Chlamydia Screening (HEDIS CHL)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "128",
+    },
+    {
+      measure_name: "Colorectal Cancer Screening (HEDIS COL)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "139",
+    },
+    {
+      measure_name: "Contraceptive Care - Postpartum (CCP)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "166",
+    },
+    {
+      measure_name: "Controlling High Blood Pressure (HEDIS CBP)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "167",
+    },
+    {
+      measure_name:
+        "Diabetes Care For People With Serious Mental Illness: A1c > 9.0% (HEDIS HPCMI)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "196",
+    },
+    {
+      measure_name:
+        "Diabetes Screening For People With Schizophrenia Or Bipolar Disorder Who Are Using Antipsychotics (HEDIS SSD)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "202",
+    },
+    {
+      measure_name: "Eye Exam for Patients with Diabetes (HEDIS EED)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "203",
+    },
+    {
+      measure_name:
+        "Follow Up After Emergency Department Visit For Alcohol & Other Drug Abuse/Dependence (HEDIS FUA)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "264",
+    },
+    {
+      measure_name:
+        "Follow Up After Emergency Department Visit For Mental Illness (HEDIS FUM)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "265",
+    },
+    {
+      measure_name:
+        "Follow-Up After Hospitalization For Mental Illness (HEDIS FUH)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "268",
+    },
+    {
+      measure_name:
+        "Follow Up Care For Children Prescribed ADHD Medication (HEDIS ADD)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "271",
+    },
+    {
+      measure_name: "Immunizations For Adolescents (HEDIS IMA)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "363",
+    },
+    {
+      measure_name:
+        "Initiation And Engagement Of Substance Use Disorder Treatment (HEDIS IET)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "394",
+    },
+    {
+      measure_name:
+        "Metabolic Monitoring For Children And Adolescents On Antipsychotics (HEDIS APM)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "448",
+    },
+    {
+      measure_name: "Plan All-Cause Readmissions (HEDIS PCR)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "561",
+    },
+    {
+      measure_name: "Diabetes Short Term Complications Admission Rate (PQI 01)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "577",
+    },
+    {
+      measure_name:
+        "Chronic Obstructive Pulmonary Disease Or Asthma In Older Adults Admission Rate (PQI 05)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "578",
+    },
+    {
+      measure_name: "Heart Failure Admission Rate (PQI 08)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "579",
+    },
+    {
+      measure_name: "Asthma In Younger Adults Admission Rate (PQI 15)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "580",
+    },
+    {
+      measure_name: "Prenatal And Postpartum Care (HEDIS PPC)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "581",
+    },
+    {
+      measure_name: "Screening for Depression and Follow-Up Plan (Core Set)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "672",
+    },
+    {
+      measure_name: "Use Of Opioids At High Dosage (HEDIS HDO)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "748",
+    },
+    {
+      measure_name: "Pharmacotherapy For Opioid Use Disorder (HEDIS POD)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "750",
+    },
+    {
+      measure_name:
+        "Weight Assessment And Counseling For Children / Adolescents (HEDIS WCC)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "760",
+    },
+    {
+      measure_name: "Well-Child Visits In First 30 Months Of Life (HEDIS W30)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "761",
+    },
+    {
+      measure_name: "Comprehensive Assessment and Update (MLTSS-1)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "960",
+    },
+    {
+      measure_name:
+        "LTSS Comprehensive Person-Centered Plan and Update (MLTSS-2)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "961",
+    },
+    {
+      measure_name:
+        "Reassessment and Person-Centered Plan Update after Inpatient Discharge (MLTSS-4)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "962",
+    },
+    {
+      measure_name:
+        "Shared Person-Centered Plan with Primary Care Provider (MLTSS-3)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "963",
+    },
+    {
+      measure_name:
+        "Screening, Risk Assessment, And Plan Of Care To Prevent Future Falls (MLTSS-5)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "1255",
+    },
+    {
+      measure_name: "Admission To A Facility From The Community (MLTSS-6)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "20",
+    },
+    {
+      measure_name: "Minimizing Facility Length of Stay (MLTSS-7)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "968",
+    },
+    {
+      measure_name:
+        "Successful Transition After Long-Ter Facility Stay (MLTSS-8)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "414",
+    },
+    {
+      measure_name: "Contraceptive Care - All Women (HEDIS CCW)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "1002",
+    },
+    {
+      measure_name: "Concurrent Use Of Opioids And Benzodiazepines (HEDIS COB)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "1654",
+    },
+    {
+      measure_name: "Lead Screening In Children (HEDIS LSC)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "1775",
+    },
+    {
+      measure_name:
+        "Glycemic Status Assessment for Patients With Diabetes (HEDIS GSD)",
+      measure_identifier: measureIdentifiers.yes,
+      measure_identifierCmit: "1820",
+    },
+    {
+      measure_name:
+        "Blood Pressure Control For Patients With Diabetes (HEDIS BPD)",
+      measure_identifier: measureIdentifiers.no,
+      measure_identifierCbe: "61.0",
+    },
+    {
+      measure_name: "Hypertension Admission Rate (PQI 07)",
+      measure_identifier: measureIdentifiers.no,
+      measure_identifierCbe: "276.0",
+    },
+    {
+      measure_name:
+        "Lower-Extremity Amputation Among Patients With Diabetes Admission Rate (PQI 16)",
+      measure_identifier: measureIdentifiers.no,
+      measure_identifierCbe: "285.0",
+    },
+    {
+      measure_name: "Advance Care Planning (HEDIS ACP)",
+      measure_identifier: measureIdentifiers.no,
+      measure_identifierCbe: "326.0",
+    },
+    {
+      measure_name: "Uncontrolled Diabetes Admission Rate (PQI 14)",
+      measure_identifier: measureIdentifiers.no,
+      measure_identifierCbe: "638.0",
+    },
+    {
+      measure_name:
+        "Adults' Access To Preventive/Ambulatory Health Services (HEDIS AAP)",
+      measure_identifier: measureIdentifiers.neither,
+    },
+    {
+      measure_name: "Diagnosed Mental Health Disorders (HEDIS DMH)",
+      measure_identifier: measureIdentifiers.neither,
+    },
+    {
+      measure_name:
+        "Inpatient Utilization -- General Hospital/Acute Care (HEDIS IPU)",
+      measure_identifier: measureIdentifiers.neither,
+    },
+  ],
+};

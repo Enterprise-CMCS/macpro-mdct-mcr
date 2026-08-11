@@ -1,3 +1,5 @@
+import { Choice } from "../types";
+
 export const error = {
   // generic errors
   UNAUTHORIZED: "User is not authorized to access this resource.",
@@ -75,3 +77,80 @@ export const suppressionText = "Suppressed for data privacy purposes";
 
 export const uuidRegex =
   /^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/;
+
+export const states = [
+  "AL",
+  "AK",
+  "AZ",
+  "AR",
+  "CA",
+  "CO",
+  "CT",
+  "DE",
+  "DC",
+  "FL",
+  "GA",
+  "HI",
+  "ID",
+  "IL",
+  "IN",
+  "IA",
+  "KS",
+  "KY",
+  "LA",
+  "ME",
+  "MD",
+  "MA",
+  "MI",
+  "MN",
+  "MS",
+  "MO",
+  "MT",
+  "NE",
+  "NV",
+  "NH",
+  "NJ",
+  "NM",
+  "NY",
+  "NC",
+  "ND",
+  "OH",
+  "OK",
+  "OR",
+  "PA",
+  "PR",
+  "RI",
+  "SC",
+  "SD",
+  "TN",
+  "TX",
+  "UT",
+  "VT",
+  "VA",
+  "WA",
+  "WV",
+  "WI",
+  "WY",
+  "ZZ",
+] as const;
+
+export const measureIdentifiers: { [key: string]: [Choice] } = {
+  yes: [
+    {
+      key: "measure_identifier-lIqRkso1nUidNG1Gh7Ll0A", // pragma: allowlist secret
+      value: "Yes",
+    },
+  ],
+  no: [
+    {
+      key: "measure_identifier-eqVgpF8hmsma9ibcvwVqCb", // pragma: allowlist secret
+      value: "No, it has a Consensus Based Entity (CBE) number",
+    },
+  ],
+  neither: [
+    {
+      key: "measure_identifier-hcsq9mTy5wWhxUPtgkQWwB", // pragma: allowlist secret
+      value: "No, it uses neither CMIT or CBE",
+    },
+  ],
+};

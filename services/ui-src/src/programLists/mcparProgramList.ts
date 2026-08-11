@@ -13,6 +13,8 @@ export const mcparProgramList: ProgramList = {
       label: "Alabama Integrated Care Network (ICN)",
     },
   ],
+  // Alaska
+  AK: [],
   // Arizona
   AZ: [
     {
@@ -50,8 +52,6 @@ export const mcparProgramList: ProgramList = {
       label: "Provider Led Arkansas Shared Savings Entity (PASSE)",
     },
   ],
-  // Alaska
-  AK: [],
   // California
   CA: [
     {
