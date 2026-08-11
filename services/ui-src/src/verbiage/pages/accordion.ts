@@ -28,8 +28,31 @@ export default {
         },
         {
           type: "p",
-          content:
-            "Starting December 26, 2026, CMS requires states to report this data per calendar year. Moving all states, programs, and plans onto the same reporting timeframe will help standardize data, make it easier to compare, and align it with other CMS systems.  To determine which calendar year to use for your report, reference the MCPAR Technical Guidance: Quality Measures (“Technical Guide”) found here on Medicaid.gov.",
+          content: "",
+        },
+        {
+          type: "p",
+          children: [
+            {
+              type: "html",
+              content:
+                "Starting December 26, 2026, CMS requires states to report this data per calendar year. Moving all states, programs, and plans onto the same reporting timeframe will help standardize data, make it easier to compare, and align it with other CMS systems.  To determine which calendar year to use for your report, reference the MCPAR Technical Guidance: Quality Measures (“Technical Guide”) found ",
+            },
+            {
+              type: "externalLink",
+              content: "here",
+              props: {
+                href: "https://www.medicaid.gov/medicaid/managed-care/downloads/MCPAR-Quality-Technical-Guide.docx",
+                target: "_blank",
+                "aria-label":
+                  "MCPAR Quality Technical Guide download (link opens in new tab)",
+              },
+            },
+            {
+              type: "html",
+              content: " on Medicaid.gov.",
+            },
+          ],
         },
         {
           type: "p",
@@ -69,7 +92,31 @@ export default {
           content:
             "Measures will likely fall into more than one of these categories but only need to fall into one category to be required for MCPAR reporting.",
         },
-        {},
+        {
+          type: "p",
+          children: [
+            {
+              type: "html",
+              content:
+                "Depending on how measures are defined, a single measure may be made up of several different “rates” or “sub-measures” (e.g., rates for different age groups, etc.). Where a measure steward has specified several rates, the state should not report all possible rates for the measure in the MCPAR. Instead, follow the decision tree located in Figure 1 of the Technical Guide found ",
+            },
+            {
+              type: "externalLink",
+              content: "here",
+              props: {
+                href: "https://www.medicaid.gov/medicaid/managed-care/downloads/MCPAR-Quality-Technical-Guide.docx",
+                target: "_blank",
+                "aria-label":
+                  "MCPAR Quality Technical Guide download (link opens in new tab)",
+              },
+            },
+            {
+              type: "html",
+              content:
+                " on Medicaid.gov to determine which rates to report under “Naming of Rates.",
+            },
+          ],
+        },
         {
           type: "p",
           children: [

@@ -145,7 +145,32 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         props: {
           label:
             "D2.VII.3 Deviation from measurement year (calendar year) reporting",
-          hint: "If the state is reporting for a period other than the required measurement year, select “yes.”  To determine which calendar year to use for your report, reference the MCPAR Technical Guidance: Quality Measures (“Technical Guide”) found here on Medicaid.gov.",
+          hint: [
+            {
+              type: "p",
+              children: [
+                {
+                  type: "html",
+                  content:
+                    "If the state is reporting for a period other than the required measurement year, select “yes.”  To determine which calendar year to use for your report, reference the MCPAR Technical Guidance: Quality Measures (“Technical Guide”) found ",
+                },
+                {
+                  type: "externalLink",
+                  content: "here",
+                  props: {
+                    href: "https://www.medicaid.gov/medicaid/managed-care/downloads/MCPAR-Quality-Technical-Guide.docx",
+                    target: "_blank",
+                    "aria-label":
+                      "MCPAR Quality Technical Guide download (link opens in new tab)",
+                  },
+                },
+                {
+                  type: "html",
+                  content: " on Medicaid.gov.",
+                },
+              ],
+            },
+          ],
           choices: [
             {
               id: "idw5lcMLX9yrn17I2X3ck6iw",
