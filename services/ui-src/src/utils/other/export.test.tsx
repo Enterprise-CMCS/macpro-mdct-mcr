@@ -339,12 +339,22 @@ describe("Test rendering methods", () => {
     expect(screen.queryByText("mock-ilos: N/A")).not.toBeInTheDocument();
   });
 
-  test("Correctly renders nested ILOS fields", () => {
+  test("Correctly renders nested ILOS fields with legacy, unprefixed choice ids", () => {
+    const mockFieldResponseData = [{ key: "123", value: "mock-ilos" }];
+    const mockPlan = {
+      id: "mock-id",
+      plan_ilosUtilizationByPlan: [...mockFieldResponseData],
+      plan_ilosUtilizationByPlan_123: "N/A",
+    };
+
+    const result = getNestedIlosResponses(mockFieldResponseData, mockPlan);
+    expect(result[0].key).toEqual("mock-ilos");
+    expect(result[0].value).toEqual("N/A");
+  });
+
+  test("Correctly renders nested ILOS fields with prefixed choice ids", () => {
     const mockFieldResponseData = [
-      {
-        key: "123",
-        value: "mock-ilos",
-      },
+      { key: "plan_ilosUtilizationByPlan-123", value: "mock-ilos" },
     ];
     const mockPlan = {
       id: "mock-id",
@@ -355,6 +365,46 @@ describe("Test rendering methods", () => {
     const result = getNestedIlosResponses(mockFieldResponseData, mockPlan);
     expect(result[0].key).toEqual("mock-ilos");
     expect(result[0].value).toEqual("N/A");
+  });
+
+  test("Correctly renders a utilization value of 0", () => {
+    const mockFieldResponseData = [
+      { key: "plan_ilosUtilizationByPlan-123", value: "mock-ilos" },
+    ];
+    const mockPlan = {
+      id: "mock-id",
+      plan_ilosUtilizationByPlan: [...mockFieldResponseData],
+      plan_ilosUtilizationByPlan_123: "0",
+    };
+
+    const result = getNestedIlosResponses(mockFieldResponseData, mockPlan);
+    expect(result[0].value).toEqual("0");
+  });
+
+  test("Correctly renders multiple nested ILOS fields for the same plan", () => {
+    const mockFieldResponseData = [
+      {
+        key: "plan_ilosUtilizationByPlan-111",
+        value: "mock-ilos-one",
+      },
+      {
+        key: "plan_ilosUtilizationByPlan-222",
+        value: "mock-ilos-two",
+      },
+    ];
+    const mockPlan = {
+      id: "mock-id",
+      plan_ilosUtilizationByPlan: [...mockFieldResponseData],
+      plan_ilosUtilizationByPlan_111: "13",
+      plan_ilosUtilizationByPlan_222: "17",
+    };
+
+    const result = getNestedIlosResponses(mockFieldResponseData, mockPlan);
+
+    expect(result[0].key).toEqual("mock-ilos-one");
+    expect(result[0].value).toEqual("13");
+    expect(result[1].key).toEqual("mock-ilos-two");
+    expect(result[1].value).toEqual("17");
   });
 
   test("If there are ILOS but no plans, renders error message", () => {
