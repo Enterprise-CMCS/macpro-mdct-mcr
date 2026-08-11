@@ -352,9 +352,9 @@ export const checkbox = () =>
     .required(error.REQUIRED_CHECKBOX);
 export const checkboxCustom = (options: ChoiceOptions) =>
   array()
-    .min(1, options?.errorMessage || error.REQUIRED_CHECKBOX)
+    .min(1, options.errorMessage ?? error.REQUIRED_CHECKBOX)
     .of(object({ key: textSchema(), value: textSchema() }))
-    .required(options?.errorMessage || error.REQUIRED_CHECKBOX);
+    .required(options.errorMessage ?? error.REQUIRED_CHECKBOX);
 export const checkboxOneOptional = () =>
   array()
     .max(1, error.REQUIRED_ONE_CHECKBOX)
