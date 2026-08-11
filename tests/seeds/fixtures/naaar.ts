@@ -10,6 +10,12 @@ import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
 const analysisMethods = [...DEFAULT_ANALYSIS_METHODS];
 
+/**
+ * Plan name used by seeded in-progress NAAAR reports, so e2e specs can address
+ * the plan without having to read it back out of the DOM.
+ */
+export const naaarSeedPlanName = "Automation Plan";
+
 export const newNaaar = (
   flags: { [key: string]: true },
   stateName: string,
@@ -58,7 +64,7 @@ export const newNaaar = (
   const { isNewProgram } = options;
 
   const planIndex = randomIndex(enums.planTypeIncludedInProgram.length);
-  const generatedProgramName = `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`;
+  const generatedProgramName = `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}${new Date().toISOString()}`;
 
   // Pick an existing program name
   const existingPrograms =
@@ -66,8 +72,16 @@ export const newNaaar = (
   const existingProgramName =
     existingPrograms[randomIndex(existingPrograms.length)].label;
 
-  // Check for new program name
-  const programName = isNewProgram ? generatedProgramName : existingProgramName;
+  /*
+   * Check for new program name. Both paths are timestamped, as in newMcpar:
+   * admins see archived reports, so the admin dashboard accumulates every
+   * report ever seeded and can never be cleaned up between runs. Without this,
+   * row lookups by program name match reports left over from earlier runs, and
+   * TN only has four NAAAR programs to draw from.
+   */
+  const programName = isNewProgram
+    ? generatedProgramName
+    : `${existingProgramName}${new Date().toISOString()}`;
   const existingProgramNameSelection = isNewProgram
     ? undefined
     : { value: existingProgramName, label: "existingProgramNameSelection" };
@@ -118,12 +132,13 @@ export const newNaaarNewProgram = (
   return newNaaar(flags, stateName, state, { isNewProgram: true });
 };
 
-export const fillNaaar = (flags: {
-  [key: string]: true;
-}): SeedFillReportShape => {
+export const fillNaaar = (
+  flags: { [key: string]: true },
+  options: { planName?: string } = {}
+): SeedFillReportShape => {
   const planId = crypto.randomUUID();
   const standardId = crypto.randomUUID();
-  const planName = faker.animal.cat();
+  const planName = options.planName ?? faker.animal.cat();
   const providerTypeId = "UZK4hxPVnuYGcIgNzYFHCk";
   const standardTypeId = "kIrheUXLpOwF7OEypso8Ylhs";
 

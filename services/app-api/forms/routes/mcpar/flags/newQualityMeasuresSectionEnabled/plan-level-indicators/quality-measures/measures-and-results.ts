@@ -83,9 +83,9 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
               children: [
                 {
                   id: "measure_identifierCmit",
-                  type: ReportFormFieldType.NUMBER,
+                  type: ReportFormFieldType.TEXT,
                   validation: {
-                    type: ValidationType.NUMBER,
+                    type: ValidationType.TEXT,
                     nested: true,
                     parentFieldName: "measure_identifier",
                     parentOptionId: "lIqRkso1nUidNG1Gh7Ll0A",
@@ -102,9 +102,9 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
               children: [
                 {
                   id: "measure_identifierCbe",
-                  type: ReportFormFieldType.NUMBER,
+                  type: ReportFormFieldType.TEXT,
                   validation: {
-                    type: ValidationType.NUMBER,
+                    type: ValidationType.TEXT,
                     nested: true,
                     parentFieldName: "measure_identifier",
                     parentOptionId: "eqVgpF8hmsma9ibcvwVqCb",
@@ -144,7 +144,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         validation: ValidationType.RADIO,
         props: {
           label: "D2.VII.3 Deviation from measurement year reporting",
-          hint: "If the state is reporting for a period other than the required measurement year, select “yes.”",
+          hint: "If the state is reporting for a period other than the required measurement year, select “yes.” To determine which calendar year to use for your report, reference the MCPAR Technical Guidance: Quality Measures (“Technical Guide”) found here on Medicaid.gov.",
           choices: [
             {
               id: "idw5lcMLX9yrn17I2X3ck6iw",
@@ -215,7 +215,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
             {
               id: "OlWKinxF3sh0LBMaABqP9h",
               label:
-                "External Quality Review (EQR) (as defined at 42 CFR 438.450-364)",
+                "External Quality Review (EQR) (as defined at 42 CFR 438.350-364)",
             },
             {
               id: "VNQnzSeAoexrk8lsaOSyZTSG",
@@ -271,7 +271,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         props: {
           divider: "none",
           content: "Naming of rates",
-          hint: "Enter the name(s) of the performance rate(s) you are reporting for the measure. If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.6. If there are multiple rates specified for this measure, refer to the Technical Guide for more information and examples. For each rate the state is reporting for this measure, enter the name of the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR.",
+          hint: "As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR. To determine which rate(s) to report for this measure, refer to Figure 1 of the Technical Guide found here on Medicaid.gov for more information and examples. For each rate the state is reporting for this measure, enter the name of the rate as defined by the measure steward. If there is only a single rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.6.",
         },
       },
       {

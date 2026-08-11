@@ -1,13 +1,20 @@
 // types
-import { Choice, ChoiceFieldProps, EntityShape, FormJson } from "types";
+import {
+  Choice,
+  ChoiceFieldProps,
+  EntityShape,
+  FormJson,
+  ReportFormFieldType,
+  ValidationType,
+} from "types";
 
 export const RATE_ID_PREFIX = "measure_rateResults-";
 
 export const createRateField = (id: string, name: string) => ({
   id: `${RATE_ID_PREFIX}${id}`,
-  type: "number",
+  type: ReportFormFieldType.TEXT,
   validation: {
-    type: "number",
+    type: ValidationType.TEXT,
     nested: true,
     parentFieldName: "measure_isReporting",
     parentOptionId: "xvBx2RGFpvmUf2Wk5bLe9u",

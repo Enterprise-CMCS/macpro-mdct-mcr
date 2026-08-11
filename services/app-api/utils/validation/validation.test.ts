@@ -9,6 +9,15 @@ const mockStandardValidationType = {
   key: ValidationType.TEXT,
 };
 
+const mockCustomValidationType = {
+  key: {
+    type: ValidationType.CHECKBOX_CUSTOM,
+    options: {
+      errorMessage: "mock error message",
+    },
+  },
+};
+
 const mockNestedValidationType = {
   key: {
     type: ValidationType.TEXT,
@@ -60,6 +69,13 @@ describe("Test mapValidationTypesToSchema", () => {
           "mock-parent-option-name"
         ),
       })
+    );
+  });
+
+  test("Returns custom validation schema if passed custom validation type", () => {
+    const result = mapValidationTypesToSchema(mockCustomValidationType);
+    expect(JSON.stringify(result)).toEqual(
+      JSON.stringify({ key: schema.checkboxCustom({}) })
     );
   });
 

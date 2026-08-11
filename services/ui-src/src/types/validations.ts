@@ -1,5 +1,6 @@
 export enum ValidationType {
   CHECKBOX = "checkbox",
+  CHECKBOX_CUSTOM = "checkboxCustom",
   CHECKBOX_ONE_OPTIONAL = "checkboxOneOptional",
   CHECKBOX_OPTIONAL = "checkboxOptional",
   DATE = "date",
@@ -32,4 +33,8 @@ export enum ValidationType {
   TEXT_OPTIONAL = "textOptional",
   URL = "url",
   URL_OPTIONAL = "urlOptional",
+}
+
+export interface ChoiceOptions {
+  errorMessage?: string;
 }

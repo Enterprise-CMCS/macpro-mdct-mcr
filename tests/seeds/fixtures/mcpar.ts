@@ -1,15 +1,13 @@
 import { faker } from "@faker-js/faker";
 import { suppressionText } from "../../../services/app-api/utils/constants/constants";
 import {
+  Measure,
+  MeasureList,
   ReportStatus,
   ReportType,
 } from "../../../services/app-api/utils/types";
 import { mcparProgramList } from "../../../services/ui-src/src/programLists/mcparProgramList";
-import {
-  mcparQualityMeasuresList,
-  Measure,
-  MeasureList,
-} from "../../../services/app-api/utils/data/mcparQualityMeasuresList";
+import { mcparQualityMeasuresList } from "../../../services/app-api/utils/data/mcparQualityMeasuresList";
 import { dateFormat, numberFloat, numberInt, randomIndex } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
@@ -78,9 +76,12 @@ export const newMcpar = (
     ],
   ];
 
+  // To put in program name to help distinguish tests
+  const timestamp = new Date().toISOString();
+
   // PCCM
   const programIsPCCM = [enums.programIsPCCM[isPccm ? 0 : 1]];
-  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()}${new Date().toISOString()}`;
+  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()}${timestamp}`;
 
   // Pick an existing program name
   const existingPrograms =
@@ -91,7 +92,7 @@ export const newMcpar = (
   // Check for new program name
   const programName = isNewProgram
     ? generatedProgramName
-    : `${existingProgramName}${new Date().toISOString()}`;
+    : `${existingProgramName}${timestamp}`;
   const existingProgramNameSelection = isNewProgram
     ? undefined
     : { value: existingProgramName, label: "existingProgramNameSelection" };
@@ -208,7 +209,9 @@ export const fillMcpar = (
     name: faker.animal.dog(),
   }));
 
-  const plans = planIds.map((planId, index) => createPlan(planId, ilos[index]));
+  const plans = planIds.map((planId, index) =>
+    createPlan(planId, ilos[index], flags)
+  );
 
   const qualityMeasures = Array.from({ length: numberOfExamples }, () =>
     createQualityMeasure(planIds)
@@ -226,10 +229,16 @@ export const fillMcpar = (
       (_, index) => createNewQualityMeasure(index)
     );
 
+    // Remove timestamp from program name
+    const cleanedProgramName = options?.programName
+      .replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/, "")
+      .trim();
+
     // Check for pre-determined measures to use
-    const measuresByStateAndProgram: Measure[] = (
-      mcparQualityMeasuresList as MeasureList
-    )?.[options?.state as keyof MeasureList]?.[options?.programName];
+    const measuresByStateAndProgram: Measure[] =
+      mcparQualityMeasuresList?.[options?.state as keyof MeasureList]?.[
+        cleanedProgramName
+      ];
 
     if (measuresByStateAndProgram) {
       newQualityMeasures = measuresByStateAndProgram.map((measure, index) =>
@@ -284,6 +293,11 @@ export const fillMcpar = (
       qualityMeasures: newQualityMeasures,
     };
   }
+
+  const newMlrReportingPeriodEndDate = faker.date.past();
+  const newMlrReportingPeriodStartDate = faker.date.past({
+    refDate: newMlrReportingPeriodEndDate,
+  });
 
   return {
     metadata: {
@@ -368,6 +382,19 @@ export const fillMcpar = (
       program_haveTheseDeficienciesBeenResolvedForAllPlans: [
         {
           key: "program_haveTheseDeficienciesBeenResolvedForAllPlans-sLd8M1tgf9dpVIZWRYEXvdBe",
+          value: "Yes",
+        },
+      ],
+      program_mlrReportingPeriodEndDate: dateFormat.format(
+        newMlrReportingPeriodEndDate
+      ),
+      program_mlrReportingPeriodStartDate: dateFormat.format(
+        newMlrReportingPeriodStartDate
+      ),
+      program_mlrSubmissionDate: dateFormat.format(faker.date.past()),
+      program_mlrValidationCompletion: [
+        {
+          key: "program_mlrValidationCompletion-kL9mNpQr2sT4uVwX5yZ0aB",
           value: "Yes",
         },
       ],
@@ -597,7 +624,11 @@ const createPlanPCCM = (planId: string) => ({
   plan_parentOrganization: faker.lorem.sentence(),
 });
 
-const createPlan = (planId: string, ilos: { id: string; name: string }) => {
+const createPlan = (
+  planId: string,
+  ilos: { id: string; name: string },
+  flags: { [key: string]: true }
+) => {
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
   const newReportingPeriodEndDate = faker.date.future({
     refDate: newReportingPeriodStartDate,
@@ -643,7 +674,6 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
     plan_medianTimeToDecisionOnStandardPriorAuthorizations: numberFloat(),
     plan_medicaidEnrollmentSharePercentage: suppressionText,
     plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
-    plan_parentOrganization: faker.lorem.sentence(),
     plan_mfcuProgramIntegrityReferrals: numberInt(),
     plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer: numberInt(),
     plan_numberOfUniqueBeneficiariesWithMultipleDataTransfers: numberInt(),
@@ -657,6 +687,7 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
     plan_overpaymentReportingToStateStartDate: dateFormat.format(
       newReportingPeriodStartDate
     ),
+    plan_parentOrganization: faker.lorem.sentence(),
     plan_percentageOfExpeditedPriorAuthorizationRequestsApproved: numberFloat(),
     plan_percentageOfExpeditedPriorAuthorizationRequestsDenied: numberFloat(),
     plan_percentageOfStandardPriorAuthorizationRequestsApproved: numberFloat(),
@@ -665,6 +696,7 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
     plan_percentageOfStandardPriorAuthorizationRequestsDenied: numberFloat(),
     plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe:
       numberFloat(),
+    plan_populationSpecificMedicalLossRatioDescription: faker.lorem.sentence(),
     plan_programIntegrityReferralPath: [
       {
         key: "plan_programIntegrityReferralPath-1LOghpdQOkaOd76btMJ8qA",
@@ -706,20 +738,51 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
     plan_resolvedPaymentBillingGrievances: numberInt(),
     plan_resolvedPlanCommunicationGrievances: numberInt(),
     plan_resolvedPostServiceAuthorizationDenialAppeals: numberInt(),
+    plan_resolvedPostServiceAuthorizationDenialAppealsDenied: numberInt(),
+    plan_resolvedPostServiceAuthorizationDenialAppealsFavorable: numberInt(),
+    plan_resolvedPostServiceAuthorizationDenialAppealsPartiallyFavorable:
+      numberInt(),
     plan_resolvedPreServiceAuthorizationDenialAppeals: numberInt(),
+    plan_resolvedPreServiceAuthorizationDenialAppealsDenied: numberInt(),
+    plan_resolvedPreServiceAuthorizationDenialAppealsFavorable: numberInt(),
+    plan_resolvedPreServiceAuthorizationDenialAppealsPartiallyFavorable:
+      numberInt(),
     plan_resolvedProgramIntegrityInvestigations: numberInt(),
     plan_resolvedQualityOfCareGrievances: numberInt(),
     plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppeals:
       numberInt(),
+    plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppealsDenied:
+      numberInt(),
+    plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppealsFavorable:
+      numberInt(),
+    plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppealsPartiallyFavorable:
+      numberInt(),
     plan_resolvedRequestToDisputeFinancialLiabilityDenialAppeals: numberInt(),
+    plan_resolvedRequestToDisputeFinancialLiabilityDenialAppealsDenied:
+      numberInt(),
+    plan_resolvedRequestToDisputeFinancialLiabilityDenialAppealsFavorable:
+      numberInt(),
+    plan_resolvedRequestToDisputeFinancialLiabilityDenialAppealsPartiallyFavorable:
+      numberInt(),
     plan_resolvedRightToRequestOutOfNetworkCareDenialAppeals: numberInt(),
+    plan_resolvedRightToRequestOutOfNetworkCareDenialAppealsDenied: numberInt(),
+    plan_resolvedRightToRequestOutOfNetworkCareDenialAppealsFavorable:
+      numberInt(),
+    plan_resolvedRightToRequestOutOfNetworkCareDenialAppealsPartiallyFavorable:
+      numberInt(),
     plan_resolvedServiceTimelinessAppeals: numberInt(),
+    plan_resolvedServiceTimelinessAppealsDenied: numberInt(),
+    plan_resolvedServiceTimelinessAppealsFavorable: numberInt(),
+    plan_resolvedServiceTimelinessAppealsPartiallyFavorable: numberInt(),
     plan_resolvedSnfServiceAppeals: numberInt(),
     plan_resolvedSnfServiceGrievances: numberInt(),
     plan_resolvedSuspectedFraudGrievances: numberInt(),
     plan_resolvedTherapiesAppeals: numberInt(),
     plan_resolvedTherapyGrievances: numberInt(),
     plan_resolvedUntimelyResponseAppeals: numberInt(),
+    plan_resolvedUntimelyResponseAppealsDenied: numberInt(),
+    plan_resolvedUntimelyResponseAppealsFavorable: numberInt(),
+    plan_resolvedUntimelyResponseAppealsPartiallyFavorable: numberInt(),
     plan_resolvedUntimelyResponseGrievances: numberInt(),
     plan_stateFairHearingRequestsFiled: numberInt(),
     plan_stateFairHearingRequestsRetracted: numberInt(),
@@ -746,6 +809,47 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
     program_encounterDataSubmissionTimelinessStandardDefinition:
       faker.lorem.sentence(),
   };
+
+  if (flags.newQualityMeasuresSectionEnabled) {
+    data = {
+      ...data,
+      plan_medicalLossRatioPercentage: numberInt(),
+      plan_medicalLossRatioPercentageAggregationLevel: [
+        {
+          key: "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
+          value: "Program-specific statewide",
+        },
+      ],
+      plan_medicalLossRatioReportingPeriod: [
+        {
+          key: "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
+          value: "Yes",
+        },
+      ],
+      plan_medicalLossRatioReportingPeriodEndDate: dateFormat.format(
+        newReportingPeriodEndDate
+      ),
+      plan_medicalLossRatioReportingPeriodStartDate: dateFormat.format(
+        newReportingPeriodStartDate
+      ),
+    };
+  } else {
+    data = {
+      ...data,
+      plan_mlrDataReceived: [
+        {
+          key: "plan_mlrDataReceived-xY7zW9vU3tS1rQ5pO8nM2k",
+          value: "Yes",
+        },
+      ],
+      plan_mlrDataValidated: [
+        {
+          key: "plan_mlrDataValidated-aB4cD6eF8gH0iJ2kL4mN6o",
+          value: "Yes",
+        },
+      ],
+    };
+  }
 
   return data;
 };
@@ -802,7 +906,7 @@ const createNewQualityMeasure = (index: number, measure?: Measure) => {
           value: "Yes",
         },
       ],
-      measure_identifierCmit: numberInt(),
+      measure_identifierCmit: `${numberInt()}-${numberInt()}`,
     },
     {
       measure_identifier: [
@@ -811,7 +915,7 @@ const createNewQualityMeasure = (index: number, measure?: Measure) => {
           value: "Consensus Based Entity (CBE) number",
         },
       ],
-      measure_identifierCbe: numberInt(),
+      measure_identifierCbe: `${numberInt()}.0`,
     },
     {
       measure_identifier: [

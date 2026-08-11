@@ -105,7 +105,7 @@ test.describe("MCPAR Dashboard Page", () => {
       mcparProgramName,
     }) => {
       await adminPage.navigateToReportDashboard(stateAbbreviation, "MCPAR");
-      await adminPage.archiveMCPAR(mcparProgramName);
+      await adminPage.archiveReport("MCPAR", mcparProgramName);
       const updatedReportRow = await adminPage.getReportRow(mcparProgramName);
       await expect(updatedReportRow.getByText("Archived")).toBeVisible();
       await expect(
@@ -118,7 +118,7 @@ test.describe("MCPAR Dashboard Page", () => {
       archivedMcparProgramName,
     }) => {
       await adminPage.navigateToReportDashboard(stateAbbreviation, "MCPAR");
-      await adminPage.unarchiveMCPAR(archivedMcparProgramName);
+      await adminPage.unarchiveReport("MCPAR", archivedMcparProgramName);
       const updatedReportRow = await adminPage.getReportRow(
         archivedMcparProgramName
       );

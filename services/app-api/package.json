@@ -70,6 +70,9 @@
     "moduleDirectories": [
       "node_modules"
     ],
+    "moduleNameMapper": {
+      "^@ui-src/(.*)$": "<rootDir>/../ui-src/src/$1"
+    },
     "modulePathIgnorePatterns": [
       "<rootDir>/.build/"
     ],

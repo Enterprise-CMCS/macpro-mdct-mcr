@@ -18,7 +18,6 @@ import {
 } from "types";
 // utils
 import { assertExhaustive, getReportVerbiage, useStore } from "utils";
-import { APP_TITLE } from "../../../constants";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
@@ -38,7 +37,7 @@ export const ExportedReportPage = () => {
         <Box sx={sx.innerContainer}>
           {/* pdf metadata */}
           <Helmet>
-            <title>{`Export - ${reportType} - ${APP_TITLE}`}</title>
+            <title>{reportTitle(reportType, reportPage, report)}</title>
             <meta name="author" content={metadata.author} />
             <meta name="subject" content={metadata.subject} />
             <meta name="language" content={metadata.language} />
