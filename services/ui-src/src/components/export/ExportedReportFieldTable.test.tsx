@@ -151,6 +151,38 @@ const noHintComponent = <ExportedReportFieldTable section={noHintJson} />;
 
 const hintComponent = <ExportedReportFieldTable section={hintJson} />;
 
+const pageWithGatingField = {
+  ...mockDrawerReportPageJson,
+  path: "/mcpar/plan-level-indicators/prior-authorization",
+  form: {
+    id: "dpa-gating",
+    fields: [
+      {
+        id: "plan_priorAuthorizationReporting",
+        type: "radio",
+        validation: "radio",
+        props: {
+          label: "Are you reporting data prior to June 2026?",
+          choices: [
+            { id: "yes", label: "Yes" },
+            { id: "no", label: "Not reporting data" },
+          ],
+        },
+      },
+    ],
+  },
+  drawerForm: {
+    id: "dpa",
+    fields: [
+      {
+        id: "testField",
+        type: "text",
+        props: { label: "Test Field Label" },
+      },
+    ],
+  },
+};
+
 describe("<ExportedReportFieldRow />", () => {
   test("Is present", async () => {
     render(exportedStandardTableComponent);
@@ -179,7 +211,7 @@ describe("<ExportedReportFieldRow />", () => {
     expect(row).toBeVisible();
   });
 
-  test("includes drawerForm fields when user selects 'Yes' for Prior Authorization reporting", () => {
+  test("includes drawerForm fields and renders gating radio answer for Prior Authorization", () => {
     mockedUseStore.mockReturnValue({
       ...mockMcparReportStore,
       report: {
@@ -193,29 +225,18 @@ describe("<ExportedReportFieldRow />", () => {
       },
     });
 
-    const pageWithDrawerFields = {
-      ...mockDrawerReportPageJson,
-      drawerForm: {
-        id: "dpa",
-        fields: [
-          {
-            id: "testField",
-            type: "text",
-            props: { label: "Test Field Label" },
-          },
-        ],
-      },
-    };
-
     render(
       <ExportedReportFieldTable
-        section={pageWithDrawerFields as DrawerReportPageShape}
+        section={pageWithGatingField as DrawerReportPageShape}
       />
     );
 
     expect(
       screen.getByRole("cell", { name: "Test Field Label" })
     ).toBeVisible();
+
+    // when present, gating radio answer renders correctly
+    expect(screen.getByText("Yes")).toBeVisible();
   });
 
   test("handles a table with no form fields", async () => {

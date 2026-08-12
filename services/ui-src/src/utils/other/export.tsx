@@ -27,6 +27,22 @@ export const renderDataCell = (
   entityType?: EntityType,
   parentFieldCheckedChoiceIds?: string[]
 ) => {
+  const fieldData = allResponseData[formField.id];
+  const entityData = entityType ? allResponseData[entityType] : undefined;
+
+  const isReportLevelFieldOnDrawerPage =
+    pageType === "drawer" &&
+    formField.id in allResponseData &&
+    fieldData !== entityData &&
+    (!Array.isArray(fieldData) ||
+      fieldData.length === 0 ||
+      (fieldData.length > 0 && "key" in fieldData[0]));
+
+  // if report level field on a drawer page, render as a standard field
+  if (isReportLevelFieldOnDrawerPage) {
+    return renderResponseData(formField, fieldData, allResponseData, pageType);
+  }
+
   // render drawer data cell (list entities & per-entity responses)
   if (pageType === "drawer") {
     let entityResponseData: AnyObject;
