@@ -10,10 +10,11 @@ import {
 // constants
 import { suppressionText } from "../constants/constants";
 // types
-import { Choice } from "../types";
+import { Choice, ChoiceOptions } from "../types";
 
 const error = {
   REQUIRED_GENERIC: "A response is required",
+  REQUIRED_CHECKBOX: "Select at least one response",
   INVALID_EMAIL: "Response must be a valid email address",
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_DATE: "Response must be a valid date",
@@ -306,6 +307,11 @@ export const checkbox = () =>
   array()
     .min(0)
     .of(object({ key: text(), value: text() }));
+export const checkboxCustom = (options: ChoiceOptions) =>
+  array()
+    .min(1, options.errorMessage ?? error.REQUIRED_CHECKBOX)
+    .of(object({ key: text(), value: text() }))
+    .required(options.errorMessage ?? error.REQUIRED_CHECKBOX);
 export const checkboxOptional = () =>
   array()
     .of(object({ key: text(), value: text() }))
@@ -367,6 +373,7 @@ export const optionalDateFormatRegex = new RegExp(`^(${datePattern})?$`);
 // SCHEMA MAP
 export const schemaMap: any = {
   checkbox: checkbox(),
+  checkboxCustom: (options: ChoiceOptions) => checkboxCustom(options),
   checkboxOneOptional: checkboxOneOptional(),
   checkboxOptional: checkboxOptional(),
   checkboxSingle: checkboxSingle(),

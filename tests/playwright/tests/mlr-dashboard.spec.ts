@@ -1,7 +1,11 @@
 import { expect, test } from "./fixtures/base";
 import { archiveAllReportsForState } from "../utils/requests";
 import { stateAbbreviation } from "../utils";
-import { mlrEligibilityGroups, mlrProgramTypes } from "../utils/consts";
+import {
+  mlrEligibilityGroups,
+  mlrProgramTypes,
+  tnMlrPrograms,
+} from "../utils/consts";
 import { faker } from "@faker-js/faker";
 
 test.describe("MLR Dashboard Page", () => {
@@ -70,7 +74,7 @@ test.describe("MLR Dashboard Page", () => {
       );
       await statePage.addMLRProgramReportInfo(
         "TestPlan",
-        "TestProgram",
+        tnMlrPrograms[0],
         mlrProgramTypes[0],
         mlrEligibilityGroups[0],
         faker.date.recent().toLocaleDateString("en-US", {
@@ -93,18 +97,14 @@ test.describe("MLR Dashboard Page", () => {
         faker.number.int({ min: 1, max: 90 }).toString(),
         "No"
       );
-      const getResponseAfterContinue = statePage.waitForResponse(
-        "/reports/MLR/",
-        "GET",
-        200
-      );
-      const putResponseAfterContinue = statePage.waitForResponse(
-        "/reports/MLR/",
-        "PUT",
-        200
-      );
-      await statePage.page.getByRole("button", { name: "Continue" }).click();
-      await Promise.all([getResponseAfterContinue, putResponseAfterContinue]);
+      /*
+       * "Continue" here only navigates to Review & Submit; the GET is that
+       * page's fetchReport. The plan data was already saved by enterMLRForPlan.
+       */
+      await Promise.all([
+        statePage.waitForResponse("/reports/MLR/", "GET", 200),
+        statePage.page.getByRole("button", { name: "Continue" }).click(),
+      ]);
       await statePage.submitMlrReport();
       await expect(
         statePage.page.getByRole("heading", { name: "Successfully Submitted" })

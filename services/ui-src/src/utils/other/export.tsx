@@ -383,8 +383,13 @@ export const getNestedIlosResponses = (
   fieldResponseData: AnyObject,
   entity: EntityShape
 ) => {
+  const ilosFieldName = "plan_ilosUtilizationByPlan";
+
   return fieldResponseData.map((data: AnyObject) => {
-    const nestedResponse = entity[`plan_ilosUtilizationByPlan_${data.key}`];
+    const ilosId = data.key.startsWith(`${ilosFieldName}-`)
+      ? data.key.replace(`${ilosFieldName}-`, "")
+      : data.key;
+    const nestedResponse = entity[`${ilosFieldName}_${ilosId}`];
     return {
       key: data.value,
       value: nestedResponse,
