@@ -324,9 +324,12 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
               ],
             },
             {
-              type: "p",
+              type: "span",
               content:
                 "For each rate the state is reporting for this measure, enter the name of the rate as defined by the measure steward. If there is only a single rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.6.",
+              props: {
+                className: "fake-paragraph-break",
+              },
             },
           ],
         },
