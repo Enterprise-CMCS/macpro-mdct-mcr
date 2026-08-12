@@ -30,13 +30,18 @@ export const renderDataCell = (
   const fieldData = allResponseData[formField.id];
   const entityData = entityType ? allResponseData[entityType] : undefined;
 
+  const fieldExistsInEntities =
+    Array.isArray(entityData) &&
+    entityData.some((entity: AnyObject) => formField.id in entity);
   const isReportLevelFieldOnDrawerPage =
     pageType === "drawer" &&
-    formField.id in allResponseData &&
-    fieldData !== entityData &&
-    (!Array.isArray(fieldData) ||
-      fieldData.length === 0 ||
-      (fieldData.length > 0 && "key" in fieldData[0]));
+    entityData !== undefined &&
+    !fieldExistsInEntities &&
+    (fieldData === undefined ||
+      (fieldData !== entityData &&
+        (!Array.isArray(fieldData) ||
+          fieldData.length === 0 ||
+          (fieldData.length > 0 && "key" in fieldData[0]))));
 
   // if report level field on a drawer page, render as a standard field
   if (isReportLevelFieldOnDrawerPage) {
