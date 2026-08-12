@@ -7,8 +7,6 @@ import {
 } from "types";
 // utils
 import { routeChecker } from "utils";
-// verbiage
-import accordionVerbiage from "verbiage/pages/accordion";
 
 export const addPlanChoices = (
   form: FormJson,
@@ -52,7 +50,6 @@ export const formModifications = (
     reportType === ReportType.MCPAR &&
     routeChecker.isNewPlanExemptionPage(route)
   ) {
-    accordion = accordionVerbiage.MCPAR.formIntro;
     formJson = addPlanChoices(route.form, fieldData.plans);
     // eslint-disable-next-line unicorn/explicit-length-check
     showError = !fieldData.plans || fieldData.plans.length < 1;

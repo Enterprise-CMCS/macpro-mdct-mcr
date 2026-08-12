@@ -194,6 +194,11 @@ const sx = {
     color: "base",
     paddingTop: "spacer2",
   },
+  h4: {
+    fontWeight: "bold",
+    color: "base",
+    paddingTop: "spacer2",
+  },
   // fake styles for hints
   ".fake-paragraph-break": {
     display: "block",

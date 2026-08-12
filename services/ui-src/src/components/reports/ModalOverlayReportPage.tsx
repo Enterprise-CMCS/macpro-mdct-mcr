@@ -65,7 +65,6 @@ export const ModalOverlayReportPage = ({
 
   const reportType = (report.reportType ||
     "MLR") as keyof typeof accordionVerbiage;
-  const accordionReport = accordionVerbiage[reportType];
 
   // Determine whether form is locked or unlocked based on user and route
   const isAdminUserType = userIsAdmin || userIsReadOnly;
@@ -252,11 +251,7 @@ export const ModalOverlayReportPage = ({
         </EntityProvider>
       ) : (
         <Box sx={sx.content}>
-          <ReportPageIntro
-            text={verbiage.intro}
-            accordion={accordionReport.formIntro}
-            reportType={reportType}
-          />
+          <ReportPageIntro text={verbiage.intro} reportType={reportType} />
 
           <Box>
             {reportFieldDataEntities.length === 0 ? (

@@ -79,6 +79,13 @@ const sx = {
   hintTextBox: {
     color: "#5B616B",
     paddingTop: "spacer3",
+    a: {
+      color: "primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "primary_darker",
+      },
+    },
   },
   spreadsheetWidgetBox: {
     marginTop: "spacer4",
@@ -92,6 +99,9 @@ const sx = {
     "p, span": {
       color: "gray",
       marginTop: "spacer2",
+    },
+    "ol, li": {
+      color: "gray",
     },
     a: {
       color: "primary",
