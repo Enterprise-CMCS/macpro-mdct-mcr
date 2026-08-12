@@ -143,8 +143,34 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         type: ReportFormFieldType.RADIO,
         validation: ValidationType.RADIO,
         props: {
-          label: "D2.VII.3 Deviation from measurement year reporting",
-          hint: "If the state is reporting for a period other than the required measurement year, select “yes.” To determine which calendar year to use for your report, reference the MCPAR Technical Guidance: Quality Measures (“Technical Guide”) found here on Medicaid.gov.",
+          label:
+            "D2.VII.3 Deviation from measurement year (calendar year) reporting",
+          hint: [
+            {
+              type: "span",
+              children: [
+                {
+                  type: "html",
+                  content:
+                    "If the state is reporting for a period other than the required measurement year, select “yes.” To determine which calendar year to use for your report, reference the MCPAR Technical Guidance: Quality Measures (“Technical Guide”) found ",
+                },
+                {
+                  type: "externalLink",
+                  content: "here",
+                  props: {
+                    href: "https://www.medicaid.gov/medicaid/managed-care/downloads/MCPAR-Quality-Technical-Guide.docx",
+                    target: "_blank",
+                    "aria-label":
+                      "MCPAR Quality Technical Guide download (link opens in new tab)",
+                  },
+                },
+                {
+                  type: "html",
+                  content: " on Medicaid.gov.",
+                },
+              ],
+            },
+          ],
           choices: [
             {
               id: "idw5lcMLX9yrn17I2X3ck6iw",
@@ -271,7 +297,41 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         props: {
           divider: "none",
           content: "Naming of rates",
-          hint: "As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR. To determine which rate(s) to report for this measure, refer to Figure 1 of the Technical Guide found here on Medicaid.gov for more information and examples. For each rate the state is reporting for this measure, enter the name of the rate as defined by the measure steward. If there is only a single rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.6.",
+          hint: [
+            {
+              type: "span",
+              children: [
+                {
+                  type: "html",
+                  content:
+                    "Enter the name(s) of the performance rate(s) you are reporting for the measure. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR. To determine which rate(s) to report for this measure, refer to Figure 1 of the Technical Guide found ",
+                },
+                {
+                  type: "externalLink",
+                  content: "here",
+                  props: {
+                    href: "https://www.medicaid.gov/medicaid/managed-care/downloads/MCPAR-Quality-Technical-Guide.docx",
+                    target: "_blank",
+                    "aria-label":
+                      "MCPAR Quality Technical Guide download (link opens in new tab)",
+                  },
+                },
+                {
+                  type: "html",
+                  content:
+                    " on Medicaid.gov for more information and examples.",
+                },
+              ],
+            },
+            {
+              type: "span",
+              content:
+                "For each rate the state is reporting for this measure, enter the name of the rate as defined by the measure steward. If there is only a single rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.6.",
+              props: {
+                className: "fake-paragraph-break",
+              },
+            },
+          ],
         },
       },
       {
