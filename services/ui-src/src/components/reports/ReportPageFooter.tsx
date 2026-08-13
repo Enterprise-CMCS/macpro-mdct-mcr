@@ -31,6 +31,7 @@ export const ReportPageFooter = ({
   const formIsDisabled =
     (isAdminUserType && !form?.editableByAdmins) ||
     (userIsEndUser && reportWithSubmittedStatus);
+  console.log("is disabled", !form?.id || formIsDisabled);
   const isReadOnly = !form?.id || formIsDisabled;
 
   const prevButton = (

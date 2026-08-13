@@ -18,7 +18,7 @@ export const instructionsRoute: FormRoute = {
         {
           type: "p",
           content:
-            "This report collects information about your program and an assessment of how it operates. This should include how an MCO, PIHP, or PAHP performs on quality measures, including consumer report cards and surveys. 42 CFR 438.66(e)(2)(vii).<br><br>",
+            "This report collects information about your program and an assessment of how it operates. This should include how an MCO, PIHP, or PAHP performs on quality measures, including consumer report cards and surveys. 42 CFR 438.66(e)(2)(vii).",
         },
         {
           type: "heading",
@@ -45,7 +45,7 @@ export const instructionsRoute: FormRoute = {
             },
             {
               type: "html",
-              content: " on Medicaid.gov.<br><br>",
+              content: " on Medicaid.gov.",
             },
           ],
         },
