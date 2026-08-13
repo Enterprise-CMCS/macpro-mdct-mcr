@@ -336,7 +336,6 @@ const sx = {
     marginTop: "spacer4",
     a: {
       color: "primary",
-      textDecoration: "underline",
     },
   },
   infoHeading: {
