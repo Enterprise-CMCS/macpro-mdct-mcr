@@ -236,7 +236,11 @@ describe("<ExportedReportFieldRow />", () => {
     ).toBeVisible();
 
     // when present, gating radio answer renders correctly
-    expect(screen.getByText("Yes")).toBeVisible();
+    expect(
+      screen.getByRole("row", {
+        name: "N/A Are you reporting data prior to June 2026? Yes",
+      })
+    ).toBeVisible();
   });
 
   test("handles a table with no form fields", async () => {
