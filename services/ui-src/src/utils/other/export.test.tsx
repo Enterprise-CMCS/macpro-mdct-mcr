@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 // types
 import { FormField, AnyObject } from "types";
 // utils
@@ -490,7 +490,7 @@ describe("Handles report-level fields on drawer pages", () => {
       },
     ];
 
-    testCases.forEach(({ value, key }) => {
+    testCases.forEach(({ value, key }, index) => {
       const mockReportData = {
         plan_priorAuthorizationReporting: [{ key, value }],
         plans: mockPlans,
@@ -502,8 +502,9 @@ describe("Handles report-level fields on drawer pages", () => {
         "drawer",
         "plans" as any
       );
-      const { container } = render(<>{result}</>);
-      expect(container.textContent).toBe(value);
+      render(<>{result}</>);
+      const p = screen.getAllByRole("paragraph");
+      expect(p[index]).toHaveTextContent(value);
     });
   });
 
@@ -515,8 +516,9 @@ describe("Handles report-level fields on drawer pages", () => {
       "drawer",
       "plans" as any
     );
-    const { container } = render(<>{result}</>);
-    expect(container.textContent).toBe("Not answered");
+    render(<>{result}</>);
+    const p = screen.getByRole("paragraph");
+    expect(p).toHaveTextContent("Not answered");
   });
 
   test("renderDataCell still renders entity-level fields normally on drawer pages", () => {
@@ -544,12 +546,20 @@ describe("Handles report-level fields on drawer pages", () => {
     );
 
     const Component = () => result;
-    const { container } = render(<Component />);
+    render(<Component />);
 
     // Should render per-entity responses
-    expect(container.textContent).toContain("Plan 1");
-    expect(container.textContent).toContain("Answer 1");
-    expect(container.textContent).toContain("Plan 2");
-    expect(container.textContent).toContain("Answer 2");
+    const lists = screen.getAllByRole("list");
+    const listitems = within(lists[0]).getAllByRole("listitem");
+    const listitems2 = within(lists[1]).getAllByRole("listitem");
+
+    expect(lists).toHaveLength(2);
+    expect(listitems).toHaveLength(2);
+    expect(listitems2).toHaveLength(2);
+
+    expect(listitems[0]).toHaveTextContent("Plan 1");
+    expect(listitems[1]).toHaveTextContent("Answer 1");
+    expect(listitems2[0]).toHaveTextContent("Plan 2");
+    expect(listitems2[1]).toHaveTextContent("Answer 2");
   });
 });
