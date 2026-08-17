@@ -37,6 +37,15 @@ export const renderDataCell = (
       return false;
     }
 
+    // Special case: These are the only fields that appear on drawer pages but are stored at report level
+    const isPageLevelGatingRadio =
+      formField.id === "plan_priorAuthorizationReporting" ||
+      formField.id === "plan_patientAccessApiReporting";
+
+    if (isPageLevelGatingRadio) {
+      return true;
+    }
+
     // If the field exists on any entity, it's entity-level
     const fieldExistsInEntities = entityData.some(
       (entity: AnyObject) => formField.id in entity
@@ -57,7 +66,7 @@ export const renderDataCell = (
     // Empty arrays are report-level
     if (fieldData.length === 0) return true;
 
-    // Arrays with objects that have 'key' property are report-level (choice responses)
+    // Arrays with objects that have 'key' property are report-level
     const firstItem = fieldData[0];
     if (
       typeof firstItem === "object" &&
