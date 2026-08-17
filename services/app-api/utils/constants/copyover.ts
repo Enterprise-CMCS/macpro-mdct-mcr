@@ -96,7 +96,7 @@ export const mcparFieldsToCopy = {
 };
 
 // fields to copy when newQualityMeasuresSectionEnabled flag is true
-export const newQualityMeasureFieldsToCopy = [
+export const qualityMeasuresV2FieldsToCopy = [
   "id",
   "measure_name",
   "measure_identifier",

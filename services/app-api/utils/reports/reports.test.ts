@@ -2,7 +2,9 @@ import {
   cleanupOtherTextFields,
   copyFieldDataFromSource,
   getPlansNotExemptFromQualityMeasures,
+  getSourceFieldData,
   makePCCMModifications,
+  needsPreloadedQualityMeasures,
   populateQualityMeasures,
 } from "./reports";
 // constants
@@ -58,15 +60,15 @@ describe("reports.ts", () => {
         },
       };
       test("Test copyFieldDataFromSource accepts only those entities in the formTemplate", async () => {
-        jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
+        const mockSourceFieldData = {
           stateName: "Alabama",
           plans: [{ id: "foo", name: "name", notAllowed: "false" }],
           bssEntities: [{ id: "bar", name: "name", notAllowed: "false" }],
-        });
+        };
         const res = await copyFieldDataFromSource(
           "database-local-mcpar",
           "Minnesota",
-          "mockReportJson",
+          mockSourceFieldData,
           mockMcparJson,
           { stateName: "Minnesota" },
           ReportType.MCPAR
@@ -106,57 +108,19 @@ describe("reports.ts", () => {
           },
         });
 
-        test("Test populateQualityMeasures sets correct field data", () => {
-          let testFieldData = {};
-          testFieldData = populateQualityMeasures(testFieldData, "MN", "PMAP");
-          const qualityMeasures = MN.PMAP.map((item) => ({
-            ...item,
-            id: expect.stringMatching(uuidRegex),
-          }));
-
-          expect(testFieldData).toEqual({
-            qualityMeasures,
-          });
-        });
-
-        test("returns new quality measures copyover", async () => {
-          jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
-            stateName: "Minnesota",
-            qualityMeasures: [{ id: "foo", measure_name: "name" }],
-          });
-          const res = await copyFieldDataFromSource(
-            "database-local-mcpar",
-            "Minnesota",
-            "mockReportQualityMeasuresJson",
-            mockReportQualityMeasuresJson,
-            { stateName: "Minnesota" },
-            ReportType.MCPAR,
-            true // newQualityMeasuresSectionEnabled
-          );
-          expect(res).toEqual({
+        test("filters quality measures v1 and id-only entities in copyover", async () => {
+          const mockSourceFieldData = {
             stateName: "Minnesota",
             qualityMeasures: [
-              {
-                id: "foo",
-                measure_name: "name",
-              },
-            ],
-          });
-        });
-
-        test("filters id only entities on copyover", async () => {
-          jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
-            stateName: "Minnesota",
-            qualityMeasures: [
-              { id: "foo", measure_name: "name" },
-              { id: "bar" },
+              { id: "foo", measure_name: "v2 name" },
+              { id: "bar", qualityMeasure_name: "v1 name" },
               { id: "baz" },
             ],
-          });
+          };
           const res = await copyFieldDataFromSource(
             "database-local-mcpar",
             "Minnesota",
-            "mockReportQualityMeasuresJson",
+            mockSourceFieldData,
             mockReportQualityMeasuresJson,
             { stateName: "Minnesota" },
             ReportType.MCPAR,
@@ -167,7 +131,7 @@ describe("reports.ts", () => {
             qualityMeasures: [
               {
                 id: "foo",
-                measure_name: "name",
+                measure_name: "v2 name",
               },
             ],
           });
@@ -177,10 +141,11 @@ describe("reports.ts", () => {
 
     describe("MLR", () => {
       test("returns validatedField data", async () => {
+        const mockSourceFieldData = undefined;
         const res = await copyFieldDataFromSource(
           "database-local-mlr",
           "Minnesota",
-          "mockReportJson",
+          mockSourceFieldData,
           mockReportJson,
           { stateName: "Minnesota" },
           ReportType.MLR
@@ -205,14 +170,14 @@ describe("reports.ts", () => {
         },
       };
       test("uses S3 object for validatedField data", async () => {
-        jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
+        const mockSourceFieldData = {
           stateName: "Alabama",
           plans: [{ id: "foo", name: "name", notAllowed: "false" }],
-        });
+        };
         const res = await copyFieldDataFromSource(
           "database-local-naaar",
           "Minnesota",
-          "mockReportJson",
+          mockSourceFieldData,
           mockNaaarJson,
           { stateName: "Minnesota" },
           ReportType.NAAAR
@@ -224,16 +189,81 @@ describe("reports.ts", () => {
       });
 
       test("returns validatedField data if no S3 object", async () => {
-        jest.spyOn(s3Lib, "get").mockResolvedValueOnce(undefined);
+        const mockSourceFieldData = undefined;
         const res = await copyFieldDataFromSource(
           "database-local-naaar",
           "Minnesota",
-          "mockReportJson",
+          mockSourceFieldData,
           mockNaaarJson,
           { stateName: "Minnesota" },
           ReportType.NAAAR
         );
         expect(res).toEqual({ stateName: "Minnesota" });
+      });
+    });
+  });
+
+  describe("getSourceFieldData()", () => {
+    test("returns field data", async () => {
+      jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
+        stateName: "Minnesota",
+        plans: [{ id: "foo", name: "name" }],
+      });
+      const result = await getSourceFieldData(
+        "mockSourceId",
+        "database-local-mcpar",
+        "Minnesota"
+      );
+
+      expect(result).toEqual({
+        stateName: "Minnesota",
+        plans: [{ id: "foo", name: "name" }],
+      });
+    });
+  });
+
+  describe("needsPreloadedQualityMeasures()", () => {
+    test("returns true for new report", () => {
+      const mockSourceData = undefined;
+      const result = needsPreloadedQualityMeasures(mockSourceData);
+      expect(result).toBe(true);
+    });
+
+    test("returns true for copied report with quality measures v1", () => {
+      const mockSourceData = {
+        qualityMeasures: [
+          {
+            qualityMeasure_name: "v1 name",
+          },
+        ],
+      };
+      const result = needsPreloadedQualityMeasures(mockSourceData);
+      expect(result).toBe(true);
+    });
+
+    test("returns false for copied report with quality measures v2", () => {
+      const mockSourceData = {
+        qualityMeasures: [
+          {
+            measure_name: "v2 name",
+          },
+        ],
+      };
+      const result = needsPreloadedQualityMeasures(mockSourceData);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe("populateQualityMeasures()", () => {
+    test("Test populateQualityMeasures sets correct field data", () => {
+      const result = populateQualityMeasures({}, "MN", "PMAP");
+      const qualityMeasures = MN.PMAP.map((item) => ({
+        ...item,
+        id: expect.stringMatching(uuidRegex),
+      }));
+
+      expect(result).toEqual({
+        qualityMeasures,
       });
     });
   });

@@ -20,7 +20,9 @@ import {
 import { getOrCreateFormTemplate } from "../../utils/formTemplates/formTemplates";
 import {
   copyFieldDataFromSource,
+  getSourceFieldData,
   makePCCMModifications,
+  needsPreloadedQualityMeasures,
   populateQualityMeasures,
 } from "../../utils/reports/reports";
 import {
@@ -30,7 +32,12 @@ import {
   internalServerError,
 } from "../../utils/responses/response-lib";
 // types
-import { isReportType, isState, UserRoles } from "../../utils/types";
+import {
+  isReportType,
+  isState,
+  ReportType,
+  UserRoles,
+} from "../../utils/types";
 
 export const createReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "state"];
@@ -120,12 +127,18 @@ export const createReport = handler(async (event, _context) => {
   // If the `copyFieldDataSourceId` parameter is passed, merge the validated field data with the source ids data.
   let newFieldData;
   const copyFieldDataSourceId = unvalidatedMetadata?.copyFieldDataSourceId;
+  let sourceFieldData;
 
   if (copyFieldDataSourceId) {
+    sourceFieldData = await getSourceFieldData(
+      copyFieldDataSourceId,
+      reportBucket,
+      state
+    );
     newFieldData = await copyFieldDataFromSource(
       reportBucket,
       state,
-      copyFieldDataSourceId,
+      sourceFieldData,
       formTemplate,
       validatedFieldData!,
       reportType,
@@ -140,8 +153,12 @@ export const createReport = handler(async (event, _context) => {
     newFieldData = makePCCMModifications(newFieldData);
   }
 
-  // prefill MCPAR quality measures if not copying report
-  if (newQualityMeasuresSectionEnabled && !copyFieldDataSourceId) {
+  // prefill MCPAR quality measures
+  if (
+    newQualityMeasuresSectionEnabled &&
+    reportType === ReportType.MCPAR &&
+    needsPreloadedQualityMeasures(sourceFieldData)
+  ) {
     newFieldData = populateQualityMeasures(
       newFieldData,
       state,
