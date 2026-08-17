@@ -31,27 +31,41 @@ export const renderDataCell = (
   const fieldData = allResponseData[formField.id];
   const entityData = entityType ? allResponseData[entityType] : undefined;
 
-  const fieldExistsInEntities =
-    Array.isArray(entityData) &&
-    entityData.some((entity: AnyObject) => formField.id in entity);
-
   const isReportLevelField = () => {
-    if (entityData === undefined || fieldExistsInEntities) {
+    // If not a drawer page or no entities, use default logic
+    if (!entityData || !Array.isArray(entityData)) {
       return false;
     }
 
-    // Unanswered fields are report-level
-    if (fieldData === undefined) return true;
-    // Entity-level
+    // If the field exists on any entity, it's entity-level
+    const fieldExistsInEntities = entityData.some(
+      (entity: AnyObject) => formField.id in entity
+    );
+    if (fieldExistsInEntities) {
+      return false;
+    }
+
+    // If field has no data, it's entity-level (will show "Not answered" per entity)
+    if (fieldData === undefined) return false;
+
+    // If fieldData is the same reference as entityData, it's entity-level
     if (fieldData === entityData) return false;
+
     // Non-array values are report-level
     if (!Array.isArray(fieldData)) return true;
+
     // Empty arrays are report-level
     if (fieldData.length === 0) return true;
 
-    // Arrays with objects that have keys are report-level
+    // Arrays with objects that have 'key' property are report-level (choice responses)
     const firstItem = fieldData[0];
-    if ("key" in firstItem) return true;
+    if (
+      typeof firstItem === "object" &&
+      firstItem !== null &&
+      "key" in firstItem
+    ) {
+      return true;
+    }
 
     return false;
   };
