@@ -57,7 +57,7 @@ export const instructionsRoute: FormRoute = {
         {
           type: "p",
           content:
-            "Include the measures that the state uses to evaluate plan performance, including these categories:<br>",
+            "Include the measures that the state uses to evaluate plan performance, including these categories:",
         },
         {
           type: "ol",
