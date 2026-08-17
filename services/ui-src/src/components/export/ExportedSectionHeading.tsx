@@ -18,7 +18,6 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
 
   const introHeaderRender = (infoHeader: any, introContent: any) => {
     const introType = infoHeader && infoHeader.type;
-    console.log(introContent);
 
     const hideSectionIntroHeader =
       introType === "heading" &&
