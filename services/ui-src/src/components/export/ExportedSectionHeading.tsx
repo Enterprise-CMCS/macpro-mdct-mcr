@@ -18,12 +18,15 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
 
   const introHeaderRender = (infoHeader: any, introContent: any) => {
     const introType = infoHeader && infoHeader.type;
+    console.log(introContent);
 
     const hideSectionIntroHeader =
       introType === "heading" &&
       introContent !== "Appeals Overview" &&
       introContent !== "Network Adequacy" &&
-      introContent !== "New plan exemption";
+      introContent !== "Background" &&
+      introContent !== "New plan exemption" &&
+      introContent !== "Measures and results";
 
     return !hideSectionIntroHeader && sectionSubHeader;
   };
@@ -96,23 +99,6 @@ const sx = {
     h4: {
       fontSize: "lg",
       paddingTop: "spacer2",
-    },
-  },
-  instructions: {
-    color: "gray",
-    p: {
-      ":nth-of-type(odd)": {
-        margin: "1.25rem auto",
-      },
-    },
-    a: {
-      color: "gray",
-      textDecoration: "none",
-      cursor: "text",
-      "&:hover": {
-        color: "gray",
-        textDecoration: "none",
-      },
     },
   },
 };
