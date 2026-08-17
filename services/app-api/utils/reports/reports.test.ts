@@ -66,8 +66,6 @@ describe("reports.ts", () => {
           bssEntities: [{ id: "bar", name: "name", notAllowed: "false" }],
         };
         const res = await copyFieldDataFromSource(
-          "database-local-mcpar",
-          "Minnesota",
           mockSourceFieldData,
           mockMcparJson,
           { stateName: "Minnesota" },
@@ -118,8 +116,6 @@ describe("reports.ts", () => {
             ],
           };
           const res = await copyFieldDataFromSource(
-            "database-local-mcpar",
-            "Minnesota",
             mockSourceFieldData,
             mockReportQualityMeasuresJson,
             { stateName: "Minnesota" },
@@ -143,8 +139,6 @@ describe("reports.ts", () => {
       test("returns validatedField data", async () => {
         const mockSourceFieldData = undefined;
         const res = await copyFieldDataFromSource(
-          "database-local-mlr",
-          "Minnesota",
           mockSourceFieldData,
           mockReportJson,
           { stateName: "Minnesota" },
@@ -175,8 +169,6 @@ describe("reports.ts", () => {
           plans: [{ id: "foo", name: "name", notAllowed: "false" }],
         };
         const res = await copyFieldDataFromSource(
-          "database-local-naaar",
-          "Minnesota",
           mockSourceFieldData,
           mockNaaarJson,
           { stateName: "Minnesota" },
@@ -191,8 +183,6 @@ describe("reports.ts", () => {
       test("returns validatedField data if no S3 object", async () => {
         const mockSourceFieldData = undefined;
         const res = await copyFieldDataFromSource(
-          "database-local-naaar",
-          "Minnesota",
           mockSourceFieldData,
           mockNaaarJson,
           { stateName: "Minnesota" },

@@ -24,13 +24,11 @@ import {
  * @param validatedFieldData validated field data from request
  */
 export async function copyFieldDataFromSource(
-  reportBucket: string,
-  state: string | undefined,
   sourceFieldData: AnyObject | undefined,
   formTemplate: any,
   validatedFieldData: AnyObject,
   reportType: ReportType,
-  newQualityMeasuresSectionEnabled?: boolean
+  newQualityMeasuresSectionEnabled: boolean = false
 ) {
   // If we couldn't find the data to copy, we will quietly do nothing
   if (!sourceFieldData) return validatedFieldData;

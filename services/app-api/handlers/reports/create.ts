@@ -136,8 +136,6 @@ export const createReport = handler(async (event, _context) => {
       state
     );
     newFieldData = await copyFieldDataFromSource(
-      reportBucket,
-      state,
       sourceFieldData,
       formTemplate,
       validatedFieldData!,
