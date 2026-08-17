@@ -160,12 +160,14 @@ export const DateField = ({
 
         <CmsdsDateField
           name={name}
+          id={name}
           label=""
           hint=""
           errorMessage=""
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
           value={displayValue}
+          aria-describedby={`${name}-hint`}
           {...props}
         />
       </Box>
