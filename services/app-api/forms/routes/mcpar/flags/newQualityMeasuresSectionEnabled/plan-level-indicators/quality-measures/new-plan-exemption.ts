@@ -16,6 +16,23 @@ export const newPlanExemptionRoute: FormRoute = {
       section: "Section D: Plan-Level Indicators",
       subsection: "Topic VII: Quality & Performance Measures",
       spreadsheet: "D2_Program_QualityMeasures",
+      hint: [
+        {
+          type: "html",
+          content: "For detailed guidance, see the ",
+        },
+        {
+          type: "internalLink",
+          content: "Quality Measures instructions page",
+          props: {
+            to: "/mcpar/plan-level-indicators/quality-measures/instructions",
+          },
+        },
+        {
+          type: "html",
+          content: ".",
+        },
+      ],
       alert:
         "<b>Please be aware checking a plan in this list will clear any entered quality measures data for that plan.</b>",
       info: [

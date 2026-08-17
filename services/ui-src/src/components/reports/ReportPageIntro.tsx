@@ -44,8 +44,8 @@ export const ReportPageIntro = ({
           />
         </Box>
       )}
-      {showAlert && <Alert status={AlertTypes.WARN} description={alert} />}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
+      {showAlert && <Alert status={AlertTypes.WARN} description={alert} />}
       {accordion && <InstructionsAccordion verbiage={accordion} />}
     </Box>
   );
@@ -79,6 +79,13 @@ const sx = {
   hintTextBox: {
     color: "#5B616B",
     paddingTop: "spacer3",
+    a: {
+      color: "primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "primary_darker",
+      },
+    },
   },
   spreadsheetWidgetBox: {
     marginTop: "spacer4",
@@ -92,6 +99,15 @@ const sx = {
     "p, span": {
       color: "gray",
       marginTop: "spacer2",
+    },
+    "p + h4": {
+      marginTop: "spacer2",
+    },
+    "p + ol": {
+      marginTop: "spacer2",
+    },
+    "ol, li": {
+      color: "gray",
     },
     a: {
       color: "primary",

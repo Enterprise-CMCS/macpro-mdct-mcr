@@ -44,7 +44,6 @@ const sx = {
     },
     a: {
       color: "primary",
-      textDecoration: "underline",
     },
     p: {
       margin: "1rem 0",
