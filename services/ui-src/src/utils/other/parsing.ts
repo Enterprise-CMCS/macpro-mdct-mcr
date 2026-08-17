@@ -42,7 +42,6 @@ export const parseCustomHtml = (element: CustomHtmlElement[] | string) => {
       const elementProps = {
         key: type + crypto.randomUUID(),
         as,
-        className: type === "internalLink" ? "ds-c-link" : "",
         ...props,
       };
 
@@ -72,6 +71,7 @@ export function createElementWithChildren(
   const elementProps = {
     key: type + crypto.randomUUID(),
     as,
+    className: type === "internalLink" ? "ds-c-link" : "",
     ...props,
   };
   if (element.children) {
