@@ -60,12 +60,18 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [canAddStandards, setCanAddStandards] = useState<boolean>(false);
   const [selectedIsCustomEntity, setSelectedIsCustomEntity] =
     useState<boolean>(false);
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, onClose: originalOnClose, onOpen } = useDisclosure();
   const { updateReport } = useContext(ReportContext);
 
   // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { report, selectedEntity, setSelectedEntity } = useStore();
+
+  // Wrap onClose to clear selectedEntity when drawer closes
+  const onClose = () => {
+    setSelectedEntity(undefined);
+    originalOnClose();
+  };
 
   const { entityType, verbiage, form: standardForm } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
@@ -130,6 +136,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
   const form = getForm(formParams);
   const addEntityForm = getForm({ ...formParams, isCustomEntityForm: true });
+
+  useEffect(() => {
+    setSelectedEntity(undefined);
+  }, [route.path]);
 
   const [priorAuthDisabled, setPriorAuthDisabled] = useState<boolean>(false);
   const [patientAccessDisabled, setPatientAccessDisabled] =

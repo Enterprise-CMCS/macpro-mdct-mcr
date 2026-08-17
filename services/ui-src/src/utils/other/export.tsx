@@ -9,6 +9,7 @@ import {
   FieldChoice,
   FormField,
   ReportType,
+  PageTypes,
 } from "types";
 // utils
 import {
@@ -27,6 +28,42 @@ export const renderDataCell = (
   entityType?: EntityType,
   parentFieldCheckedChoiceIds?: string[]
 ) => {
+  const fieldData = allResponseData[formField.id];
+  const entityData = entityType ? allResponseData[entityType] : undefined;
+
+  const fieldExistsInEntities =
+    Array.isArray(entityData) &&
+    entityData.some((entity: AnyObject) => formField.id in entity);
+
+  const isReportLevelField = () => {
+    if (entityData === undefined || fieldExistsInEntities) {
+      return false;
+    }
+
+    // Unanswered fields are report-level
+    if (fieldData === undefined) return true;
+    // Entity-level
+    if (fieldData === entityData) return false;
+    // Non-array values are report-level
+    if (!Array.isArray(fieldData)) return true;
+    // Empty arrays are report-level
+    if (fieldData.length === 0) return true;
+
+    // Arrays with objects that have keys are report-level
+    const firstItem = fieldData[0];
+    if ("key" in firstItem) return true;
+
+    return false;
+  };
+
+  const isReportLevelFieldOnDrawerPage =
+    pageType === PageTypes.DRAWER && isReportLevelField();
+
+  // if report level field on a drawer page, render as a standard field
+  if (isReportLevelFieldOnDrawerPage) {
+    return renderResponseData(formField, fieldData, allResponseData, pageType);
+  }
+
   // render drawer data cell (list entities & per-entity responses)
   if (pageType === "drawer") {
     let entityResponseData: AnyObject;

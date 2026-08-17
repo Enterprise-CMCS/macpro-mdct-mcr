@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 // types
 import { FormField, AnyObject } from "types";
 // utils
@@ -509,5 +509,107 @@ describe("Handles missing validation gracefully", () => {
     const Component = () => result;
     const { container } = render(<Component />);
     expect(container.textContent).toBe("Not answered");
+  });
+});
+
+describe("Handles report-level fields on drawer pages", () => {
+  const gatingRadioField: FormField = {
+    id: "plan_priorAuthorizationReporting",
+    type: "radio",
+    validation: "radio",
+    props: {
+      label: "Are you reporting data prior to June 2026?",
+      choices: [
+        { id: "yes", label: "Yes" },
+        { id: "no", label: "Not reporting data" },
+      ],
+    },
+  };
+
+  const mockPlans = [
+    { id: "plan-1", name: "Plan 1" },
+    { id: "plan-2", name: "Plan 2" },
+  ];
+
+  test("renders answered gating radio value on drawer page", () => {
+    const testCases = [
+      { value: "Yes", key: "plan_priorAuthorizationReporting-yes" },
+      {
+        value: "Not reporting data",
+        key: "plan_priorAuthorizationReporting-no",
+      },
+    ];
+
+    testCases.forEach(({ value, key }, index) => {
+      const mockReportData = {
+        plan_priorAuthorizationReporting: [{ key, value }],
+        plans: mockPlans,
+      };
+
+      const result = renderDataCell(
+        gatingRadioField,
+        mockReportData,
+        "drawer",
+        "plans" as any
+      );
+      render(<>{result}</>);
+      const p = screen.getAllByRole("paragraph");
+      expect(p[index]).toHaveTextContent(value);
+    });
+  });
+
+  test("shows 'Not answered' when gating radio is unanswered", () => {
+    const mockReportData = { plans: mockPlans };
+    const result = renderDataCell(
+      gatingRadioField,
+      mockReportData,
+      "drawer",
+      "plans" as any
+    );
+    render(<>{result}</>);
+    const p = screen.getByRole("paragraph");
+    expect(p).toHaveTextContent("Not answered");
+  });
+
+  test("renderDataCell still renders entity-level fields normally on drawer pages", () => {
+    const entityLevelField: FormField = {
+      id: "plan_entitySpecificField",
+      type: "text",
+      validation: "text",
+      props: {
+        label: "Entity Specific Field",
+      },
+    };
+
+    const mockReportData = {
+      plans: [
+        { id: "plan-1", name: "Plan 1", plan_entitySpecificField: "Answer 1" },
+        { id: "plan-2", name: "Plan 2", plan_entitySpecificField: "Answer 2" },
+      ],
+    };
+
+    const result = renderDataCell(
+      entityLevelField,
+      mockReportData,
+      "drawer",
+      "plans" as any
+    );
+
+    const Component = () => result;
+    render(<Component />);
+
+    // Should render per-entity responses
+    const lists = screen.getAllByRole("list");
+    const listitems = within(lists[0]).getAllByRole("listitem");
+    const listitems2 = within(lists[1]).getAllByRole("listitem");
+
+    expect(lists).toHaveLength(2);
+    expect(listitems).toHaveLength(2);
+    expect(listitems2).toHaveLength(2);
+
+    expect(listitems[0]).toHaveTextContent("Plan 1");
+    expect(listitems[1]).toHaveTextContent("Answer 1");
+    expect(listitems2[0]).toHaveTextContent("Plan 2");
+    expect(listitems2[1]).toHaveTextContent("Answer 2");
   });
 });

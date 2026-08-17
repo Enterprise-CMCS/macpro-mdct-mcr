@@ -43,7 +43,12 @@ jest.mock("react-router", () => ({
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue(mockStateUserStore);
+mockedUseStore.mockReturnValue({
+  ...mockStateUserStore,
+  setSelectedEntity: jest.fn(),
+  setEntityType: jest.fn(),
+  setEntities: jest.fn(),
+});
 
 const mockReportContextWithoutEntities = {
   ...mockMcparReportContext,
@@ -269,6 +274,9 @@ describe("<DrawerReportPage />", () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
         ...mockMcparReportStore,
+        setSelectedEntity: jest.fn(),
+        setEntityType: jest.fn(),
+        setEntities: jest.fn(),
       });
       render(drawerReportPageWithCompletedEntity);
     });
@@ -650,6 +658,9 @@ describe("<DrawerReportPage />", () => {
     mockedUseStore.mockReturnValue({
       ...mockStateUserStore,
       ...mockMcparReportStore,
+      setSelectedEntity: jest.fn(),
+      setEntityType: jest.fn(),
+      setEntities: jest.fn(),
     });
   });
 });
