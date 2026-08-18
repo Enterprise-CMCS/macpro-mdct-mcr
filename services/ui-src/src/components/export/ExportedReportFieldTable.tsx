@@ -15,6 +15,7 @@ import {
   isFieldElement,
   ReportType,
   EntityType,
+  PageTypes,
 } from "types";
 // utils
 import { parseCustomHtml, routeChecker, useStore } from "utils";
@@ -36,7 +37,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
 
   // For frozen templates with page-level gating radios on drawer pages
   if (
-    pageType === "drawer" &&
+    pageType === PageTypes.DRAWER &&
     section.form?.fields &&
     section.form.fields.length > 0 &&
     (routeChecker.isPriorAuthorizationPage(section) ||
