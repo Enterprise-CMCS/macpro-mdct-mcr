@@ -20,6 +20,65 @@ import {
   otherSpecify,
 } from "utils";
 
+/**
+ * Determines if a field on a drawer page should be rendered as report-level or entity-level
+ * @param formField - The form field being evaluated
+ * @param fieldData - The field's data from allResponseData[formField.id]
+ * @param entityData - The entity array (e.g., plans, ilos)
+ * @returns true if field should be rendered as report-level (once), false if entity-level (per entity)
+ */
+export const isReportLevelField = (
+  formField: FormField,
+  fieldData: any,
+  entityData: AnyObject[] | undefined
+): boolean => {
+  // If not a drawer page or no entities, use default logic
+  if (!Array.isArray(entityData) || entityData.length === 0) {
+    return false;
+  }
+
+  // Special case: These are the only fields that appear on drawer pages but are stored at report level
+  const isPageLevelGatingRadio =
+    formField.id === "plan_priorAuthorizationReporting" ||
+    formField.id === "plan_patientAccessApiReporting";
+
+  if (isPageLevelGatingRadio) {
+    return true;
+  }
+
+  // If the field exists on any entity, it's entity-level
+  const fieldExistsInEntities = entityData.some(
+    (entity: AnyObject) => formField.id in entity
+  );
+  if (fieldExistsInEntities) {
+    return false;
+  }
+
+  // If field has no data, it's entity-level (will show "Not answered" per entity)
+  if (fieldData === undefined) return false;
+
+  // If fieldData is the same reference as entityData, it's entity-level
+  if (fieldData === entityData) return false;
+
+  // Non-array values are report-level
+  if (!Array.isArray(fieldData)) return true;
+
+  // Empty arrays are report-level
+  if (fieldData.length === 0) return true;
+
+  // Arrays with objects that have 'key' property are report-level (choice responses)
+  const firstItem = fieldData[0];
+  if (
+    typeof firstItem === "object" &&
+    firstItem !== null &&
+    "key" in firstItem
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
 // checks for type of data cell to be render and calls the appropriate renderer
 export const renderDataCell = (
   formField: FormField,
@@ -31,33 +90,9 @@ export const renderDataCell = (
   const fieldData = allResponseData[formField.id];
   const entityData = entityType ? allResponseData[entityType] : undefined;
 
-  const fieldExistsInEntities =
-    Array.isArray(entityData) &&
-    entityData.some((entity: AnyObject) => formField.id in entity);
-
-  const isReportLevelField = () => {
-    if (entityData === undefined || fieldExistsInEntities) {
-      return false;
-    }
-
-    // Unanswered fields are report-level
-    if (fieldData === undefined) return true;
-    // Entity-level
-    if (fieldData === entityData) return false;
-    // Non-array values are report-level
-    if (!Array.isArray(fieldData)) return true;
-    // Empty arrays are report-level
-    if (fieldData.length === 0) return true;
-
-    // Arrays with objects that have keys are report-level
-    const firstItem = fieldData[0];
-    if ("key" in firstItem) return true;
-
-    return false;
-  };
-
   const isReportLevelFieldOnDrawerPage =
-    pageType === PageTypes.DRAWER && isReportLevelField();
+    pageType === PageTypes.DRAWER &&
+    isReportLevelField(formField, fieldData, entityData);
 
   // if report level field on a drawer page, render as a standard field
   if (isReportLevelFieldOnDrawerPage) {
