@@ -18,10 +18,19 @@ import {
   ReportRouteWithForm,
   StandardReportPageShape,
 } from "types";
+import { routeChecker } from "utils";
 
 export const ExportedReportWrapper = ({ section }: Props) => {
   switch (section.pageType) {
     case PageTypes.STANDARD:
+      if (
+        routeChecker.isQualityMeasuresInstructionsPage(
+          section as StandardReportPageShape
+        )
+      ) {
+        // do not render table
+        return;
+      }
       return (
         <Box data-testid="exportedStandardReportSection" mt="2rem">
           <ExportedReportFieldTable

@@ -4,6 +4,7 @@ import { ReportContext, ReportPageWrapper } from "components";
 // utils
 import {
   mockDrawerReportPageJson,
+  mockEntityStore,
   mockMcparReport,
   mockMcparReportContext,
   mockMcparReportStore,
@@ -29,6 +30,7 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
+  ...mockEntityStore,
 });
 
 const mockLocations = {
@@ -113,7 +115,10 @@ describe("<ReportPageWrapper />", () => {
     afterEach(() => jest.clearAllMocks());
 
     test("ReportPageWrapper navigates to dashboard if no report", () => {
-      mockedUseStore.mockReturnValue(mockStateUserStore);
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockEntityStore,
+      });
       mockUseLocation.mockReturnValue(mockLocations.standard);
       render(ReportPageWrapper_WithoutReport);
       expect(mockUseNavigate).toHaveBeenCalledWith("/");

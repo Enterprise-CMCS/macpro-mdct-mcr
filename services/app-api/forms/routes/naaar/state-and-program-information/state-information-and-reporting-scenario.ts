@@ -126,7 +126,6 @@ export const stateInformationAndReportingScenarioRoute: FormRoute = {
               },
             },
           ],
-
           choices: [
             {
               id: "g3B64XNZhZCZ017er2Y6hJ",

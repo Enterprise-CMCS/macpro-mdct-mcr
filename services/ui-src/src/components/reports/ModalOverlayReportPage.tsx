@@ -254,7 +254,7 @@ export const ModalOverlayReportPage = ({
         <Box sx={sx.content}>
           <ReportPageIntro
             text={verbiage.intro}
-            accordion={accordionReport.formIntro}
+            accordion={accordionReport && accordionReport.formIntro}
             reportType={reportType}
           />
 

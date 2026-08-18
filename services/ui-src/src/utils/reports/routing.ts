@@ -67,6 +67,9 @@ export const routeChecker: RouteChecker = {
   // MCPAR
   isMcpar: hasPath("mcpar"),
   isIlosPage: isPath("/mcpar/plan-level-indicators/ilos"),
+  isQualityMeasuresInstructionsPage: isPath(
+    "/mcpar/plan-level-indicators/quality-measures/instructions"
+  ),
   isMeasuresAndResultsPage: isPath(
     "/mcpar/plan-level-indicators/quality-measures/measures-and-results"
   ),

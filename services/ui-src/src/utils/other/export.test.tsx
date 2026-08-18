@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 // types
 import { FormField, AnyObject } from "types";
 // utils
@@ -10,6 +10,7 @@ import {
   renderDrawerDataCell,
   renderDataCell,
   renderOverlayEntityDataCell,
+  isReportLevelField,
 } from "./export";
 import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
 // verbiage
@@ -106,7 +107,8 @@ describe("Test rendering methods", () => {
     const result = renderDataCell(
       dynamicFormField,
       mockFieldResponseData,
-      "drawer"
+      "drawer",
+      "plans" as any
     );
 
     render(result);
@@ -509,5 +511,357 @@ describe("Handles missing validation gracefully", () => {
     const Component = () => result;
     const { container } = render(<Component />);
     expect(container.textContent).toBe("Not answered");
+  });
+});
+
+describe("Handles report-level fields on drawer pages", () => {
+  const gatingRadioField: FormField = {
+    id: "plan_priorAuthorizationReporting",
+    type: "radio",
+    validation: "radio",
+    props: {
+      label: "Are you reporting data prior to June 2026?",
+      choices: [
+        { id: "yes", label: "Yes" },
+        { id: "no", label: "Not reporting data" },
+      ],
+    },
+  };
+
+  const mockPlans = [
+    { id: "plan-1", name: "Plan 1" },
+    { id: "plan-2", name: "Plan 2" },
+  ];
+
+  test("renders answered gating radio value on drawer page", () => {
+    const testCases = [
+      { value: "Yes", key: "plan_priorAuthorizationReporting-yes" },
+      {
+        value: "Not reporting data",
+        key: "plan_priorAuthorizationReporting-no",
+      },
+    ];
+
+    testCases.forEach(({ value, key }) => {
+      const mockReportData = {
+        plan_priorAuthorizationReporting: [{ key, value }],
+        plans: mockPlans,
+      };
+
+      const result = renderDataCell(
+        gatingRadioField,
+        mockReportData,
+        "drawer",
+        "plans" as any
+      );
+      const { container } = render(<>{result}</>);
+      const paragraphs = container.querySelectorAll("p");
+      expect(paragraphs[0]).toHaveTextContent(value);
+    });
+  });
+
+  test("shows 'Not answered' when gating radio is unanswered", () => {
+    const mockReportData = { plans: mockPlans };
+    const result = renderDataCell(
+      gatingRadioField,
+      mockReportData,
+      "drawer",
+      "plans" as any
+    );
+    render(<>{result}</>);
+    const p = screen.getByRole("paragraph");
+    expect(p).toHaveTextContent("Not answered");
+  });
+
+  test("renderDataCell still renders entity-level fields normally on drawer pages", () => {
+    const entityLevelField: FormField = {
+      id: "plan_entitySpecificField",
+      type: "text",
+      validation: "text",
+      props: {
+        label: "Entity Specific Field",
+      },
+    };
+
+    const mockReportData = {
+      plans: [
+        { id: "plan-1", name: "Plan 1", plan_entitySpecificField: "Answer 1" },
+        { id: "plan-2", name: "Plan 2", plan_entitySpecificField: "Answer 2" },
+      ],
+    };
+
+    const result = renderDataCell(
+      entityLevelField,
+      mockReportData,
+      "drawer",
+      "plans" as any
+    );
+
+    const Component = () => result;
+    render(<Component />);
+
+    // Should render per-entity responses
+    const lists = screen.getAllByRole("list");
+    const listitems = within(lists[0]).getAllByRole("listitem");
+    const listitems2 = within(lists[1]).getAllByRole("listitem");
+
+    expect(lists).toHaveLength(2);
+    expect(listitems).toHaveLength(2);
+    expect(listitems2).toHaveLength(2);
+
+    expect(listitems[0]).toHaveTextContent("Plan 1");
+    expect(listitems[1]).toHaveTextContent("Answer 1");
+    expect(listitems2[0]).toHaveTextContent("Plan 2");
+    expect(listitems2[1]).toHaveTextContent("Answer 2");
+  });
+});
+
+describe("isReportLevelField", () => {
+  const mockPlans = [
+    { id: "plan-1", name: "Plan 1" },
+    { id: "plan-2", name: "Plan 2" },
+  ];
+
+  describe("Page-level gating radios", () => {
+    test("identifies plan_priorAuthorizationReporting as report-level", () => {
+      const formField: FormField = {
+        id: "plan_priorAuthorizationReporting",
+        type: "radio",
+        validation: "radio",
+        props: { label: "Gating question" },
+      };
+
+      const fieldData = [
+        { key: "plan_priorAuthorizationReporting-yes", value: "Yes" },
+      ];
+
+      expect(isReportLevelField(formField, fieldData, mockPlans)).toBe(true);
+    });
+
+    test("identifies plan_patientAccessApiReporting as report-level", () => {
+      const formField: FormField = {
+        id: "plan_patientAccessApiReporting",
+        type: "radio",
+        validation: "radio",
+        props: { label: "Gating question" },
+      };
+
+      const fieldData = [
+        {
+          key: "plan_patientAccessApiReporting-no",
+          value: "Not reporting data",
+        },
+      ];
+
+      expect(isReportLevelField(formField, fieldData, mockPlans)).toBe(true);
+    });
+
+    test("treats gating radio as report-level even when unanswered", () => {
+      const formField: FormField = {
+        id: "plan_priorAuthorizationReporting",
+        type: "radio",
+        validation: "radio",
+        props: { label: "Gating question" },
+      };
+
+      expect(isReportLevelField(formField, undefined, mockPlans)).toBe(true);
+    });
+  });
+
+  describe("Entity-level fields", () => {
+    test("identifies field that exists on entities as entity-level", () => {
+      const formField: FormField = {
+        id: "plan_entityField",
+        type: "text",
+        validation: "text",
+        props: { label: "Entity field" },
+      };
+
+      const plansWithField = [
+        { id: "plan-1", name: "Plan 1", plan_entityField: "Answer 1" },
+        { id: "plan-2", name: "Plan 2", plan_entityField: "Answer 2" },
+      ];
+
+      const fieldData = undefined; // Not accessed since field exists on entities
+
+      expect(isReportLevelField(formField, fieldData, plansWithField)).toBe(
+        false
+      );
+    });
+
+    test("treats unanswered non-gating field as entity-level", () => {
+      const formField: FormField = {
+        id: "plan_regularField",
+        type: "text",
+        validation: "text",
+        props: { label: "Regular field" },
+      };
+
+      expect(isReportLevelField(formField, undefined, mockPlans)).toBe(false);
+    });
+
+    test("treats field with same reference as entity data as entity-level", () => {
+      const formField: FormField = {
+        id: "plans",
+        type: "dynamic",
+        validation: "dynamic",
+        props: { label: "Plans" },
+      };
+
+      expect(isReportLevelField(formField, mockPlans, mockPlans)).toBe(false);
+    });
+  });
+
+  describe("Report-level fields with choice responses", () => {
+    test("identifies array with 'key' property objects as report-level", () => {
+      const formField: FormField = {
+        id: "some_reportLevelRadio",
+        type: "radio",
+        validation: "radio",
+        props: { label: "Report level radio" },
+      };
+
+      const fieldData = [{ key: "option-1", value: "Option 1" }];
+
+      expect(isReportLevelField(formField, fieldData, mockPlans)).toBe(true);
+    });
+
+    test("identifies checkbox responses with 'key' property as report-level", () => {
+      const formField: FormField = {
+        id: "some_reportLevelCheckbox",
+        type: "checkbox",
+        validation: "checkbox",
+        props: { label: "Report level checkbox" },
+      };
+
+      const fieldData = [
+        { key: "option-1", value: "Option 1" },
+        { key: "option-2", value: "Option 2" },
+      ];
+
+      expect(isReportLevelField(formField, fieldData, mockPlans)).toBe(true);
+    });
+  });
+
+  describe("Report-level fields with scalar values", () => {
+    test("identifies non-array string value as report-level", () => {
+      const formField: FormField = {
+        id: "some_textField",
+        type: "text",
+        validation: "text",
+        props: { label: "Text field" },
+      };
+
+      const fieldData = "Some text answer";
+
+      expect(isReportLevelField(formField, fieldData, mockPlans)).toBe(true);
+    });
+
+    test("identifies non-array number value as report-level", () => {
+      const formField: FormField = {
+        id: "some_numberField",
+        type: "number",
+        validation: "number",
+        props: { label: "Number field" },
+      };
+
+      const fieldData = 42;
+
+      expect(isReportLevelField(formField, fieldData, mockPlans)).toBe(true);
+    });
+
+    test("identifies empty array as report-level", () => {
+      const formField: FormField = {
+        id: "some_emptyField",
+        type: "checkbox",
+        validation: "checkbox",
+        props: { label: "Empty checkbox" },
+      };
+
+      const fieldData: any[] = [];
+
+      expect(isReportLevelField(formField, fieldData, mockPlans)).toBe(true);
+    });
+  });
+
+  describe("Edge cases", () => {
+    test("returns false when entityData is undefined", () => {
+      const formField: FormField = {
+        id: "some_field",
+        type: "text",
+        validation: "text",
+        props: { label: "Some field" },
+      };
+
+      const fieldData = "Some value";
+
+      expect(isReportLevelField(formField, fieldData, undefined)).toBe(false);
+    });
+
+    test("returns false when entityData is not an array", () => {
+      const formField: FormField = {
+        id: "some_field",
+        type: "text",
+        validation: "text",
+        props: { label: "Some field" },
+      };
+
+      const fieldData = "Some value";
+      const entityData = { notAnArray: true } as any;
+
+      expect(isReportLevelField(formField, fieldData, entityData)).toBe(false);
+    });
+
+    test("returns false when entityData is empty array", () => {
+      const formField: FormField = {
+        id: "some_field",
+        type: "text",
+        validation: "text",
+        props: { label: "Some field" },
+      };
+
+      const fieldData = "Some value";
+
+      expect(isReportLevelField(formField, fieldData, [])).toBe(false);
+    });
+
+    test("handles array with non-object items as entity-level", () => {
+      const formField: FormField = {
+        id: "some_field",
+        type: "text",
+        validation: "text",
+        props: { label: "Some field" },
+      };
+
+      const fieldData = ["string1", "string2"];
+
+      expect(isReportLevelField(formField, fieldData, mockPlans)).toBe(false);
+    });
+
+    test("handles array with null items as entity-level", () => {
+      const formField: FormField = {
+        id: "some_field",
+        type: "text",
+        validation: "text",
+        props: { label: "Some field" },
+      };
+
+      const fieldData = [null];
+
+      expect(isReportLevelField(formField, fieldData, mockPlans)).toBe(false);
+    });
+
+    test("handles array with objects without 'key' property as entity-level", () => {
+      const formField: FormField = {
+        id: "some_field",
+        type: "text",
+        validation: "text",
+        props: { label: "Some field" },
+      };
+
+      const fieldData = [{ id: "1", value: "Test" }]; // has 'id', not 'key'
+
+      expect(isReportLevelField(formField, fieldData, mockPlans)).toBe(false);
+    });
   });
 });

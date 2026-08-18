@@ -16,6 +16,23 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
       section: "Section D: Plan-Level Indicators",
       subsection: "Topic VII: Quality & Performance Measures",
       spreadsheet: "D2_Program_QualityMeasures",
+      hint: [
+        {
+          type: "html",
+          content: "For detailed guidance, see the ",
+        },
+        {
+          type: "internalLink",
+          content: "Quality Measures instructions page",
+          props: {
+            to: "/mcpar/plan-level-indicators/quality-measures/instructions",
+          },
+        },
+        {
+          type: "html",
+          content: ".",
+        },
+      ],
       info: [
         {
           type: "heading",
