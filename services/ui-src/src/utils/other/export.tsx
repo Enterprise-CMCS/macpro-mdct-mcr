@@ -33,7 +33,7 @@ export const isReportLevelField = (
   entityData: AnyObject[] | undefined
 ): boolean => {
   // If not a drawer page or no entities, use default logic
-  if (!Array.isArray(entityData)) {
+  if (!Array.isArray(entityData) || entityData.length === 0) {
     return false;
   }
 

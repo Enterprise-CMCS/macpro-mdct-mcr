@@ -107,7 +107,8 @@ describe("Test rendering methods", () => {
     const result = renderDataCell(
       dynamicFormField,
       mockFieldResponseData,
-      "drawer"
+      "drawer",
+      "plans" as any
     );
 
     render(result);
@@ -541,7 +542,7 @@ describe("Handles report-level fields on drawer pages", () => {
       },
     ];
 
-    testCases.forEach(({ value, key }, index) => {
+    testCases.forEach(({ value, key }) => {
       const mockReportData = {
         plan_priorAuthorizationReporting: [{ key, value }],
         plans: mockPlans,
@@ -553,9 +554,9 @@ describe("Handles report-level fields on drawer pages", () => {
         "drawer",
         "plans" as any
       );
-      render(<>{result}</>);
-      const p = screen.getAllByRole("paragraph");
-      expect(p[index]).toHaveTextContent(value);
+      const { container } = render(<>{result}</>);
+      const paragraphs = container.querySelectorAll("p");
+      expect(paragraphs[0]).toHaveTextContent(value);
     });
   });
 
