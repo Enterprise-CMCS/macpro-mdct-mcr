@@ -15,6 +15,7 @@ import {
   isFieldElement,
   ReportType,
   EntityType,
+  PageTypes,
 } from "types";
 // utils
 import { parseCustomHtml, routeChecker, useStore } from "utils";
@@ -30,15 +31,15 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
     pageType === "drawer" ? section.drawerForm?.fields : section.form?.fields;
 
   const renderNotReportingFields = (field: FormField | FormLayoutElement) => {
-    formFields =
-      report?.fieldData[field.id]?.[0]?.value === "Yes"
-        ? [field, ...(formFields || [])]
-        : section.form?.fields;
+    // Always prepend the gating radio field to show it in the export
+    formFields = [field, ...(formFields || [])];
   };
 
+  // For frozen templates with page-level gating radios on drawer pages
   if (
-    pageType === "drawer" &&
-    section.form &&
+    pageType === PageTypes.DRAWER &&
+    section.form?.fields &&
+    section.form.fields.length > 0 &&
     (routeChecker.isPriorAuthorizationPage(section) ||
       routeChecker.isPatientAccessApiPage(section))
   ) {

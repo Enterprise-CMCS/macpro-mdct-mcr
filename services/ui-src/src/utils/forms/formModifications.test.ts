@@ -1,8 +1,6 @@
 import { addPlanChoices, formModifications } from "./formModifications";
 // types
 import { ReportType } from "types";
-// verbiage
-import accordionVerbiage from "verbiage/pages/accordion";
 
 const plans = [
   {
@@ -116,7 +114,6 @@ describe("utils/forms/mcparPlanExemption", () => {
       const input = formModifications(ReportType.MCPAR, route, fieldData);
 
       const expectedResult = {
-        accordion: accordionVerbiage.MCPAR.formIntro,
         formJson: {
           id: "mockForm",
           fields: [mockTextField, mockExemptionsOutput],
@@ -178,7 +175,6 @@ describe("utils/forms/mcparPlanExemption", () => {
       const input = formModifications(ReportType.MCPAR, route, fieldData);
 
       const expectedResult = {
-        accordion: accordionVerbiage.MCPAR.formIntro,
         formJson: {
           id: "mockForm",
           fields: [mockTextField],
