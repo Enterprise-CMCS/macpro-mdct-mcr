@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import {
   mcparFieldsToCopy,
   naaarFieldsToCopy,
-  newQualityMeasureFieldsToCopy,
+  qualityMeasuresV2FieldsToCopy,
 } from "../constants/copyover";
 import { mcparQualityMeasuresList } from "../data/mcparQualityMeasuresList";
 import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplates";
@@ -24,14 +24,15 @@ import {
  * @param validatedFieldData validated field data from request
  */
 export async function copyFieldDataFromSource(
-  reportBucket: string,
-  state: string | undefined,
-  copyFieldDataSourceId: any,
+  sourceFieldData: AnyObject | undefined,
   formTemplate: any,
   validatedFieldData: AnyObject,
   reportType: ReportType,
-  newQualityMeasuresSectionEnabled?: boolean
+  newQualityMeasuresSectionEnabled: boolean = false
 ) {
+  // If we couldn't find the data to copy, we will quietly do nothing
+  if (!sourceFieldData) return validatedFieldData;
+
   // Year-over-year copy is currently only supported for MCPAR and NAAAR
   let fieldsToCopy: AnyObject = mcparFieldsToCopy;
   if (reportType === ReportType.NAAAR) {
@@ -42,17 +43,7 @@ export async function copyFieldDataFromSource(
 
   // if newQualityMeasuresSectionEnabled is true, copy new quality measure fields
   if (reportType === ReportType.MCPAR && newQualityMeasuresSectionEnabled) {
-    fieldsToCopy.qualityMeasures = newQualityMeasureFieldsToCopy;
-  }
-
-  const sourceFieldData = (await s3Lib.get({
-    Bucket: reportBucket,
-    Key: getFieldDataKey(state as State, copyFieldDataSourceId),
-  })) as AnyObject;
-
-  // If we couldn't find the data to copy, we will quietly do nothing
-  if (!sourceFieldData) {
-    return validatedFieldData;
+    fieldsToCopy.qualityMeasures = qualityMeasuresV2FieldsToCopy;
   }
 
   // All fields in the current form template are valid. Additionally, entities have IDs and names that should be copied.
@@ -126,6 +117,28 @@ export function makePCCMModifications(fieldData: any) {
   delete fieldData["program_type-otherText"];
 
   return fieldData;
+}
+
+export async function getSourceFieldData(
+  copyFieldDataSourceId: string,
+  reportBucket: string,
+  state?: string
+) {
+  const sourceFieldData = (await s3Lib.get({
+    Bucket: reportBucket,
+    Key: getFieldDataKey(state as State, copyFieldDataSourceId),
+  })) as AnyObject;
+
+  return sourceFieldData;
+}
+
+export function needsPreloadedQualityMeasures(sourceFieldData?: AnyObject) {
+  if (!sourceFieldData) return true;
+
+  const hasQualityMeasuresV1 = (sourceFieldData.qualityMeasures || []).some(
+    (qm: any) => qm.qualityMeasure_name
+  );
+  return hasQualityMeasuresV1;
 }
 
 export function populateQualityMeasures(

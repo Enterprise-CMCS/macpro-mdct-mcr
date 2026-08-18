@@ -214,7 +214,7 @@ export const fillMcpar = (
   );
 
   const qualityMeasures = Array.from({ length: numberOfExamples }, () =>
-    createQualityMeasure(planIds)
+    createQualityMeasureV1(planIds)
   );
 
   const sanctions = planIds.map((planId) => createSanction(planId));
@@ -226,7 +226,7 @@ export const fillMcpar = (
     const plansExemptFromQualityMeasures = [createPlanExemption(plans[0])];
     let newQualityMeasures = Array.from(
       { length: numberOfExamples },
-      (_, index) => createNewQualityMeasure(index)
+      (_, index) => createQualityMeasureV2(index)
     );
 
     // Remove timestamp from program name
@@ -242,7 +242,7 @@ export const fillMcpar = (
 
     if (measuresByStateAndProgram) {
       newQualityMeasures = measuresByStateAndProgram.map((measure, index) =>
-        createNewQualityMeasure(index, measure)
+        createQualityMeasureV2(index, measure)
       );
     }
 
@@ -854,7 +854,7 @@ const createPlan = (
   return data;
 };
 
-const createQualityMeasure = (planIds: string[]) => {
+const createQualityMeasureV1 = (planIds: string[]) => {
   const measureResults = planIds.reduce(
     (results, planId) => {
       results[`qualityMeasure_plan_measureResults_${planId}`] =
@@ -897,7 +897,7 @@ const createQualityMeasure = (planIds: string[]) => {
   };
 };
 
-const createNewQualityMeasure = (index: number, measure?: Measure) => {
+const createQualityMeasureV2 = (index: number, measure?: Measure) => {
   const measureIdentifiers = [
     {
       measure_identifier: [
