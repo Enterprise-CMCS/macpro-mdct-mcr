@@ -285,15 +285,17 @@ export const calculateRouteCompletion = async (
           "/mcpar/plan-level-indicators/quality-measures/measures-and-results" &&
         route.drawerForm
       ) {
-        const qualityMeasures = fieldData.qualityMeasures || [];
-        const filteredPlans = getPlansNotExemptFromQualityMeasures(
+        const qualityMeasures = fieldData.qualityMeasures;
+        const nonExemptPlans = getPlansNotExemptFromQualityMeasures(
           fieldData.plans,
           fieldData.plansExemptFromQualityMeasures
         );
 
-        if (qualityMeasures.length > 0 && filteredPlans.length > 0) {
+        if (fieldData.plans?.length > 0 && nonExemptPlans.length === 0) {
+          isComplete = true;
+        } else if (qualityMeasures?.length > 0) {
           isComplete = qualityMeasures.every((measure: EntityShape) =>
-            filteredPlans.every((plan: EntityShape) =>
+            nonExemptPlans.every((plan: EntityShape) =>
               calculateMeasureCompletion(
                 measure.id,
                 plan,
