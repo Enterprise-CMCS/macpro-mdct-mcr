@@ -719,6 +719,31 @@ describe("Completion Status Tests", () => {
           [qualityMeasuresRoute.path]: true,
         });
       });
+
+      test("returns true for when nonExemptPlans is empty", async () => {
+        measureCompletionSpy.mockReturnValue(true);
+        const result = await calculateRouteCompletion(
+          qualityMeasuresRoute,
+          {
+            plans: [
+              {
+                id: "mock-plan-1",
+              },
+            ],
+            plansExemptFromQualityMeasures: [
+              {
+                key: "plansExemptFromQualityMeasures-mock-plan-1",
+                value: "Exempt Mock Plan 1",
+              },
+            ],
+          },
+          {},
+          {}
+        );
+        expect(result).toEqual({
+          [qualityMeasuresRoute.path]: true,
+        });
+      });
     });
 
     describe("case: plan overlay", () => {
