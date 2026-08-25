@@ -91,7 +91,7 @@ export const programCharacteristicsRoute: DrawerFormRoute = {
         type: ReportFormFieldType.NUMBER_SUPPRESSIBLE,
         validation: ValidationType.NUMBER_SUPPRESSIBLE,
         props: {
-          label: "D1.I.3 Plan share of risk-based Medicaid managed care",
+          label: "D1.I.3 Plan share of Medicaid managed care",
           hint: [
             {
               type: "span",
