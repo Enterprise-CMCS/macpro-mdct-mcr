@@ -333,8 +333,14 @@ export const radio = () =>
 export const radioOptional = () => radio();
 
 // DYNAMIC
-export const dynamic = () => array().min(0).of(mixed());
-export const dynamicOptional = () => array().notRequired().nullable();
+export const dynamic = (min = 1) =>
+  array()
+    .min(min)
+    // Plans and BSS entities add fields other than id/name,
+    // mixed() allows them without explicit validation
+    .of(mixed())
+    .required(error.REQUIRED_GENERIC);
+export const dynamicOptional = () => dynamic(0).notRequired().nullable();
 
 // NESTED
 export const nested = (

@@ -418,7 +418,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
                             id: "measure_dataCollectionMethod-otherText",
                             type: ReportFormFieldType.TEXT,
                             validation: {
-                              type: ValidationType.TEXT_OPTIONAL,
+                              type: ValidationType.TEXT,
                               nested: true,
                               parentFieldName: "measure_dataCollectionMethod",
                               parentOptionId: "D3x0tz0657GlrkneNtssdn",
