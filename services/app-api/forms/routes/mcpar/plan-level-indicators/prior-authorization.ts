@@ -50,7 +50,7 @@ export const priorAuthorizationRoute: DrawerFormRoute = {
       {
         id: "plan_urlForPriorAuthorizationDataOnPlanWebsite",
         type: ReportFormFieldType.TEXT,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.URL,
         props: {
           label: "D1.XIII.1 URL for prior authorization data on plan’s website",
           hint: "Provide the URL where the plan posts prior authorization data for all items and services excluding drugs, as required in 42 CFR § 438.210(f).",
@@ -59,7 +59,7 @@ export const priorAuthorizationRoute: DrawerFormRoute = {
       {
         id: "plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization",
         type: ReportFormFieldType.TEXT,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.URL,
         props: {
           label:
             "D1.XIII.2 URL for list of all items and services subject to prior authorization",
