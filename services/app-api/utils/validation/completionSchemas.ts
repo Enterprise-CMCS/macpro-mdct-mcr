@@ -10,6 +10,8 @@ import {
 import { suppressionText } from "../constants/constants";
 // types
 import { Choice, ChoiceOptions } from "../types";
+// utils
+import { schemaMap } from "./schemaMap";
 
 export const error = {
   REQUIRED_GENERIC: "A response is required",
@@ -378,19 +380,6 @@ export const radio = () =>
   radioSchema().length(1, error.REQUIRED_GENERIC).required();
 export const radioOptional = () => radioSchema().notRequired().nullable();
 
-// DYNAMIC
-export const dynamic = () =>
-  array()
-    .min(1)
-    .of(
-      object().shape({
-        id: textSchema(),
-        name: textSchema(),
-      })
-    )
-    .required(error.REQUIRED_GENERIC);
-export const dynamicOptional = () => array().notRequired().nullable();
-
 // NESTED
 export const nested = (
   fieldSchema: Function,
@@ -431,8 +420,8 @@ export const completionSchemaMap: any = {
   dateOptional: dateOptional(),
   dropdown: dropdown(),
   dropdownOptional: dropdownOptional(),
-  dynamic: dynamic(),
-  dynamicOptional: dynamicOptional(),
+  dynamic: schemaMap.dynamic,
+  dynamicOptional: schemaMap.dynamicOptional,
   email: email(),
   emailOptional: emailOptional(),
   futureDate: futureDate(),

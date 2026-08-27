@@ -63,7 +63,7 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
   );
   const formValidationSchema = mapValidationTypesToSchema(formValidationJson);
   const formResolverSchema = yupSchema(formValidationSchema || {});
-  mapValidationTypesToSchema;
+
   // make form context
   const form = useForm({
     resolver: !fieldInputDisabled ? yupResolver(formResolverSchema) : undefined,
@@ -79,9 +79,17 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
     // sort errors in order of registration/page display
     const sortedErrors: string[] = sortFormErrors(formValidationSchema, errors);
     // focus the first error on the page and scroll to it
-    const fieldToFocus = document.querySelector(
-      `[name='${sortedErrors[0]}']`
-    )! as HTMLElement;
+    const firstError = sortedErrors[0];
+
+    // Get input with aria-invalid
+    const elementByNameAndAria = document.querySelector(
+      `[name^='${firstError}'][aria-invalid="true"]`
+    );
+    // Choice lists don't use aria-invalid
+    const elementByName = document.querySelector(`[name^='${firstError}']`);
+    const fieldToFocus = (elementByNameAndAria ||
+      elementByName) as HTMLInputElement | null;
+
     fieldToFocus?.scrollIntoView({ behavior: "smooth", block: "center" });
     fieldToFocus?.focus({ preventScroll: true });
   };
