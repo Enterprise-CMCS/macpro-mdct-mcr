@@ -939,6 +939,14 @@ const createQualityMeasureV2 = (index: number, measure?: Measure) => {
     id: crypto.randomUUID(),
     measure_name: measure?.measure_name || faker.animal.bird(),
     ...measureIdentifiers[index],
+    measure_deviationFromMeasurementYearReporting: [
+      {
+        key: "measure_deviationFromMeasurementYearReporting-idw5lcMLX9yrn17I2X3ck6iw",
+        value: "Yes",
+      },
+    ],
+    measure_deviationFromMeasurementYearReportingTimePeriodAndJustification:
+      faker.lorem.sentence(),
     measure_dataVersion: [
       {
         key: "measure_dataVersion-GLnFjfEWVnsNJdWMswHwxk",

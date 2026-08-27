@@ -44,6 +44,7 @@ export interface EndDateValidation {
 export interface NestedValidation {
   dependentFieldName?: string;
   nested: boolean;
+  options?: ChoiceOptions;
   parentFieldName: string;
   parentOptionId?: string;
   type: ValidationType;

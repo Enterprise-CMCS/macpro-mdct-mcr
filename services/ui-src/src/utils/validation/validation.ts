@@ -57,39 +57,33 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
         !fieldValidation
       ) {
         validationSchema[key] = schemaMap[ValidationType.DATE_OPTIONAL];
-        return;
       }
-
       // if standard validation type, set corresponding schema from map
-      if (typeof fieldValidation === "string") {
+      else if (typeof fieldValidation === "string") {
         const correspondingSchema = schemaMap[fieldValidation];
         if (correspondingSchema) {
-          validationSchema[key] = correspondingSchema;
+          validationSchema[key] =
+            typeof correspondingSchema === "function"
+              ? correspondingSchema()
+              : correspondingSchema;
         }
-        return;
       }
-
       // else if custom validation type with options
       else if (fieldValidation?.options && !fieldValidation?.nested) {
         const correspondingSchema = schemaMap[fieldValidation.type];
         if (correspondingSchema) {
           validationSchema[key] = correspondingSchema(fieldValidation.options);
         }
-        return;
       }
-
       // if nested validation type, make and set nested schema
-      else if (fieldValidation.nested) {
+      else if (fieldValidation?.nested) {
         validationSchema[key] = makeNestedFieldSchema(fieldValidation);
-        return;
       }
-
       // if not nested, make and set other dependent field types
-      const getSchema = dependentSchemas[fieldValidation.type];
-      if (getSchema) {
+      else if (dependentSchemas[fieldValidation.type]) {
+        const getSchema = dependentSchemas[fieldValidation.type];
         validationSchema[key] = getSchema(fieldValidation);
       }
-      return;
     }
   );
   return validationSchema;
