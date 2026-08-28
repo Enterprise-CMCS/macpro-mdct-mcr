@@ -28,6 +28,13 @@ export function maskResponseData(
   )
     return fieldResponseData;
 
+  // numberOrSuppressed fields accept any casing of "suppressed"; don't mask it as a number
+  if (
+    typeof fieldResponseData === "string" &&
+    fieldResponseData.trim().toLowerCase() === "suppressed"
+  )
+    return "Suppressed";
+
   const numericValue = Number(fieldResponseData);
 
   let minimumFractionDigits = 0;
