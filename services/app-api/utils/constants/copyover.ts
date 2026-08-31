@@ -66,8 +66,6 @@ export const mcparFieldsToCopy = {
     "plan_programIntegrityReferralPath",
     "plan_beneficiaryCircumstanceChangeReportingFrequency",
     "plan_ilosOfferedByPlan",
-    "plan_mlrDataReceived",
-    "plan_mlrDataValidated",
   ],
   qualityMeasures: [
     "id",

@@ -627,7 +627,7 @@ const createPlanPCCM = (planId: string) => ({
 const createPlan = (
   planId: string,
   ilos: { id: string; name: string },
-  flags: { [key: string]: true }
+  _flags: { [key: string]: true }
 ) => {
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
   const newReportingPeriodEndDate = faker.date.future({
@@ -675,6 +675,18 @@ const createPlan = (
     plan_medicaidEnrollmentSharePercentage: suppressionText,
     plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
     plan_mfcuProgramIntegrityReferrals: numberInt(),
+    plan_mlrDataReceived: [
+      {
+        key: "plan_mlrDataReceived-xY7zW9vU3tS1rQ5pO8nM2k",
+        value: "Yes",
+      },
+    ],
+    plan_mlrDataValidated: [
+      {
+        key: "plan_mlrDataValidated-aB4cD6eF8gH0iJ2kL4mN6o",
+        value: "Yes",
+      },
+    ],
     plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer: numberInt(),
     plan_numberOfUniqueBeneficiariesWithMultipleDataTransfers: numberInt(),
     plan_openedProgramIntegrityInvestigations: numberInt(),
@@ -808,35 +820,6 @@ const createPlan = (
     program_encounterDataSubmissionTimelinessStandardDefinition:
       faker.lorem.sentence(),
   };
-
-  if (flags.newQualityMeasuresSectionEnabled) {
-    data = {
-      ...data,
-      plan_medicalLossRatioReportingPeriod: [
-        {
-          key: "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
-          value: "Yes",
-        },
-      ],
-    };
-  } else {
-    data = {
-      ...data,
-      plan_mlrDataReceived: [
-        {
-          key: "plan_mlrDataReceived-xY7zW9vU3tS1rQ5pO8nM2k",
-          value: "Yes",
-        },
-      ],
-      plan_mlrDataValidated: [
-        {
-          key: "plan_mlrDataValidated-aB4cD6eF8gH0iJ2kL4mN6o",
-          value: "Yes",
-        },
-      ],
-    };
-  }
-
   return data;
 };
 
