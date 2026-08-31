@@ -249,6 +249,54 @@ describe("handlers/reports/update", () => {
       expect(response.body).toContain(error.INVALID_DATA);
     });
 
+    test("Test autosaving an end date validates against its saved start date", async () => {
+      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      s3GetSpy
+        .mockResolvedValueOnce({
+          ...mockReportJson,
+          validationJson: {
+            program_mlrReportingPeriodStartDate: "date",
+            program_mlrReportingPeriodEndDate: {
+              type: "endDate",
+              dependentFieldName: "program_mlrReportingPeriodStartDate",
+            },
+          },
+        })
+        .mockResolvedValueOnce({
+          ...mockReportFieldData,
+          program_mlrReportingPeriodStartDate: "01/01/2025",
+        });
+      jest.spyOn(s3Lib, "put").mockResolvedValue(mockS3PutObjectCommandOutput);
+      dynamoClientMock.on(PutCommand).resolves({});
+      mockedFetchReport.mockResolvedValue({
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "string",
+          "Access-Control-Allow-Credentials": true,
+        },
+        body: JSON.stringify(mockDynamoData),
+      });
+
+      const response = await updateReport(
+        {
+          ...mockProxyEvent,
+          body: JSON.stringify({
+            metadata: { status: "in progress" },
+            fieldData: {
+              program_mlrReportingPeriodEndDate: "01/31/2025",
+            },
+          }),
+        },
+        null
+      );
+
+      expect(response.statusCode).toBe(StatusCodes.Ok);
+      expect(JSON.parse(response.body!).fieldData).toMatchObject({
+        program_mlrReportingPeriodStartDate: "01/01/2025",
+        program_mlrReportingPeriodEndDate: "01/31/2025",
+      });
+    });
+
     test("Test attempted report update with invalid data throws 400", async () => {
       mockedFetchReport.mockResolvedValue({
         statusCode: 200,
