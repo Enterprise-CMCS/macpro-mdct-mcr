@@ -812,7 +812,6 @@ const createPlan = (
   if (flags.newQualityMeasuresSectionEnabled) {
     data = {
       ...data,
-      plan_medicalLossRatioPercentage: numberInt(),
       plan_medicalLossRatioReportingPeriod: [
         {
           key: "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
