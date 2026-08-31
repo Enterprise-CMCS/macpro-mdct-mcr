@@ -696,7 +696,6 @@ const createPlan = (
     plan_percentageOfStandardPriorAuthorizationRequestsDenied: numberFloat(),
     plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe:
       numberFloat(),
-    plan_populationSpecificMedicalLossRatioDescription: faker.lorem.sentence(),
     plan_programIntegrityReferralPath: [
       {
         key: "plan_programIntegrityReferralPath-1LOghpdQOkaOd76btMJ8qA",
@@ -814,24 +813,12 @@ const createPlan = (
     data = {
       ...data,
       plan_medicalLossRatioPercentage: numberInt(),
-      plan_medicalLossRatioPercentageAggregationLevel: [
-        {
-          key: "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
-          value: "Program-specific statewide",
-        },
-      ],
       plan_medicalLossRatioReportingPeriod: [
         {
           key: "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
           value: "Yes",
         },
       ],
-      plan_medicalLossRatioReportingPeriodEndDate: dateFormat.format(
-        newReportingPeriodEndDate
-      ),
-      plan_medicalLossRatioReportingPeriodStartDate: dateFormat.format(
-        newReportingPeriodStartDate
-      ),
     };
   } else {
     data = {
