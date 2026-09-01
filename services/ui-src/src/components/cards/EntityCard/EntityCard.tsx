@@ -33,10 +33,15 @@ export const EntityCard = ({
 
   let entityStarted = false;
   let entityCompleted = false;
-  const reportingPeriodCompletedOrOptional =
-    entityType == EntityType.QUALITY_MEASURES
-      ? formattedEntityData.reportingPeriod
-      : true;
+
+  // V1 quality measures use reportingPeriod field, V2 measures do not
+  const isV1QualityMeasure =
+    entityType === EntityType.QUALITY_MEASURES &&
+    formattedEntityData?.perPlanResponses !== undefined;
+
+  const reportingPeriodCompletedOrOptional = isV1QualityMeasure
+    ? formattedEntityData.reportingPeriod
+    : true;
 
   // get index and length of entities
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
@@ -53,15 +58,51 @@ export const EntityCard = ({
       entityCompleted = !!formattedEntityData?.assessmentDate;
       break;
     case EntityType.QUALITY_MEASURES: {
+      // Check which template version is being used
+      const measureResults = formattedEntityData?.measureResults;
       const perPlanResponses = formattedEntityData?.perPlanResponses;
-      const validPerPlanResponses = perPlanResponses?.filter(
-        (el: any) => el.response
-      );
-      entityStarted = !!validPerPlanResponses?.length;
-      // perPlanResponses already excludes exempted plans (filtered in getFormattedEntityData)
-      entityCompleted =
-        entityStarted &&
-        validPerPlanResponses?.length === perPlanResponses?.length;
+
+      if (measureResults !== undefined) {
+        // V2 template uses measureResults array
+        const nonExemptResults = measureResults.filter(
+          (result: any) => !result.exempt
+        );
+
+        const validResults = nonExemptResults.filter((result: any) => {
+          // Plan is valid if either: 1. Not reporting with a reason provided
+          if (result.notReporting && result.notReportingReason) {
+            return true;
+          }
+
+          // 2. Reporting with data collection method and all rate results filled
+          if (result.dataCollectionMethod && result.rateResults) {
+            // Check that all rate results have values
+            const hasValidRates =
+              Array.isArray(result.rateResults) &&
+              result.rateResults.length > 0 &&
+              result.rateResults.every(
+                (rate: any) => rate.rateResult && rate.rateResult !== ""
+              );
+            return hasValidRates;
+          }
+
+          return false;
+        });
+
+        entityStarted = validResults.length > 0;
+        entityCompleted =
+          entityStarted && validResults.length === nonExemptResults.length;
+      } else {
+        // V1 Legacy template uses perPlanResponses array
+        const validPerPlanResponses = perPlanResponses?.filter(
+          (el: any) => el.response
+        );
+        entityStarted = !!validPerPlanResponses?.length;
+        // perPlanResponses already excludes exempted plans (filtered in getFormattedEntityData)
+        entityCompleted =
+          entityStarted &&
+          validPerPlanResponses?.length === perPlanResponses?.length;
+      }
       break;
     }
     default:
