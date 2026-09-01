@@ -8,11 +8,24 @@ export default {
           {
             type: "html",
             content:
-              "States must complete one report for each managed care program operating in the state. Medicaid and Medicare managed care plans (MMPs) are not exempt from NAAAR requirements at 42 § CFR 438.207, and states must submit a report for these plans. To reduce duplication, states can complete network adequacy sections of the report (II.A.1- II.A.7) for Medicaid-only covered services. Reporting on Non-Emergency Medical Transportation (NEMT) and Program of All-Inclusive Care for the Elderly (PACE) programs/plans is not required. Reporting on Children’s Health Insurance Program (CHIP) is not required in MDCT MCR. ",
+              "States must complete one report for each managed care program operating in the state. Medicaid and Medicare managed care plans (MMPs) are not exempt from the requirements at 42 C.F.R. § 438.207, and states must include MMPs in submitted NAAARs as appropriate. To reduce duplication, states can complete network adequacy in sections (II.A.1- II.A.7) for MMPs for Medicaid-only covered services. Reporting on Non-Emergency Medical Transportation (NEMT) PAHPs and Program of All-Inclusive Care for the Elderly (PACE) programs/plans is not required. Reporting on the Children’s Health Insurance Program (CHIP) cannot be submitted in MDCT MCR. Contact ",
           },
           {
             type: "externalLink",
-            content: "Learn more about NAAAR.",
+            content: "CHIPManagedCare@cms.hhs.gov",
+            props: {
+              href: "mailto:CHIPManagedCare@cms.hhs.gov",
+              target: "_blank",
+              "aria-label": "Mail to CHIPManagedCare@cms.hhs.gov",
+            },
+          },
+          {
+            type: "html",
+            content: " for more information. ",
+          },
+          {
+            type: "externalLink",
+            content: "Learn more about the NAAAR.",
             props: {
               href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting#NETWORK",
               target: "_blank",
@@ -29,11 +42,24 @@ export default {
           {
             type: "html",
             content:
-              "States must complete one report for each managed care program operating in the state. Medicaid and Medicare managed care plans (MMPs) are not exempt from NAAAR requirements at 42 § CFR 438.207, and states must submit a report for these plans. To reduce duplication, states can complete network adequacy sections of the report (II.A.1- II.A.7) for Medicaid-only covered services. Reporting on Non-Emergency Medical Transportation (NEMT) and Program of All-Inclusive Care for the Elderly (PACE) programs/plans is not required. Reporting on Children’s Health Insurance Program (CHIP) is not required in MDCT MCR. ",
+              "States must complete one report for each managed care program operating in the state. Medicaid and Medicare managed care plans (MMPs) are not exempt from the requirements at 42 C.F.R. § 438.207, and states must include MMPs in submitted NAAARs as appropriate. To reduce duplication, states can complete network adequacy in sections (II.A.1- II.A.7) for MMPs for Medicaid-only covered services. Reporting on Non-Emergency Medical Transportation (NEMT) PAHPs and Program of All-Inclusive Care for the Elderly (PACE) programs/plans is not required. Reporting on the Children’s Health Insurance Program (CHIP) cannot be submitted in MDCT MCR. Contact ",
           },
           {
             type: "externalLink",
-            content: "Learn more about NAAAR.",
+            content: "CHIPManagedCare@cms.hhs.gov",
+            props: {
+              href: "mailto:CHIPManagedCare@cms.hhs.gov",
+              target: "_blank",
+              "aria-label": "Mail to CHIPManagedCare@cms.hhs.gov",
+            },
+          },
+          {
+            type: "html",
+            content: " for more information. ",
+          },
+          {
+            type: "externalLink",
+            content: "Learn more about the NAAAR.",
             props: {
               href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting#NETWORK",
               target: "_blank",
