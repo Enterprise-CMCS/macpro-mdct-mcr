@@ -38,7 +38,8 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
         </Heading>
       ) : null}
       <Box data-testid="exportedSectionHeading" sx={sx.container}>
-        {sectionAlert && (
+        {/* Do not show alert for New plan exemption page */}
+        {sectionAlert && introContent !== "New plan exemption" && (
           <Alert status={AlertTypes.WARN} description={sectionAlert} />
         )}
         {sectionInfo && (
