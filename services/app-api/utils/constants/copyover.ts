@@ -62,11 +62,6 @@ export const mcparFieldsToCopy = {
   plans: [
     "id",
     "name",
-    "plan_medicalLossRatioPercentageAggregationLevel",
-    "plan_medicalLossRatioPercentageAggregationLevel-otherText",
-    "plan_populationSpecificMedicalLossRatioDescription",
-    "plan_medicalLossRatioReportingPeriodStartDate",
-    "plan_medicalLossRatioReportingPeriodEndDate",
     "program_encounterDataSubmissionTimelinessStandardDefinition",
     "plan_programIntegrityReferralPath",
     "plan_beneficiaryCircumstanceChangeReportingFrequency",
