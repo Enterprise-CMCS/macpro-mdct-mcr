@@ -122,6 +122,12 @@ select.ds-c-field {
   &:focus-visible {
     @include tabbed-focus;
   }
+  [tabindex="-1"]:focus {
+    outline: none;
+  }
+  [tabindex="-1"]:focus-visible {
+    @include tabbed-focus;
+  }
 }
 
 a:focus,
