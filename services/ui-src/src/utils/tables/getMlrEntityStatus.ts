@@ -71,6 +71,26 @@ export const getMlrEntityStatus = (
     ...filteredChildFormValidation,
   };
 
+  /*
+   * Legacy support: earlier MLR reports captured the program name in the free-text
+   * `report_programName` field, which was later replaced by the `report_programNameList`
+   * checkbox and the `report_otherProgramName` dynamic field. Reports that provide the
+   * program name through the legacy field (or only through the dynamic "other" field)
+   * are still complete, so don't fail completion on the newer checkbox when a program
+   * name has been provided through any of these fields. Mirrors getProgramInfo's display.
+   */
+  const hasProgramName =
+    (Array.isArray(entity.report_programNameList) &&
+      entity.report_programNameList.length > 0) ||
+    (Array.isArray(entity.report_otherProgramName) &&
+      entity.report_otherProgramName.length > 0) ||
+    (typeof entity.report_programName === "string" &&
+      entity.report_programName.trim().length > 0);
+
+  if (hasProgramName) {
+    delete formFieldsToValidate.report_programNameList;
+  }
+
   const formValidationSchema = mapValidationTypesToSchema(formFieldsToValidate);
 
   const formResolverSchema = object(formValidationSchema || {});
