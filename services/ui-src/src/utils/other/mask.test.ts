@@ -160,7 +160,7 @@ describe("Test maskResponseData", () => {
 
   test("Renders 'Suppressed' for any casing of suppressed instead of NaN", () => {
     for (const value of ["Suppressed", "suppressed", " SUPPRESSED "]) {
-      expect(maskResponseData(value, "comma-separated")).toEqual("Suppressed");
+      expect(maskResponseData(value, "comma-separated")).toBe("Suppressed");
     }
   });
 
