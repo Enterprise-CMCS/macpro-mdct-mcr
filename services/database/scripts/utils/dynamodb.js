@@ -1,8 +1,10 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const {
   DynamoDBDocumentClient,
+  GetCommand,
   PutCommand,
   ScanCommand,
+  UpdateCommand,
 } = require("@aws-sdk/lib-dynamodb");
 
 let dynamoClient;
@@ -64,4 +66,15 @@ const update = async (tableName, items) => {
   }
 };
 
-module.exports = { buildDynamoClient, scan, update };
+const updateItem = async (updateParams) => {
+  const command = new UpdateCommand(updateParams);
+  return dynamoClient.send(command);
+};
+
+const getItem = async (getParams) => {
+  const command = new GetCommand(getParams);
+  const result = await dynamoClient.send(command);
+  return result.Item;
+};
+
+module.exports = { buildDynamoClient, getItem, scan, update, updateItem };
