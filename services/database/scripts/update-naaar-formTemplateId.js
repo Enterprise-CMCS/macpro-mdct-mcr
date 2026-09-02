@@ -33,7 +33,7 @@ async function handler() {
   }
   if (!reportId || !state) {
     throw new Error(
-      "Usage: node services/database/scripts/update-naaar-formTemplateVersion.js REPORT_ID STATE"
+      "Usage: node services/database/scripts/update-naaar-formTemplateId.js REPORT_ID STATE"
     );
   }
   if (!/^[A-Z]{2}$/.test(state)) {
