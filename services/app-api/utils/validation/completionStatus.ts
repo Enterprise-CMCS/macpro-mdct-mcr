@@ -16,6 +16,20 @@ import {
 import { getPlansNotExemptFromQualityMeasures } from "../reports/reports";
 import { validateFieldData } from "./completionValidation";
 
+const isNonEmptyArray = (value: unknown): boolean =>
+  Array.isArray(value) && value.length > 0;
+
+/*
+ * An MLR program name may be provided through the `report_programNameList`
+ * checkbox, the `report_otherProgramName` dynamic field, or the legacy free-text
+ * `report_programName` field. Mirrors the frontend hasMlrProgramName predicate.
+ */
+export const hasMlrProgramName = (dataForObject: AnyObject): boolean =>
+  isNonEmptyArray(dataForObject.report_programNameList) ||
+  isNonEmptyArray(dataForObject.report_otherProgramName) ||
+  (typeof dataForObject.report_programName === "string" &&
+    dataForObject.report_programName.trim().length > 0);
+
 export const isComplete = (completionStatus: CompletionData): Boolean => {
   const flatten = (obj: AnyObject, out: AnyObject) => {
     Object.keys(obj).forEach((key) => {
@@ -135,17 +149,11 @@ export const calculateFormCompletion = async (
    * checkbox and the `report_otherProgramName` dynamic field. This is needed to submit/re-submit
    * reports that were created before the newer fields were introduced.
    */
-  if ("report_programNameList" in fieldsToBeValidated) {
-    const hasProgramName =
-      (Array.isArray(dataForObject.report_programNameList) &&
-        dataForObject.report_programNameList.length > 0) ||
-      (Array.isArray(dataForObject.report_otherProgramName) &&
-        dataForObject.report_otherProgramName.length > 0) ||
-      (typeof dataForObject.report_programName === "string" &&
-        dataForObject.report_programName.trim().length > 0);
-    if (hasProgramName) {
-      delete fieldsToBeValidated.report_programNameList;
-    }
+  if (
+    "report_programNameList" in fieldsToBeValidated &&
+    hasMlrProgramName(dataForObject)
+  ) {
+    delete fieldsToBeValidated.report_programNameList;
   }
 
   // Validate all fields en masse, passing flag that uses required validation schema

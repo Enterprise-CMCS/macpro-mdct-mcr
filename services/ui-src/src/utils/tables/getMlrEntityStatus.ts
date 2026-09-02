@@ -1,6 +1,7 @@
 import { EntityShape, ReportShape, ModalOverlayReportPageShape } from "types";
 import { mapValidationTypesToSchema } from "utils/validation/validation";
 import { object } from "yup";
+import { hasMlrProgramName } from "./entityRows";
 
 export const getMlrEntityStatus = (
   entity: EntityShape,
@@ -74,20 +75,10 @@ export const getMlrEntityStatus = (
   /*
    * Legacy support: earlier MLR reports captured the program name in the free-text
    * `report_programName` field, which was later replaced by the `report_programNameList`
-   * checkbox and the `report_otherProgramName` dynamic field. Reports that were created before
-   * this change used the legacy field (or only through the dynamic "other" field) and
-   * are still complete. The completion status should reflect whether a program
-   * name has been provided through any of these fields. Mirrors getProgramInfo's display.
+   * checkbox and the `report_otherProgramName` dynamic field. Don't require the newer
+   * checkbox when a program name is provided through any of these fields.
    */
-  const hasProgramName =
-    (Array.isArray(entity.report_programNameList) &&
-      entity.report_programNameList.length > 0) ||
-    (Array.isArray(entity.report_otherProgramName) &&
-      entity.report_otherProgramName.length > 0) ||
-    (typeof entity.report_programName === "string" &&
-      entity.report_programName.trim().length > 0);
-
-  if (hasProgramName) {
+  if (hasMlrProgramName(entity)) {
     delete formFieldsToValidate.report_programNameList;
   }
 

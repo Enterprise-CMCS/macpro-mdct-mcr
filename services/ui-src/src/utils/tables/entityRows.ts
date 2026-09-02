@@ -271,6 +271,20 @@ export const getReportingPeriodText = (entity: EntityShape) => {
   return `${reportStartDate} to ${reportEndDate}`;
 };
 
+const isNonEmptyArray = (value: unknown): boolean =>
+  Array.isArray(value) && value.length > 0;
+
+/*
+ * An MLR program name may be provided through the `report_programNameList`
+ * checkbox, the `report_otherProgramName` dynamic field, or the legacy free-text
+ * `report_programName` field. Shared so display and completion stay in sync.
+ */
+export const hasMlrProgramName = (entity: EntityShape): boolean =>
+  isNonEmptyArray(entity.report_programNameList) ||
+  isNonEmptyArray(entity.report_otherProgramName) ||
+  (typeof entity.report_programName === "string" &&
+    entity.report_programName.trim().length > 0);
+
 export const getProgramInfo = (entity: EntityShape) => {
   const {
     report_planName: reportPlanName,
