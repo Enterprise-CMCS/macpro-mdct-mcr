@@ -1,9 +1,9 @@
 /*
  * Dry run:
  *   Local:
- *     DYNAMODB_URL="http://localhost:4566" node services/database/scripts/update-naaar-formTemplateVersion.js {REPORT_ID} {STATE}
+ *     DYNAMODB_URL="http://localhost:4566" node services/database/scripts/update-naaar-formTemplateId.js {REPORT_ID} {STATE}
  *   Branch:
- *     branchPrefix="YOUR BRANCH NAME" node services/database/scripts/update-naaar-formTemplateVersion.js {REPORT_ID} {STATE}
+ *     branchPrefix="YOUR BRANCH NAME" node services/database/scripts/update-naaar-formTemplateId.js {REPORT_ID} {STATE}
  *
  * Apply updates by adding apply=true to either command.
  *
