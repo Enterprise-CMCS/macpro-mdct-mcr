@@ -25,6 +25,8 @@ export const DateField = ({
   validateOnRender,
   styleAsOptional,
   clear,
+  // TODO: REMOVE BEFORE MERGE - warning system test wiring
+  warningMessage,
   ...props
 }: Props) => {
   const defaultValue = "";
@@ -135,6 +137,10 @@ export const DateField = ({
         errorMessage={errorMessage}
         {...props}
       />
+      {/* TODO: REMOVE BEFORE MERGE - warning system test wiring */}
+      {!errorMessage && warningMessage && (
+        <Box sx={sx.warningMessage}>⚠️ {warningMessage}</Box>
+      )}
     </Box>
   );
 };
@@ -166,5 +172,14 @@ const sx = {
   },
   ".optional-text": {
     fontWeight: "lighter",
+  },
+  // TODO: REMOVE BEFORE MERGE - warning system test wiring
+  warningMessage: {
+    color: "#856404",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.25rem",
+    marginTop: "0.25rem",
+    fontSize: "sm",
   },
 };
