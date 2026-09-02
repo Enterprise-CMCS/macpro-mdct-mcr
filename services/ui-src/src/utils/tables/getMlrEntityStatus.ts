@@ -74,9 +74,9 @@ export const getMlrEntityStatus = (
   /*
    * Legacy support: earlier MLR reports captured the program name in the free-text
    * `report_programName` field, which was later replaced by the `report_programNameList`
-   * checkbox and the `report_otherProgramName` dynamic field. Reports that provide the
-   * program name through the legacy field (or only through the dynamic "other" field)
-   * are still complete, so don't fail completion on the newer checkbox when a program
+   * checkbox and the `report_otherProgramName` dynamic field. Reports that were created before
+   * this change used the legacy field (or only through the dynamic "other" field) and
+   * are still complete. The completion status should reflect whether a program
    * name has been provided through any of these fields. Mirrors getProgramInfo's display.
    */
   const hasProgramName =

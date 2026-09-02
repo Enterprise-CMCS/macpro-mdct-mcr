@@ -128,6 +128,26 @@ export const calculateFormCompletion = async (
       fieldsToBeValidated[formField.id] = dataForObject[formField.id] ?? null;
     }
   }
+
+  /*
+   * Legacy support: earlier MLR reports captured the program name in the free-text
+   * `report_programName` field, which was later replaced by the `report_programNameList`
+   * checkbox and the `report_otherProgramName` dynamic field. This is needed to submit/re-submit
+   * reports that were created before the newer fields were introduced.
+   */
+  if ("report_programNameList" in fieldsToBeValidated) {
+    const hasProgramName =
+      (Array.isArray(dataForObject.report_programNameList) &&
+        dataForObject.report_programNameList.length > 0) ||
+      (Array.isArray(dataForObject.report_otherProgramName) &&
+        dataForObject.report_otherProgramName.length > 0) ||
+      (typeof dataForObject.report_programName === "string" &&
+        dataForObject.report_programName.trim().length > 0);
+    if (hasProgramName) {
+      delete fieldsToBeValidated.report_programNameList;
+    }
+  }
+
   // Validate all fields en masse, passing flag that uses required validation schema
   return (
     repeatersValid &&

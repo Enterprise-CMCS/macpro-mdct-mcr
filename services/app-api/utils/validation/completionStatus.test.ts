@@ -287,6 +287,45 @@ describe("Completion Status Tests", () => {
     });
   });
 
+  describe("calculateFormCompletion() legacy MLR program name", () => {
+    const validatorSpy = jest.spyOn(completionStatus, "areFieldsValid");
+    const programNameListTemplate = {
+      id: "mock-form",
+      fields: [{ ...mockFormField, id: "report_programNameList" }],
+    };
+
+    test("does not require report_programNameList when legacy report_programName is present", async () => {
+      validatorSpy.mockResolvedValue(true);
+      await calculateFormCompletion(
+        programNameListTemplate,
+        { report_programName: "Legacy Program" },
+        {},
+        {}
+      );
+      const validatedFields = validatorSpy.mock.calls.at(-1)?.[0];
+      expect(validatedFields).not.toHaveProperty("report_programNameList");
+    });
+
+    test("does not require report_programNameList when dynamic report_otherProgramName is present", async () => {
+      validatorSpy.mockResolvedValue(true);
+      await calculateFormCompletion(
+        programNameListTemplate,
+        { report_otherProgramName: [{ id: "1", name: "Custom" }] },
+        {},
+        {}
+      );
+      const validatedFields = validatorSpy.mock.calls.at(-1)?.[0];
+      expect(validatedFields).not.toHaveProperty("report_programNameList");
+    });
+
+    test("requires report_programNameList when no program name is provided", async () => {
+      validatorSpy.mockResolvedValue(true);
+      await calculateFormCompletion(programNameListTemplate, {}, {}, {});
+      const validatedFields = validatorSpy.mock.calls.at(-1)?.[0];
+      expect(validatedFields).toHaveProperty("report_programNameList");
+    });
+  });
+
   describe("calculateEntityCompletion()", () => {
     const mockFormTemplate = [
       {
