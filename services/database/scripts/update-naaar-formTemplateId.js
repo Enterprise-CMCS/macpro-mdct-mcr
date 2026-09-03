@@ -1,29 +1,45 @@
 /*
  * Dry run:
  *   Local:
- *     DYNAMODB_URL="http://localhost:4566" node services/database/scripts/update-naaar-formTemplateId.js {REPORT_ID} {STATE}
+ *     DYNAMODB_URL="http://localhost:4566" node services/database/scripts/update-naaar-formTemplateId.js
  *   Branch:
- *     branchPrefix="YOUR BRANCH NAME" node services/database/scripts/update-naaar-formTemplateId.js {REPORT_ID} {STATE}
+ *     branchPrefix="YOUR BRANCH NAME" node services/database/scripts/update-naaar-formTemplateId.js
  *
  * Apply updates by adding apply=true to either command.
  *
  * Purpose:
- *   Update formTemplateId for one NAAAR report.
+ *   Update formTemplateId and versionNumber for a fixed set of NAAAR reports.
  */
 
-const {
-  buildDynamoClient,
-  getItem,
-  updateItem,
-} = require("./utils/dynamodb.js");
+const { buildDynamoClient, scan, updateItem } = require("./utils/dynamodb.js");
 
+const TARGET_REPORT_IDS = [
+  "3GxlNc1LVEHuk7pn7hOjnJQS3kI",
+  "3IYM5hW6bENJt76Bj3dNJLJuZ0T",
+  "3IYTHKxpV2I8rxGCF22tfaKNK7m",
+  "3IYTjpWV1VEb94YY2XYDk6RQQ6Y",
+  "3IYfLZQLW9PzYfyZkGJwk0cLXm4",
+  "3IYlBU3PMBZvuZ4YjjMreJJKKQt",
+  "3IYtCw3Yryj5K7bYPuprGsuuK2v",
+  "3IVuSwn3eDCI1MZmU5wl4bzT4yw",
+  "3IgSa8PLY1H9huCgZpdUBlU1MBF",
+  "3IgSklCDHHkGd6dsJgWvwcZsocg",
+  "3IgkLgCUQTZW0zIi6lEiODXYizK",
+  "3GuD63OE1dVWa2WF9Urp1g2WYqN",
+  "3Ih8NiqBn1LAvhxgbxLOpRLthRn",
+  "3HBbLS9AHhn35LktikjqzXKGYUp",
+  "3GumSH2WRNbAASLBzmmIBXdFpqr",
+  "3HrsKXTJ53eOORIeckxcqpCapC8",
+  "3HY2HmECcUT4iClvBb4UmlpzGxi",
+  "3HE97u3yF2R538GBYafTVXzdHwC", // pragma: allowlist secret
+  "3HEniRk3Upq46zX1L7u6IhcMLie",
+];
 const FORM_TEMPLATE_ID = "3Ik05bSf2qPoRVEbuMzvB9yZgmv";
+const VERSION_NUMBER = 9;
 
 const isLocal = Boolean(process.env.DYNAMODB_URL);
 const shouldApply = process.env.apply === "true";
 const branch = isLocal ? "localstack" : process.env.branchPrefix;
-const reportId = process.argv[2];
-const state = process.argv[3]?.toUpperCase();
 
 async function handler() {
   if (!branch) {
@@ -31,58 +47,80 @@ async function handler() {
       "Set branchPrefix for a deployed environment or DYNAMODB_URL for local execution."
     );
   }
-  if (!reportId || !state) {
-    throw new Error(
-      "Usage: node services/database/scripts/update-naaar-formTemplateVersion.js REPORT_ID STATE"
-    );
-  }
-  if (!/^[A-Z]{2}$/.test(state)) {
-    throw new Error("STATE must be a two-letter state abbreviation.");
-  }
 
   const tableName = `${branch}-naaar-reports`;
   buildDynamoClient();
 
-  const report = await getItem({
+  const reports = await scan({
     TableName: tableName,
-    Key: { state, id: reportId },
+    ProjectionExpression: "#state, #id, #formTemplateId, #versionNumber",
+    ExpressionAttributeNames: {
+      "#state": "state",
+      "#id": "id",
+      "#formTemplateId": "formTemplateId",
+      "#versionNumber": "versionNumber",
+    },
   });
-  if (!report) {
+  const reportsById = new Map(reports.map((report) => [report.id, report]));
+  const missingReportIds = TARGET_REPORT_IDS.filter(
+    (id) => !reportsById.has(id)
+  );
+
+  if (missingReportIds.length > 0) {
     throw new Error(
-      `Report ${state}/${reportId} was not found in ${tableName}.`
+      `The following report IDs were not found in ${tableName}: ${missingReportIds.join(
+        ", "
+      )}`
     );
   }
 
-  if (report.formTemplateId === FORM_TEMPLATE_ID) {
+  const reportsToUpdate = TARGET_REPORT_IDS.map((id) =>
+    reportsById.get(id)
+  ).filter(
+    ({ formTemplateId, versionNumber }) =>
+      formTemplateId !== FORM_TEMPLATE_ID || versionNumber !== VERSION_NUMBER
+  );
+
+  console.log(
+    `\n${shouldApply ? "[APPLY]" : "[DRY RUN]"} ${reportsToUpdate.length} of ${
+      TARGET_REPORT_IDS.length
+    } reports in ${tableName} require an update.`
+  );
+
+  for (const { state, id, formTemplateId, versionNumber } of reportsToUpdate) {
     console.log(
-      `Report ${state}/${reportId} already uses ${FORM_TEMPLATE_ID}.`
+      `  ${state}/${id}: formTemplateId ${
+        formTemplateId ?? "<missing>"
+      } -> ${FORM_TEMPLATE_ID}; versionNumber ${
+        versionNumber ?? "<missing>"
+      } -> ${VERSION_NUMBER}`
     );
-    return;
+
+    if (shouldApply) {
+      await updateItem({
+        TableName: tableName,
+        Key: { state, id },
+        UpdateExpression:
+          "SET #formTemplateId = :formTemplateId, #versionNumber = :versionNumber",
+        ExpressionAttributeNames: {
+          "#id": "id",
+          "#formTemplateId": "formTemplateId",
+          "#versionNumber": "versionNumber",
+        },
+        ExpressionAttributeValues: {
+          ":formTemplateId": FORM_TEMPLATE_ID,
+          ":versionNumber": VERSION_NUMBER,
+        },
+        ConditionExpression: "attribute_exists(#id)",
+      });
+    }
   }
 
   console.log(
-    `\n${shouldApply ? "[APPLY]" : "[DRY RUN]"} ${state}/${reportId}: ${
-      report.formTemplateId ?? "<missing>"
-    } -> ${FORM_TEMPLATE_ID}`
+    `\n${shouldApply ? "Updated" : "Would update"} ${
+      reportsToUpdate.length
+    } reports.`
   );
-
-  if (shouldApply) {
-    await updateItem({
-      TableName: tableName,
-      Key: { state, id: reportId },
-      UpdateExpression: "SET #formTemplateId = :formTemplateId",
-      ExpressionAttributeNames: {
-        "#id": "id",
-        "#formTemplateId": "formTemplateId",
-      },
-      ExpressionAttributeValues: {
-        ":formTemplateId": FORM_TEMPLATE_ID,
-      },
-      ConditionExpression: "attribute_exists(#id)",
-    });
-  }
-
-  console.log(`\n${shouldApply ? "Updated" : "Would update"} 1 report.`);
 }
 
 handler().catch((error) => {
