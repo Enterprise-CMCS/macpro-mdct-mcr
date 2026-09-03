@@ -162,7 +162,7 @@ export const updateReport = handler(async (event, context) => {
         const fieldValidation = validationSchema[fieldName];
         const dependentFieldName =
           typeof fieldValidation === "object"
-            ? fieldValidation.dependentFieldName
+            ? fieldValidation?.dependentFieldName
             : undefined;
 
         if (
