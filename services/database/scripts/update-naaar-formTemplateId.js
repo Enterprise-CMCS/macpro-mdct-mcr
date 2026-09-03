@@ -3,9 +3,10 @@
  *   Local:
  *     DYNAMODB_URL="http://localhost:4566" node services/database/scripts/update-naaar-formTemplateId.js
  *   Branch:
- *     branchPrefix="YOUR BRANCH NAME" node services/database/scripts/update-naaar-formTemplateId.js
+ *     branchPrefix="{BRANCH_PREFIX}" node services/database/scripts/update-naaar-formTemplateId.js
  *
- * Apply updates by adding apply=true to either command.
+ * Apply updates by adding apply=true to the start of either command:
+ *    apply=true branchPrefix="{BRANCH_PREFIX}" node services/database/scripts/update-naaar-formTemplateId.js
  *
  * Purpose:
  *   Update formTemplateId and versionNumber for a fixed set of NAAAR reports.
@@ -13,29 +14,14 @@
 
 const { buildDynamoClient, scan, updateItem } = require("./utils/dynamodb.js");
 
-const TARGET_REPORT_IDS = [
-  "3GxlNc1LVEHuk7pn7hOjnJQS3kI",
-  "3IYM5hW6bENJt76Bj3dNJLJuZ0T",
-  "3IYTHKxpV2I8rxGCF22tfaKNK7m",
-  "3IYTjpWV1VEb94YY2XYDk6RQQ6Y",
-  "3IYfLZQLW9PzYfyZkGJwk0cLXm4",
-  "3IYlBU3PMBZvuZ4YjjMreJJKKQt",
-  "3IYtCw3Yryj5K7bYPuprGsuuK2v",
-  "3IVuSwn3eDCI1MZmU5wl4bzT4yw",
-  "3IgSa8PLY1H9huCgZpdUBlU1MBF",
-  "3IgSklCDHHkGd6dsJgWvwcZsocg",
-  "3IgkLgCUQTZW0zIi6lEiODXYizK",
-  "3GuD63OE1dVWa2WF9Urp1g2WYqN",
-  "3Ih8NiqBn1LAvhxgbxLOpRLthRn",
-  "3HBbLS9AHhn35LktikjqzXKGYUp",
-  "3GumSH2WRNbAASLBzmmIBXdFpqr",
-  "3HrsKXTJ53eOORIeckxcqpCapC8",
-  "3HY2HmECcUT4iClvBb4UmlpzGxi",
-  "3HE97u3yF2R538GBYafTVXzdHwC", // pragma: allowlist secret
-  "3HEniRk3Upq46zX1L7u6IhcMLie",
-];
-const FORM_TEMPLATE_ID = "3Ik05bSf2qPoRVEbuMzvB9yZgmv";
-const VERSION_NUMBER = 9;
+/* NOTE: The following variables are placeholders so that no real report or form template
+IDs are committed to the repository.
+* 1. TARGET_REPORT_IDS is an array of strings containing the list affected reports' IDs
+* 2. FORM_TEMPLATE_ID is the latest form template ID
+* 3. VERSION_NUMBER is the latest form template version number */
+const TARGET_REPORT_IDS = [""];
+const FORM_TEMPLATE_ID = "";
+const VERSION_NUMBER = -1;
 
 const isLocal = Boolean(process.env.DYNAMODB_URL);
 const shouldApply = process.env.apply === "true";
