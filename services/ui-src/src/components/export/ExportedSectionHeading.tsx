@@ -1,8 +1,7 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
-import { Alert } from "components";
 // types
-import { AlertTypes, ReportPageVerbiage } from "types";
+import { ReportPageVerbiage } from "types";
 // utils
 import { parseCustomHtml } from "utils";
 
@@ -11,7 +10,6 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
   const sectionInfo = verbiage?.intro?.exportSectionHeader
     ? null
     : verbiage?.intro?.info;
-  const sectionAlert = verbiage?.intro.alert;
 
   const infoHeader: any = verbiage?.intro?.info && verbiage?.intro?.info[0];
   const introContent = infoHeader && infoHeader.content;
@@ -38,10 +36,6 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
         </Heading>
       ) : null}
       <Box data-testid="exportedSectionHeading" sx={sx.container}>
-        {/* Do not show alert for New plan exemption page */}
-        {sectionAlert && introContent !== "New plan exemption" && (
-          <Alert status={AlertTypes.WARN} description={sectionAlert} />
-        )}
         {sectionInfo && (
           <>
             <Box sx={sx.info}>
