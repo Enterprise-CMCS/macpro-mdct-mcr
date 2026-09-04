@@ -35,10 +35,10 @@ export const isQualityMeasureV1 = (
 export const qualityMeasureV1Status = (
   perPlanResponses: PerPlanResponse[] = []
 ): QualityMeasureStatus => {
-  const validPerPlanResponses = perPlanResponses?.filter((el) => el.response);
+  const validPerPlanResponses = perPlanResponses.filter((el) => el.response);
   const started = validPerPlanResponses.length > 0;
   const completed =
-    started && validPerPlanResponses.length === perPlanResponses?.length;
+    started && validPerPlanResponses.length === perPlanResponses.length;
 
   return { started, completed };
 };
@@ -64,9 +64,7 @@ const isV2ResultComplete = (result: MeasureResult) => {
 export const qualityMeasureV2Status = (
   measureResults: MeasureResult[] = []
 ): QualityMeasureStatus => {
-  const nonExemptResults = (measureResults || []).filter(
-    (result) => !result.exempt
-  );
+  const nonExemptResults = measureResults.filter((result) => !result.exempt);
 
   if (nonExemptResults.length === 0) {
     return {
