@@ -6,6 +6,8 @@ on:
     # Every Monday at 7 AM UTC
     - cron: "0 7 * * 1"
   workflow_dispatch:
+  push:
+    branches: [bs-test-slack]
 
 env:
   PROJECT: ${{ vars.APP_NAME_UPPER }}
@@ -43,5 +45,6 @@ jobs:
           hasKey: ${{ secrets.LD_SDK_KEY_PROD != '' }}
           MSG_MINIMAL: true
           SLACK_MESSAGE: ${{ env.status }}
+          SLACK_MSG_AUTHOR: "apps/mdct-app"
           SLACK_TITLE: ":launchdarkly: ${{ env.PROJECT }} Production Feature Flags"
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

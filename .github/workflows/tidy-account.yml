@@ -7,6 +7,8 @@ on:
     - cron: "0 6 * * *"
     - cron: "0 7-11 * * *"
   workflow_dispatch:
+  push:
+    branches: [bs-test-slack]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.ref }}
@@ -56,6 +58,7 @@ jobs:
         env:
           MSG_MINIMAL: true
           SLACK_MESSAGE: ${{ steps.remove-branchless-stacks.outputs.delete_failed_stack_message }}
+          SLACK_MSG_AUTHOR: "apps/mdct-app"
           SLACK_TITLE: ":github: :warning: CloudFormation stack cleanup unsuccessful in ${{ github.repository }}"
           SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
   audit:
