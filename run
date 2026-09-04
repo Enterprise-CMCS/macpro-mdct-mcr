@@ -38,14 +38,20 @@ ARGS=()
 
 for arg in "$@"; do
     case $arg in
-        update-env)
+        # On some systems, --update-env must be exact in order for the
+        # flag to parse correctly based on the README instructions.
+        update-env|--update-env)
             UPDATE_ENV=true
         ;;
         local)
             LOCAL=true
+            ARGS+=("$arg")
+        ;;
+        *)
+        ARGS+=("$arg")
         ;;
     esac
-    ARGS+=("$arg")
+
 done
 
 if [ "$UPDATE_ENV" = true ]; then
@@ -73,6 +79,12 @@ IMMUTABLE_FLAG=""
 
 yarn install $IMMUTABLE_FLAG >/dev/null 2>&1 || {
 echo "Dependency install failed" >&2; exit 1; }
+
+# If .env doesn't exist this needs to run before the CLI
+if [ "$UPDATE_ENV" = true ]; then
+    echo "Running update-env..."
+    ./cli/run.ts update-env
+fi
 
 # run the CLI
 ./cli/run.ts "${ARGS[@]-}"
