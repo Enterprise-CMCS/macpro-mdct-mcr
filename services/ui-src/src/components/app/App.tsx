@@ -24,6 +24,7 @@ import {
   useStore,
 } from "utils";
 import { FULL_APP_TITLE } from "../../constants";
+import { WarningsProvider } from "./WarningsContext";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
@@ -48,18 +49,20 @@ export const App = () => {
     <>
       {user && (
         <Flex sx={sx.appLayout}>
-          <ReportProvider>
-            <Timeout />
-            <MainSkipNav />
-            {!isExportPage && <Header />}
-            {isExportPage && <ExportedReportBanner />}
-            <Container sx={sx.appContainer} data-testid="app-container">
-              <ErrorBoundary FallbackComponent={Error}>
-                <AppRoutes />
-              </ErrorBoundary>
-            </Container>
-            <Footer />
-          </ReportProvider>
+          <WarningsProvider>
+            <ReportProvider>
+              <Timeout />
+              <MainSkipNav />
+              {!isExportPage && <Header />}
+              {isExportPage && <ExportedReportBanner />}
+              <Container sx={sx.appContainer} data-testid="app-container">
+                <ErrorBoundary FallbackComponent={Error}>
+                  <AppRoutes />
+                </ErrorBoundary>
+              </Container>
+              <Footer />
+            </ReportProvider>
+          </WarningsProvider>
         </Flex>
       )}
       {!user && showLocalLogins && (
