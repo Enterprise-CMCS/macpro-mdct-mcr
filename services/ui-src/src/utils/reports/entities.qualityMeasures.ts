@@ -33,10 +33,10 @@ export const isQualityMeasureV1 = (
 };
 
 export const qualityMeasureV1Status = (
-  perPlanResponses?: PerPlanResponse[]
+  perPlanResponses: PerPlanResponse[] = []
 ): QualityMeasureStatus => {
   const validPerPlanResponses = perPlanResponses?.filter((el) => el.response);
-  const started = !!validPerPlanResponses?.length;
+  const started = validPerPlanResponses.length > 0;
   const completed =
     started && validPerPlanResponses.length === perPlanResponses?.length;
 
@@ -57,14 +57,12 @@ const isV2ResultComplete = (result: MeasureResult) => {
 
   return (
     result.rateResults.length > 0 &&
-    result.rateResults.every(
-      (rate) => !!rate.rateResult && rate.rateResult !== ""
-    )
+    result.rateResults.every((rate) => Boolean(rate.rateResult))
   );
 };
 
 export const qualityMeasureV2Status = (
-  measureResults?: MeasureResult[]
+  measureResults: MeasureResult[] = []
 ): QualityMeasureStatus => {
   const nonExemptResults = (measureResults || []).filter(
     (result) => !result.exempt
