@@ -58,7 +58,7 @@ jobs:
         env:
           MSG_MINIMAL: true
           SLACK_MESSAGE: ${{ steps.remove-branchless-stacks.outputs.delete_failed_stack_message }}
-          SLACK_MSG_AUTHOR: "apps/mdct-app"
+          SLACK_MSG_AUTHOR: ${{ github.event_name == 'schedule' && 'apps/mdct-app' || github.actor }}
           SLACK_TITLE: ":github: :warning: CloudFormation stack cleanup unsuccessful in ${{ github.repository }}"
           SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
   audit:

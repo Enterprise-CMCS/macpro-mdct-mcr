@@ -45,6 +45,6 @@ jobs:
           hasKey: ${{ secrets.LD_SDK_KEY_PROD != '' }}
           MSG_MINIMAL: true
           SLACK_MESSAGE: ${{ env.status }}
-          SLACK_MSG_AUTHOR: "apps/mdct-app"
+          SLACK_MSG_AUTHOR: ${{ github.event_name == 'schedule' && 'apps/mdct-app' || github.actor }}
           SLACK_TITLE: ":launchdarkly: ${{ env.PROJECT }} Production Feature Flags"
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
