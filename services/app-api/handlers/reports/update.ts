@@ -157,9 +157,29 @@ export const updateReport = handler(async (event, context) => {
   // Validate passed field data
   let validatedFieldData;
   try {
+    const fieldDataForValidation = Object.entries(unvalidatedFieldData).reduce(
+      (fieldData, [fieldName]) => {
+        const fieldValidation = validationSchema[fieldName];
+        const dependentFieldName =
+          typeof fieldValidation === "object"
+            ? fieldValidation?.dependentFieldName
+            : undefined;
+
+        if (
+          dependentFieldName &&
+          existingFieldData[dependentFieldName] !== undefined
+        ) {
+          fieldData[dependentFieldName] = existingFieldData[dependentFieldName];
+        }
+
+        return fieldData;
+      },
+      { ...unvalidatedFieldData } as Record<string, any>
+    );
+
     validatedFieldData = await validateFieldData(
       validationSchema,
-      unvalidatedFieldData
+      fieldDataForValidation
     );
   } catch {
     return badRequest(error.INVALID_DATA);
