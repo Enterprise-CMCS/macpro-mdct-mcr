@@ -183,6 +183,98 @@ export const mockMeasureResults = [
   },
 ];
 
+// V2 Quality Measures formatted entity data
+export const mockUnfinishedQualityMeasuresFormattedEntityDataV2 = {
+  id: "mock-id-12345",
+  name: "Mock Measure Name V2",
+  measureResults: [
+    // No dataCollectionMethod or notReportingReason
+    {
+      planName: "mock-plan-name-1",
+    },
+    {
+      planName: "mock-plan-name-2",
+    },
+  ],
+};
+
+export const mockCompletedQualityMeasuresFormattedEntityDataV2 = {
+  id: "mock-id-12345",
+  name: "Mock Measure Name V2",
+  cmitNumber: "123",
+  dataVersion: "Final",
+  activities: "Mock activity",
+  measureResults: [
+    {
+      planName: "mock-plan-name-1",
+      dataCollectionMethod: "Mock value 1",
+      rateResults: [
+        {
+          rate: "mock-rate-1",
+          rateResult: "12345",
+        },
+      ],
+    },
+    {
+      planName: "mock-plan-name-2",
+      notReporting: true,
+      notReportingReason: [
+        {
+          key: "measure_isNotReportingReason-123",
+          value: "Does not apply",
+        },
+      ],
+    },
+  ],
+};
+
+export const mockPartialQualityMeasuresFormattedEntityDataV2 = {
+  id: "mock-id-12345",
+  name: "Mock Measure Name V2",
+  cmitNumber: "123",
+  dataVersion: "Final",
+  activities: "Mock activity",
+  measureResults: [
+    {
+      planName: "mock-plan-name-1",
+      dataCollectionMethod: "Mock value 1",
+      rateResults: [
+        {
+          rate: "mock-rate-1",
+          rateResult: "12345",
+        },
+      ],
+    },
+    {
+      planName: "mock-plan-name-2",
+    },
+  ],
+};
+
+export const mockQualityMeasuresFormattedEntityDataV2WithExemptions = {
+  id: "mock-id-12345",
+  name: "Mock Measure Name V2",
+  cmitNumber: "123",
+  dataVersion: "Final",
+  activities: "Mock activity",
+  measureResults: [
+    {
+      planName: "mock-plan-name-1",
+      dataCollectionMethod: "Mock value 1",
+      rateResults: [
+        {
+          rate: "mock-rate-1",
+          rateResult: "12345",
+        },
+      ],
+    },
+    {
+      planName: "mock-plan-name-2",
+      exempt: true,
+    },
+  ],
+};
+
 export const mockSanctionsEntity = {
   id: "mock-id",
   sanction_interventionType: [{ value: "MCPAR" }],
