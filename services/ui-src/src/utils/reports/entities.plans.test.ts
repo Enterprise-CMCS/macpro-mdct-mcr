@@ -1,4 +1,5 @@
 import { getFormattedEntityData } from "./entities";
+import { getPlansNotExemptFromQualityMeasures } from "./entities.plans";
 // constants
 import { exceptionsStatus, nonComplianceStatus } from "../../constants";
 // types
@@ -331,5 +332,50 @@ describe("plans", () => {
     };
 
     expect(entityData).toEqual(expectedData);
+  });
+
+  describe("getPlansNotExemptFromQualityMeasures()", () => {
+    test("removes exempt plans", () => {
+      const plans = [
+        {
+          id: "mock-active-lan-id-1",
+          name: "Active plan 1",
+        },
+        {
+          id: "mock-exempt-plan-id-2",
+          name: "Exempt plan 2",
+        },
+        {
+          id: "mock-active-plan-id-2",
+          name: "Active plan 2",
+        },
+        {
+          id: "mock-exempt-plan-id-2",
+          name: "Exempt plan 2",
+        },
+      ];
+      const exemptPlans = [
+        {
+          key: "plansExemptFromQualityMeasures-mock-exempt-plan-id-1",
+          value: "Exempt plan 1",
+        },
+        {
+          key: "plansExemptFromQualityMeasures-mock-exempt-plan-id-2",
+          value: "Exempt plan 2",
+        },
+      ];
+      const filteredPlans = [
+        {
+          id: "mock-active-lan-id-1",
+          name: "Active plan 1",
+        },
+        {
+          id: "mock-active-plan-id-2",
+          name: "Active plan 2",
+        },
+      ];
+      const result = getPlansNotExemptFromQualityMeasures(plans, exemptPlans);
+      expect(result).toEqual(filteredPlans);
+    });
   });
 });

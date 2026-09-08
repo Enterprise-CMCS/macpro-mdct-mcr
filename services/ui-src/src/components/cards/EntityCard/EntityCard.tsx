@@ -11,6 +11,7 @@ import { svgFilters } from "styles/theme";
 import { AnyObject, EntityShape, EntityType } from "types";
 // utils
 import {
+  getPlansNotExemptFromQualityMeasures,
   isQualityMeasureV1,
   qualityMeasureV1Status,
   qualityMeasureV2Status,
@@ -63,6 +64,17 @@ export const EntityCard = ({
       entityCompleted = !!formattedEntityData?.assessmentDate;
       break;
     case EntityType.QUALITY_MEASURES: {
+      const nonExemptPlans = getPlansNotExemptFromQualityMeasures(
+        formattedEntityData?.plans,
+        formattedEntityData?.exemptPlans
+      );
+      // If all plans are exempted, return true (nothing to complete)
+      if (nonExemptPlans.length === 0) {
+        entityStarted = true;
+        entityCompleted = true;
+        break;
+      }
+
       const { started, completed } = isV1QualityMeasure
         ? qualityMeasureV1Status(formattedEntityData?.perPlanResponses)
         : qualityMeasureV2Status(formattedEntityData?.measureResults);

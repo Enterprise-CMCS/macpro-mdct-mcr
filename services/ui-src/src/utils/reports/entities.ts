@@ -8,6 +8,7 @@ import {
 // utils
 import {
   compareText,
+  isQualityMeasureV1,
   maskResponseData,
   otherSpecify,
   RATE_ID_PREFIX,
@@ -150,13 +151,7 @@ export const getFormattedEntityData = (
   reportFieldData?: AnyObject
 ) => {
   // Check which template version is being used based on data
-  let isLegacyTemplate: boolean = true;
-  if (
-    entityType === EntityType.QUALITY_MEASURES &&
-    entity &&
-    Object.hasOwn(entity, "measure_name")
-  )
-    isLegacyTemplate = false;
+  const isLegacyTemplate = isQualityMeasureV1(entityType, entity);
 
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
@@ -208,7 +203,28 @@ export const getFormattedEntityData = (
         ),
       };
     case EntityType.QUALITY_MEASURES:
-      if (!isLegacyTemplate) {
+      if (isLegacyTemplate) {
+        const exemptedPlanIds = (
+          reportFieldData?.plansExemptFromQualityMeasures || []
+        ).map((exemption: EntityShape) => exemption.key);
+
+        return {
+          domain: getRadioValue(entity, "qualityMeasure_domain"),
+          name: entity?.qualityMeasure_name,
+          nqfNumber: entity?.qualityMeasure_nqfNumber,
+          reportingRateType: getReportingRateType(entity),
+          set: getRadioValue(entity, "qualityMeasure_set"),
+          reportingPeriod: getReportingPeriod(entity),
+          description: entity?.qualityMeasure_description,
+          perPlanResponses: getPlanValues(
+            entity,
+            reportFieldData?.plans,
+            exemptedPlanIds
+          ),
+          plans: reportFieldData?.plans,
+          exemptPlans: reportFieldData?.plansExemptFromQualityMeasures,
+        };
+      } else {
         const exemptedPlanIds = (
           reportFieldData?.plansExemptFromQualityMeasures || []
         ).map((exemption: EntityShape) => {
@@ -242,25 +258,8 @@ export const getFormattedEntityData = (
             entity?.measure_rates,
             exemptedPlanIds
           ),
-        };
-      } else {
-        const exemptedPlanIds = (
-          reportFieldData?.plansExemptFromQualityMeasures || []
-        ).map((exemption: EntityShape) => exemption.key);
-
-        return {
-          domain: getRadioValue(entity, "qualityMeasure_domain"),
-          name: entity?.qualityMeasure_name,
-          nqfNumber: entity?.qualityMeasure_nqfNumber,
-          reportingRateType: getReportingRateType(entity),
-          set: getRadioValue(entity, "qualityMeasure_set"),
-          reportingPeriod: getReportingPeriod(entity),
-          description: entity?.qualityMeasure_description,
-          perPlanResponses: getPlanValues(
-            entity,
-            reportFieldData?.plans,
-            exemptedPlanIds
-          ),
+          plans: reportFieldData?.plans,
+          exemptPlans: reportFieldData?.plansExemptFromQualityMeasures,
         };
       }
     case EntityType.PLANS: {
