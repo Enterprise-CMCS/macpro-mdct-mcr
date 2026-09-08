@@ -279,12 +279,12 @@ export const mockQualityMeasuresFormattedEntityDataV2WithExemptions = {
   allPlansExempted: false,
 };
 
-export const mockQualityMeasuresFormattedEntityDataV2WithAllExemptPlans = {
-  id: "mock-id-12345",
-  name: "Mock Measure Name V2",
-  measureResults: [],
-  allPlansExempted: true,
-};
+export const mockUnfinishedQualityMeasuresFormattedEntityDataV2WithAllExemptPlans =
+  {
+    id: "mock-id-12345",
+    name: "Mock Measure Name V2",
+    allPlansExempted: true,
+  };
 
 export const mockSanctionsEntity = {
   id: "mock-id",

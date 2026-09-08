@@ -210,13 +210,11 @@ export const getFormattedEntityData = (
       const exemptedPlanIds = getExemptedPlanIds(
         reportFieldData?.plansExemptFromQualityMeasures
       );
-
       const plans = reportFieldData?.plans || [];
       const nonExemptPlans = getPlansNotExemptFromQualityMeasures(
         plans,
         reportFieldData?.plansExemptFromQualityMeasures
       );
-      // If all plans are exempted, return true (nothing to complete)
       const allPlansExempted = plans.length > 0 && nonExemptPlans.length === 0;
 
       if (isLegacyTemplate) {

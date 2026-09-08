@@ -61,8 +61,8 @@ export const EntityDetailsOverlayQualityMeasures = ({
   useEffect(() => {
     setFilteredPlans(
       getPlansNotExemptFromQualityMeasures(
-        report.fieldData.plans,
-        report.fieldData.plansExemptFromQualityMeasures
+        report.fieldData?.plans,
+        report.fieldData?.plansExemptFromQualityMeasures
       )
     );
   }, [
