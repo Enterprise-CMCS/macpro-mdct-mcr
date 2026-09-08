@@ -40,10 +40,7 @@ export const EntityCard = ({
   let entityStarted = false;
   let entityCompleted = false;
 
-  const isV1QualityMeasure = isQualityMeasureV1(
-    entityType,
-    formattedEntityData
-  );
+  const isV1QualityMeasure = isQualityMeasureV1(entityType, entity);
 
   const reportingPeriodCompletedOrOptional = isV1QualityMeasure
     ? !!formattedEntityData.reportingPeriod
@@ -64,12 +61,13 @@ export const EntityCard = ({
       entityCompleted = !!formattedEntityData?.assessmentDate;
       break;
     case EntityType.QUALITY_MEASURES: {
+      const plans = formattedEntityData?.plans || [];
       const nonExemptPlans = getPlansNotExemptFromQualityMeasures(
-        formattedEntityData?.plans,
+        plans,
         formattedEntityData?.exemptPlans
       );
       // If all plans are exempted, return true (nothing to complete)
-      if (nonExemptPlans.length === 0) {
+      if (plans.length > 0 && nonExemptPlans.length === 0) {
         entityStarted = true;
         entityCompleted = true;
         break;

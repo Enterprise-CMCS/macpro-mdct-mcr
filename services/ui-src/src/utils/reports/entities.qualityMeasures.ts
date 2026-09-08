@@ -1,4 +1,4 @@
-import { AnyObject, EntityType } from "types";
+import { AnyObject, EntityShape, EntityType } from "types";
 
 interface PerPlanResponse {
   response?: string;
@@ -24,11 +24,12 @@ interface QualityMeasureStatus {
 
 export const isQualityMeasureV1 = (
   entityType: EntityType,
-  formattedEntityData?: AnyObject
+  entity?: EntityShape
 ) => {
   return (
     entityType === EntityType.QUALITY_MEASURES &&
-    formattedEntityData?.perPlanResponses !== undefined
+    entity &&
+    Object.hasOwn(entity, "qualityMeasure_name")
   );
 };
 

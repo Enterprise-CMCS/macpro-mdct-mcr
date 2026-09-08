@@ -25,7 +25,7 @@ export const getMcparEntityStatus = (
     return false;
 
   const nonExemptPlans = getPlansNotExemptFromQualityMeasures(
-    report.fieldData?.plans,
+    plans,
     report.fieldData?.plansExemptFromQualityMeasures
   );
   // If all plans are exempted, return true (nothing to complete)

@@ -120,6 +120,29 @@ export const mockCompletedQualityMeasuresFormattedEntityData = {
   ],
   reportingRateType: "Cross-program rate: Mock program list",
   set: "Mock Set",
+  plans: [
+    {
+      id: "mock-plan-id-1",
+      name: "mock-plan-name-1",
+      "mock-drawer-text-field": "example-explanation",
+    },
+    {
+      id: "mock-plan-id-2",
+      name: "mock-plan-name-2",
+      plan_ilosOfferedByPlan: [
+        {
+          key: "mock-radio",
+          value: "Yes",
+        },
+      ],
+      plan_ilosUtilizationByPlan: [
+        {
+          key: "mock-ilos-id-1",
+          value: "mock-ilos-name-1",
+        },
+      ],
+    },
+  ],
 };
 
 export const mockQualityMeasuresEntityV2 = {
@@ -226,6 +249,16 @@ export const mockCompletedQualityMeasuresFormattedEntityDataV2 = {
       ],
     },
   ],
+  plans: [
+    {
+      id: "mock-plan-name-1",
+      name: "mock-plan-name-1",
+    },
+    {
+      id: "mock-plan-name-2",
+      name: "mock-plan-name-2",
+    },
+  ],
 };
 
 export const mockPartialQualityMeasuresFormattedEntityDataV2 = {
@@ -247,6 +280,16 @@ export const mockPartialQualityMeasuresFormattedEntityDataV2 = {
     },
     {
       planName: "mock-plan-name-2",
+    },
+  ],
+  plans: [
+    {
+      id: "mock-plan-name-1",
+      name: "mock-plan-name-1",
+    },
+    {
+      id: "mock-plan-name-2",
+      name: "mock-plan-name-2",
     },
   ],
 };
@@ -271,6 +314,22 @@ export const mockQualityMeasuresFormattedEntityDataV2WithExemptions = {
     {
       planName: "mock-plan-name-2",
       exempt: true,
+    },
+  ],
+  plans: [
+    {
+      id: "mock-plan-name-1",
+      name: "mock-plan-name-1",
+    },
+    {
+      id: "mock-plan-name-2",
+      name: "mock-plan-name-2",
+    },
+  ],
+  exemptPlans: [
+    {
+      key: "plansExemptFromQualityMeasures-mock-plan-name-2",
+      value: "mock-plan-name-2",
     },
   ],
 };
