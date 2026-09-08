@@ -15,6 +15,10 @@ import {
   mockCompletedQualityMeasuresFormattedEntityData,
   mockQualityMeasuresEntity,
   mockUnfinishedQualityMeasuresFormattedEntityData,
+  mockCompletedQualityMeasuresFormattedEntityDataV2,
+  mockUnfinishedQualityMeasuresFormattedEntityDataV2,
+  mockPartialQualityMeasuresFormattedEntityDataV2,
+  mockQualityMeasuresFormattedEntityDataV2WithExemptions,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
@@ -574,6 +578,55 @@ describe("<EntityCard />", () => {
       testA11yAct(UnfinishedSanctionsEntityCardComponent);
       testA11yAct(SanctionsEntityCardComponent);
     });
+  });
+
+  describe("entity: quality measures new structure", () => {
+    test.each([
+      {
+        name: "complete measure",
+        data: mockCompletedQualityMeasuresFormattedEntityDataV2,
+        expectedComplete: true,
+      },
+      {
+        name: "complete measure with exemptions",
+        data: mockQualityMeasuresFormattedEntityDataV2WithExemptions,
+        expectedComplete: true,
+      },
+      {
+        name: "incomplete measure",
+        data: mockUnfinishedQualityMeasuresFormattedEntityDataV2,
+        expectedComplete: false,
+      },
+      {
+        name: "partially complete measure",
+        data: mockPartialQualityMeasuresFormattedEntityDataV2,
+        expectedComplete: false,
+      },
+    ])(
+      "new structure $name shows correct status in PDF",
+      ({ data, expectedComplete }) => {
+        render(
+          <EntityCard
+            entity={mockQualityMeasuresEntity}
+            entityIndex={0}
+            entityType={EntityType.QUALITY_MEASURES}
+            formattedEntityData={data}
+            verbiage={mockModalDrawerReportPageJson.verbiage}
+            printVersion={true}
+          />
+        );
+
+        if (expectedComplete) {
+          expect(screen.queryByAltText("entity is complete")).toBeTruthy();
+          expect(screen.queryByText("Complete")).toBeTruthy();
+          expect(screen.queryByText("Error")).toBeFalsy();
+        } else {
+          expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
+          expect(screen.queryByText("Error")).toBeTruthy();
+          expect(screen.queryByText("Complete")).toBeFalsy();
+        }
+      }
+    );
   });
 
   describe("Should return Entity Type by default", () => {
