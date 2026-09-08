@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useWatch, Control } from "react-hook-form";
 // components
 import { useWarningsContext } from "components/app/WarningsContext";
+// types
+import { FieldValue } from "types";
 // utils
 import { validateFieldWarning } from "./warnings";
 
@@ -14,16 +16,21 @@ export const useFormWarnings = (
     {}
   );
 
-  const formData = useWatch({ control, name: fieldIds });
+  const fieldValues: (FieldValue | null | undefined)[] = useWatch({
+    control,
+    name: fieldIds,
+  });
 
   useEffect(() => {
-    const newWarnings: Record<string, string | null> = {};
-    fieldIds.forEach((fieldId, index) => {
-      newWarnings[fieldId] = validateFieldWarning(fieldId, formData[index]);
-    });
+    const newWarnings = Object.fromEntries(
+      fieldIds.map((fieldId, index) => [
+        fieldId,
+        validateFieldWarning(fieldId, fieldValues[index]),
+      ])
+    );
     setLocalWarnings(newWarnings);
     setWarnings(newWarnings);
-  }, [JSON.stringify(formData)]);
+  }, [JSON.stringify(fieldValues)]);
 
   return warnings;
 };
