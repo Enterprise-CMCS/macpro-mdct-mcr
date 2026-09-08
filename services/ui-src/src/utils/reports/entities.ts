@@ -14,7 +14,11 @@ import {
   RATE_ID_PREFIX,
   translate,
 } from "utils";
-import { getFormattedPlanData } from "./entities.plans";
+import {
+  getExemptedPlanIds,
+  getFormattedPlanData,
+  getPlansNotExemptFromQualityMeasures,
+} from "./entities.plans";
 
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   return otherSpecify(
@@ -203,11 +207,19 @@ export const getFormattedEntityData = (
         ),
       };
     case EntityType.QUALITY_MEASURES:
-      if (isLegacyTemplate) {
-        const exemptedPlanIds = (
-          reportFieldData?.plansExemptFromQualityMeasures || []
-        ).map((exemption: EntityShape) => exemption.key);
+      const exemptedPlanIds = getExemptedPlanIds(
+        reportFieldData?.plansExemptFromQualityMeasures
+      );
 
+      const plans = reportFieldData?.plans || [];
+      const nonExemptPlans = getPlansNotExemptFromQualityMeasures(
+        plans,
+        reportFieldData?.plansExemptFromQualityMeasures
+      );
+      // If all plans are exempted, return true (nothing to complete)
+      const allPlansExempted = plans.length > 0 && nonExemptPlans.length === 0;
+
+      if (isLegacyTemplate) {
         return {
           domain: getRadioValue(entity, "qualityMeasure_domain"),
           name: entity?.qualityMeasure_name,
@@ -221,15 +233,9 @@ export const getFormattedEntityData = (
             reportFieldData?.plans,
             exemptedPlanIds
           ),
-          plans: reportFieldData?.plans,
-          exemptPlans: reportFieldData?.plansExemptFromQualityMeasures,
+          allPlansExempted,
         };
       } else {
-        const exemptedPlanIds = (
-          reportFieldData?.plansExemptFromQualityMeasures || []
-        ).map((exemption: EntityShape) => {
-          return exemption.key.replace("plansExemptFromQualityMeasures-", "");
-        });
         const yesCmit = entity?.measure_identifier?.[0].value === "Yes";
         const noCbe =
           entity?.measure_identifier?.[0].value ===
@@ -258,8 +264,7 @@ export const getFormattedEntityData = (
             entity?.measure_rates,
             exemptedPlanIds
           ),
-          plans: reportFieldData?.plans,
-          exemptPlans: reportFieldData?.plansExemptFromQualityMeasures,
+          allPlansExempted,
         };
       }
     case EntityType.PLANS: {

@@ -20,6 +20,7 @@ import {
   mockPartialQualityMeasuresFormattedEntityDataV2,
   mockQualityMeasuresFormattedEntityDataV2WithExemptions,
   mockQualityMeasuresEntityV2,
+  mockQualityMeasuresFormattedEntityDataV2WithAllExemptPlans,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
@@ -591,6 +592,11 @@ describe("<EntityCard />", () => {
       {
         name: "complete measure with exemptions",
         data: mockQualityMeasuresFormattedEntityDataV2WithExemptions,
+        expectedComplete: true,
+      },
+      {
+        name: "incomplete measure with all exempt plans",
+        data: mockQualityMeasuresFormattedEntityDataV2WithAllExemptPlans,
         expectedComplete: true,
       },
       {

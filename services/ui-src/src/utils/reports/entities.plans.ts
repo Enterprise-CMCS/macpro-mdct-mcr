@@ -374,11 +374,17 @@ export const getPlansNotExemptFromQualityMeasures = (
   plans: EntityShape[] = [],
   exemptPlans: Choice[] = []
 ): EntityShape[] => {
-  const exemptedPlanIds = exemptPlans.map((exemption) =>
-    exemption.key.replace("plansExemptFromQualityMeasures-", "")
-  );
+  const exemptedPlanIds = getExemptedPlanIds(exemptPlans);
 
   return plans.filter(
     (plan: EntityShape) => !exemptedPlanIds.includes(plan.id)
   );
+};
+
+export const getExemptedPlanIds = (exemptPlans: Choice[] = []): string[] => {
+  const exemptedPlanIds = exemptPlans.map((exemption) =>
+    exemption.key.replace("plansExemptFromQualityMeasures-", "")
+  );
+
+  return exemptedPlanIds;
 };

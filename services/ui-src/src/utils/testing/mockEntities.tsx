@@ -120,29 +120,7 @@ export const mockCompletedQualityMeasuresFormattedEntityData = {
   ],
   reportingRateType: "Cross-program rate: Mock program list",
   set: "Mock Set",
-  plans: [
-    {
-      id: "mock-plan-id-1",
-      name: "mock-plan-name-1",
-      "mock-drawer-text-field": "example-explanation",
-    },
-    {
-      id: "mock-plan-id-2",
-      name: "mock-plan-name-2",
-      plan_ilosOfferedByPlan: [
-        {
-          key: "mock-radio",
-          value: "Yes",
-        },
-      ],
-      plan_ilosUtilizationByPlan: [
-        {
-          key: "mock-ilos-id-1",
-          value: "mock-ilos-name-1",
-        },
-      ],
-    },
-  ],
+  allPlansExempted: false,
 };
 
 export const mockQualityMeasuresEntityV2 = {
@@ -249,16 +227,7 @@ export const mockCompletedQualityMeasuresFormattedEntityDataV2 = {
       ],
     },
   ],
-  plans: [
-    {
-      id: "mock-plan-name-1",
-      name: "mock-plan-name-1",
-    },
-    {
-      id: "mock-plan-name-2",
-      name: "mock-plan-name-2",
-    },
-  ],
+  allPlansExempted: false,
 };
 
 export const mockPartialQualityMeasuresFormattedEntityDataV2 = {
@@ -282,16 +251,7 @@ export const mockPartialQualityMeasuresFormattedEntityDataV2 = {
       planName: "mock-plan-name-2",
     },
   ],
-  plans: [
-    {
-      id: "mock-plan-name-1",
-      name: "mock-plan-name-1",
-    },
-    {
-      id: "mock-plan-name-2",
-      name: "mock-plan-name-2",
-    },
-  ],
+  allPlansExempted: false,
 };
 
 export const mockQualityMeasuresFormattedEntityDataV2WithExemptions = {
@@ -316,22 +276,14 @@ export const mockQualityMeasuresFormattedEntityDataV2WithExemptions = {
       exempt: true,
     },
   ],
-  plans: [
-    {
-      id: "mock-plan-name-1",
-      name: "mock-plan-name-1",
-    },
-    {
-      id: "mock-plan-name-2",
-      name: "mock-plan-name-2",
-    },
-  ],
-  exemptPlans: [
-    {
-      key: "plansExemptFromQualityMeasures-mock-plan-name-2",
-      value: "mock-plan-name-2",
-    },
-  ],
+  allPlansExempted: false,
+};
+
+export const mockQualityMeasuresFormattedEntityDataV2WithAllExemptPlans = {
+  id: "mock-id-12345",
+  name: "Mock Measure Name V2",
+  measureResults: [],
+  allPlansExempted: true,
 };
 
 export const mockSanctionsEntity = {
