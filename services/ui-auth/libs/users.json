@@ -567,5 +567,34 @@
         "Value": "ZZ"
       }
     ]
+  },
+  {
+    "username": "stateuserMO@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "stateuserMO@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "User"
+      },
+      {
+        "Name": "family_name",
+        "Value": "State"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "MO"
+      }
+    ]
   }
 ]

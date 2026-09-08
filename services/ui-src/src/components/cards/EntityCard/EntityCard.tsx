@@ -10,7 +10,12 @@ import { svgFilters } from "styles/theme";
 // types
 import { AnyObject, EntityShape, EntityType } from "types";
 // utils
-import { useStore } from "utils";
+import {
+  isQualityMeasureV1,
+  qualityMeasureV1Status,
+  qualityMeasureV2Status,
+  useStore,
+} from "utils";
 // assets
 import completedIcon from "assets/icons/icon_check_circle.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
@@ -33,10 +38,15 @@ export const EntityCard = ({
 
   let entityStarted = false;
   let entityCompleted = false;
-  const reportingPeriodCompletedOrOptional =
-    entityType == EntityType.QUALITY_MEASURES
-      ? formattedEntityData.reportingPeriod
-      : true;
+
+  const isV1QualityMeasure = isQualityMeasureV1(
+    entityType,
+    formattedEntityData
+  );
+
+  const reportingPeriodCompletedOrOptional = isV1QualityMeasure
+    ? !!formattedEntityData.reportingPeriod
+    : true;
 
   // get index and length of entities
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
@@ -53,15 +63,12 @@ export const EntityCard = ({
       entityCompleted = !!formattedEntityData?.assessmentDate;
       break;
     case EntityType.QUALITY_MEASURES: {
-      const perPlanResponses = formattedEntityData?.perPlanResponses;
-      const validPerPlanResponses = perPlanResponses?.filter(
-        (el: any) => el.response
-      );
-      entityStarted = !!validPerPlanResponses?.length;
-      // perPlanResponses already excludes exempted plans (filtered in getFormattedEntityData)
-      entityCompleted =
-        entityStarted &&
-        validPerPlanResponses?.length === perPlanResponses?.length;
+      const { started, completed } = isV1QualityMeasure
+        ? qualityMeasureV1Status(formattedEntityData?.perPlanResponses)
+        : qualityMeasureV2Status(formattedEntityData?.measureResults);
+
+      entityStarted = started;
+      entityCompleted = completed;
       break;
     }
     default:
@@ -142,6 +149,7 @@ export const EntityCard = ({
         {openAddEditEntityModal && (
           <>
             {entityType == EntityType.QUALITY_MEASURES &&
+              isV1QualityMeasure &&
               !formattedEntityData.reportingPeriod && (
                 <Text sx={sx.missingReportingPeriodMessage}>
                   {verbiage.missingReportingPeriodMessage}
