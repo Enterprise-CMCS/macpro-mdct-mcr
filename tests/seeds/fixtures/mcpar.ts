@@ -213,86 +213,71 @@ export const fillMcpar = (
     createPlan(planId, ilos[index], flags)
   );
 
-  const qualityMeasures = Array.from({ length: numberOfExamples }, () =>
-    createQualityMeasureV1(planIds)
-  );
-
   const sanctions = planIds.map((planId) => createSanction(planId));
 
-  let flaggedData = {};
+  const plansExemptFromQualityMeasures = [createPlanExemption(plans[0])];
+  let newQualityMeasures = Array.from(
+    { length: numberOfExamples },
+    (_, index) => createQualityMeasures(index)
+  );
 
-  // Add data mods by flag
-  if (flags.newQualityMeasuresSectionEnabled) {
-    const plansExemptFromQualityMeasures = [createPlanExemption(plans[0])];
-    let newQualityMeasures = Array.from(
-      { length: numberOfExamples },
-      (_, index) => createQualityMeasureV2(index)
+  // Remove timestamp from program name
+  const cleanedProgramName = options?.programName
+    .replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/, "")
+    .trim();
+
+  // Check for pre-determined measures to use
+  const measuresByStateAndProgram: Measure[] =
+    mcparQualityMeasuresList?.[options?.state as keyof MeasureList]?.[
+      cleanedProgramName
+    ];
+
+  if (measuresByStateAndProgram) {
+    newQualityMeasures = measuresByStateAndProgram.map((measure, index) =>
+      createQualityMeasures(index, measure)
+    );
+  }
+
+  const plansWithMeasures = plans.map((plan) => {
+    const measures = newQualityMeasures.reduce<Record<string, any>>(
+      (newMeasures, measure) => {
+        const measureId = measure.id;
+        const rateId = measure.measure_rates[0].id;
+
+        newMeasures[measureId] = {
+          measure_dataCollectionMethod: [
+            {
+              key: "measure_dataCollectionMethod-bkD4uguEEiRjo5GyoCVNMi",
+              value: "Administrative",
+            },
+          ],
+          measure_isNotReportingReason: [
+            {
+              key: "measure_isNotReportingReason-aKM1awPXFkBfWwesiwKk0p",
+              value:
+                "No, the eligible population does not meet the required measure sample size",
+            },
+          ],
+          "measure_isNotReportingReason-otherText": "",
+          measure_isReporting: [
+            {
+              key: "measure_isReporting-37sMoqg5MNOb17KDCpTO1w",
+              value: "Not reporting",
+            },
+          ],
+          [`measure_rateResults-${rateId}`]: numberInt(),
+        };
+
+        return newMeasures;
+      },
+      {}
     );
 
-    // Remove timestamp from program name
-    const cleanedProgramName = options?.programName
-      .replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/, "")
-      .trim();
-
-    // Check for pre-determined measures to use
-    const measuresByStateAndProgram: Measure[] =
-      mcparQualityMeasuresList?.[options?.state as keyof MeasureList]?.[
-        cleanedProgramName
-      ];
-
-    if (measuresByStateAndProgram) {
-      newQualityMeasures = measuresByStateAndProgram.map((measure, index) =>
-        createQualityMeasureV2(index, measure)
-      );
-    }
-
-    const plansWithMeasures = plans.map((plan) => {
-      const measures = newQualityMeasures.reduce<Record<string, any>>(
-        (newMeasures, measure) => {
-          const measureId = measure.id;
-          const rateId = measure.measure_rates[0].id;
-
-          newMeasures[measureId] = {
-            measure_dataCollectionMethod: [
-              {
-                key: "measure_dataCollectionMethod-bkD4uguEEiRjo5GyoCVNMi",
-                value: "Administrative",
-              },
-            ],
-            measure_isNotReportingReason: [
-              {
-                key: "measure_isNotReportingReason-aKM1awPXFkBfWwesiwKk0p",
-                value:
-                  "No, the eligible population does not meet the required measure sample size",
-              },
-            ],
-            "measure_isNotReportingReason-otherText": "",
-            measure_isReporting: [
-              {
-                key: "measure_isReporting-37sMoqg5MNOb17KDCpTO1w",
-                value: "Not reporting",
-              },
-            ],
-            [`measure_rateResults-${rateId}`]: numberInt(),
-          };
-
-          return newMeasures;
-        },
-        {}
-      );
-
-      return {
-        measures,
-        ...plan,
-      };
-    });
-
-    flaggedData = {
-      plans: plansWithMeasures,
-      plansExemptFromQualityMeasures,
-      qualityMeasures: newQualityMeasures,
+    return {
+      measures,
+      ...plan,
     };
-  }
+  });
 
   const newMlrReportingPeriodEndDate = faker.date.past();
   const newMlrReportingPeriodStartDate = faker.date.past({
@@ -506,10 +491,10 @@ export const fillMcpar = (
       accessMeasures,
       bssEntities,
       ilos,
-      plans,
-      qualityMeasures,
+      plans: plansWithMeasures,
+      plansExemptFromQualityMeasures,
+      qualityMeasures: newQualityMeasures,
       sanctions,
-      ...flaggedData,
     },
   };
 };
@@ -823,50 +808,7 @@ const createPlan = (
   return data;
 };
 
-const createQualityMeasureV1 = (planIds: string[]) => {
-  const measureResults = planIds.reduce(
-    (results, planId) => {
-      results[`qualityMeasure_plan_measureResults_${planId}`] =
-        faker.lorem.sentence();
-      return results;
-    },
-    {} as Record<string, string>
-  );
-
-  return {
-    id: crypto.randomUUID(),
-    qualityMeasure_name: faker.animal.insect(),
-    qualityMeasure_description: faker.lorem.sentence(),
-    qualityMeasure_domain: [
-      {
-        key: "qualityMeasure_domain-Y3InqsLp4kSTgAUvTwq0CA",
-        value: "Primary care access and preventative care",
-      },
-    ],
-    qualityMeasure_nqfNumber: faker.hacker.abbreviation(),
-    ...measureResults,
-    qualityMeasure_reportingPeriod: [
-      {
-        key: "qualityMeasure_reportingPeriod-XAalDWT7l0qPz676XFGSGQ",
-        value: "Yes",
-      },
-    ],
-    qualityMeasure_reportingRateType: [
-      {
-        key: "qualityMeasure_reportingRateType-lTIN7GiY2Ui2kJYrWzXqVw",
-        value: "Program-specific rate",
-      },
-    ],
-    qualityMeasure_set: [
-      {
-        key: "qualityMeasure_set-tjSQLCDhgEy7H3VrhtUKxw",
-        value: "Medicaid Child Core Set",
-      },
-    ],
-  };
-};
-
-const createQualityMeasureV2 = (index: number, measure?: Measure) => {
+const createQualityMeasures = (index: number, measure?: Measure) => {
   const measureIdentifiers = [
     {
       measure_identifier: [
