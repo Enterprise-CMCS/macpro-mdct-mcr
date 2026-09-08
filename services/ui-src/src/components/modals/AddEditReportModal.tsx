@@ -30,7 +30,6 @@ import {
   otherSpecify,
   useStore,
 } from "utils";
-import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const AddEditReportModal = ({
   activeState,
@@ -46,10 +45,6 @@ export const AddEditReportModal = ({
   const { copyEligibleReportsByState } = useStore();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
-
-  // LaunchDarkly
-  const newQualityMeasuresSectionEnabled =
-    useFlags()?.newQualityMeasuresSectionEnabled;
 
   // get correct form
   const modalFormJsonMap: any = {
@@ -168,7 +163,6 @@ export const AddEditReportModal = ({
         naaarSubmissionForThisProgram,
         naaarSubmissionDateForThisProgram,
         naaarExpectedSubmissionDateForThisProgram,
-        newQualityMeasuresSectionEnabled,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

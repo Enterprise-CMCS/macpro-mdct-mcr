@@ -69,15 +69,14 @@ export const mcparFieldsToCopy = {
   ],
   qualityMeasures: [
     "id",
-    "qualityMeasure_domain",
-    "qualityMeasure_domain-otherText",
-    "qualityMeasure_name",
-    "qualityMeasure_nqfNumber",
-    "qualityMeasure_reportingRateType",
-    "qualityMeasure_crossProgramReportingRateProgramList",
-    "qualityMeasure_set",
-    "qualityMeasure_set-otherText",
-    "qualityMeasure_description",
+    "measure_name",
+    "measure_identifier",
+    "measure_identifierCmit",
+    "measure_identifierCbe",
+    "measure_identifierDefinition",
+    "measure_dataVersion",
+    "measure_activities",
+    "measure_rates",
   ],
   bssEntities: [
     "id",
@@ -89,19 +88,6 @@ export const mcparFieldsToCopy = {
   ],
   // sanctions are never copied from year to year.
 };
-
-// fields to copy when newQualityMeasuresSectionEnabled flag is true
-export const qualityMeasuresV2FieldsToCopy = [
-  "id",
-  "measure_name",
-  "measure_identifier",
-  "measure_identifierCmit",
-  "measure_identifierCbe",
-  "measure_identifierDefinition",
-  "measure_dataVersion",
-  "measure_activities",
-  "measure_rates",
-];
 
 export const naaarFieldsToCopy = {
   root: [
