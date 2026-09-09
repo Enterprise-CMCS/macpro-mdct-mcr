@@ -332,4 +332,49 @@ describe("plans", () => {
 
     expect(entityData).toEqual(expectedData);
   });
+
+  test("Returns correct data for non-compliant plan with no analysis methods saved", () => {
+    const mockNonCompliantPlan = {
+      ...mockPlanData,
+      exceptionsNonCompliance: nonComplianceStatus,
+      "mock-nonComplianceDescription": "mock description",
+      "mock-nonCompliancePlanToAchieveCompliance":
+        "mock plan to achieve compliance",
+      "mock-nonComplianceMonitoringProgress": "mock monitoring progress",
+      "mock-nonComplianceReassessmentDate": "mock reassessment date",
+    };
+
+    const entityData = getFormattedEntityData(
+      EntityType.PLANS,
+      mockNonCompliantPlan
+    );
+
+    const expectedData = {
+      heading: `Plan deficiencies for ${mockNonCompliantPlan.name}: 42 C.F.R. § 438.68`,
+      questions: [
+        {
+          question: "Description",
+          answer: "mock description",
+        },
+        {
+          question: "Analyses used to identify deficiencies",
+          answer: [],
+        },
+        {
+          question: "What the plan will do to achieve compliance",
+          answer: "mock plan to achieve compliance",
+        },
+        {
+          question: "Monitoring progress",
+          answer: "mock monitoring progress",
+        },
+        {
+          question: "Reassessment date",
+          answer: "mock reassessment date",
+        },
+      ],
+    };
+
+    expect(entityData).toEqual(expectedData);
+  });
 });

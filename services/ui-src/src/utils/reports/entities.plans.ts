@@ -256,7 +256,8 @@ const getFormattedNonComplianceData = (plan: EntityShape) => {
   const nonComplianceAnalysesKey: any = planKeys.find((key: string) =>
     key.endsWith("-nonComplianceAnalyses")
   );
-  const analysisMethodsUsed = plan[nonComplianceAnalysesKey].map(
+  // default to [] when no analysis methods are selected
+  const analysisMethodsUsed = (plan[nonComplianceAnalysesKey] ?? []).map(
     (method: EntityShape) => method.value
   );
 
