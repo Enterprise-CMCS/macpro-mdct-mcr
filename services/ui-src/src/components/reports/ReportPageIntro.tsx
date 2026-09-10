@@ -1,5 +1,5 @@
 // components
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import {
   Alert,
   InstructionsAccordion,
@@ -28,7 +28,9 @@ export const ReportPageIntro = ({
     <Box sx={sx.introBox} {...props}>
       {eyebrow ? (
         <Box>
-          <Box sx={sx.sectionHeading}>{eyebrow}</Box>
+          <Text as="p" sx={sx.sectionHeading}>
+            {eyebrow}
+          </Text>
           <Heading as="h1" sx={sx.subsectionHeading}>
             {section}
           </Heading>
