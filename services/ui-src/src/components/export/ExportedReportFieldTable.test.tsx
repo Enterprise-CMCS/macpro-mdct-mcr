@@ -127,6 +127,45 @@ const hintJson = {
   },
 };
 
+const mockNumberedPageJson = {
+  ...mockStandardReportPageJson,
+  form: {
+    id: "numbered",
+    fields: [
+      {
+        ...mockFormField,
+        id: "numberedField",
+        props: {
+          label: "D1.1 Numbered question",
+        },
+      },
+    ],
+  },
+};
+
+const mockMixedPageJson = {
+  ...mockStandardReportPageJson,
+  form: {
+    id: "mixed",
+    fields: [
+      {
+        ...mockFormField,
+        id: "numberedField",
+        props: {
+          label: "D1.1 Numbered question",
+        },
+      },
+      {
+        ...mockFormField,
+        id: "unnumberedField",
+        props: {
+          label: "Unnumbered question",
+        },
+      },
+    ],
+  },
+};
+
 const exportedStandardTableComponent = (
   <ExportedReportFieldTable section={mockStandardPageJson} />
 );
@@ -238,8 +277,37 @@ describe("<ExportedReportFieldRow />", () => {
     // when present, gating radio answer renders correctly
     expect(
       screen.getByRole("row", {
-        name: "N/A Are you reporting data prior to June 2026? Yes",
+        name: "Are you reporting data prior to June 2026? Yes",
       })
+    ).toBeVisible();
+  });
+
+  test("omits the Number column when no field in the table has a question number", () => {
+    render(exportedStandardTableComponent);
+    expect(
+      screen.queryByRole("columnheader", { name: "Number" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("columnheader", { name: "Indicator" })
+    ).toBeVisible();
+  });
+
+  test("renders the Number column populated when a field has a question number", () => {
+    render(<ExportedReportFieldTable section={mockNumberedPageJson} />);
+    expect(screen.getByRole("columnheader", { name: "Number" })).toBeVisible();
+    expect(
+      screen.getByRole("row", { name: "D11 Numbered question Not answered" })
+    ).toBeVisible();
+  });
+
+  test("renders a blank Number cell for unnumbered rows in a table with at least one numbered row", () => {
+    render(<ExportedReportFieldTable section={mockMixedPageJson} />);
+    expect(screen.getByRole("columnheader", { name: "Number" })).toBeVisible();
+    expect(
+      screen.getByRole("row", { name: "D11 Numbered question Not answered" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("row", { name: "Unnumbered question Not answered" })
     ).toBeVisible();
   });
 
