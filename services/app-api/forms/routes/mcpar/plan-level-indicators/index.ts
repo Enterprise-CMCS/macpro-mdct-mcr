@@ -1,6 +1,5 @@
 import { ParentRoute } from "../../../../utils/types";
 import { appealsStateFairHearingsAndGrievancesRoute } from "./appeals-state-fair-hearings-and-grievances";
-import { mlrReportingRoute } from "./mlr-reporting";
 import { encounterDataReportRoute } from "./encounter-data-report";
 import { ilosRoute } from "./ilos";
 import { patientAccessApiRoute } from "./patient-access-api";
@@ -9,6 +8,7 @@ import { programCharacteristicsRoute } from "./program-characteristics";
 import { programIntegrityRoute } from "./program-integrity";
 import { qualityMeasuresRoute } from "./quality-measures";
 import { sanctionsRoute } from "./sanctions";
+import { mlrReportingRoute } from "./mlr-reporting";
 
 export const planLevelIndicatorsRoute: ParentRoute = {
   name: "D: Plan-Level Indicators",

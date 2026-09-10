@@ -8,4 +8,4 @@
  * If there are no feature flags, use: export default {};
  */
 
-export { mcparReportJson as newQualityMeasuresSectionEnabled } from "./newQualityMeasuresSectionEnabled";
+export default {};
