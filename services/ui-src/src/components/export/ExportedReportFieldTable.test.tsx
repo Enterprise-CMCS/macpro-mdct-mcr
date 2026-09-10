@@ -88,6 +88,24 @@ const mockMissingPlansPageJson = {
   },
   drawerForm: mockDrawerForm,
 };
+const mockMissingPlansNonIlosPageJson = {
+  name: "mock-route-non-ilos",
+  path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-by-reason",
+  pageType: "drawer",
+  entityType: EntityType.PLANS,
+  verbiage: {
+    intro: mockVerbiageIntro,
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
+    missingEntityMessage: [
+      {
+        type: "html",
+        content: "No plans have been added.",
+      },
+    ],
+  },
+  drawerForm: mockDrawerForm,
+};
 const mockEmptyPageJson = {
   ...mockStandardReportPageJson,
   form: {
@@ -250,6 +268,25 @@ describe("<ExportedReportFieldRow />", () => {
     expect(row).toBeVisible();
   });
 
+  test("handles missing plans on a non-ILOS drawer page", () => {
+    const missingEntitiesStore = {
+      ...mockMcparReportStore,
+      report: {
+        fieldData: {},
+      },
+    };
+    mockedUseStore.mockReturnValue({
+      ...missingEntitiesStore,
+    });
+    render(
+      <ExportedReportFieldTable
+        section={mockMissingPlansNonIlosPageJson as DrawerReportPageShape}
+      />
+    );
+    const row = screen.getByTestId("missingEntityMessage");
+    expect(row).toBeVisible();
+  });
+
   test("includes drawerForm fields and renders gating radio answer for Prior Authorization", () => {
     mockedUseStore.mockReturnValue({
       ...mockMcparReportStore,
@@ -280,6 +317,21 @@ describe("<ExportedReportFieldRow />", () => {
         name: "Are you reporting data prior to June 2026? Yes",
       })
     ).toBeVisible();
+  });
+
+  test("handles standard pages with nested children from a checked choice", () => {
+    mockedUseStore.mockReturnValue({
+      ...mockMcparReportStore,
+      report: {
+        ...mockMcparReportStore.report!,
+        fieldData,
+      },
+    });
+
+    render(exportedStandardTableComponent);
+
+    expect(screen.getByTestId("exportTable")).toBeVisible();
+    expect(screen.getByText("testAnswer")).toBeVisible();
   });
 
   test("omits the Number column when no field in the table has a question number", () => {
