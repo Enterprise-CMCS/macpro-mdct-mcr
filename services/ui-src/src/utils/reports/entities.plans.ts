@@ -7,7 +7,7 @@ import {
   UNIT_PERCENT,
 } from "../../constants";
 // types
-import { AnalysisMethods, EntityShape, ReportShape } from "types";
+import { AnalysisMethods, Choice, EntityShape } from "types";
 
 const analysisMethodKeys = [
   { method: "Geomapping", filterKey: "_geomappingComplianceFrequency" },
@@ -371,16 +371,20 @@ export const getFormattedPlanData = (plan: EntityShape) => {
 };
 
 export const getPlansNotExemptFromQualityMeasures = (
-  report: ReportShape
+  plans: EntityShape[] = [],
+  exemptPlans: Choice[] = []
 ): EntityShape[] => {
-  const plans = report.fieldData?.plans || [];
-  const exemptPlans = report.fieldData?.plansExemptFromQualityMeasures || [];
-
-  const exemptedPlanIds = exemptPlans.map((exemption: EntityShape) =>
-    exemption.key.replace("plansExemptFromQualityMeasures-", "")
-  );
+  const exemptedPlanIds = getExemptedPlanIds(exemptPlans);
 
   return plans.filter(
     (plan: EntityShape) => !exemptedPlanIds.includes(plan.id)
   );
+};
+
+export const getExemptedPlanIds = (exemptPlans: Choice[] = []): string[] => {
+  const exemptedPlanIds = exemptPlans.map((exemption) =>
+    exemption.key.replace("plansExemptFromQualityMeasures-", "")
+  );
+
+  return exemptedPlanIds;
 };

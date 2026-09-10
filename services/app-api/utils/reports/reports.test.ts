@@ -288,7 +288,7 @@ describe("reports.ts", () => {
     test("removes exempt plans", () => {
       const plans = [
         {
-          id: "mock-active-lan-id-1",
+          id: "mock-active-plan-id-1",
           name: "Active plan 1",
         },
         {
@@ -316,7 +316,7 @@ describe("reports.ts", () => {
       ];
       const filteredPlans = [
         {
-          id: "mock-active-lan-id-1",
+          id: "mock-active-plan-id-1",
           name: "Active plan 1",
         },
         {

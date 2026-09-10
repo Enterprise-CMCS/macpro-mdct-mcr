@@ -10,7 +10,8 @@ describe("utils/reports/entities.qualityMeasures", () => {
     test("returns true for quality measure V1 data", () => {
       expect(
         isQualityMeasureV1(EntityType.QUALITY_MEASURES, {
-          perPlanResponses: [],
+          id: "mock-id",
+          qualityMeasure_name: "Mock name",
         })
       ).toBe(true);
     });
@@ -18,7 +19,8 @@ describe("utils/reports/entities.qualityMeasures", () => {
     test("returns false for quality measure V2 data", () => {
       expect(
         isQualityMeasureV1(EntityType.QUALITY_MEASURES, {
-          measureResults: [],
+          id: "mock-id",
+          measure_name: "Mock name",
         })
       ).toBe(false);
     });
@@ -26,7 +28,8 @@ describe("utils/reports/entities.qualityMeasures", () => {
     test("returns false for non-quality-measure entity", () => {
       expect(
         isQualityMeasureV1(EntityType.ACCESS_MEASURES, {
-          perPlanResponses: [],
+          id: "mock-id",
+          name: "Mock name",
         })
       ).toBe(false);
     });

@@ -59,7 +59,12 @@ export const EntityDetailsOverlayQualityMeasures = ({
   const openDeleteEntityModal = () => {};
 
   useEffect(() => {
-    setFilteredPlans(getPlansNotExemptFromQualityMeasures(report));
+    setFilteredPlans(
+      getPlansNotExemptFromQualityMeasures(
+        report.fieldData?.plans,
+        report.fieldData?.plansExemptFromQualityMeasures
+      )
+    );
   }, [
     report.fieldData?.plans,
     report.fieldData?.plansExemptFromQualityMeasures,
