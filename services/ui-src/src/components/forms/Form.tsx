@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, useLayoutEffect } from "react";
+import { forwardRef, ReactNode, useLayoutEffect, useEffect } from "react";
 import {
   FieldValues,
   FormProvider,
@@ -28,6 +28,10 @@ import {
   sortFormErrors,
   useStore,
 } from "utils";
+
+// TODO: REMOVE BEFORE MERGE - warning system test wiring
+import { useWarningsContext } from "components/app/WarningsContext";
+import { useFormWarnings } from "utils/warnings/useFormWarnings";
 
 export const Form = forwardRef<HTMLFormElement, Props>(function Form(
   {
@@ -72,6 +76,16 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
     ...(options as AnyObject),
   });
 
+  // TODO: REMOVE BEFORE MERGE - warning system test wiring
+  const warnings = useFormWarnings(
+    ["program_whenWasTheLastParityAnalysisCoveringThisProgramCompleted"],
+    form.control
+  );
+  const { setWarnings } = useWarningsContext();
+  useEffect(() => {
+    setWarnings(warnings);
+  }, [JSON.stringify(warnings)]);
+
   // will run if any validation errors exist on form submission
   const onErrorHandler: SubmitErrorHandler<FieldValues> = (
     errors: AnyObject
@@ -102,6 +116,8 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
       disabled: !!fieldInputDisabled,
       autosave,
       validateOnRender,
+      // TODO: REMOVE BEFORE MERGE - warning system test wiring
+      warnings,
     });
   };
 

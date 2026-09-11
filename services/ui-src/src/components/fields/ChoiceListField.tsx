@@ -24,6 +24,9 @@ import {
   useStore,
 } from "utils";
 
+// TODO: REMOVE BEFORE MERGE - warning system test wiring
+import { useWarningsContext } from "components/app/WarningsContext";
+
 export const ChoiceListField = ({
   name,
   type,
@@ -44,6 +47,8 @@ export const ChoiceListField = ({
   // context
   const { updateReport } = useContext(ReportContext);
   const { updateEntities } = useContext(EntityContext);
+  // TODO: REMOVE BEFORE MERGE - warning system test wiring
+  const { warnings } = useWarningsContext();
 
   // state management
   const { full_name, state, userIsAdmin, userIsReadOnly } =
@@ -138,6 +143,8 @@ export const ChoiceListField = ({
           nested: isNested,
           autosave,
           validateOnRender,
+          // TODO: REMOVE BEFORE MERGE - warning system test wiring
+          warnings,
         });
         choiceObject.checkedChildren = formattedChildren;
       }
