@@ -1,5 +1,5 @@
 // components
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import {
   Alert,
   InstructionsAccordion,
@@ -20,18 +20,31 @@ export const ReportPageIntro = ({
   table,
   ...props
 }: Props) => {
-  const { section, subsection, hint, info, spreadsheet, alert } = text;
+  const { section, subsection, eyebrow, hint, info, spreadsheet, alert } = text;
   const sectionDForIlos = subsection === "Topic XI. ILOS";
   const showAlert = sectionDForIlos ? !hasIlos : alert;
 
   return (
     <Box sx={sx.introBox} {...props}>
-      <Heading as="h1" sx={sx.sectionHeading}>
-        {section}
-      </Heading>
-      <Heading as="h2" sx={sx.subsectionHeading}>
-        {subsection}
-      </Heading>
+      {eyebrow ? (
+        <Box>
+          <Text as="p" sx={sx.sectionHeading}>
+            {eyebrow}
+          </Text>
+          <Heading as="h1" sx={sx.subsectionHeading}>
+            {section}
+          </Heading>
+        </Box>
+      ) : (
+        <Heading as="h1" sx={sx.sectionHeading}>
+          {section}
+        </Heading>
+      )}
+      {subsection && (
+        <Heading as="h2" sx={sx.subsectionHeading}>
+          {subsection}
+        </Heading>
+      )}
       {table && (
         <Table content={table} sx={{ ...sx.table, ...sxOverride?.table }} />
       )}
