@@ -88,6 +88,24 @@ const mockMissingPlansPageJson = {
   },
   drawerForm: mockDrawerForm,
 };
+const mockMissingPlansNonIlosPageJson = {
+  name: "mock-route-non-ilos",
+  path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-by-reason",
+  pageType: "drawer",
+  entityType: EntityType.PLANS,
+  verbiage: {
+    intro: mockVerbiageIntro,
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
+    missingEntityMessage: [
+      {
+        type: "html",
+        content: "No plans have been added.",
+      },
+    ],
+  },
+  drawerForm: mockDrawerForm,
+};
 const mockEmptyPageJson = {
   ...mockStandardReportPageJson,
   form: {
@@ -121,6 +139,45 @@ const hintJson = {
         props: {
           label: "X. Mock Field label",
           hint: "Mock Hint Text",
+        },
+      },
+    ],
+  },
+};
+
+const mockNumberedPageJson = {
+  ...mockStandardReportPageJson,
+  form: {
+    id: "numbered",
+    fields: [
+      {
+        ...mockFormField,
+        id: "numberedField",
+        props: {
+          label: "D1.1 Numbered question",
+        },
+      },
+    ],
+  },
+};
+
+const mockMixedPageJson = {
+  ...mockStandardReportPageJson,
+  form: {
+    id: "mixed",
+    fields: [
+      {
+        ...mockFormField,
+        id: "numberedField",
+        props: {
+          label: "D1.1 Numbered question",
+        },
+      },
+      {
+        ...mockFormField,
+        id: "unnumberedField",
+        props: {
+          label: "Unnumbered question",
         },
       },
     ],
@@ -211,6 +268,25 @@ describe("<ExportedReportFieldRow />", () => {
     expect(row).toBeVisible();
   });
 
+  test("handles missing plans on a non-ILOS drawer page", () => {
+    const missingEntitiesStore = {
+      ...mockMcparReportStore,
+      report: {
+        fieldData: {},
+      },
+    };
+    mockedUseStore.mockReturnValue({
+      ...missingEntitiesStore,
+    });
+    render(
+      <ExportedReportFieldTable
+        section={mockMissingPlansNonIlosPageJson as DrawerReportPageShape}
+      />
+    );
+    const row = screen.getByTestId("missingEntityMessage");
+    expect(row).toBeVisible();
+  });
+
   test("includes drawerForm fields and renders gating radio answer for Prior Authorization", () => {
     mockedUseStore.mockReturnValue({
       ...mockMcparReportStore,
@@ -238,8 +314,52 @@ describe("<ExportedReportFieldRow />", () => {
     // when present, gating radio answer renders correctly
     expect(
       screen.getByRole("row", {
-        name: "N/A Are you reporting data prior to June 2026? Yes",
+        name: "Are you reporting data prior to June 2026? Yes",
       })
+    ).toBeVisible();
+  });
+
+  test("handles standard pages with nested children from a checked choice", () => {
+    mockedUseStore.mockReturnValue({
+      ...mockMcparReportStore,
+      report: {
+        ...mockMcparReportStore.report!,
+        fieldData,
+      },
+    });
+
+    render(exportedStandardTableComponent);
+
+    expect(screen.getByTestId("exportTable")).toBeVisible();
+    expect(screen.getByText("testAnswer")).toBeVisible();
+  });
+
+  test("omits the Number column when no field in the table has a question number", () => {
+    render(exportedStandardTableComponent);
+    expect(
+      screen.queryByRole("columnheader", { name: "Number" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("columnheader", { name: "Indicator" })
+    ).toBeVisible();
+  });
+
+  test("renders the Number column populated when a field has a question number", () => {
+    render(<ExportedReportFieldTable section={mockNumberedPageJson} />);
+    expect(screen.getByRole("columnheader", { name: "Number" })).toBeVisible();
+    expect(
+      screen.getByRole("row", { name: "D11 Numbered question Not answered" })
+    ).toBeVisible();
+  });
+
+  test("renders a blank Number cell for unnumbered rows in a table with at least one numbered row", () => {
+    render(<ExportedReportFieldTable section={mockMixedPageJson} />);
+    expect(screen.getByRole("columnheader", { name: "Number" })).toBeVisible();
+    expect(
+      screen.getByRole("row", { name: "D11 Numbered question Not answered" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("row", { name: "Unnumbered question Not answered" })
     ).toBeVisible();
   });
 
