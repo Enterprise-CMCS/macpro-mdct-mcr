@@ -117,8 +117,10 @@ export const getNaaarSubmissionDate = (report: ReportShape) => {
   const naaarSubmission = report.naaarSubmissionForThisProgram?.[0].value;
   switch (naaarSubmission) {
     case "Yes, I submitted it":
+    case "Yes, I submitted it in MDCT":
       return `Submitted on ${report.naaarSubmissionDateForThisProgram}`;
     case "Yes, I plan on submitting it":
+    case "Yes, I plan on submitting it in MDCT":
       return `Plan to submit on ${report.naaarExpectedSubmissionDateForThisProgram}`;
     default:
       return naaarSubmission;
