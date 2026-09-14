@@ -1,4 +1,4 @@
-import { measuresAndResultsRoute } from "../../forms/routes/mcpar/flags/newQualityMeasuresSectionEnabled/plan-level-indicators/quality-measures/measures-and-results";
+import { measuresAndResultsRoute } from "../../forms/routes/mcpar/plan-level-indicators/quality-measures/measures-and-results";
 // import as star so we can spy on functions
 import * as completionStatus from "./completionStatus";
 // types

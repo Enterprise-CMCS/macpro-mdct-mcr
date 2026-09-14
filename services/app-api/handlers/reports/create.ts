@@ -74,8 +74,6 @@ export const createReport = handler(async (event, _context) => {
       "Yes"
     );
   const isPccm = unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
-  const newQualityMeasuresSectionEnabled =
-    unvalidatedMetadata?.newQualityMeasuresSectionEnabled === true;
 
   /* eslint-disable no-useless-catch */
   try {
@@ -85,7 +83,6 @@ export const createReport = handler(async (event, _context) => {
       {
         hasNaaarSubmission,
         isPccm,
-        newQualityMeasuresSectionEnabled,
       }
     ));
   } catch (error) {
@@ -139,8 +136,7 @@ export const createReport = handler(async (event, _context) => {
       sourceFieldData,
       formTemplate,
       validatedFieldData!,
-      reportType,
-      newQualityMeasuresSectionEnabled
+      reportType
     );
   } else {
     newFieldData = validatedFieldData;
@@ -153,7 +149,6 @@ export const createReport = handler(async (event, _context) => {
 
   // prefill MCPAR quality measures
   if (
-    newQualityMeasuresSectionEnabled &&
     reportType === ReportType.MCPAR &&
     needsPreloadedQualityMeasures(sourceFieldData)
   ) {

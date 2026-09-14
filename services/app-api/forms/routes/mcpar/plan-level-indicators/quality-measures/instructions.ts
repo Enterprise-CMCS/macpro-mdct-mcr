@@ -1,4 +1,4 @@
-import { FormRoute, PageTypes } from "../../../../../../../utils/types";
+import { FormRoute, PageTypes } from "../../../../../utils/types";
 
 export const instructionsRoute: FormRoute = {
   name: "Instructions",
