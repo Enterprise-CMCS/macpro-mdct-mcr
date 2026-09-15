@@ -144,9 +144,7 @@ describe("<ExportedReportFieldRow />", () => {
 
   test("renders the Number cell populated when hasNumberColumn is true and the field has a number", async () => {
     render(numberedRowWithColumn);
-    expect(screen.getByRole("columnheader", { hidden: true })).toBeVisible;
-    const numberCell = screen.getByText("D11"); // confirm actual rendered string first
-    expect(numberCell).toBeVisible();
+    expect(screen.getByRole("columnheader", { name: "D11" })).toBeVisible();
   });
 
   test("omits the Number cell entirely when hasNumberColumn is false", async () => {
