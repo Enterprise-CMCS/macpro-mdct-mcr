@@ -13,8 +13,7 @@ export const planComplianceRoute: MultiformRoute = {
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
-      section: "",
-      subsection: "III. Plan compliance",
+      section: "III. Plan compliance",
       info: [
         {
           type: ReportFormFieldType.TEXT,
@@ -110,8 +109,7 @@ export const planComplianceRoute: MultiformRoute = {
       backButton: "Return to plan compliance dashboard",
       intro: {
         info: "Use this section to report on plan compliance with the state’s standards, as required at 42 C.F.R. § 438.68. This section is also used to report on plan compliance with 42 C.F.R. § 438.206 standards.",
-        section: "",
-        subsection: "Plan compliance data for {{planName}}",
+        section: "Plan compliance data for {{planName}}",
       },
     },
     forms: [

@@ -28,20 +28,20 @@ export const ReportPageIntro = ({
     <Box sx={sx.introBox} {...props}>
       {eyebrow ? (
         <Box>
-          <Text as="p" sx={sx.sectionHeading}>
+          <Text as="p" sx={sx.eyebrow}>
             {eyebrow}
           </Text>
-          <Heading as="h1" sx={sx.subsectionHeading}>
+          <Heading as="h1" sx={sx.sectionHeading}>
             {section}
           </Heading>
         </Box>
       ) : (
-        <Heading as="h1" sx={sx.sectionHeading}>
+        <Heading as="h1" sx={subsection ? sx.eyebrow : sx.sectionHeading}>
           {section}
         </Heading>
       )}
       {subsection && (
-        <Heading as="h2" sx={sx.subsectionHeading}>
+        <Heading as="h2" sx={sx.sectionHeading}>
           {subsection}
         </Heading>
       )}
@@ -80,12 +80,12 @@ const sx = {
   introBox: {
     marginBottom: "spacer4",
   },
-  sectionHeading: {
+  eyebrow: {
     color: "gray",
     fontSize: "md",
     marginBottom: "spacer1",
   },
-  subsectionHeading: {
+  sectionHeading: {
     fontWeight: "normal",
     fontSize: "4xl",
   },
