@@ -21,6 +21,7 @@ export const ExportedReportFieldRow = ({
   entityType,
   parentFieldCheckedChoiceIds,
   showHintText = true,
+  hasNumberColumn = true,
 }: Props) => {
   const { report } = useStore();
   const reportData = report?.fieldData;
@@ -34,10 +35,10 @@ export const ExportedReportFieldRow = ({
   return (
     <Tr data-testid="exportRow">
       {/* number column/cell */}
-      {!isDynamicField && (
+      {!isDynamicField && hasNumberColumn && (
         <Th sx={sx.numberColumn}>
           <Text sx={sx.fieldNumber}>
-            {formFieldInfo?.number?.replace(".", "") || "N/A"}
+            {formFieldInfo?.number?.replace(".", "") ?? ""}
           </Text>
         </Th>
       )}
@@ -86,6 +87,7 @@ export interface Props {
   entityType?: EntityType;
   parentFieldCheckedChoiceIds?: string[];
   showHintText?: boolean;
+  hasNumberColumn?: boolean;
 }
 
 const sx = {
