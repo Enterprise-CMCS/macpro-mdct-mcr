@@ -80,11 +80,15 @@ const sx = {
       margin: "1.5rem 0",
     },
     a: {
-      color: "base",
-      textDecoration: "none",
-      "&:hover": {
-        color: "base",
-        textDecoration: "none",
+      color: "primary",
+      textDecoration: "underline",
+      "&:visited": {
+        color: "primary",
+        textDecorationColor: "primary",
+      },
+      "&:hover, &:visited:hover": {
+        color: "primary_darker",
+        textDecorationColor: "primary_darker",
       },
     },
     h3: {
