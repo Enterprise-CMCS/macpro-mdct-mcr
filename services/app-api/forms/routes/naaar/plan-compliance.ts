@@ -13,7 +13,6 @@ export const planComplianceRoute: MultiformRoute = {
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
-      section: "",
       subsection: "III. Plan compliance",
       info: [
         {
@@ -110,7 +109,6 @@ export const planComplianceRoute: MultiformRoute = {
       backButton: "Return to plan compliance dashboard",
       intro: {
         info: "Use this section to report on plan compliance with the state’s standards, as required at 42 C.F.R. § 438.68. This section is also used to report on plan compliance with 42 C.F.R. § 438.206 standards.",
-        section: "",
         subsection: "Plan compliance data for {{planName}}",
       },
     },
@@ -158,9 +156,7 @@ export const planComplianceRoute: MultiformRoute = {
         verbiage: {
           heading: "A. Assurance of plan compliance for 438.68",
           hint: "III.A.1 Indicate whether the state assures that the plan complies with the state’s standards, as required at 42 C.F.R. § 438.68 (i.e., the standards previously entered by the state) based on each analysis the state conducted for the plan during the reporting period.",
-          intro: {
-            section: "",
-          },
+          intro: {},
         },
       },
       {

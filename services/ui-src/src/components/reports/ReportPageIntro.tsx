@@ -36,7 +36,10 @@ export const ReportPageIntro = ({
           </Heading>
         </Box>
       ) : (
-        <Heading as="h1" sx={sx.sectionHeading}>
+        <Heading
+          as="h1"
+          sx={subsection ? sx.sectionHeading : sx.subsectionHeading}
+        >
           {section}
         </Heading>
       )}
