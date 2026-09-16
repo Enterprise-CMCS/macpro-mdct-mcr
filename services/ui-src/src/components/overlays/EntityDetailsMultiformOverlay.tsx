@@ -464,7 +464,8 @@ const sx = {
     marginTop: "spacer_half",
   },
   heading: {
-    fontSize: "1.3rem",
+    fontSize: "lg",
+    paddingBottom: "0.75rem",
   },
   table: {
     marginBottom: "spacer3",
