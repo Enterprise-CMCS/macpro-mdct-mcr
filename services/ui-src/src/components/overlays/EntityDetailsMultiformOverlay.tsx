@@ -300,7 +300,7 @@ export const EntityDetailsMultiformOverlay = ({
         <Box>
           <Box sx={sx.introContainer}>
             {heading && (
-              <Heading as="h3" sx={sx.heading}>
+              <Heading as="h2" sx={sx.heading}>
                 {heading}
               </Heading>
             )}
