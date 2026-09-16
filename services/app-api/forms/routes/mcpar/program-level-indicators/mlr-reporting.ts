@@ -26,6 +26,7 @@ export const mlrReportingRoute: FormRoute = {
         props: {
           label: "C1.II.1 Submission Date of Most Recent MLR Report",
           hint: "When is the last date the state submitted the MLR Summary Report in the Medicaid Data Collection Tool (MDCT) MLR Portal for this program?",
+          warningMessage: "TEST WARNING",
         },
       },
       {
