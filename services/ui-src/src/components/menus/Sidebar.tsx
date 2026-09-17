@@ -61,10 +61,14 @@ export const Sidebar = ({ isHidden }: SidebarProps) => {
                 className={isOpen ? "left" : "right"}
               />
             </Box>
-            <Box id="sidebar-title-box" sx={sx.topBox}>
+            <Box id="sidebar-title-box" sx={sx.topBox} inert={!isOpen}>
               <Text sx={sx.title}>{reportJson.name}</Text>
             </Box>
-            <Box sx={sx.navSectionsBox} className="nav-sections-box">
+            <Box
+              sx={sx.navSectionsBox}
+              className="nav-sections-box"
+              inert={!isOpen}
+            >
               {reportJson.routes.map((section) => (
                 <NavSection key={section.name} section={section} level={1} />
               ))}
