@@ -12,6 +12,7 @@ export { AppRoutes } from "./app/AppRoutes";
 export { Error } from "./app/Error";
 export { MainSkipNav } from "./app/MainSkipNav";
 export { SkipNav } from "./app/SkipNav";
+export { WarningsContext, WarningsProvider } from "./app/WarningsContext";
 // banners
 export {
   AdminBannerContext,
