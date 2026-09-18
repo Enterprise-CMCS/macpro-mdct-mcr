@@ -26,7 +26,12 @@ import {
   mockMlrReportStore,
   mockNaaarReportStore,
 } from "utils/testing/setupJest";
-import { useBreakpoint, makeMediaQueryClasses, useStore } from "utils";
+import {
+  useBreakpoint,
+  makeMediaQueryClasses,
+  useStore,
+  convertDateUtcToEt,
+} from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
@@ -263,8 +268,10 @@ describe("<DashboardTable />", () => {
 
     test("Clicking the edit reporting button opens the AddEditProgramModal", async () => {
       render(dashboardViewWithReports);
+      const { dueDate: utcDueDate, programName } = mockMcparReportStore.report!;
+      const dueDate = convertDateUtcToEt(utcDueDate);
       const addReportButton = screen.getAllByRole("button", {
-        name: "Edit reporting",
+        name: `Edit reporting of ${programName} due ${dueDate}`,
       })[0];
       expect(addReportButton).toBeVisible();
       await act(async () => {
