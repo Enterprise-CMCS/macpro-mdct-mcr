@@ -150,7 +150,10 @@ export const planComplianceRoute: MultiformRoute = {
           headRow: [
             { hiddenName: "Status" },
             { hiddenName: "Report section" },
-            { hiddenName: "Action" },
+            {
+              hiddenName: "Action",
+              ariaLabel: "Enter/edit non-compliant/exception standards",
+            },
           ],
         },
         verbiage: {
@@ -198,7 +201,10 @@ export const planComplianceRoute: MultiformRoute = {
           headRow: [
             { hiddenName: "Status" },
             { hiddenName: "Report section" },
-            { hiddenName: "Action" },
+            {
+              hiddenName: "Action",
+              ariaLabel: "Enter/Edit plan non-compliance",
+            },
           ],
         },
         verbiage: {

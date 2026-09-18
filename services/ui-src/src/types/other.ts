@@ -61,6 +61,7 @@ export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
 export interface ScreenReaderCustomHeaderName {
   hiddenName?: string;
+  ariaLabel?: string;
   name?: string;
   align?: "left" | "center" | "right";
   colSpan?: number;

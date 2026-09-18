@@ -322,6 +322,8 @@ export const EntityDetailsMultiformOverlay = ({
     }) => {
       const headerName =
         typeof header === "object" ? header.hiddenName : header;
+      const actionButtonAriaLabel =
+        typeof header === "object" ? header.ariaLabel : undefined;
       const hasDetailsEnabled = formEnableDetails[formId];
       const isComplete = formCompletion[formId];
       const is438206Form = formId === "planCompliance438206";
@@ -340,6 +342,7 @@ export const EntityDetailsMultiformOverlay = ({
               onClick={() => getChildForm(formId)}
               sx={sx.tableButton}
               variant="outline"
+              aria-label={actionButtonAriaLabel}
             >
               {isComplete ? "Edit" : "Enter"}
             </Button>
