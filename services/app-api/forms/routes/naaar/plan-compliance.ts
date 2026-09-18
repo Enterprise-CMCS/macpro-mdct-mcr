@@ -152,7 +152,7 @@ export const planComplianceRoute: MultiformRoute = {
             { hiddenName: "Report section" },
             {
               hiddenName: "Action",
-              ariaLabel: "Enter/edit non-compliant/exception standards",
+              ariaLabel: "non-compliant/exception standards",
             },
           ],
         },
@@ -203,7 +203,7 @@ export const planComplianceRoute: MultiformRoute = {
             { hiddenName: "Report section" },
             {
               hiddenName: "Action",
-              ariaLabel: "Enter/Edit plan non-compliance",
+              ariaLabel: "plan non-compliance",
             },
           ],
         },

@@ -342,7 +342,11 @@ export const EntityDetailsMultiformOverlay = ({
               onClick={() => getChildForm(formId)}
               sx={sx.tableButton}
               variant="outline"
-              aria-label={actionButtonAriaLabel}
+              aria-label={
+                isComplete
+                  ? `Edit ${actionButtonAriaLabel}`
+                  : `Enter ${actionButtonAriaLabel}`
+              }
             >
               {isComplete ? "Edit" : "Enter"}
             </Button>
