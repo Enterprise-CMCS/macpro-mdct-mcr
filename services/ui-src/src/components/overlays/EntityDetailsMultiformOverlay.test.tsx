@@ -145,12 +145,12 @@ describe("<EntityDetailsMultiformOverlay />", () => {
         await userEvent.click(radioButtonYes);
       });
       await waitFor(() => {
-        const h3 = screen.getByRole("heading", {
-          level: 3,
+        const h2 = screen.getByRole("heading", {
+          level: 2,
           name: `Mock Heading${formId}`,
         });
         const accordion = screen.getByText(`Mock Accordion${formId}`);
-        expect(h3).toBeVisible();
+        expect(h2).toBeVisible();
         expect(accordion).toBeVisible();
 
         // Tables

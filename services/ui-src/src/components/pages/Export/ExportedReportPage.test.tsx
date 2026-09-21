@@ -97,7 +97,7 @@ describe("<ExportedReportPage />", () => {
   });
 
   describe("getNaaarSubmissionDate()", () => {
-    test("returns submitted text", () => {
+    test("returns submitted text for legacy label", () => {
       const report = {
         naaarSubmissionForThisProgram: [
           {
@@ -110,7 +110,7 @@ describe("<ExportedReportPage />", () => {
       expect(getNaaarSubmissionDate(report)).toBe("Submitted on 1/1/2025");
     });
 
-    test("returns expected submission text", () => {
+    test("returns expected submission text for legacy label", () => {
       const report = {
         naaarSubmissionForThisProgram: [
           {
@@ -121,6 +121,32 @@ describe("<ExportedReportPage />", () => {
         naaarExpectedSubmissionDateForThisProgram: "1/1/2025",
       } as ReportShape;
       expect(getNaaarSubmissionDate(report)).toBe("Plan to submit on 1/1/2025");
+    });
+
+    test("returns submitted text for current label", () => {
+      const report = {
+        naaarSubmissionForThisProgram: [
+          {
+            key: "mockId",
+            value: "Yes, I submitted it in MDCT",
+          },
+        ],
+        naaarSubmissionDateForThisProgram: "1/1/2026",
+      } as ReportShape;
+      expect(getNaaarSubmissionDate(report)).toBe("Submitted on 1/1/2026");
+    });
+
+    test("returns expected submission text for current label", () => {
+      const report = {
+        naaarSubmissionForThisProgram: [
+          {
+            key: "mockId",
+            value: "Yes, I plan on submitting it in MDCT",
+          },
+        ],
+        naaarExpectedSubmissionDateForThisProgram: "1/1/2026",
+      } as ReportShape;
+      expect(getNaaarSubmissionDate(report)).toBe("Plan to submit on 1/1/2026");
     });
 
     test("returns submission", () => {

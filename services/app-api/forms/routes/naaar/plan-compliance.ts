@@ -13,8 +13,7 @@ export const planComplianceRoute: MultiformRoute = {
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
-      section: "",
-      subsection: "III. Plan compliance",
+      section: "III. Plan compliance",
       info: [
         {
           type: ReportFormFieldType.TEXT,
@@ -110,8 +109,7 @@ export const planComplianceRoute: MultiformRoute = {
       backButton: "Return to plan compliance dashboard",
       intro: {
         info: "Use this section to report on plan compliance with the state’s standards, as required at 42 C.F.R. § 438.68. This section is also used to report on plan compliance with 42 C.F.R. § 438.206 standards.",
-        section: "",
-        subsection: "Plan compliance data for {{planName}}",
+        section: "Plan compliance data for {{planName}}",
       },
     },
     forms: [
@@ -439,8 +437,8 @@ export const planComplianceRoute: MultiformRoute = {
                 ],
               },
             ],
-            section: "III. Plan compliance data for {{planName}}",
-            subsection:
+            eyebrow: "III. Plan compliance data for {{planName}}",
+            section:
               "{{planName}}: Provide details about plan non-compliance or exceptions for this standard",
           },
         },
@@ -461,8 +459,8 @@ export const planComplianceRoute: MultiformRoute = {
               "Return to plan compliance data for {{planName}} dashboard",
             intro: {
               hint: "Select “Enter” for all of the standards that are not compliant or have an exception granted for the state’s 42 C.F.R. § 438.68 standards for the plan listed above. If a standard is fully compliant, you do not need to enter any additional information for that standard.",
-              section: "III. Plan compliance data for {{planName}}",
-              subsection:
+              eyebrow: "III. Plan compliance data for {{planName}}",
+              section:
                 "Select non-compliant or exception standards for 42 C.F.R. § 438.68",
             },
             totals: {
@@ -1452,8 +1450,8 @@ export const planComplianceRoute: MultiformRoute = {
                 ],
               },
             ],
-            section: "III. Plan compliance data for {{planName}}",
-            subsection:
+            eyebrow: "III. Plan compliance data for {{planName}}",
+            section:
               "{{planName}}: Provide plan compliance details for 438.206",
           },
         },

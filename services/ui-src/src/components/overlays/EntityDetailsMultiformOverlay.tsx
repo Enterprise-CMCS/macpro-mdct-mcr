@@ -300,7 +300,7 @@ export const EntityDetailsMultiformOverlay = ({
         <Box>
           <Box sx={sx.introContainer}>
             {heading && (
-              <Heading as="h3" sx={sx.heading}>
+              <Heading as="h2" sx={sx.heading}>
                 {heading}
               </Heading>
             )}
@@ -464,7 +464,8 @@ const sx = {
     marginTop: "spacer_half",
   },
   heading: {
-    fontSize: "1.3rem",
+    fontSize: "lg",
+    paddingBottom: "0.75rem",
   },
   table: {
     marginBottom: "spacer3",

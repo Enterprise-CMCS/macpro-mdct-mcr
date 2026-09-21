@@ -1,4 +1,4 @@
-import { ParentRoute } from "../../../../../../../utils/types";
+import { ParentRoute } from "../../../../../utils/types";
 import { instructionsRoute } from "./instructions";
 import { newPlanExemptionRoute } from "./new-plan-exemption";
 import { measuresAndResultsRoute } from "./measures-and-results";

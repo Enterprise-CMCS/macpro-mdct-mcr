@@ -119,8 +119,7 @@ describe("reports.ts", () => {
             mockSourceFieldData,
             mockReportQualityMeasuresJson,
             { stateName: "Minnesota" },
-            ReportType.MCPAR,
-            true // newQualityMeasuresSectionEnabled
+            ReportType.MCPAR
           );
           expect(res).toEqual({
             stateName: "Minnesota",

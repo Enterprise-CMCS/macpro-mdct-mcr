@@ -161,6 +161,7 @@ export interface ReportPageVerbiage {
   intro: {
     alert?: string;
     hint?: string;
+    eyebrow?: string;
     section: string;
     subsection?: string;
     spreadsheet?: string;
@@ -269,7 +270,6 @@ export interface MCPARReportMetadata extends ReportMetadata {
   newProgramName?: string;
   naaarSubmissionDateForThisProgram?: string;
   naaarExpectedSubmissionDateForThisProgram?: string;
-  newQualityMeasuresSectionEnabled?: boolean;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {
