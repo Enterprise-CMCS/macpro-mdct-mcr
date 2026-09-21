@@ -52,7 +52,8 @@ export const Sidebar = ({ isHidden }: SidebarProps) => {
               as="button"
               sx={sx.closeButton}
               onClick={() => toggleSidebar(!isOpen)}
-              aria-label="Open/Close sidebar menu"
+              aria-label="Sidebar"
+              aria-expanded={isOpen}
             >
               <Image
                 src={arrowDownIcon}
