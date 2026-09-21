@@ -35,7 +35,8 @@ import iconSearchSubmitted from "assets/icons/icon_search_white.png";
 export const ReviewSubmitPage = () => {
   const Helmet = HelmetImport as ComponentClass<HelmetProps>;
 
-  const { fetchReport, submitReport } = useContext(ReportContext);
+  const { fetchReport, recalculateReport, submitReport } =
+    useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -65,13 +66,17 @@ export const ReviewSubmitPage = () => {
 
   useEffect(() => {
     if (report?.id) {
-      fetchReport(reportKeys);
+      /*
+       * Recalculate (and persist) completion status from the current field data
+       * so section statuses reflect the current validation rules, then refresh.
+       */
+      recalculateReport(reportKeys);
     }
   }, []);
 
   useEffect(() => {
     setHasError(!!document.querySelector("img[alt='Error notification']"));
-  }, [fetchReport]);
+  }, [fetchReport, recalculateReport]);
 
   useEffect(() => {
     setIsPermittedToSubmit(

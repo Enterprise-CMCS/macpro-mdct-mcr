@@ -65,6 +65,7 @@ export interface ReportContextMethods {
   archiveReport: Function;
   releaseReport: Function;
   submitReport: Function;
+  recalculateReport: Function;
   createReport: Function;
   updateReport: Function;
   clearReportSelection: Function;

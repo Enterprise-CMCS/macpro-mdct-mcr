@@ -112,6 +112,16 @@ describe("<ReviewSubmitPage />", () => {
       jest.clearAllMocks();
     });
 
+    test("Recalculates completion status on load", () => {
+      render(ReviewSubmitPageComponent(mockMcparReportContext));
+      expect(mockMcparReportContext.recalculateReport).toHaveBeenCalledWith(
+        expect.objectContaining({
+          reportType: mockMcparReportContext.report.reportType,
+          id: mockMcparReportContext.report.id,
+        })
+      );
+    });
+
     describe("User has not started filling out the form", () => {
       test("Show alert message if status is NOT_STARTED and is not able to be submitted", () => {
         render(ReviewSubmitPageComponent(mockMcparReportContext));

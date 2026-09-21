@@ -373,6 +373,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             {existingStandards && (
               <SortableNaaarStandardsTable
                 entities={entities}
+                drawerForm={route.drawerForm}
                 openRowDrawer={openRowDrawer}
                 openDeleteEntityModal={openDeleteEntityModal}
               />
