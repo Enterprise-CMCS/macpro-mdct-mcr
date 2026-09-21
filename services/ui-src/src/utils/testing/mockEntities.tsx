@@ -120,6 +120,7 @@ export const mockCompletedQualityMeasuresFormattedEntityData = {
   ],
   reportingRateType: "Cross-program rate: Mock program list",
   set: "Mock Set",
+  allPlansExempted: false,
 };
 
 export const mockQualityMeasuresEntityV2 = {
@@ -226,6 +227,7 @@ export const mockCompletedQualityMeasuresFormattedEntityDataV2 = {
       ],
     },
   ],
+  allPlansExempted: false,
 };
 
 export const mockPartialQualityMeasuresFormattedEntityDataV2 = {
@@ -249,6 +251,7 @@ export const mockPartialQualityMeasuresFormattedEntityDataV2 = {
       planName: "mock-plan-name-2",
     },
   ],
+  allPlansExempted: false,
 };
 
 export const mockQualityMeasuresFormattedEntityDataV2WithExemptions = {
@@ -273,7 +276,15 @@ export const mockQualityMeasuresFormattedEntityDataV2WithExemptions = {
       exempt: true,
     },
   ],
+  allPlansExempted: false,
 };
+
+export const mockUnfinishedQualityMeasuresFormattedEntityDataV2WithAllExemptPlans =
+  {
+    id: "mock-id-12345",
+    name: "Mock Measure Name V2",
+    allPlansExempted: true,
+  };
 
 export const mockSanctionsEntity = {
   id: "mock-id",

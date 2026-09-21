@@ -19,6 +19,8 @@ import {
   mockUnfinishedQualityMeasuresFormattedEntityDataV2,
   mockPartialQualityMeasuresFormattedEntityDataV2,
   mockQualityMeasuresFormattedEntityDataV2WithExemptions,
+  mockQualityMeasuresEntityV2,
+  mockUnfinishedQualityMeasuresFormattedEntityDataV2WithAllExemptPlans,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
@@ -580,7 +582,7 @@ describe("<EntityCard />", () => {
     });
   });
 
-  describe("entity: quality measures new structure", () => {
+  describe("entity: quality measures v2", () => {
     test.each([
       {
         name: "complete measure",
@@ -590,6 +592,11 @@ describe("<EntityCard />", () => {
       {
         name: "complete measure with exemptions",
         data: mockQualityMeasuresFormattedEntityDataV2WithExemptions,
+        expectedComplete: true,
+      },
+      {
+        name: "incomplete measure with all exempt plans",
+        data: mockUnfinishedQualityMeasuresFormattedEntityDataV2WithAllExemptPlans,
         expectedComplete: true,
       },
       {
@@ -607,7 +614,7 @@ describe("<EntityCard />", () => {
       ({ data, expectedComplete }) => {
         render(
           <EntityCard
-            entity={mockQualityMeasuresEntity}
+            entity={mockQualityMeasuresEntityV2}
             entityIndex={0}
             entityType={EntityType.QUALITY_MEASURES}
             formattedEntityData={data}
