@@ -95,7 +95,7 @@ async function setupChildTableFormTest(
   // Click Enter
   const updatedEnterButton = within(updatedEntityCellsIncomplete).getByRole(
     "button",
-    { name: "Enter" }
+    { name: "Enter mock aria label" }
   );
   await act(async () => {
     await userEvent.click(updatedEnterButton);
@@ -107,7 +107,7 @@ async function setupChildTableFormTest(
 
   // Click Enter in Child Table
   const childTableButton = within(childTable).getByRole("button", {
-    name: childButtonText,
+    name: /enter/i,
   });
   await act(async () => {
     await userEvent.click(childTableButton);
@@ -164,9 +164,8 @@ describe("<EntityDetailsMultiformOverlay />", () => {
           name: `Mock Cell${formId} Enter`,
         });
         const enterButton = within(entityCells).getByRole("button", {
-          name: "Enter",
+          name: "Enter mock aria label",
         });
-
         expect(entityTable).toBeVisible();
         expect(entityHeaders).toBeVisible();
         expect(entityCells).toBeVisible();
