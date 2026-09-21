@@ -105,8 +105,6 @@ describe("<SortableNaaarStandardsTable /> status column", () => {
     expect(screen.getByRole("columnheader", { name: /Status/ })).toBeVisible();
     expect(screen.getAllByAltText("complete icon")).toHaveLength(1);
     expect(screen.getAllByAltText("warning icon")).toHaveLength(1);
-    expect(screen.getByText("Error")).toBeVisible();
-    expect(screen.getByText("Complete")).toBeVisible();
   });
 
   testA11yAct(tableWithStatusComponent);

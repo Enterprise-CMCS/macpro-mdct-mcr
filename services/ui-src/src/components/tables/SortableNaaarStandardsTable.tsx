@@ -1,4 +1,4 @@
-import { Box, Button, Image, Text } from "@chakra-ui/react";
+import { Button, Image, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 // components
 import {
@@ -39,17 +39,7 @@ export const SortableNaaarStandardsTable = ({
     const { entity } = originalRowData;
     switch (headKey) {
       case "status":
-        return (
-          <Box sx={sx.status}>
-            <EntityStatusIcon isComplete={!!value} />
-            <Text
-              sx={sx.statusText}
-              color={value ? "success_darker" : "error_darker"}
-            >
-              {value ? "Complete" : "Error"}
-            </Text>
-          </Box>
-        );
+        return <EntityStatusIcon isComplete={!!value} />;
 
       case "standardType":
         return <Text sx={sx.bold}>{value}</Text>;
@@ -133,15 +123,6 @@ interface Props {
 }
 
 const sx = {
-  status: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  statusText: {
-    fontSize: "xs",
-    fontWeight: "bold",
-  },
   deleteButton: {
     marginRight: "-2.5rem",
     padding: 0,
