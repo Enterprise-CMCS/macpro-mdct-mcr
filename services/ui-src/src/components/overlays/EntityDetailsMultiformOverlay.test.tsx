@@ -107,7 +107,7 @@ async function setupChildTableFormTest(
 
   // Click Enter in Child Table
   const childTableButton = within(childTable).getByRole("button", {
-    name: /enter/i,
+    name: childButtonText,
   });
   await act(async () => {
     await userEvent.click(childTableButton);
@@ -195,7 +195,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     const updatedEnterButton = within(updatedEntityCellsIncomplete).getByRole(
       "button",
       {
-        name: "Enter",
+        name: "Enter mock aria label",
       }
     );
     await act(async () => {
@@ -308,7 +308,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     const updatedEnterButton = within(entityCellsIncomplete).getByRole(
       "button",
       {
-        name: "Enter",
+        name: "Enter mock aria label",
       }
     );
     await act(async () => {
