@@ -90,6 +90,24 @@ const RadioComponent = (
   />
 );
 
+const mockExclusiveChoice = {
+  id: "None",
+  name: "None",
+  label: "None",
+  value: "None",
+  checked: false,
+  mutuallyExclusive: true,
+};
+
+const CheckboxComponentWithExclusiveChoice = (
+  <ChoiceListField
+    choices={[...mockChoices, mockChoiceWithChild, mockExclusiveChoice]}
+    label="Checkbox with exclusive choice example"
+    name="checkboxFieldWithExclusiveChoice"
+    type="checkbox"
+  />
+);
+
 describe("<ChoiceListField />", () => {
   describe("Test ChoiceListField component rendering", () => {
     test("ChoiceList should render a normal Radiofield that doesn't have children", () => {
@@ -874,6 +892,102 @@ describe("<ChoiceListField />", () => {
         wrapper.container.querySelector("[name='Choice 6']")!;
 
       expect(childCheckboxCleared).not.toBeChecked;
+    });
+  });
+
+  describe("Test Choicelist mutually exclusive choices", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test("Checking a mutually exclusive choice unchecks all other selected choices", () => {
+      mockGetValues([
+        { key: "Choice 1", value: "Choice 1" },
+        { key: "Choice 2", value: "Choice 2" },
+      ]);
+
+      const wrapper = render(CheckboxComponentWithExclusiveChoice);
+
+      const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
+      const secondCheckbox = wrapper.getByRole("checkbox", {
+        name: "Choice 2",
+      });
+      const exclusiveCheckbox = wrapper.getByRole("checkbox", { name: "None" });
+
+      // Confirm the two non-exclusive choices start selected
+      expect(firstCheckbox).toBeChecked();
+      expect(secondCheckbox).toBeChecked();
+      expect(exclusiveCheckbox).not.toBeChecked();
+
+      // Check the exclusive choice
+      fireEvent.click(exclusiveCheckbox);
+
+      // Only the exclusive choice should remain checked
+      expect(exclusiveCheckbox).toBeChecked();
+      expect(firstCheckbox).not.toBeChecked();
+      expect(secondCheckbox).not.toBeChecked();
+
+      // The form value should contain only the exclusive choice
+      expect(mockSetValue).toHaveBeenCalledWith(
+        "checkboxFieldWithExclusiveChoice",
+        [{ key: "None", value: "None" }],
+        { shouldValidate: true }
+      );
+    });
+
+    test("Checking another choice unchecks the mutually exclusive choice", () => {
+      mockGetValues([{ key: "None", value: "None" }]);
+
+      const wrapper = render(CheckboxComponentWithExclusiveChoice);
+
+      const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
+      const exclusiveCheckbox = wrapper.getByRole("checkbox", { name: "None" });
+
+      // Confirm the exclusive choice starts selected
+      expect(exclusiveCheckbox).toBeChecked();
+      expect(firstCheckbox).not.toBeChecked();
+
+      // Check a non-exclusive choice
+      fireEvent.click(firstCheckbox);
+
+      // The exclusive choice should be cleared, leaving only the new choice
+      expect(firstCheckbox).toBeChecked();
+      expect(exclusiveCheckbox).not.toBeChecked();
+
+      expect(mockSetValue).toHaveBeenCalledWith(
+        "checkboxFieldWithExclusiveChoice",
+        [{ key: "Choice 1", value: "Choice 1" }],
+        { shouldValidate: true }
+      );
+    });
+
+    test("Checking a mutually exclusive choice clears nested child data of other choices", () => {
+      mockGetValues(undefined);
+
+      const wrapper = render(CheckboxComponentWithExclusiveChoice);
+
+      const parentCheckbox = wrapper.getByRole("checkbox", {
+        name: "Choice 3",
+      });
+      const exclusiveCheckbox = wrapper.getByRole("checkbox", { name: "None" });
+
+      // Select the choice that has a nested "Other, specify" text child
+      fireEvent.click(parentCheckbox);
+      expect(parentCheckbox).toBeChecked();
+
+      const childTextBox: HTMLInputElement = wrapper.container.querySelector(
+        "[name='Choice 3-otherText']"
+      )!;
+      fireEvent.change(childTextBox, { target: { value: "Added Text" } });
+      expect(childTextBox.value).toBe("Added Text");
+
+      // Check the exclusive choice
+      fireEvent.click(exclusiveCheckbox);
+
+      // The exclusive choice wins and the nested child data is cleared
+      expect(exclusiveCheckbox).toBeChecked();
+      expect(parentCheckbox).not.toBeChecked();
+      expect(mockSetValue).toHaveBeenCalledWith("Choice 3-otherText", "");
     });
   });
 

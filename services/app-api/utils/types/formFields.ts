@@ -93,6 +93,8 @@ export interface FieldChoice {
   checked?: boolean;
   children?: FormField[];
   checkedChildren?: any;
+  // when checked, deselects all other choices in the field (and vice versa)
+  mutuallyExclusive?: boolean;
 }
 export interface Choice {
   key: string; // choice.name

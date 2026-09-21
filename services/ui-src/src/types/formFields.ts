@@ -104,6 +104,8 @@ export interface FieldChoice {
   checked?: boolean;
   children?: FormField[];
   checkedChildren?: React.ReactNode;
+  // when checked, deselects all other choices in the field (and vice versa)
+  mutuallyExclusive?: boolean;
 }
 
 export interface ChoiceFieldProps {
