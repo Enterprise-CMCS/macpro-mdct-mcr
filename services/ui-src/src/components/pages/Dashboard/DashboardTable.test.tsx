@@ -181,7 +181,7 @@ describe("<DashboardTable />", () => {
           })
         ).toBeVisible();
         expect(
-          screen.getAllByRole("cell", { name: "testProgram" })[0]
+          screen.getAllByRole("rowheader", { name: "testProgram" })[0]
         ).toBeVisible();
         expect(
           screen.queryByText(mcparVerbiage.body.empty)
@@ -204,7 +204,7 @@ describe("<DashboardTable />", () => {
           })
         ).toBeVisible();
         expect(
-          screen.getAllByRole("cell", { name: "testSubmission" })[0]
+          screen.getAllByRole("rowheader", { name: "testSubmission" })[0]
         ).toBeVisible();
         expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
       });

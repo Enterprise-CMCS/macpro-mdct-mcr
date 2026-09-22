@@ -442,7 +442,7 @@ export const parseFormFieldInfo = (formFieldProps?: AnyObject) => {
     return {};
   const labelArray = formFieldProps?.label?.split(" ");
   return {
-    number: labelArray?.[0].match(/[-.0-9]+/) ? labelArray?.[0] : "N/A",
+    number: labelArray?.[0].match(/[-.0-9]+/) ? labelArray?.[0] : undefined,
     label: labelArray?.[0].match(/[-.0-9]+/)
       ? labelArray?.slice(1)?.join(" ")
       : labelArray?.join(" "),

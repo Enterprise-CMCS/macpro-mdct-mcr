@@ -111,7 +111,10 @@ export class AdminPage extends BasePage {
   async getReportRow(programName: string) {
     const table = this.page.getByRole("table");
     return table.getByRole("row").filter({
-      has: this.page.getByRole("cell", { name: programName, exact: true }),
+      has: this.page.getByRole("rowheader", {
+        name: programName,
+        exact: true,
+      }),
     });
   }
 }

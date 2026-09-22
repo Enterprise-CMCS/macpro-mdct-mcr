@@ -35,11 +35,11 @@ import iconSearchSubmitted from "assets/icons/icon_search_white.png";
 export const ReviewSubmitPage = () => {
   const Helmet = HelmetImport as ComponentClass<HelmetProps>;
 
-  const { fetchReport, submitReport } = useContext(ReportContext);
+  const { fetchReport, recalculateReport, submitReport } =
+    useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [hasError, setHasError] = useState<boolean>(false);
   const [isPermittedToSubmit, setIsPermittedToSubmit] =
     useState<boolean>(false);
 
@@ -65,22 +65,27 @@ export const ReviewSubmitPage = () => {
 
   useEffect(() => {
     if (report?.id) {
-      fetchReport(reportKeys);
+      /*
+       * State users recalculate (and persist) completion status from the current
+       * field data so section statuses reflect the current validation rules,
+       * then refresh. Other roles cannot write, so they only refresh.
+       */
+      if (userIsEndUser) {
+        recalculateReport(reportKeys);
+      } else {
+        fetchReport(reportKeys);
+      }
     }
   }, []);
-
-  useEffect(() => {
-    setHasError(!!document.querySelector("img[alt='Error notification']"));
-  }, [fetchReport]);
 
   useEffect(() => {
     setIsPermittedToSubmit(
       (userIsEndUser &&
         report?.status === ReportStatus.IN_PROGRESS &&
-        !hasError) ||
+        Boolean(report?.isComplete)) ||
         false
     );
-  }, [userIsEndUser, report?.status, hasError]);
+  }, [userIsEndUser, report?.status, report?.isComplete]);
 
   const submitForm = async () => {
     setSubmitting(true);
@@ -100,7 +105,7 @@ export const ReviewSubmitPage = () => {
       <Helmet>
         <title>{reviewAndSubmitVerbiage.title}</title>
       </Helmet>
-      {(hasError || report?.status === ReportStatus.NOT_STARTED) && (
+      {(!report?.isComplete || report?.status === ReportStatus.NOT_STARTED) && (
         <Box sx={sx.alert}>
           <Alert
             title={alertBox.title}

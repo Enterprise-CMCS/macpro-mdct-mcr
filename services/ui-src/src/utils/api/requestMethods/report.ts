@@ -13,6 +13,12 @@ async function releaseReport(reportKeys: ReportKeys) {
   return put<ReportShape>(path);
 }
 
+async function recalculateReport(reportKeys: ReportKeys) {
+  const { reportType, state, id } = reportKeys;
+  const path = `/reports/recalculate/${reportType}/${state}/${id}`;
+  return put<ReportShape>(path);
+}
+
 async function submitReport(reportKeys: ReportKeys) {
   const { reportType, state, id } = reportKeys;
   const path = `/reports/submit/${reportType}/${state}/${id}`;
@@ -58,5 +64,6 @@ export {
   postReport,
   putReport,
   getReportsByState,
+  recalculateReport,
   submitReport,
 };

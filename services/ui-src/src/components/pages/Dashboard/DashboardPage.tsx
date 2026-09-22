@@ -443,6 +443,10 @@ const sxChildStyles = {
   programNameText: {
     fontSize: "md",
     fontWeight: "bold",
+    textTransform: "none",
+    letterSpacing: "normal",
+    fontFamily: "body",
+    color: "inherit",
     width: "13rem",
     maxWidth: "13rem",
     ".tablet &, .mobile &": {

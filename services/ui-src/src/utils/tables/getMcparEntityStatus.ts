@@ -24,11 +24,14 @@ export const getMcparEntityStatus = (
   )
     return false;
 
-  const nonExemptPlans = getPlansNotExemptFromQualityMeasures(report);
-  const qualityMeasures = report.fieldData?.qualityMeasures;
-
+  const nonExemptPlans = getPlansNotExemptFromQualityMeasures(
+    plans,
+    report.fieldData?.plansExemptFromQualityMeasures
+  );
   // If all plans are exempted, return true (nothing to complete)
   if (nonExemptPlans.length === 0) return true;
+
+  const qualityMeasures = report.fieldData?.qualityMeasures;
 
   return nonExemptPlans.every((plan: EntityShape) =>
     calculateIsEntityCompleted({

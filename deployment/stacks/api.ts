@@ -224,6 +224,16 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  new Lambda(scope, "recalculateReport", {
+    entry: "services/app-api/handlers/reports/recalculate.ts",
+    handler: "recalculateReport",
+    path: "/reports/recalculate/{reportType}/{state}/{id}",
+    method: "PUT",
+    memorySize: 2048,
+    timeout: Duration.seconds(30),
+    ...commonProps,
+  });
+
   new LambdaDynamoEventSource(scope, "postKafkaData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
     handler: "handler",

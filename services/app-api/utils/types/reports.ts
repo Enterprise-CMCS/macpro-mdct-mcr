@@ -161,6 +161,7 @@ export interface ReportPageVerbiage {
   intro: {
     alert?: string;
     hint?: string;
+    eyebrow?: string;
     section: string;
     subsection?: string;
     spreadsheet?: string;

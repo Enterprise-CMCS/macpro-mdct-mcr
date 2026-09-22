@@ -59,12 +59,21 @@ export const getNestedFields = (
   selectedChoices: Choice[],
   dataForObject: AnyObject
 ) => {
-  const selectedChoicesIds = selectedChoices
-    .map((choice: Choice) => choice.key)
-    .map((choiceId: string) => choiceId?.split("-").pop());
+  const selectedChoiceKeys = selectedChoices.map(
+    (choice: Choice) => choice.key
+  );
+  /*
+   * Stored choice keys are prefixed with the parent field id (e.g. "fieldId-choiceId").
+   * Most template choice ids are bare, but some (e.g. standard_coreProviderType)
+   * are already prefixed in the template, so match on either shape.
+   */
   const selectedChoicesWithChildren = fieldChoices?.filter(
     (fieldChoice: FieldChoice) =>
-      selectedChoicesIds.includes(fieldChoice.id) && fieldChoice.children
+      fieldChoice.children &&
+      selectedChoiceKeys.some(
+        (key: string) =>
+          key === fieldChoice.id || key.endsWith(`-${fieldChoice.id}`)
+      )
   );
   const fieldIds: string[] = [];
   selectedChoicesWithChildren?.forEach((selectedChoice: FieldChoice) => {
