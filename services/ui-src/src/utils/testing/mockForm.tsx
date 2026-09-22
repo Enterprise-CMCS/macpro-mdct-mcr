@@ -938,7 +938,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
           headRow: [
             { hiddenName: "Status" },
             "Mock Table Header",
-            { hiddenName: "Action" },
+            { hiddenName: "Action", ariaLabel: "mock aria label" },
           ],
         },
         verbiage: {
@@ -1027,7 +1027,7 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
           headRow: [
             { hiddenName: "Status" },
             "Mock Table Header 2",
-            { hiddenName: "Action" },
+            { hiddenName: "Action", ariaLabel: "mock aria label" },
           ],
         },
         verbiage: {

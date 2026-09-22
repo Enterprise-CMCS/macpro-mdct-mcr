@@ -391,7 +391,7 @@ describe("<OverlayReportPage />", () => {
 
         // Enter enabled only with "No"
         const enterButtonParentForm = screen.getByRole("button", {
-          name: "Enter",
+          name: "Enter mock aria label",
         });
         await act(async () => {
           await userEvent.click(enterButtonParentForm);

@@ -1,22 +1,34 @@
-import { Button, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Image, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 // components
-import { generateColumns, SortableTable, MobileTable } from "components";
+import {
+  EntityStatusIcon,
+  generateColumns,
+  SortableTable,
+  MobileTable,
+} from "components";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 // types
-import { EntityShape, NaaarStandardsTableShape } from "types";
+import { EntityShape, FormJson, NaaarStandardsTableShape } from "types";
 // utils
-import { mapNaaarStandardsData, useBreakpoint } from "utils";
+import { getStandardStatus, mapNaaarStandardsData, useBreakpoint } from "utils";
 
 export const SortableNaaarStandardsTable = ({
   entities,
+  drawerForm,
   openRowDrawer,
   openDeleteEntityModal,
 }: Props) => {
-  const data = useMemo(
-    () => mapNaaarStandardsData<NaaarStandardsTableShape>(entities),
-    [entities]
-  );
+  // status column is only shown when the drawer form is available to check against
+  const showStatus = Boolean(drawerForm?.fields);
+  const data = useMemo(() => {
+    const rows = mapNaaarStandardsData<NaaarStandardsTableShape>(entities);
+    if (!showStatus) return rows;
+    return rows.map((row) => ({
+      ...row,
+      status: getStandardStatus(row.entity, drawerForm?.fields),
+    }));
+  }, [entities, drawerForm]);
   const { isTablet, isMobile } = useBreakpoint();
 
   const customCells = (
@@ -26,6 +38,19 @@ export const SortableNaaarStandardsTable = ({
   ) => {
     const { entity } = originalRowData;
     switch (headKey) {
+      case "status":
+        return (
+          <Box sx={sx.status}>
+            <EntityStatusIcon isComplete={Boolean(value)} />
+            <Text
+              sx={sx.statusText}
+              color={value ? "success_darker" : "error_darker"}
+            >
+              {value ? "Complete" : "Error"}
+            </Text>
+          </Box>
+        );
+
       case "standardType":
         return <Text sx={sx.bold}>{value}</Text>;
 
@@ -64,6 +89,7 @@ export const SortableNaaarStandardsTable = ({
   };
 
   const sortableHeadRow = {
+    ...(showStatus && { status: { header: "Status" } }),
     count: { header: "#" },
     provider: { header: "Provider" },
     standardType: { header: "Standard type" },
@@ -97,11 +123,25 @@ export const SortableNaaarStandardsTable = ({
 
 interface Props {
   entities: EntityShape[];
+  /**
+   * Drawer form for the standards; when provided, a status column flags standards
+   * that are missing required answers (e.g. required specialty details).
+   */
+  drawerForm?: FormJson;
   openRowDrawer: Function;
   openDeleteEntityModal: Function;
 }
 
 const sx = {
+  status: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  statusText: {
+    fontSize: "xs",
+    fontWeight: "bold",
+  },
   deleteButton: {
     marginRight: "-2.5rem",
     padding: 0,

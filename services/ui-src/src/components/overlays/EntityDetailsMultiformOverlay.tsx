@@ -300,7 +300,7 @@ export const EntityDetailsMultiformOverlay = ({
         <Box>
           <Box sx={sx.introContainer}>
             {heading && (
-              <Heading as="h3" sx={sx.heading}>
+              <Heading as="h2" sx={sx.heading}>
                 {heading}
               </Heading>
             )}
@@ -322,6 +322,8 @@ export const EntityDetailsMultiformOverlay = ({
     }) => {
       const headerName =
         typeof header === "object" ? header.hiddenName : header;
+      const actionButtonAriaLabel =
+        typeof header === "object" ? header.ariaLabel : undefined;
       const hasDetailsEnabled = formEnableDetails[formId];
       const isComplete = formCompletion[formId];
       const is438206Form = formId === "planCompliance438206";
@@ -340,6 +342,11 @@ export const EntityDetailsMultiformOverlay = ({
               onClick={() => getChildForm(formId)}
               sx={sx.tableButton}
               variant="outline"
+              aria-label={
+                isComplete
+                  ? `Edit ${actionButtonAriaLabel}`
+                  : `Enter ${actionButtonAriaLabel}`
+              }
             >
               {isComplete ? "Edit" : "Enter"}
             </Button>
@@ -464,7 +471,8 @@ const sx = {
     marginTop: "spacer_half",
   },
   heading: {
-    fontSize: "1.3rem",
+    fontSize: "lg",
+    paddingBottom: "0.75rem",
   },
   table: {
     marginBottom: "spacer3",

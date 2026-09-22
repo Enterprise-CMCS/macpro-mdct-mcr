@@ -95,7 +95,7 @@ async function setupChildTableFormTest(
   // Click Enter
   const updatedEnterButton = within(updatedEntityCellsIncomplete).getByRole(
     "button",
-    { name: "Enter" }
+    { name: "Enter mock aria label" }
   );
   await act(async () => {
     await userEvent.click(updatedEnterButton);
@@ -145,12 +145,12 @@ describe("<EntityDetailsMultiformOverlay />", () => {
         await userEvent.click(radioButtonYes);
       });
       await waitFor(() => {
-        const h3 = screen.getByRole("heading", {
-          level: 3,
+        const h2 = screen.getByRole("heading", {
+          level: 2,
           name: `Mock Heading${formId}`,
         });
         const accordion = screen.getByText(`Mock Accordion${formId}`);
-        expect(h3).toBeVisible();
+        expect(h2).toBeVisible();
         expect(accordion).toBeVisible();
 
         // Tables
@@ -164,9 +164,8 @@ describe("<EntityDetailsMultiformOverlay />", () => {
           name: `Mock Cell${formId} Enter`,
         });
         const enterButton = within(entityCells).getByRole("button", {
-          name: "Enter",
+          name: "Enter mock aria label",
         });
-
         expect(entityTable).toBeVisible();
         expect(entityHeaders).toBeVisible();
         expect(entityCells).toBeVisible();
@@ -196,7 +195,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     const updatedEnterButton = within(updatedEntityCellsIncomplete).getByRole(
       "button",
       {
-        name: "Enter",
+        name: "Enter mock aria label",
       }
     );
     await act(async () => {
@@ -309,7 +308,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     const updatedEnterButton = within(entityCellsIncomplete).getByRole(
       "button",
       {
-        name: "Enter",
+        name: "Enter mock aria label",
       }
     );
     await act(async () => {

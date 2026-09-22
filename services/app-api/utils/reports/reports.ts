@@ -5,6 +5,7 @@ import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplate
 import s3Lib, { getFieldDataKey } from "../s3/s3-lib";
 import {
   AnyObject,
+  Choice,
   EntityShape,
   EntityType,
   ReportType,
@@ -159,7 +160,7 @@ export function cleanupOtherTextFields(fieldData: AnyObject): AnyObject {
 
 export const getPlansNotExemptFromQualityMeasures = (
   plans: EntityShape[] = [],
-  exemptPlans: AnyObject[] = []
+  exemptPlans: Choice[] = []
 ): EntityShape[] => {
   const exemptedPlanIds = exemptPlans.map((exemption) =>
     exemption.key.replace("plansExemptFromQualityMeasures-", "")

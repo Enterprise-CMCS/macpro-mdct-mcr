@@ -1,5 +1,5 @@
 // components
-import { Box, Button, Flex, Td, Tr } from "@chakra-ui/react";
+import { Box, Button, Flex, Th, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
 // types
 import { ReportMetadataShape, ReportType } from "types";
@@ -39,9 +39,9 @@ export const DashboardTable = ({
       return (
         <Tr key={report.id}>
           {/* Report Name */}
-          <Td sx={sxOverride.programNameText}>
+          <Th scope="row" sx={sxOverride.programNameText}>
             {report.submissionName || report.programName}
-          </Td>
+          </Th>
           {/* Plan type (NAAAR only) */}
           {report.reportType === ReportType.NAAAR && (
             <Td>
@@ -125,7 +125,7 @@ export const DashboardTable = ({
 const sx = {
   table: {
     marginBottom: "spacer5",
-    th: {
+    "thead th": {
       padding: "0.5rem 0",
       borderBottom: "1px solid",
       borderColor: "gray_light",
@@ -139,7 +139,7 @@ const sx = {
       borderBottom: "1px solid",
       borderColor: "gray_light",
     },
-    td: {
+    "td, th[scope='row']": {
       minWidth: "6rem",
       padding: "0.5rem",
       paddingLeft: 0,

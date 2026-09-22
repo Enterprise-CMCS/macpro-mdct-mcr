@@ -84,6 +84,10 @@ echo "Dependency install failed" >&2; exit 1; }
 if [ "$UPDATE_ENV" = true ]; then
     echo "Running update-env..."
     ./cli/run.ts update-env
+
+    if [ ${#ARGS[@]} -eq 0 ]; then
+        exit 0
+    fi
 fi
 
 # run the CLI
