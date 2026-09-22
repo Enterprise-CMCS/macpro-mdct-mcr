@@ -1,23 +1,28 @@
-import { FieldValue } from "types";
+import { EntityShape, FieldValue, ReportShape } from "types";
+// TODO: REMOVE BEFORE MERGE - only needed by the test warning rule
+import { dateFormatRegex } from "utils/validation/schemas";
 
-// Warning rules must remain pure functions with no React dependencies.
-// This ensures they can be called from either useFormWarnings or
-// the custom resolver in Phase 3 without modification.
+export interface WarningContext {
+  report?: ReportShape;
+  selectedEntity?: EntityShape;
+}
+
+export type WarningRule = (
+  value: FieldValue | null | undefined,
+  context: WarningContext
+) => string | null;
 
 // Warning rule functions — defined once per warning type
-const warningRules: Record<
-  string,
-  (value: FieldValue | null | undefined) => string | null
-> = {
+const warningRules: Record<string, WarningRule> = {
   // TODO: REMOVE BEFORE MERGE - test warning rule
-  DATE_BEFORE_2020: (value: FieldValue | null | undefined) =>
+  DATE_BEFORE_2020: (value) =>
     value && new Date(value as string) < new Date("2020-01-01")
       ? "Date is before 2020 — is this correct?"
       : null,
   // Warning rules will be added here in subsequent tickets
 };
 
-// Field to warning type mapping — assign warning types to field ids here
+// Field to warning type mapping — assign warning types to field names here
 const fieldWarningMap: Record<string, string> = {
   // TODO: REMOVE BEFORE MERGE - test field mapping
   program_whenWasTheLastParityAnalysisCoveringThisProgramCompleted:
@@ -26,12 +31,15 @@ const fieldWarningMap: Record<string, string> = {
 };
 
 export const validateFieldWarning = (
-  fieldId: string,
-  value: FieldValue | null | undefined
+  fieldName: string,
+  value: FieldValue | null | undefined,
+  context: WarningContext = {},
+  map: Record<string, string> = fieldWarningMap,
+  rules: Record<string, WarningRule> = warningRules
 ): string | null => {
-  const warningType = fieldWarningMap[fieldId];
+  const warningType = map[fieldName];
   if (!warningType) return null;
-  const warningRule = warningRules[warningType];
+  const warningRule = rules[warningType];
   if (!warningRule) return null;
-  return warningRule(value);
+  return warningRule(value, context);
 };

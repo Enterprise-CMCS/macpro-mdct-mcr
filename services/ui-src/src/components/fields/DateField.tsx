@@ -1,5 +1,7 @@
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+// TODO: REMOVE BEFORE MERGE - warning system test wiring
+import { useFieldWarning } from "utils/warnings/useFieldWarning";
 // components
 import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
 import { Box, SystemStyleObject } from "@chakra-ui/react";
@@ -25,8 +27,6 @@ export const DateField = ({
   validateOnRender,
   styleAsOptional,
   clear,
-  // TODO: REMOVE BEFORE MERGE - warning system test wiring
-  warningMessage,
   ...props
 }: Props) => {
   const defaultValue = "";
@@ -116,6 +116,8 @@ export const DateField = ({
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message as ReactNode;
+  // TODO: REMOVE BEFORE MERGE - warning system test wiring
+  const warningMessage = useFieldWarning(name);
   const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
