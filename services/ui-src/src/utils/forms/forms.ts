@@ -56,8 +56,6 @@ export const formFieldFactory = (
     nested?: boolean;
     autosave?: boolean;
     validateOnRender?: boolean;
-    // TODO: REMOVE BEFORE MERGE - warning system test wiring
-    warnings?: Record<string, string | null>;
   }
 ) => {
   // define form field components
@@ -81,21 +79,16 @@ export const formFieldFactory = (
     sectionDivider: SectionDivider,
   };
   fields = initializeChoiceListFields(fields);
-  // TODO: REMOVE BEFORE MERGE - destructure warnings out so it doesn't spread to DOM
-  const { warnings: _warnings, ...restOptions } = options ?? {};
   return fields.map((field) => {
     const componentFieldType = fieldToComponentMap[field.type];
     const fieldProps = {
       key: field.id,
+      // Use groupId for a single validation across different field ids
       name: field.groupId ?? field.id,
       hydrate: field.props?.hydrate,
-      autoComplete: isFieldElement(field) ? "off" : undefined,
-      ...restOptions,
+      autoComplete: isFieldElement(field) ? "off" : undefined, // stops browsers from forcing autofill
+      ...options,
       ...field?.props,
-      // TODO: REMOVE BEFORE MERGE - warning system test wiring
-      ...(field.type === "date" && {
-        warningMessage: options?.warnings?.[field.id],
-      }),
     };
     return React.createElement(componentFieldType, fieldProps);
   });
