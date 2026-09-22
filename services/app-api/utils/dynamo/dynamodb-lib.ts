@@ -10,6 +10,8 @@ import {
   PutCommand,
   PutCommandInput,
   ScanCommandInput,
+  UpdateCommand,
+  UpdateCommandInput,
   paginateScan,
 } from "@aws-sdk/lib-dynamodb";
 // utils
@@ -54,6 +56,8 @@ export default {
   },
   put: async (params: PutCommandInput) =>
     await client.send(new PutCommand(params)),
+  update: async (params: UpdateCommandInput) =>
+    await client.send(new UpdateCommand(params)),
   delete: async (params: DeleteCommandInput) =>
     await client.send(new DeleteCommand(params)),
 };

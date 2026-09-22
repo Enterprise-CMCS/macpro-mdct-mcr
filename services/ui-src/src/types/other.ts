@@ -97,6 +97,7 @@ export interface NaaarStandardsTableShape {
   region: string;
   entity: EntityShape;
   exceptionsNonCompliance?: string;
+  status?: boolean;
   edit?: null;
   delete?: null;
   actions?: null;

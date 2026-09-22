@@ -1,4 +1,7 @@
-import { mapValidationTypesToSchema } from "./completionValidation";
+import {
+  mapValidationTypesToSchema,
+  validateFieldData,
+} from "./completionValidation";
 import * as schema from "./completionSchemas";
 import { ValidationType } from "../types";
 
@@ -164,5 +167,40 @@ describe("Test mapValidationTypesToSchema", () => {
     expect(JSON.stringify(result)).toEqual(
       JSON.stringify({ key: schema.checkboxCustom({}) })
     );
+  });
+});
+
+describe("Test validateFieldData with nested required fields", () => {
+  const primaryCareChoiceId =
+    "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk"; // pragma: allowlist secret
+  const validationJson = {
+    standard_coreProviderType: ValidationType.RADIO,
+    [primaryCareChoiceId]: {
+      type: ValidationType.TEXT,
+      nested: true,
+      parentFieldName: "standard_coreProviderType",
+      parentOptionId: primaryCareChoiceId,
+    },
+  };
+  const providerTypeSelected = [
+    { key: primaryCareChoiceId, value: "Primary care" },
+  ];
+
+  test("Rejects when the parent choice is selected and the nested required field is empty", async () => {
+    await expect(
+      validateFieldData(validationJson, {
+        standard_coreProviderType: providerTypeSelected,
+        [primaryCareChoiceId]: null,
+      })
+    ).rejects.toThrow();
+  });
+
+  test("Resolves when the parent choice is selected and the nested required field is filled", async () => {
+    await expect(
+      validateFieldData(validationJson, {
+        standard_coreProviderType: providerTypeSelected,
+        [primaryCareChoiceId]: "Family physician",
+      })
+    ).resolves.toBeTruthy();
   });
 });
