@@ -214,13 +214,8 @@ export const ChoiceListField = ({
       selectedOptions = [...(form.getValues(name) || displayValue || [])];
 
       if (isOptionChecked) {
-        const clickedChoice = choices.find(
-          (choice) => choice.id === clickedOption.key
-        );
-        const exclusiveChoice = choices.find(
-          (choice) => choice.mutuallyExclusive
-        );
-        if (clickedChoice?.mutuallyExclusive) {
+        const exclusiveChoice = choices.find((choice) => choice.exclusive);
+        if (exclusiveChoice?.id === clickedOption.key) {
           // Checking the exclusive option clears every other option (and their nested data)
           const everyOtherOption = choices.filter(
             (choice) => choice.id !== clickedOption.key
