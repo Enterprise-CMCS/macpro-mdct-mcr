@@ -20,7 +20,7 @@ export const SortableNaaarStandardsTable = ({
   openDeleteEntityModal,
 }: Props) => {
   // status column is only shown when the drawer form is available to check against
-  const showStatus = !!drawerForm?.fields;
+  const showStatus = Boolean(drawerForm?.fields);
   const data = useMemo(() => {
     const rows = mapNaaarStandardsData<NaaarStandardsTableShape>(entities);
     if (!showStatus) return rows;
@@ -41,7 +41,7 @@ export const SortableNaaarStandardsTable = ({
       case "status":
         return (
           <Box sx={sx.status}>
-            <EntityStatusIcon isComplete={!!value} />
+            <EntityStatusIcon isComplete={Boolean(value)} />
             <Text
               sx={sx.statusText}
               color={value ? "success_darker" : "error_darker"}

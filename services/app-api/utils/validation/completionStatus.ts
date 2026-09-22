@@ -72,7 +72,7 @@ export const getNestedFields = (
       fieldChoice.children &&
       selectedChoiceKeys.some(
         (key: string) =>
-          key === fieldChoice.id || key?.endsWith(`-${fieldChoice.id}`)
+          key === fieldChoice.id || key.endsWith(`-${fieldChoice.id}`)
       )
   );
   const fieldIds: string[] = [];

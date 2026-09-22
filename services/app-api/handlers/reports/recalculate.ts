@@ -17,7 +17,7 @@ import {
   calculateCompletionStatus,
   isComplete,
 } from "../../utils/validation/completionStatus";
-import { isAuthorizedToFetchState } from "../../utils/auth/authorization";
+import { hasPermissions } from "../../utils/auth/authorization";
 import {
   badRequest,
   forbidden,
@@ -26,7 +26,7 @@ import {
   ok,
 } from "../../utils/responses/response-lib";
 // types
-import { AnyObject, isState, ReportStatus } from "../../utils/types";
+import { AnyObject, isState, ReportStatus, UserRoles } from "../../utils/types";
 
 /**
  * Recalculates a report's completionStatus / isComplete from its current
@@ -55,7 +55,8 @@ export const recalculateReport = handler(async (event, _context) => {
   if (!isState(state)) {
     return badRequest(error.NO_KEY);
   }
-  if (!isAuthorizedToFetchState(event, state)) {
+  // Same write permission as update/submit: state users of the matching state
+  if (!hasPermissions(event, [UserRoles.STATE_USER], state)) {
     return forbidden(error.UNAUTHORIZED);
   }
 

@@ -16,7 +16,7 @@ import {
 } from "../../utils/testing/setupJest";
 import s3Lib from "../../utils/s3/s3-lib";
 import * as completionStatus from "../../utils/validation/completionStatus";
-import { isAuthorizedToFetchState } from "../../utils/auth/authorization";
+import { hasPermissions } from "../../utils/auth/authorization";
 // types
 import { APIGatewayProxyEvent } from "../../utils/types";
 import { StatusCodes } from "../../utils/responses/response-lib";
@@ -25,7 +25,7 @@ const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthenticated: jest.fn().mockReturnValue(true),
-  isAuthorizedToFetchState: jest.fn().mockReturnValue(true),
+  hasPermissions: jest.fn().mockReturnValue(true),
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -188,7 +188,7 @@ describe("Test recalculateReport API method", () => {
   });
 
   test("Test unauthorized user returns 403", async () => {
-    (isAuthorizedToFetchState as jest.Mock).mockReturnValueOnce(false);
+    (hasPermissions as jest.Mock).mockReturnValueOnce(false);
     const res = await recalculateReport(testEvent, null);
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);

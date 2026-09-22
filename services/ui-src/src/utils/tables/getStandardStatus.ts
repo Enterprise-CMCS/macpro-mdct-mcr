@@ -1,5 +1,6 @@
 // types
 import {
+  Choice,
   EntityShape,
   FieldChoice,
   FormField,
@@ -20,11 +21,14 @@ const isValueEmpty = (value: any): boolean => {
  * Stored choice keys are prefixed with the parent field id ("fieldId-choiceId").
  * Some template choice ids already include that prefix, so match on either shape.
  */
-const isChoiceSelected = (choice: FieldChoice, selected: any): boolean =>
+const isChoiceSelected = (
+  choice: FieldChoice,
+  selected: Choice[] | undefined
+): boolean =>
   Array.isArray(selected) &&
   selected.some(
-    (option: { key?: string }) =>
-      option?.key === choice.id || option?.key?.endsWith(`-${choice.id}`)
+    (option: Choice) =>
+      option.key === choice.id || option.key?.endsWith(`-${choice.id}`)
   );
 
 /**
