@@ -78,11 +78,11 @@ export const MobileDashboardTable = ({
               <Button
                 variant="link"
                 aria-label={
-                  reportType !== ReportType.MLR
-                    ? `Edit reporting of ${
+                  reportType === ReportType.MLR
+                    ? `Edit reporting of ${report.programName}`
+                    : `Edit reporting of ${
                         report.programName
                       } due ${convertDateUtcToEt(report.dueDate)}`
-                    : `Edit reporting of ${report.programName}`
                 }
                 onClick={() => openAddEditReportModal(report)}
               >
