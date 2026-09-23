@@ -46,7 +46,7 @@ describe("<EntityDetailsOverlayReporting />", () => {
     // Check if header is visible on load - H2
     expect(
       screen.getByRole("heading", {
-        level: 2,
+        level: 1,
         name: overlayVerbiage.MLR.intro.section,
       })
     ).toBeVisible();
