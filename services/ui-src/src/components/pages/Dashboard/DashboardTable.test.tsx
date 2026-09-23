@@ -212,6 +212,11 @@ describe("<DashboardTable />", () => {
           screen.getAllByRole("cell", { name: "testSubmission" })[0]
         ).toBeVisible();
         expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
+        expect(
+          screen.getAllByRole("button", {
+            name: `Edit reporting of ${mockMlrReportStore.report!.programName}`,
+          })[0]
+        ).toBeVisible();
       });
     });
 
