@@ -1,10 +1,5 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceListField, ReportContext } from "components";
@@ -90,6 +85,24 @@ const RadioComponent = (
   />
 );
 
+const mockExclusiveChoice = {
+  id: "None",
+  name: "None",
+  label: "None",
+  value: "None",
+  checked: false,
+  exclusive: true,
+};
+
+const CheckboxComponentWithExclusiveChoice = (
+  <ChoiceListField
+    choices={[...mockChoices, mockChoiceWithChild, mockExclusiveChoice]}
+    label="Checkbox with exclusive choice example"
+    name="checkboxFieldWithExclusiveChoice"
+    type="checkbox"
+  />
+);
+
 describe("<ChoiceListField />", () => {
   describe("Test ChoiceListField component rendering", () => {
     test("ChoiceList should render a normal Radiofield that doesn't have children", () => {
@@ -140,7 +153,7 @@ describe("<ChoiceListField />", () => {
       expect(screen.getByText("Choice 2")).toBeVisible();
     });
 
-    test("RadioField should render nested child fields for choices with children", () => {
+    test("RadioField should render nested child fields for choices with children", async () => {
       // Render Initial State and choices
       mockGetValues(undefined);
       render(RadioComponentWithNestedChildren);
@@ -150,7 +163,7 @@ describe("<ChoiceListField />", () => {
 
       // Choice 3 has 2 children underneath it, we can get them to show by chosing that choice
       const thirdRadioOption = screen.getByLabelText("Choice 3");
-      fireEvent.click(thirdRadioOption);
+      await userEvent.click(thirdRadioOption);
       expect(screen.getByText("Choice 4")).toBeVisible();
       expect(screen.getByText("Choice 5")).toBeVisible();
     });
@@ -164,18 +177,18 @@ describe("<ChoiceListField />", () => {
 
       // Choice 3 has 2 children underneath it, we can get them to show by chosing that choice
       const thirdCheckbox = screen.getByLabelText("Choice 3");
-      fireEvent.click(thirdCheckbox);
+      await userEvent.click(thirdCheckbox);
       expect(screen.getByText("Choice 4")).toBeVisible();
       expect(screen.getByText("Choice 5")).toBeVisible();
     });
 
-    test("Nested child fields without their own label receive an accessible name derived from the choice and parent question labels", () => {
+    test("Nested child fields without their own label receive an accessible name derived from the choice and parent question labels", async () => {
       mockGetValues(undefined);
       render(RadioComponentWithNestedChildren);
 
       // Reveal the nested children
       const thirdRadioOption = screen.getByLabelText("Choice 3");
-      fireEvent.click(thirdRadioOption);
+      await userEvent.click(thirdRadioOption);
 
       // The nested "Choice 3-otherText" text input has no label of its own, so
       // it should receive an aria-label combining the choice label and the
@@ -403,7 +416,7 @@ describe("<ChoiceListField />", () => {
       // Select the first Checkbox and check it
       expect(firstCheckbox).not.toBeChecked();
       expect(secondCheckbox).not.toBeChecked();
-      fireEvent.click(firstCheckbox);
+      await userEvent.click(firstCheckbox);
 
       // Confirm the checkboxes are checked correctly
       const checkedCheckboxes = wrapper.getAllByRole("checkbox", {
@@ -413,8 +426,8 @@ describe("<ChoiceListField />", () => {
       expect(firstCheckbox).toBeChecked();
       expect(secondCheckbox).not.toBeChecked();
 
-      // Tab away to trigger onComponentBlur()
-      fireEvent.blur(firstCheckbox);
+      // Click outside the component so focus leaves it and triggers onComponentBlur()
+      await userEvent.click(document.body);
 
       // Make sure the form value is set to what we've clicked (Which is only Choice 1)
       const firstCheckboxData = [{ key: "Choice 1", value: "Choice 1" }];
@@ -475,7 +488,7 @@ describe("<ChoiceListField />", () => {
       expect(secondCheckbox).not.toBeChecked();
 
       // Select the first Checkbox and check it
-      fireEvent.click(firstCheckbox);
+      await userEvent.click(firstCheckbox);
 
       // Confirm the checkboxes are checked correctly
       const checkedCheckboxes = wrapper.getAllByRole("checkbox", {
@@ -486,7 +499,7 @@ describe("<ChoiceListField />", () => {
       expect(secondCheckbox).not.toBeChecked();
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(firstCheckbox);
+      await userEvent.tab();
 
       // Make sure the form value is set to what we've clicked (Which is only Choice 1)
       const firstCheckboxData = [{ key: "Choice 1", value: "Choice 1" }];
@@ -499,7 +512,7 @@ describe("<ChoiceListField />", () => {
       );
 
       // Now uncheck the first checkbox to trigger the onChangeHandler
-      fireEvent.click(firstCheckbox);
+      await userEvent.click(firstCheckbox);
 
       // Confirm the checkboxes are checked correctly and reset to the default position
       const uncheckedCheckboxes = wrapper.getAllByRole("checkbox", {
@@ -510,7 +523,7 @@ describe("<ChoiceListField />", () => {
       expect(secondCheckbox).not.toBeChecked();
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(firstCheckbox);
+      await userEvent.tab();
 
       // Make sure the form value is set to default state
       expect(mockSetValue).toHaveBeenCalledWith(
@@ -538,11 +551,11 @@ describe("<ChoiceListField />", () => {
       expect(secondCheckbox).not.toBeChecked();
 
       // Select the first Checkbox and uncheck it
-      fireEvent.click(firstCheckbox);
+      await userEvent.click(firstCheckbox);
       expect(firstCheckbox).not.toBeChecked();
 
       // Select the second Checkbox and check it
-      fireEvent.click(secondCheckbox);
+      await userEvent.click(secondCheckbox);
       expect(secondCheckbox).toBeChecked();
     });
 
@@ -562,7 +575,7 @@ describe("<ChoiceListField />", () => {
       expect(secondRadioOption).not.toBeChecked();
 
       // Select the first Radio and check it
-      fireEvent.click(firstRadioOption);
+      await userEvent.click(firstRadioOption);
 
       // Confirm the radio options are checked correctly
       const checkedOptions = wrapper.getAllByRole("radio", {
@@ -573,7 +586,7 @@ describe("<ChoiceListField />", () => {
       expect(secondRadioOption).not.toBeChecked();
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(firstRadioOption);
+      await userEvent.tab();
 
       // Make sure the form value is set to what we've clicked (Which is only Choice 1)
       const firstRadioOptionOptionData = [
@@ -588,7 +601,7 @@ describe("<ChoiceListField />", () => {
       );
 
       // Now check the second radio option to trigger the onChangeHandler
-      fireEvent.click(secondRadioOption);
+      await userEvent.click(secondRadioOption);
 
       // Confirm the radio options are checked correctly
       const uncheckedRadioOptions = wrapper.getAllByRole("radio", {
@@ -599,7 +612,7 @@ describe("<ChoiceListField />", () => {
       expect(secondRadioOption).toBeChecked();
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(firstRadioOption);
+      await userEvent.tab();
 
       // Make sure the form value is set to default state
       expect(mockSetValue).toHaveBeenCalledWith(
@@ -625,7 +638,7 @@ describe("<ChoiceListField />", () => {
       expect(parentCheckbox).not.toBeChecked();
 
       // Select the first Checkbox and check it
-      fireEvent.click(parentCheckbox);
+      await userEvent.click(parentCheckbox);
 
       // Confirm the checkbox options are checked correctly
       const checkedOptions = wrapper.getAllByRole("checkbox", {
@@ -635,7 +648,7 @@ describe("<ChoiceListField />", () => {
       expect(parentCheckbox).toBeChecked();
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(parentCheckbox);
+      await userEvent.tab();
 
       // Make sure the form value is set to what we've clicked (Which is only Choice 3)
       const parentCheckboxData = [{ key: "Choice 3", value: "Choice 3" }];
@@ -651,14 +664,14 @@ describe("<ChoiceListField />", () => {
         "[name='Choice 3-otherText']"
       )!;
       // Now type in the child textbox
-      fireEvent.click(childTextBox);
-      fireEvent.change(childTextBox, { target: { value: "Added Text" } });
+      await userEvent.click(childTextBox);
+      await userEvent.type(childTextBox, "Added Text");
 
       // Confirm the text change was made
       expect(childTextBox.value).toBe("Added Text");
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(childTextBox);
+      await userEvent.tab();
 
       // Make sure the form value is set to with new child text
       expect(mockSetValue).toHaveBeenCalledWith(
@@ -670,7 +683,7 @@ describe("<ChoiceListField />", () => {
       );
 
       // Now uncheck the parent
-      fireEvent.click(parentCheckbox);
+      await userEvent.click(parentCheckbox);
 
       // Confirm the checkbox options are unchecked correctly
       const uncheckedOptions = wrapper.getAllByRole("checkbox", {
@@ -680,10 +693,10 @@ describe("<ChoiceListField />", () => {
       expect(parentCheckbox).not.toBeChecked();
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(parentCheckbox);
+      await userEvent.tab();
 
       // Rechecking should show the child textbox doesn't have the 'Added Text' value anymore
-      fireEvent.click(parentCheckbox);
+      await userEvent.click(parentCheckbox);
 
       // Confirm the checkbox options are checked correctly
       const recheckedOptions = wrapper.getAllByRole("checkbox", {
@@ -712,7 +725,7 @@ describe("<ChoiceListField />", () => {
       expect(parentCheckbox).not.toBeChecked();
 
       // Select the first Checkbox and check it
-      fireEvent.click(parentCheckbox);
+      await userEvent.click(parentCheckbox);
 
       // Confirm the checkbox options are checked correctly
       const checkedOptions = wrapper.getAllByRole("checkbox", {
@@ -722,7 +735,7 @@ describe("<ChoiceListField />", () => {
       expect(parentCheckbox).toBeChecked();
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(parentCheckbox);
+      await userEvent.tab();
 
       // Make sure the form value is set to what we've clicked (Which is only Choice 3)
       const parentCheckboxData = [{ key: "Choice 3", value: "Choice 3" }];
@@ -738,13 +751,13 @@ describe("<ChoiceListField />", () => {
       const childRadioField = wrapper.getByRole("radio", {
         name: "Choice 4",
       });
-      fireEvent.click(childRadioField);
+      await userEvent.click(childRadioField);
 
       // Confirm the option was checked
       expect(childRadioField).toBeChecked();
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(childRadioField);
+      await userEvent.tab();
 
       // Make sure the form value is set to with new child option
       const childRadioData = [
@@ -759,7 +772,7 @@ describe("<ChoiceListField />", () => {
       );
 
       // Now uncheck the parent
-      fireEvent.click(parentCheckbox);
+      await userEvent.click(parentCheckbox);
 
       // Confirm the checkbox options are unchecked correctly
       const uncheckedOptions = wrapper.getAllByRole("checkbox", {
@@ -769,10 +782,10 @@ describe("<ChoiceListField />", () => {
       expect(parentCheckbox).not.toBeChecked();
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(parentCheckbox);
+      await userEvent.tab();
 
       // Rechecking should show the child radiofield doesn't have any option checked anymore
-      fireEvent.click(parentCheckbox);
+      await userEvent.click(parentCheckbox);
 
       // Confirm the checkbox options are checked correctly
       const recheckedOptions = wrapper.getAllByRole("checkbox", {
@@ -787,7 +800,7 @@ describe("<ChoiceListField />", () => {
       expect(childRadioCleared).not.toBeChecked;
     });
 
-    test("Selecting and unselecting a radio button that has nested checkbox children sets that checkbox to its default state", () => {
+    test("Selecting and unselecting a radio button that has nested checkbox children sets that checkbox to its default state", async () => {
       mockGetValues(undefined);
 
       // Create the Radio Component
@@ -799,7 +812,7 @@ describe("<ChoiceListField />", () => {
       expect(parentRadio).not.toBeChecked();
 
       // Select the first Radio button and check it
-      fireEvent.click(parentRadio);
+      await userEvent.click(parentRadio);
 
       // Confirm the radio options are checked correctly
       const selectedOptions = wrapper.getAllByRole("radio", {
@@ -809,7 +822,7 @@ describe("<ChoiceListField />", () => {
       expect(parentRadio).toBeChecked();
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(parentRadio);
+      await userEvent.tab();
 
       // Make sure the form value is set to what we've clicked (Which is only Choice 3)
       const parentRadioData = [{ key: "Choice 3", value: "Choice 3" }];
@@ -825,13 +838,13 @@ describe("<ChoiceListField />", () => {
       const childCheckboxField = wrapper.getByRole("checkbox", {
         name: "Choice 6",
       });
-      fireEvent.click(childCheckboxField);
+      await userEvent.click(childCheckboxField);
 
       // Confirm the option was checked
       expect(childCheckboxField).toBeChecked();
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(childCheckboxField);
+      await userEvent.tab();
 
       // Make sure the form value is set to with new child option
       const childCheckboxData = [
@@ -848,7 +861,7 @@ describe("<ChoiceListField />", () => {
       const otherRadio = wrapper.getByRole("radio", { name: "Choice 1" });
 
       // Now uncheck the parent
-      fireEvent.click(otherRadio);
+      await userEvent.click(otherRadio);
 
       // Confirm the checkbox options are unchecked correctly
       const unselectedOptions = wrapper.getAllByRole("radio", {
@@ -858,10 +871,10 @@ describe("<ChoiceListField />", () => {
       expect(parentRadio).not.toBeChecked();
 
       // Tab away to trigger onComponentBlur()
-      fireEvent.blur(parentRadio);
+      await userEvent.tab();
 
       // Rechecking should show the child checkbox doesn't have any option checked anymore
-      fireEvent.click(parentRadio);
+      await userEvent.click(parentRadio);
 
       // Confirm the checkbox options are checked correctly
       const reselectedOptions = wrapper.getAllByRole("radio", {
@@ -874,6 +887,102 @@ describe("<ChoiceListField />", () => {
         wrapper.container.querySelector("[name='Choice 6']")!;
 
       expect(childCheckboxCleared).not.toBeChecked;
+    });
+  });
+
+  describe("Test Choicelist mutually exclusive choices", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test("Checking a mutually exclusive choice unchecks all other selected choices", async () => {
+      mockGetValues([
+        { key: "Choice 1", value: "Choice 1" },
+        { key: "Choice 2", value: "Choice 2" },
+      ]);
+
+      const wrapper = render(CheckboxComponentWithExclusiveChoice);
+
+      const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
+      const secondCheckbox = wrapper.getByRole("checkbox", {
+        name: "Choice 2",
+      });
+      const exclusiveCheckbox = wrapper.getByRole("checkbox", { name: "None" });
+
+      // Confirm the two non-exclusive choices start selected
+      expect(firstCheckbox).toBeChecked();
+      expect(secondCheckbox).toBeChecked();
+      expect(exclusiveCheckbox).not.toBeChecked();
+
+      // Check the exclusive choice
+      await userEvent.click(exclusiveCheckbox);
+
+      // Only the exclusive choice should remain checked
+      expect(exclusiveCheckbox).toBeChecked();
+      expect(firstCheckbox).not.toBeChecked();
+      expect(secondCheckbox).not.toBeChecked();
+
+      // The form value should contain only the exclusive choice
+      expect(mockSetValue).toHaveBeenCalledWith(
+        "checkboxFieldWithExclusiveChoice",
+        [{ key: "None", value: "None" }],
+        { shouldValidate: true }
+      );
+    });
+
+    test("Checking another choice unchecks the mutually exclusive choice", async () => {
+      mockGetValues([{ key: "None", value: "None" }]);
+
+      const wrapper = render(CheckboxComponentWithExclusiveChoice);
+
+      const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
+      const exclusiveCheckbox = wrapper.getByRole("checkbox", { name: "None" });
+
+      // Confirm the exclusive choice starts selected
+      expect(exclusiveCheckbox).toBeChecked();
+      expect(firstCheckbox).not.toBeChecked();
+
+      // Check a non-exclusive choice
+      await userEvent.click(firstCheckbox);
+
+      // The exclusive choice should be cleared, leaving only the new choice
+      expect(firstCheckbox).toBeChecked();
+      expect(exclusiveCheckbox).not.toBeChecked();
+
+      expect(mockSetValue).toHaveBeenCalledWith(
+        "checkboxFieldWithExclusiveChoice",
+        [{ key: "Choice 1", value: "Choice 1" }],
+        { shouldValidate: true }
+      );
+    });
+
+    test("Checking a mutually exclusive choice clears nested child data of other choices", async () => {
+      mockGetValues(undefined);
+
+      const wrapper = render(CheckboxComponentWithExclusiveChoice);
+
+      const parentCheckbox = wrapper.getByRole("checkbox", {
+        name: "Choice 3",
+      });
+      const exclusiveCheckbox = wrapper.getByRole("checkbox", { name: "None" });
+
+      // Select the choice that has a nested "Other, specify" text child
+      await userEvent.click(parentCheckbox);
+      expect(parentCheckbox).toBeChecked();
+
+      const childTextBox: HTMLInputElement = wrapper.container.querySelector(
+        "[name='Choice 3-otherText']"
+      )!;
+      await userEvent.type(childTextBox, "Added Text");
+      expect(childTextBox.value).toBe("Added Text");
+
+      // Check the exclusive choice
+      await userEvent.click(exclusiveCheckbox);
+
+      // The exclusive choice wins and the nested child data is cleared
+      expect(exclusiveCheckbox).toBeChecked();
+      expect(parentCheckbox).not.toBeChecked();
+      expect(mockSetValue).toHaveBeenCalledWith("Choice 3-otherText", "");
     });
   });
 

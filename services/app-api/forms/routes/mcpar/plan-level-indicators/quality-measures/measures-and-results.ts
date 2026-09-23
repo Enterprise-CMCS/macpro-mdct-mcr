@@ -304,6 +304,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
             {
               id: "MFK8OOLrIqSP1pHuG8f0pp",
               label: "None",
+              exclusive: true,
             },
           ],
         },

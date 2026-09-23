@@ -214,7 +214,23 @@ export const ChoiceListField = ({
       selectedOptions = [...(form.getValues(name) || displayValue || [])];
 
       if (isOptionChecked) {
-        selectedOptions.push(clickedOption);
+        const exclusiveChoice = choices.find((choice) => choice.exclusive);
+        if (exclusiveChoice?.id === clickedOption.key) {
+          // Checking the exclusive option clears every other option (and their nested data)
+          const everyOtherOption = choices.filter(
+            (choice) => choice.id !== clickedOption.key
+          );
+          clearUncheckedNestedFields(everyOtherOption);
+          selectedOptions = [clickedOption];
+        } else {
+          selectedOptions.push(clickedOption);
+          // Checking any other option clears the exclusive option
+          if (exclusiveChoice) {
+            selectedOptions = selectedOptions.filter(
+              (field) => field.key !== exclusiveChoice.id
+            );
+          }
+        }
       } else {
         selectedOptions = selectedOptions.filter(
           (field) => field.key !== clickedOption.key
