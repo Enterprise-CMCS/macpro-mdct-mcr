@@ -423,3 +423,23 @@ export const isFieldValidationOptional = (
 
   return validationType.toLowerCase().includes("optional");
 };
+
+export const getFormRequiredText = (
+  formFields?: (FormField | FormLayoutElement)[]
+) => {
+  if (!formFields) return;
+
+  const flattenedFields = flattenFormFields(formFields.filter(isFieldElement));
+  const filteredFields = flattenedFields.filter(
+    (f) => Boolean(f.props?.disabled) !== true
+  );
+  const allOptionalFields = filteredFields.every(isFieldValidationOptional);
+  if (filteredFields.length === 0 || allOptionalFields) return;
+
+  const hasOptionalFields = filteredFields.some(isFieldValidationOptional);
+  if (hasOptionalFields) {
+    return "All fields are required unless marked optional.";
+  }
+
+  return "All fields are required.";
+};

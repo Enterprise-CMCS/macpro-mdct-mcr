@@ -15,6 +15,7 @@ import {
   SxObject,
   TableContentShape,
 } from "types";
+import { getFormRequiredText } from "utils";
 
 export const EntityDetailsFormOverlay = ({
   closeEntityDetailsOverlay,
@@ -29,39 +30,44 @@ export const EntityDetailsFormOverlay = ({
   table,
   validateOnRender,
   verbiage,
-}: Props) => (
-  <Box>
-    <BackButton
-      onClick={closeEntityDetailsOverlay}
-      text={verbiage.backButton}
-    />
-    <ReportPageIntro
-      accordion={verbiage.accordion}
-      table={table}
-      sxOverride={sxOverride}
-      text={verbiage.intro}
-    />
-    <Box sx={{ ...sxOverride?.form }}>
-      <Form
+}: Props) => {
+  const formRequiredText = getFormRequiredText(form.fields);
+
+  return (
+    <Box>
+      <BackButton
+        onClick={closeEntityDetailsOverlay}
+        text={verbiage.backButton}
+      />
+      <ReportPageIntro
+        accordion={verbiage.accordion}
+        formRequiredText={formRequiredText}
+        table={table}
+        sxOverride={sxOverride}
+        text={verbiage.intro}
+      />
+      <Box sx={{ ...sxOverride?.form }}>
+        <Form
+          disabled={disabled}
+          dontReset={true}
+          formData={selectedEntity}
+          formJson={form}
+          id={form.id}
+          onChange={onChange}
+          onError={onError}
+          onSubmit={onSubmit}
+          validateOnRender={validateOnRender || false}
+        />
+      </Box>
+      <SaveReturnButton
         disabled={disabled}
-        dontReset={true}
-        formData={selectedEntity}
-        formJson={form}
-        id={form.id}
-        onChange={onChange}
-        onError={onError}
-        onSubmit={onSubmit}
-        validateOnRender={validateOnRender || false}
+        disabledOnClick={closeEntityDetailsOverlay}
+        formId={form.id}
+        submitting={submitting}
       />
     </Box>
-    <SaveReturnButton
-      disabled={disabled}
-      disabledOnClick={closeEntityDetailsOverlay}
-      formId={form.id}
-      submitting={submitting}
-    />
-  </Box>
-);
+  );
+};
 
 interface Props {
   closeEntityDetailsOverlay: MouseEventHandler;

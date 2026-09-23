@@ -20,6 +20,7 @@ import {
 import {
   filterFormData,
   formModifications,
+  getFormRequiredText,
   getPageTitle,
   parseCustomHtml,
   useFindRoute,
@@ -74,6 +75,8 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
     report?.fieldData
   );
 
+  const formRequiredText = getFormRequiredText(formJson.fields);
+
   return (
     <Box>
       {/* page title */}
@@ -83,6 +86,7 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
       {route.verbiage.intro && (
         <ReportPageIntro
           accordion={accordion}
+          formRequiredText={formRequiredText}
           text={route.verbiage.intro}
           reportType={report?.reportType}
         />

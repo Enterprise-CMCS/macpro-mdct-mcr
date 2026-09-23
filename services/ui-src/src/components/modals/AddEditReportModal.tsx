@@ -27,6 +27,7 @@ import {
   convertDateEtToUtc,
   convertDateUtcToEt,
   defineProgramName,
+  getFormRequiredText,
   otherSpecify,
   useStore,
 } from "utils";
@@ -308,6 +309,8 @@ export const AddEditReportModal = ({
     modalDisclosure.onClose();
   };
 
+  const formRequiredText = getFormRequiredText(form.fields);
+
   return (
     <Modal
       data-testid="add-edit-report-modal"
@@ -319,6 +322,7 @@ export const AddEditReportModal = ({
         intro: selectedReport?.id ? "" : form.heading?.intro,
         actionButtonText: submitting ? <Spinner size="md" /> : "Save",
         closeButtonText: "Cancel",
+        formRequiredText,
       }}
     >
       <Form
