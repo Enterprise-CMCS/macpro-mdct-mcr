@@ -59,7 +59,7 @@ export const DrawerReportPageEntityRows = ({
           )}
           <Flex direction={"column"} sx={sx.entityRow}>
             <Heading
-              as="h4"
+              as="h3"
               sx={
                 row.hasEntityNameWithDescription
                   ? sx.entityNameWithDescription
@@ -175,12 +175,14 @@ const sx = {
     flexGrow: 1,
     marginLeft: "2.25rem",
     alignContent: "center",
+    paddingBottom: "0rem",
   },
   entityNameWithDescription: {
     fontSize: "lg",
     fontWeight: "bold",
     flexGrow: 1,
     marginLeft: "2.25rem",
+    paddingBottom: "0rem",
   },
   incompleteText: {
     color: "error_dark",
