@@ -91,7 +91,7 @@ describe("<EntityDetailsOverlay />", () => {
     test("should render the initial view for a state user", () => {
       expect(
         screen.getByRole("heading", {
-          level: 2,
+          level: 1,
           name: overlayVerbiage.MLR.intro.section,
         })
       ).toBeVisible();
