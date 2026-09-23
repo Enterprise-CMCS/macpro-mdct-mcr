@@ -47,7 +47,7 @@ describe("<EntityDetailsOverlayReporting />", () => {
     expect(
       screen.getByRole("heading", {
         level: 2,
-        name: overlayVerbiage.MLR.intro.subsection,
+        name: overlayVerbiage.MLR.intro.section,
       })
     ).toBeVisible();
 

@@ -97,7 +97,7 @@ describe("<EntityDetailsOverlayQualityMeasures />", () => {
     expect(
       screen.getByRole("heading", {
         level: 2,
-        name: overlayVerbiage.MCPAR.intro.subsection,
+        name: overlayVerbiage.MCPAR.intro.section,
       })
     ).toBeVisible();
 

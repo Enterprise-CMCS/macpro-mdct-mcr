@@ -103,8 +103,6 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Check if header is visible on load - H1
       expect(screen.getByText(verbiage.intro.section)).toBeVisible();
-      // Check if header is visible on load - H2
-      expect(screen.getByText(verbiage.intro.subsection)).toBeVisible();
 
       // Check if accordion is showing
       const accordionHeader = accordionVerbiage.MLR.formIntro.buttonLabel;
@@ -174,8 +172,6 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Check if header is visible on load - H1
       expect(screen.getByText(verbiage.intro.section)).toBeVisible();
-      // Check if header is visible on load - H2
-      expect(screen.getByText(verbiage.intro.subsection)).toBeVisible();
 
       // Check if accordion is showing
       const accordionHeader = accordionVerbiage.MLR.formIntro.buttonLabel;
@@ -225,8 +221,6 @@ describe("<ModalOverlayReportPage />", () => {
       });
       // Check if header is visible on load - H1
       expect(screen.getByText(verbiage.intro.section)).toBeVisible();
-      // Check if header is visible on load - H2
-      expect(screen.getByText(verbiage.intro.subsection)).toBeVisible();
 
       // Check if accordion is showing
       const accordionHeader = accordionVerbiage.MLR.formIntro.buttonLabel;

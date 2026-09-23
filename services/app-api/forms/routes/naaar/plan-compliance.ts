@@ -443,8 +443,8 @@ export const planComplianceRoute: MultiformRoute = {
                 ],
               },
             ],
-            section: "III. Plan compliance data for {{planName}}",
-            subsection:
+            formEyebrow: "III. Plan compliance data for {{planName}}",
+            section:
               "{{planName}}: Provide details about plan non-compliance or exceptions for this standard",
           },
         },
@@ -1456,8 +1456,8 @@ export const planComplianceRoute: MultiformRoute = {
                 ],
               },
             ],
-            section: "III. Plan compliance data for {{planName}}",
-            subsection:
+            formEyebrow: "III. Plan compliance data for {{planName}}",
+            section:
               "{{planName}}: Provide plan compliance details for 438.206",
           },
         },

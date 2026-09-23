@@ -3,9 +3,9 @@ export default {
     backButton: "Return to quality & performance measures dashboard",
     dashboardTitle: "Plan<br/>Status",
     intro: {
-      section:
+      formEyebrow:
         "Section D: Program-Level Indicators: Topic VII: Quality & Performance Measures",
-      subsection: "Quality & Performance measure results",
+      section: "Quality & Performance measure results",
     },
     reportTitle: "Report results by plan:",
     reportSubtitle:
