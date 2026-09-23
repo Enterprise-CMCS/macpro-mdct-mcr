@@ -6,8 +6,8 @@ export const instructionsRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic VII: Quality & Performance Measures",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic VII: Quality & Performance Measures",
       spreadsheet: "D2_Program_QualityMeasures",
       info: [
         {

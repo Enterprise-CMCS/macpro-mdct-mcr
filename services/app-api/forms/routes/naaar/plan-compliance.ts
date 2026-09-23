@@ -443,8 +443,8 @@ export const planComplianceRoute: MultiformRoute = {
                 ],
               },
             ],
-            eyebrow: "III. Plan compliance data for {{planName}}",
-            section:
+            section: "III. Plan compliance data for {{planName}}",
+            subsection:
               "{{planName}}: Provide details about plan non-compliance or exceptions for this standard",
           },
         },
@@ -465,7 +465,7 @@ export const planComplianceRoute: MultiformRoute = {
               "Return to plan compliance data for {{planName}} dashboard",
             intro: {
               hint: "Select “Enter” for all of the standards that are not compliant or have an exception granted for the state’s 42 C.F.R. § 438.68 standards for the plan listed above. If a standard is fully compliant, you do not need to enter any additional information for that standard.",
-              eyebrow: "III. Plan compliance data for {{planName}}",
+              formEyebrow: "III. Plan compliance data for {{planName}}",
               section:
                 "Select non-compliant or exception standards for 42 C.F.R. § 438.68",
             },
@@ -1456,8 +1456,8 @@ export const planComplianceRoute: MultiformRoute = {
                 ],
               },
             ],
-            eyebrow: "III. Plan compliance data for {{planName}}",
-            section:
+            section: "III. Plan compliance data for {{planName}}",
+            subsection:
               "{{planName}}: Provide plan compliance details for 438.206",
           },
         },
