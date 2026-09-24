@@ -430,13 +430,13 @@ export const getFormRequiredText = (
   if (!formFields) return;
 
   const flattenedFields = flattenFormFields(formFields.filter(isFieldElement));
-  const filteredFields = flattenedFields.filter(
-    (f) => Boolean(f.props?.disabled) !== true
+  const activeFields = flattenedFields.filter(
+    (f) => Boolean(f.props?.disabled) === false
   );
-  const allOptionalFields = filteredFields.every(isFieldValidationOptional);
-  if (filteredFields.length === 0 || allOptionalFields) return;
+  const hasAllOptionalFields = activeFields.every(isFieldValidationOptional);
+  if (activeFields.length === 0 || hasAllOptionalFields) return;
 
-  const hasOptionalFields = filteredFields.some(isFieldValidationOptional);
+  const hasOptionalFields = activeFields.some(isFieldValidationOptional);
   if (hasOptionalFields) {
     return "All fields are required unless marked optional.";
   }
