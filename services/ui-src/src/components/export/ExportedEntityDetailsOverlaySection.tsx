@@ -91,9 +91,7 @@ export function getEntityTableComponents(
   formSections: (FormField | FormLayoutElement)[][]
 ) {
   return entities?.map((entity, idx) => {
-    const entityHeading = `${idx + 1}. ${
-      section.verbiage.intro.subsection
-    } for:`;
+    const entityHeading = `${idx + 1}. ${section.verbiage.intro.section} for:`;
 
     const programInfo = getProgramInfo(entity);
 

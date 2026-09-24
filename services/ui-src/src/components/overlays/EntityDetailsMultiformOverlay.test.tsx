@@ -129,12 +129,12 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     render(entityDetailsMultiformOverlayComponent());
 
     // Verbiage
-    const h2 = screen.getByRole("heading", {
-      level: 2,
+    const h1 = screen.getByRole("heading", {
+      level: 1,
       name: "Mock Details: Example Plan",
     });
 
-    expect(h2).toBeVisible();
+    expect(h1).toBeVisible();
 
     // Forms
     for (const formId of ["", " 2"]) {

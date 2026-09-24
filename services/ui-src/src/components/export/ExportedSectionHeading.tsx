@@ -6,7 +6,7 @@ import { ReportPageVerbiage } from "types";
 import { parseCustomHtml } from "utils";
 
 export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
-  const sectionSubHeader = verbiage?.intro?.subsection || heading;
+  const sectionSubHeader = verbiage?.intro?.section || heading;
   const sectionInfo = verbiage?.intro?.exportSectionHeader
     ? null
     : verbiage?.intro?.info;

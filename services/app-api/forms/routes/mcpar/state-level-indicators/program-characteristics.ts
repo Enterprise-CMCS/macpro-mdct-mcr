@@ -11,8 +11,8 @@ export const programCharacteristicsRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section B: State-Level Indicators",
-      subsection: "Topic I. Program Characteristics and Enrollment",
+      formEyebrow: "Section B: State-Level Indicators",
+      section: "Topic I. Program Characteristics and Enrollment",
       spreadsheet: "B_State",
     },
   },

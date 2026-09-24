@@ -11,7 +11,7 @@ export const addPlansRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      eyebrow: "I. State and program information",
+      formEyebrow: "I. State and program information",
       section: "B. Add plans",
       info: [
         {

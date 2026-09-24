@@ -11,8 +11,8 @@ export const addInLieuOfServicesAndSettingsRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section A: Program Information",
-      subsection: "Add In Lieu of Services and Settings (A.9)",
+      formEyebrow: "Section A: Program Information",
+      section: "Add In Lieu of Services and Settings (A.9)",
       info: [
         {
           type: "p",

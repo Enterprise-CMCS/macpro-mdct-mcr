@@ -139,7 +139,7 @@ export const renderReportSections = (reportRoutes: ReportRoute[]) => {
         {!childSections && (
           <Box pb={"3.5rem"}>
             <ExportedSectionHeading
-              heading={section.verbiage?.intro?.subsection || section.name}
+              heading={section.verbiage?.intro?.section || section.name}
               verbiage={section.verbiage || undefined}
             />
             <ExportedReportWrapper section={section as ReportRouteWithForm} />

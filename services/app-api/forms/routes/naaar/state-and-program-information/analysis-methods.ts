@@ -13,7 +13,7 @@ export const analysisMethodsRoute: AddEntityDrawerFormRoute = {
   entityType: EntityType.ANALYSIS_METHODS,
   verbiage: {
     intro: {
-      eyebrow: "I. State and program information",
+      formEyebrow: "I. State and program information",
       section: "D. Analysis methods",
       info: [
         {

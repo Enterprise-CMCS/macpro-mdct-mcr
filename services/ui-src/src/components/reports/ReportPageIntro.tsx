@@ -21,30 +21,16 @@ export const ReportPageIntro = ({
   formRequiredText,
   ...props
 }: Props) => {
-  const { section, subsection, eyebrow, hint, info, spreadsheet, alert } = text;
-  const sectionDForIlos = subsection === "Topic XI. ILOS";
+  const { formEyebrow, section, hint, info, spreadsheet, alert } = text;
+  const sectionDForIlos = section === "Topic XI. ILOS";
   const showAlert = sectionDForIlos ? !hasIlos : alert;
 
   return (
     <Box sx={sx.introBox} {...props}>
-      {eyebrow && (
-        <Box>
-          <Text as="p" sx={sx.eyebrow}>
-            {eyebrow}
-          </Text>
-          <Heading as="h1" sx={sx.sectionHeading}>
-            {section}
-          </Heading>
-        </Box>
-      )}
-      {!eyebrow && section && (
-        <Heading as="h1" sx={subsection ? sx.eyebrow : sx.sectionHeading}>
+      {formEyebrow && <Text sx={sx.eyebrow}>{formEyebrow}</Text>}
+      {section && (
+        <Heading as="h1" sx={sx.sectionHeading}>
           {section}
-        </Heading>
-      )}
-      {subsection && (
-        <Heading as="h2" sx={sx.sectionHeading}>
-          {subsection}
         </Heading>
       )}
       {table && (
@@ -94,6 +80,7 @@ const sx = {
   eyebrow: {
     color: "gray",
     fontSize: "md",
+    fontWeight: "bold",
     marginBottom: "spacer1",
   },
   sectionHeading: {
