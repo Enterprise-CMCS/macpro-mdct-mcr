@@ -624,7 +624,9 @@ describe("Completion Status Tests", () => {
           {},
           {}
         );
-        expect(result).toEqual(undefined);
+        expect(result).toEqual({
+          [mockIlosRoute.path]: true,
+        });
       });
 
       test("Test analysis methods custom logic", async () => {
@@ -666,6 +668,78 @@ describe("Completion Status Tests", () => {
         );
         expect(result).toMatchObject({
           "/naaar/state-and-program-information/analysis-methods": false,
+        });
+      });
+
+      test("Legacy: If user is not reporting Prior Authorization (Section B) data, they're not required to complete that section", async () => {
+        const testData = {
+          state_priorAuthorizationReporting: [
+            {
+              key: "mock-key",
+              value: "Not reporting data",
+            },
+          ],
+        };
+        const mockPriorAuthRoute = {
+          ...mockDrawerReportPageJson,
+          path: "/mcpar/state-level-indicators/prior-authorization",
+        };
+        const result = await calculateRouteCompletion(
+          mockPriorAuthRoute,
+          testData,
+          {},
+          {}
+        );
+        expect(result).toEqual({
+          [mockPriorAuthRoute.path]: true,
+        });
+      });
+
+      test("Legacy: If user is not reporting Prior Authorization (Section D) data, they're not required to complete that section", async () => {
+        const testData = {
+          plan_priorAuthorizationReporting: [
+            {
+              key: "mock-key",
+              value: "Not reporting data",
+            },
+          ],
+        };
+        const mockPriorAuthRoute = {
+          ...mockDrawerReportPageJson,
+          path: "/mcpar/plan-level-indicators/prior-authorization",
+        };
+        const result = await calculateRouteCompletion(
+          mockPriorAuthRoute,
+          testData,
+          {},
+          {}
+        );
+        expect(result).toEqual({
+          [mockPriorAuthRoute.path]: true,
+        });
+      });
+
+      test("Legacy: If user is not reporting Patient Access API data, they're not required to complete that section", async () => {
+        const testData = {
+          plan_patientAccessApiReporting: [
+            {
+              key: "mock-key",
+              value: "Not reporting data",
+            },
+          ],
+        };
+        const mockPatientAccessApiRoute = {
+          ...mockDrawerReportPageJson,
+          path: "/mcpar/plan-level-indicators/patient-access-api",
+        };
+        const result = await calculateRouteCompletion(
+          mockPatientAccessApiRoute,
+          testData,
+          {},
+          {}
+        );
+        expect(result).toEqual({
+          [mockPatientAccessApiRoute.path]: true,
         });
       });
 
