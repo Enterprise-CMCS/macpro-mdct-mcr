@@ -203,9 +203,8 @@ export interface ReportPageVerbiage {
   intro: {
     alert?: string;
     hint?: string;
-    eyebrow?: string;
+    formEyebrow?: string;
     section: string;
-    subsection?: string;
     spreadsheet?: string;
     info?: string | CustomHtmlElement[];
     exportSectionHeader?: string;

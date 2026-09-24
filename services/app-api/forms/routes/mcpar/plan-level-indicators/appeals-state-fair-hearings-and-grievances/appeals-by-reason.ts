@@ -13,8 +13,8 @@ export const appealsByReasonRoute: DrawerFormRoute = {
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic IV. Appeals, State Fair Hearings & Grievances",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic IV. Appeals, State Fair Hearings & Grievances",
       spreadsheet: "D1_Plan_Set",
       info: [
         {

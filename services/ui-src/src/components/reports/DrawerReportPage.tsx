@@ -382,7 +382,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           </Box>
         ) : (
           <Box>
-            <Heading as="h3" sx={dashboardTitleStyling(canAddEntities)}>
+            <Heading as="h2" sx={dashboardTitleStyling(canAddEntities)}>
               {parseCustomHtml(verbiage.dashboardTitle)}
             </Heading>
             {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (

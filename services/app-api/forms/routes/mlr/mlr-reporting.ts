@@ -14,8 +14,8 @@ export const mlrReportingRoute: ModalOverlayRoute = {
   verbiage: {
     intro: {
       exportSectionHeader: "Program Reporting Information",
-      section: "MLR Reporting",
-      subsection: "Medicaid Medical Loss Ratio (MLR) & Remittances",
+      formEyebrow: "MLR Reporting",
+      section: "Medicaid Medical Loss Ratio (MLR) & Remittances",
       spreadsheet: "Program Information",
       info: [
         {

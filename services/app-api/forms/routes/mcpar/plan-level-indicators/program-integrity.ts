@@ -13,8 +13,8 @@ export const programIntegrityRoute: DrawerFormRoute = {
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic X. Program Integrity",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic X. Program Integrity",
       spreadsheet: "D1_Plan_Set",
     },
     dashboardTitle: "Report on program integrity for each plan",

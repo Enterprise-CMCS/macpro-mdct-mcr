@@ -11,8 +11,8 @@ export const mentalHealthAndSubstanceUseDisorderParityRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section C: Program-Level Indicators",
-      subsection: "Topic XII. Mental Health and Substance Use Disorder Parity",
+      formEyebrow: "Section C: Program-Level Indicators",
+      section: "Topic XII. Mental Health and Substance Use Disorder Parity",
       spreadsheet: "C1_Program_Set",
     },
   },
