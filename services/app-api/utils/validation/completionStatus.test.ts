@@ -612,65 +612,6 @@ describe("Completion Status Tests", () => {
         expect(result).toEqual(undefined);
       });
 
-      test("If user has not added an ILOS, they're not required to complete that section", async () => {
-        const testData = {};
-        const mockIlosRoute = {
-          ...mockDrawerReportPageJson,
-          path: "/mcpar/plan-level-indicators/ilos",
-        };
-        const result = await calculateRouteCompletion(
-          mockIlosRoute,
-          testData,
-          {},
-          {}
-        );
-        expect(result).toEqual({
-          [mockIlosRoute.path]: true,
-        });
-      });
-
-      test("Test analysis methods custom logic", async () => {
-        const testData = {
-          plans: [
-            {
-              id: "123",
-              name: "test plan",
-            },
-          ],
-          analysisMethods: [
-            {
-              id: "1",
-              name: "first method",
-              analysis_applicable: [
-                {
-                  key: "a",
-                  value: "no",
-                },
-              ],
-            },
-          ],
-        };
-        const mockAnalysisMethodsRoute = {
-          ...mockDrawerReportPageJson,
-          path: "/naaar/state-and-program-information/analysis-methods",
-          entityType: EntityType.ANALYSIS_METHODS,
-          addEntityDrawerForm: {
-            id: "iamnew",
-            fields: [],
-          },
-        };
-        formCompletionSpy.mockResolvedValue(false);
-        const result = await calculateRouteCompletion(
-          mockAnalysisMethodsRoute,
-          testData,
-          {},
-          {}
-        );
-        expect(result).toMatchObject({
-          "/naaar/state-and-program-information/analysis-methods": false,
-        });
-      });
-
       test("Legacy: If user is not reporting Prior Authorization (Section B) data, they're not required to complete that section", async () => {
         const testData = {
           state_priorAuthorizationReporting: [
@@ -740,6 +681,65 @@ describe("Completion Status Tests", () => {
         );
         expect(result).toEqual({
           [mockPatientAccessApiRoute.path]: true,
+        });
+      });
+
+      test("If user has not added an ILOS, they're not required to complete that section", async () => {
+        const testData = {};
+        const mockIlosRoute = {
+          ...mockDrawerReportPageJson,
+          path: "/mcpar/plan-level-indicators/ilos",
+        };
+        const result = await calculateRouteCompletion(
+          mockIlosRoute,
+          testData,
+          {},
+          {}
+        );
+        expect(result).toEqual({
+          [mockIlosRoute.path]: true,
+        });
+      });
+
+      test("Test analysis methods custom logic", async () => {
+        const testData = {
+          plans: [
+            {
+              id: "123",
+              name: "test plan",
+            },
+          ],
+          analysisMethods: [
+            {
+              id: "1",
+              name: "first method",
+              analysis_applicable: [
+                {
+                  key: "a",
+                  value: "no",
+                },
+              ],
+            },
+          ],
+        };
+        const mockAnalysisMethodsRoute = {
+          ...mockDrawerReportPageJson,
+          path: "/naaar/state-and-program-information/analysis-methods",
+          entityType: EntityType.ANALYSIS_METHODS,
+          addEntityDrawerForm: {
+            id: "iamnew",
+            fields: [],
+          },
+        };
+        formCompletionSpy.mockResolvedValue(false);
+        const result = await calculateRouteCompletion(
+          mockAnalysisMethodsRoute,
+          testData,
+          {},
+          {}
+        );
+        expect(result).toMatchObject({
+          "/naaar/state-and-program-information/analysis-methods": false,
         });
       });
 
