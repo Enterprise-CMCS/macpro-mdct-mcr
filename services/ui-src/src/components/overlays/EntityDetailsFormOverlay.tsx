@@ -42,8 +42,8 @@ export const EntityDetailsFormOverlay = ({
       <ReportPageIntro
         accordion={verbiage.accordion}
         formRequiredText={formRequiredText}
-        table={table}
         sxOverride={sxOverride}
+        table={table}
         text={verbiage.intro}
       />
       <Box sx={{ ...sxOverride?.form }}>

@@ -56,6 +56,7 @@ export const AddEditReportModal = ({
 
   const modalFormJson = modalFormJsonMap[reportType]!;
   const [form, setForm] = useState<FormJson>(modalFormJson);
+  const formRequiredText = getFormRequiredText(form.fields);
 
   useEffect(() => {
     // make deep copy of baseline form for customization
@@ -308,8 +309,6 @@ export const AddEditReportModal = ({
     setSubmitting(false);
     modalDisclosure.onClose();
   };
-
-  const formRequiredText = getFormRequiredText(form.fields);
 
   return (
     <Modal

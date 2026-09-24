@@ -12,7 +12,7 @@ import { AlertTypes, AnyObject, TableContentShape } from "types";
 import { parseCustomHtml } from "utils";
 
 export const ReportPageIntro = ({
-  text,
+  text = {},
   accordion,
   reportType,
   hasIlos,
@@ -27,7 +27,7 @@ export const ReportPageIntro = ({
 
   return (
     <Box sx={sx.introBox} {...props}>
-      {eyebrow ? (
+      {eyebrow && (
         <Box>
           <Text as="p" sx={sx.eyebrow}>
             {eyebrow}
@@ -36,7 +36,8 @@ export const ReportPageIntro = ({
             {section}
           </Heading>
         </Box>
-      ) : (
+      )}
+      {!eyebrow && section && (
         <Heading as="h1" sx={subsection ? sx.eyebrow : sx.sectionHeading}>
           {section}
         </Heading>

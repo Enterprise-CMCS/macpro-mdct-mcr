@@ -38,6 +38,7 @@ import {
   filterStandardsByUtilizedAnalysisMethods,
   getEntriesToClear,
   getForm,
+  getFormRequiredText,
   getPageTitle,
   parseCustomHtml,
   routeChecker,
@@ -335,15 +336,19 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     </Button>
   );
 
+  const formRequiredText = getFormRequiredText(standardForm?.fields);
+
   return (
     <Box sx={sx.tablePage}>
       {/* page title */}
       <Helmet>
         <title>{report && getPageTitle(report.reportType, route)}</title>
       </Helmet>
-      {verbiage.intro && (
-        <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
-      )}
+      <ReportPageIntro
+        formRequiredText={formRequiredText}
+        text={verbiage.intro}
+        hasIlos={hasIlos}
+      />
       {isAnalysisMethodsPage && (
         <ErrorAlert
           error={analysisMethodsError}

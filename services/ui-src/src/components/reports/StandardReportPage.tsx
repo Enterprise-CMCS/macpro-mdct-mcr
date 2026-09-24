@@ -83,14 +83,12 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
       <Helmet>
         <title>{report && getPageTitle(report.reportType, route)}</title>
       </Helmet>
-      {route.verbiage.intro && (
-        <ReportPageIntro
-          accordion={accordion}
-          formRequiredText={formRequiredText}
-          text={route.verbiage.intro}
-          reportType={report?.reportType}
-        />
-      )}
+      <ReportPageIntro
+        accordion={accordion}
+        formRequiredText={formRequiredText}
+        reportType={report?.reportType}
+        text={route.verbiage.intro}
+      />
       {showError ? (
         <Box sx={sx.missingEntity}>
           {parseCustomHtml(route.verbiage.missingEntityMessage || "")}
