@@ -201,8 +201,8 @@ export const mockNonFieldForm = {
 };
 
 export const mockVerbiageIntro = {
+  formEyebrow: "mock form eyebrow",
   section: "mock section",
-  subsection: "mock subsection",
   spreadsheet: "mock item",
   info: [
     {
@@ -903,8 +903,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
   details: {
     verbiage: {
       intro: {
-        section: "",
-        subsection: "Mock Details: Example Plan",
+        section: "Mock Details: Example Plan",
       },
       backButton: "Mock Back Button: Main",
     },
@@ -947,8 +946,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
             text: "",
           },
           intro: {
-            section: "",
-            subsection: "Mock Section",
+            section: "Mock Section",
           },
           heading: "Mock Heading",
           hint: "Mock Hint",
@@ -960,8 +958,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
         parentForm: "mockMultiform",
         verbiage: {
           intro: {
-            section: "",
-            subsection: "Mock Child Form",
+            section: "Mock Child Form",
           },
           backButton: "Mock Back Button: Child",
         },
@@ -1037,8 +1034,7 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
           },
           backButton: "Mock Back Button: Form 2",
           intro: {
-            section: "",
-            subsection: "Mock Details: Form 2",
+            section: "Mock Details: Form 2",
           },
           heading: "Mock Heading 2",
           hint: "Mock Hint 2",
@@ -1066,8 +1062,7 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
           verbiage: {
             backButton: "Mock Back Button: Table",
             intro: {
-              section: "",
-              subsection: "Mock Details: Child Table",
+              section: "Mock Details: Child Table",
             },
           },
         },

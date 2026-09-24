@@ -107,14 +107,8 @@ describe("<OverlayReportPage />", () => {
         level: 1,
         name: verbiage.intro.section,
       });
-      const h2 = screen.getByRole("heading", {
-        level: 2,
-        name: verbiage.intro.subsection,
-      });
       // Check if header is visible on load - H1
       expect(h1).toBeVisible();
-      // Check if header is visible on load - H2
-      expect(h2).toBeVisible();
 
       // Check if missing Plans notice is displaying
       const missingInformationMessage =
@@ -146,14 +140,9 @@ describe("<OverlayReportPage />", () => {
         level: 1,
         name: verbiage.intro.section,
       });
-      const h2 = screen.getByRole("heading", {
-        level: 2,
-        name: verbiage.intro.subsection,
-      });
+
       // Check if header is visible on load - H1
       expect(h1).toBeVisible();
-      // Check if header is visible on load - H2
-      expect(h2).toBeVisible();
 
       // Check if missing Plans notice is displaying
       const missingInformationMessage =
@@ -310,13 +299,8 @@ describe("<OverlayReportPage />", () => {
           level: 1,
           name: verbiage.intro.section,
         });
-        const h2 = screen.getByRole("heading", {
-          level: 2,
-          name: `Mock Details: ${planName}`,
-        });
 
         expect(h1Requery).toBeNull();
-        expect(h2).toBeVisible();
       });
 
       test("submit details form - Yes", async () => {

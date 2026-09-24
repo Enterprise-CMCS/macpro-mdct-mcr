@@ -13,8 +13,8 @@ export const encounterDataReportRoute: DrawerFormRoute = {
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic III. Encounter Data",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic III. Encounter Data",
       spreadsheet: "D1_Plan_Set",
     },
     dashboardTitle: "Report on encounter data for each plan",

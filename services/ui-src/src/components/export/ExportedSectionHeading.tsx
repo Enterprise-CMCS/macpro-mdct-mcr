@@ -6,7 +6,7 @@ import { ReportPageVerbiage } from "types";
 import { parseCustomHtml } from "utils";
 
 export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
-  const sectionSubHeader = verbiage?.intro?.subsection || heading;
+  const sectionSubHeader = verbiage?.intro?.section || heading;
   const sectionInfo = verbiage?.intro?.exportSectionHeader
     ? null
     : verbiage?.intro?.info;
@@ -80,11 +80,15 @@ const sx = {
       margin: "1.5rem 0",
     },
     a: {
-      color: "base",
-      textDecoration: "none",
-      "&:hover": {
-        color: "base",
-        textDecoration: "none",
+      color: "primary",
+      textDecoration: "underline",
+      "&:visited": {
+        color: "primary",
+        textDecorationColor: "primary",
+      },
+      "&:hover, &:visited:hover": {
+        color: "primary_darker",
+        textDecorationColor: "primary_darker",
       },
     },
     h3: {

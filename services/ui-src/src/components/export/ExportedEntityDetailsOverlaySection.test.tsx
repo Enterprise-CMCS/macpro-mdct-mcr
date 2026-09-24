@@ -38,12 +38,12 @@ describe("<ExportedEntityDetailsOverlaySection />", () => {
       const { findByText, findByRole } = render(
         exportedEntityDetailsOverlaySectionComponent()
       );
-      expect(await findByText("mock subsection")).toBeVisible();
+      expect(await findByText("mock section")).toBeVisible();
       expect(
-        await findByRole("heading", { name: /1\. mock subsection for:/i })
+        await findByRole("heading", { name: /1\. mock section for:/i })
       ).toBeVisible();
       expect(
-        await findByRole("heading", { name: /2\. mock subsection for:/i })
+        await findByRole("heading", { name: /2\. mock section for:/i })
       ).toBeVisible();
     });
     test("ExportedEntityDetailsOverlaySection renders the correct number of tables", () => {
@@ -103,7 +103,7 @@ describe("<ExportedEntityDetailsOverlaySection />", () => {
       expect(sections[0].map(({ id }) => id)).toEqual(["a", "b"]);
     });
 
-    test("it splits out a new subsection for each header", () => {
+    test("it splits out a new section for each header", () => {
       const sections = getFormSections([
         { id: "a", type: "sectionHeader" },
         { id: "b", type: "checkbox" },

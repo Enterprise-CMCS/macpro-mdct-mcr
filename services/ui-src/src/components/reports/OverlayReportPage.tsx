@@ -69,7 +69,7 @@ export const OverlayReportPage = ({
     setSidebarHidden(openOverlay);
   };
 
-  const TablePage = () => {
+  const renderTablePage = () => {
     const entityData = report?.fieldData[entityType] || [];
     const standardEntities = report?.fieldData["standards"] || [];
     const hasStandards = standardEntities.length > 0;
@@ -158,13 +158,13 @@ export const OverlayReportPage = ({
     );
   };
 
-  const DetailsOverlay = () => {
-    useEffect(() => {
-      if (!details?.verbiage || !details?.forms) {
-        toggleOverlay();
-      }
-    }, [details]);
+  useEffect(() => {
+    if (isEntityDetailsOpen && (!details?.verbiage || !details?.forms)) {
+      toggleOverlay();
+    }
+  }, [details, isEntityDetailsOpen]);
 
+  const renderDetailsOverlay = () => {
     if (!details?.verbiage || !details?.forms) {
       return <></>;
     }
@@ -258,7 +258,7 @@ export const OverlayReportPage = ({
     );
   };
 
-  return isEntityDetailsOpen ? <DetailsOverlay /> : <TablePage />;
+  return isEntityDetailsOpen ? renderDetailsOverlay() : renderTablePage();
 };
 
 interface Props {

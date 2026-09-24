@@ -596,5 +596,121 @@
         "Value": "MO"
       }
     ]
+  },
+  {
+    "username": "MD.stateuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "MD.stateuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "MD"
+      },
+      {
+        "Name": "family_name",
+        "Value": "StateUser"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "MD"
+      }
+    ]
+  },
+  {
+    "username": "UT.stateuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "UT.stateuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "UT"
+      },
+      {
+        "Name": "family_name",
+        "Value": "StateUser"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "UT"
+      }
+    ]
+  },
+  {
+    "username": "NV.stateuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "NV.stateuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "NV"
+      },
+      {
+        "Name": "family_name",
+        "Value": "StateUser"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "NV"
+      }
+    ]
+  },
+  {
+    "username": "MA.stateuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "MA.stateuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "MA"
+      },
+      {
+        "Name": "family_name",
+        "Value": "StateUser"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "MA"
+      }
+    ]
   }
 ]

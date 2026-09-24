@@ -222,13 +222,40 @@ export const calculateRouteCompletion = async (
       break;
     case PageTypes.DRAWER:
       if (!route.drawerForm) break;
+      // Legacy: For reports created prior to June 2026, this section is not required
+      if (
+        route.path === "/mcpar/state-level-indicators/prior-authorization" &&
+        fieldData.state_priorAuthorizationReporting?.[0].value ===
+          "Not reporting data"
+      ) {
+        routeCompletion = { [route.path]: true };
+        break;
+      }
+      // Legacy: For reports created prior to June 2026, this section is not required
+      if (
+        route.path === "/mcpar/plan-level-indicators/prior-authorization" &&
+        fieldData.plan_priorAuthorizationReporting?.[0].value ===
+          "Not reporting data"
+      ) {
+        routeCompletion = { [route.path]: true };
+        break;
+      }
+      // Legacy: For reports created prior to June 2026, this section is not required
+      if (
+        route.path === "/mcpar/plan-level-indicators/patient-access-api" &&
+        fieldData.plan_patientAccessApiReporting?.[0].value ===
+          "Not reporting data"
+      ) {
+        routeCompletion = { [route.path]: true };
+        break;
+      }
       // handle ILOS edge case: if there are no ILOS added, this section is not required; otherwise it is
       if (
         route.path === "/mcpar/plan-level-indicators/ilos" &&
         !fieldData["ilos"]?.length
       ) {
         routeCompletion = { [route.path]: true };
-        return;
+        break;
       }
       // handle Analysis Methods case: this section allows users to add custom methods, which use different form questions
       if (
