@@ -11,7 +11,7 @@ export const stateInformationAndReportingScenarioRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      eyebrow: "I. State and program information",
+      formEyebrow: "I. State and program information",
       section: "A. State information and reporting scenario",
       info: [
         {

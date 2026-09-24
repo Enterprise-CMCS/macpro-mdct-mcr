@@ -13,8 +13,8 @@ export const priorAuthorizationRoute: DrawerFormRoute = {
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic XIII. Prior Authorization",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic XIII. Prior Authorization",
       spreadsheet: "D1_Plan_Set",
     },
     dashboardTitle:

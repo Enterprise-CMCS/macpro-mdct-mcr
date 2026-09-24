@@ -51,7 +51,7 @@ describe("<ExportedSectionHeading />", () => {
 
   test("Correct heading text is shown", () => {
     render(exportedReportSectionHeadingComponent);
-    const sectionHeading = screen.getByText("mock subsection");
+    const sectionHeading = screen.getByText("mock section");
     expect(sectionHeading).toBeVisible();
   });
 

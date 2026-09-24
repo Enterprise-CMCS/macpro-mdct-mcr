@@ -11,8 +11,8 @@ export const notesRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section F: Notes",
-      subsection: "Notes",
+      formEyebrow: "Section F: Notes",
+      section: "Notes",
       spreadsheet: "F_Notes",
       info: [
         {
