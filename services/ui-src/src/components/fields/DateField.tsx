@@ -1,8 +1,13 @@
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
-import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
-import { Box, SystemStyleObject } from "@chakra-ui/react";
+import {
+  SingleInputDateField as CmsdsDateField,
+  Label,
+  Hint,
+  InlineError,
+} from "@cmsgov/design-system";
+import { Box, SystemStyleObject, Text } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 // types
 import { CustomHtmlElement, InputChangeEvent } from "types";
@@ -25,6 +30,7 @@ export const DateField = ({
   validateOnRender,
   styleAsOptional,
   clear,
+  warningMessage,
   ...props
 }: Props) => {
   const defaultValue = "";
@@ -120,6 +126,55 @@ export const DateField = ({
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
 
+  // Determine what message to show - error takes precedence, then warning
+  const messageToShow =
+    errorMessage || (warningMessage && !errorMessage ? warningMessage : null);
+  const isError = !!errorMessage;
+  const isWarning = !errorMessage && !!warningMessage;
+
+  // Manually add warning message to the field
+  if (messageToShow) {
+    return (
+      <Box
+        sx={{ ...sx, ...sxOverride }}
+        className={`${labelClass} ${nestedChildClasses} date-field`}
+      >
+        <Label htmlFor={name} id={`${name}-label`}>
+          {labelText || ""}
+        </Label>
+
+        {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
+
+        {isError && (
+          <InlineError id={`${name}__error`}>{errorMessage}</InlineError>
+        )}
+        {isWarning && (
+          <Text
+            sx={sx.warningText}
+            className="ds-c-field__warning"
+            role="alert"
+          >
+            {warningMessage}
+          </Text>
+        )}
+
+        <CmsdsDateField
+          name={name}
+          id={name}
+          label=""
+          hint=""
+          errorMessage=""
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
+          value={displayValue}
+          aria-describedby={`${name}-hint`}
+          {...props}
+        />
+      </Box>
+    );
+  }
+
+  // Default CmsdsDateField
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
@@ -150,6 +205,7 @@ interface Props {
   sxOverride?: SystemStyleObject;
   styleAsOptional?: boolean;
   clear?: boolean;
+  warningMessage?: string;
   [key: string]: any;
 }
 
@@ -166,5 +222,14 @@ const sx = {
   },
   ".optional-text": {
     fontWeight: "lighter",
+  },
+
+  warningText: {
+    display: "block",
+    fontSize: "sm",
+    color: "#F8C41F",
+    marginTop: "0.25rem",
+    marginBottom: "0.5rem",
+    fontWeight: "bold",
   },
 };
