@@ -16,7 +16,7 @@ import { ReportDrawerDetails } from "components";
 import { AnyObject, CustomHtmlElement, EntityType } from "types";
 // utils
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
-
+// constants
 import { drawerReminderText } from "../../constants";
 
 export const Drawer = ({
@@ -62,6 +62,9 @@ export const Drawer = ({
             </Box>
           )}
           <Text sx={sx.drawerReminderText}>{drawerReminderText}</Text>
+          {verbiage.formRequiredText && (
+            <Text sx={sx.drawerReminderText}>{verbiage.formRequiredText}</Text>
+          )}
           {verbiage.drawerDetails && entityType && (
             <ReportDrawerDetails
               drawerDetails={verbiage.drawerDetails}
@@ -81,6 +84,7 @@ interface Props {
     drawerTitle: string;
     drawerInfo?: CustomHtmlElement[];
     drawerDetails?: AnyObject;
+    formRequiredText?: string;
   };
   drawerDisclosure: {
     isOpen: boolean;

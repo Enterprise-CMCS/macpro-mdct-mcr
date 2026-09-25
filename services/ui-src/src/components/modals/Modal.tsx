@@ -13,6 +13,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
+  Text,
 } from "@chakra-ui/react";
 // assets
 import closeIcon from "assets/icons/icon_close.png";
@@ -42,7 +43,10 @@ export const Modal = ({
         {content.subheading && (
           <Box sx={sx.modalSubheading}>{content.subheading}</Box>
         )}
-        {content.intro && <Box sx={sx.intro}>{content.intro}</Box>}
+        {content.intro && <Text sx={sx.intro}>{content.intro}</Text>}
+        {content.formRequiredText && (
+          <Text sx={sx.intro}>{content.formRequiredText}</Text>
+        )}
         <Flex sx={sx.modalCloseContainer}>
           <Button
             sx={sx.modalClose}
@@ -102,6 +106,7 @@ interface Props {
     intro?: string;
     actionButtonText: string | ReactNode;
     closeButtonText?: string;
+    formRequiredText?: string;
   };
   submitting?: boolean;
   onConfirmHandler?: Function;
@@ -131,7 +136,10 @@ const sx = {
     marginTop: "spacer1",
   },
   intro: {
-    margin: "0.5rem auto -1rem auto",
+    marginTop: "spacer1",
+    "&:last-of-type": {
+      marginBottom: "-spacer2",
+    },
   },
   modalCloseContainer: {
     alignItems: "center",

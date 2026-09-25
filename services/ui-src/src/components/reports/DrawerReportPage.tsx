@@ -38,6 +38,7 @@ import {
   filterStandardsByUtilizedAnalysisMethods,
   getEntriesToClear,
   getForm,
+  getFormRequiredText,
   getPageTitle,
   parseCustomHtml,
   routeChecker,
@@ -73,7 +74,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     originalOnClose();
   };
 
-  const { entityType, verbiage, form: standardForm } = route;
+  const { entityType, verbiage, form } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const canAddEntities =
     !!addEntityDrawerForm.id || entityType === EntityType.STANDARDS;
@@ -134,7 +135,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     ilos,
     reportingOnIlos,
   };
-  const form = getForm(formParams);
+  const reportDrawerForm = getForm(formParams);
   const addEntityForm = getForm({ ...formParams, isCustomEntityForm: true });
 
   useEffect(() => {
@@ -203,7 +204,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         selectedEntityIndex = currentEntities.length;
       }
 
-      let referenceForm = form;
+      let referenceForm = reportDrawerForm;
       if (selectedIsCustomEntity) {
         referenceForm = addEntityForm;
       }
@@ -335,15 +336,19 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     </Button>
   );
 
+  const formRequiredText = getFormRequiredText(form?.fields);
+
   return (
     <Box sx={sx.tablePage}>
       {/* page title */}
       <Helmet>
         <title>{report && getPageTitle(report.reportType, route)}</title>
       </Helmet>
-      {verbiage.intro && (
-        <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
-      )}
+      <ReportPageIntro
+        formRequiredText={formRequiredText}
+        text={verbiage.intro}
+        hasIlos={hasIlos}
+      />
       {isAnalysisMethodsPage && (
         <ErrorAlert
           error={analysisMethodsError}
@@ -351,11 +356,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         />
       )}
       {displayErrorMessages()}
-      {standardForm && (
-        <Box sx={sx.standardForm}>
+      {form && (
+        <Box sx={sx.form}>
           <Form
-            id={standardForm.id}
-            formJson={standardForm}
+            id={form.id}
+            formJson={form}
             onSubmit={onSubmit}
             onChange={onChange}
             formData={report?.fieldData}
@@ -427,7 +432,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           drawerTitle: getDrawerTitle(),
           drawerInfo: verbiage.drawerInfo,
         }}
-        form={selectedIsCustomEntity ? addEntityForm : form}
+        form={selectedIsCustomEntity ? addEntityForm : reportDrawerForm}
         onSubmit={onSubmit}
         submitting={submitting}
         drawerDisclosure={{
@@ -516,7 +521,7 @@ const sx = {
       paddingLeft: "spacer2",
     },
   },
-  standardForm: {
+  form: {
     paddingBottom: "spacer2",
   },
   addEntityButton: {
