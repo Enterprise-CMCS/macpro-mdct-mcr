@@ -129,6 +129,7 @@ export enum PageTypes {
 
 export interface ScreenReaderCustomHeaderName {
   hiddenName: string;
+  ariaLabel?: string;
   name?: string;
 }
 

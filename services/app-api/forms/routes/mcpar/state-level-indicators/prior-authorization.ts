@@ -11,8 +11,8 @@ export const priorAuthorizationRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section B: State-Level Indicators",
-      subsection: "Topic XIII. Prior Authorization",
+      formEyebrow: "Section B: State-Level Indicators",
+      section: "Topic XIII. Prior Authorization",
       spreadsheet: "B_State",
     },
   },

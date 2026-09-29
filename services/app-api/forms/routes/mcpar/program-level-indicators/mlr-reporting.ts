@@ -11,8 +11,8 @@ export const mlrReportingRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section C: Program-Level Indicators",
-      subsection: "Topic II: Medical Loss Ratio (MLR) Reporting",
+      formEyebrow: "Section C: Program-Level Indicators",
+      section: "Topic II: Medical Loss Ratio (MLR) Reporting",
       spreadsheet: "C1_Program_Set",
     },
   },

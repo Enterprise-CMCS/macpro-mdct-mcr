@@ -11,8 +11,8 @@ export const appealsStateFairHearingsAndGrievancesRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section C: Program-Level Indicators",
-      subsection: "Topic IV. Appeals, State Fair Hearings & Grievances",
+      formEyebrow: "Section C: Program-Level Indicators",
+      section: "Topic IV. Appeals, State Fair Hearings & Grievances",
       spreadsheet: "C1_Program_Set",
     },
   },

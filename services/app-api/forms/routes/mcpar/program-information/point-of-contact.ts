@@ -11,8 +11,8 @@ export const pointOfContactRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section A: Program Information",
-      subsection: "Point of Contact",
+      formEyebrow: "Section A: Program Information",
+      section: "Point of Contact",
       spreadsheet: "A_Program_Info",
     },
     praDisclosure: [

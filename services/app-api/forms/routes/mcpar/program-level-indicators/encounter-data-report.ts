@@ -11,8 +11,8 @@ export const encounterDataReportRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section C: Program-Level Indicators",
-      subsection: "Topic III: Encounter Data Report",
+      formEyebrow: "Section C: Program-Level Indicators",
+      section: "Topic III: Encounter Data Report",
       spreadsheet: "C1_Program_Set",
     },
   },

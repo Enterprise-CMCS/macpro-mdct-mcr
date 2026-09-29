@@ -26,7 +26,12 @@ import {
   mockMlrReportStore,
   mockNaaarReportStore,
 } from "utils/testing/setupJest";
-import { useBreakpoint, makeMediaQueryClasses, useStore } from "utils";
+import {
+  useBreakpoint,
+  makeMediaQueryClasses,
+  useStore,
+  convertDateUtcToEt,
+} from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
@@ -207,6 +212,11 @@ describe("<DashboardTable />", () => {
           screen.getAllByRole("rowheader", { name: "testSubmission" })[0]
         ).toBeVisible();
         expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
+        expect(
+          screen.getAllByRole("button", {
+            name: `Edit reporting of ${mockMlrReportStore.report!.programName}`,
+          })[0]
+        ).toBeVisible();
       });
     });
 
@@ -263,8 +273,10 @@ describe("<DashboardTable />", () => {
 
     test("Clicking the edit reporting button opens the AddEditProgramModal", async () => {
       render(dashboardViewWithReports);
+      const { dueDate: utcDueDate, programName } = mockMcparReportStore.report!;
+      const dueDate = convertDateUtcToEt(utcDueDate);
       const addReportButton = screen.getAllByRole("button", {
-        name: "Edit reporting",
+        name: `Edit reporting of ${programName} due ${dueDate}`,
       })[0];
       expect(addReportButton).toBeVisible();
       await act(async () => {

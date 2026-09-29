@@ -95,7 +95,7 @@ async function setupChildTableFormTest(
   // Click Enter
   const updatedEnterButton = within(updatedEntityCellsIncomplete).getByRole(
     "button",
-    { name: "Enter" }
+    { name: "Enter mock aria label" }
   );
   await act(async () => {
     await userEvent.click(updatedEnterButton);
@@ -129,12 +129,12 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     render(entityDetailsMultiformOverlayComponent());
 
     // Verbiage
-    const h2 = screen.getByRole("heading", {
-      level: 2,
+    const h1 = screen.getByRole("heading", {
+      level: 1,
       name: "Mock Details: Example Plan",
     });
 
-    expect(h2).toBeVisible();
+    expect(h1).toBeVisible();
 
     // Forms
     for (const formId of ["", " 2"]) {
@@ -164,9 +164,8 @@ describe("<EntityDetailsMultiformOverlay />", () => {
           name: `Mock Cell${formId} Enter`,
         });
         const enterButton = within(entityCells).getByRole("button", {
-          name: "Enter",
+          name: "Enter mock aria label",
         });
-
         expect(entityTable).toBeVisible();
         expect(entityHeaders).toBeVisible();
         expect(entityCells).toBeVisible();
@@ -196,7 +195,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     const updatedEnterButton = within(updatedEntityCellsIncomplete).getByRole(
       "button",
       {
-        name: "Enter",
+        name: "Enter mock aria label",
       }
     );
     await act(async () => {
@@ -309,7 +308,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     const updatedEnterButton = within(entityCellsIncomplete).getByRole(
       "button",
       {
-        name: "Enter",
+        name: "Enter mock aria label",
       }
     );
     await act(async () => {

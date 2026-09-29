@@ -335,7 +335,7 @@ export const generatePCCMTemplate = (originalReportTemplate: ReportJson) => {
     (route: ReportRoute) => !!routesToIncludeInPCCM[route.name]
   );
 
-  // only include listed subsections
+  // only include listed sections
   for (let route of reportTemplate.routes) {
     if (route?.children) {
       route.children = route.children.filter((childRoute: ReportRoute) =>

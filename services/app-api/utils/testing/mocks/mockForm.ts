@@ -120,7 +120,6 @@ export const mockDynamicForm = {
 
 export const mockVerbiageIntro = {
   section: "mock section",
-  subsection: "mock subsection",
   spreadsheet: "mock item",
   info: [
     {

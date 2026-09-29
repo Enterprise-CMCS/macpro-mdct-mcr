@@ -11,8 +11,8 @@ export const providerTypeCoverageRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "I. State and program information",
-      subsection: "C. Provider type coverage",
+      formEyebrow: "I. State and program information",
+      section: "C. Provider type coverage",
       info: "If your standards apply to more specific provider types, select the most closely aligned provider type category and utilize the subcategory fields available in Section II. Program-level access and network adequacy standards under “Provider type covered by standard”.",
     },
   },

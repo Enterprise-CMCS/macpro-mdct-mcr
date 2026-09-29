@@ -11,8 +11,8 @@ export const addPlansRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section A: Program Information",
-      subsection: "Add plans (A.7)",
+      formEyebrow: "Section A: Program Information",
+      section: "Add plans (A.7)",
       info: "Enter the name of each plan that participates in the program for which the state is reporting data.",
       spreadsheet: "A_Program_Info",
     },

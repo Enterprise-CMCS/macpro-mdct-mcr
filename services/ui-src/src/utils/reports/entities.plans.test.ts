@@ -69,7 +69,7 @@ describe("plans", () => {
       heading: `Plan deficiencies for ${mockNonCompliantPlan.name}: 42 C.F.R. § 438.68`,
       questions: [
         {
-          question: "Description",
+          question: "III.C.2b Plan deficiencies: description",
           answer: "mock description",
         },
         {
@@ -91,15 +91,16 @@ describe("plans", () => {
           ],
         },
         {
-          question: "What the plan will do to achieve compliance",
+          question:
+            "III.C.2c Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
           answer: "mock plan to achieve compliance",
         },
         {
-          question: "Monitoring progress",
+          question: "III.C.2d Plan deficiencies: monitoring progress",
           answer: "mock monitoring progress",
         },
         {
-          question: "Reassessment date",
+          question: "III.C.2e Reassessment for plan deficiencies",
           answer: "mock reassessment date",
         },
       ],
@@ -166,7 +167,7 @@ describe("plans", () => {
       heading: `Plan deficiencies for ${mockNonCompliantPlan.name}: 42 C.F.R. § 438.68`,
       questions: [
         {
-          question: "Description",
+          question: "III.C.2b Plan deficiencies: description",
           answer: "mock description",
         },
         {
@@ -188,15 +189,16 @@ describe("plans", () => {
           ],
         },
         {
-          question: "What the plan will do to achieve compliance",
+          question:
+            "III.C.2c Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
           answer: "mock plan to achieve compliance",
         },
         {
-          question: "Monitoring progress",
+          question: "III.C.2d Plan deficiencies: monitoring progress",
           answer: "mock monitoring progress",
         },
         {
-          question: "Reassessment date",
+          question: "III.C.2e Reassessment for plan deficiencies",
           answer: "mock reassessment date",
         },
       ],
@@ -263,7 +265,7 @@ describe("plans", () => {
       heading: `Plan deficiencies for ${mockNonCompliantPlan.name}: 42 C.F.R. § 438.68`,
       questions: [
         {
-          question: "Description",
+          question: "III.C.2b Plan deficiencies: description",
           answer: "mock description",
         },
         {
@@ -285,15 +287,16 @@ describe("plans", () => {
           ],
         },
         {
-          question: "What the plan will do to achieve compliance",
+          question:
+            "III.C.2c Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
           answer: "mock plan to achieve compliance",
         },
         {
-          question: "Monitoring progress",
+          question: "III.C.2d Plan deficiencies: monitoring progress",
           answer: "mock monitoring progress",
         },
         {
-          question: "Reassessment date",
+          question: "III.C.2e Reassessment for plan deficiencies",
           answer: "mock reassessment date",
         },
       ],
@@ -320,12 +323,12 @@ describe("plans", () => {
       questions: [
         {
           question:
-            "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d).",
+            "III.C.3b Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d).",
           answer: "mock description",
         },
         {
           question:
-            "Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
+            "III.C.3c Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
           answer: "mock justification",
         },
       ],
@@ -354,7 +357,7 @@ describe("plans", () => {
       heading: `Plan deficiencies for ${mockNonCompliantPlan.name}: 42 C.F.R. § 438.68`,
       questions: [
         {
-          question: "Description",
+          question: "III.C.2b Plan deficiencies: description",
           answer: "mock description",
         },
         {
@@ -362,15 +365,16 @@ describe("plans", () => {
           answer: [],
         },
         {
-          question: "What the plan will do to achieve compliance",
+          question:
+            "III.C.2c Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
           answer: "mock plan to achieve compliance",
         },
         {
-          question: "Monitoring progress",
+          question: "III.C.2d Plan deficiencies: monitoring progress",
           answer: "mock monitoring progress",
         },
         {
-          question: "Reassessment date",
+          question: "III.C.2e Reassessment for plan deficiencies",
           answer: "mock reassessment date",
         },
       ],

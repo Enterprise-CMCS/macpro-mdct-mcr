@@ -13,7 +13,7 @@ import {
   EntityType,
 } from "types";
 // utils
-import { useStore } from "utils";
+import { getFormRequiredText, useStore } from "utils";
 
 export const ReportDrawer = ({
   entityType,
@@ -31,10 +31,14 @@ export const ReportDrawer = ({
   const buttonText =
     userIsAdmin || userIsReadOnly ? closeText : saveAndCloseText;
   const formFieldsExist = form.fields.length > 0;
+  const formRequiredText = getFormRequiredText(form.fields);
 
   return (
     <Drawer
-      verbiage={verbiage}
+      verbiage={{
+        ...verbiage,
+        formRequiredText,
+      }}
       drawerDisclosure={drawerDisclosure}
       entityType={entityType}
       {...props}

@@ -37,7 +37,10 @@ export const isReportLevelField = (
     return false;
   }
 
-  // Special case: These are the only fields that appear on drawer pages but are stored at report level
+  /**
+   * Legacy: These fields are only in reports created prior to June 2026
+   * and appear on drawer pages but are stored at report level
+   */
   const isPageLevelGatingRadio =
     formField.id === "plan_priorAuthorizationReporting" ||
     formField.id === "plan_patientAccessApiReporting";

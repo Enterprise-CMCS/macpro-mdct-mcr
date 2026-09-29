@@ -12,6 +12,7 @@ import {
   archiveReport as archiveReportRequest,
   releaseReport as releaseReportRequest,
   submitReport as submitReportRequest,
+  recalculateReport as recalculateReportRequest,
   flattenReportRoutesArray,
   getLocalHourMinuteTime,
   getReport,
@@ -35,6 +36,7 @@ export const ReportContext = createContext<ReportContextShape>({
   fetchReport: Function,
   updateReport: Function,
   submitReport: Function,
+  recalculateReport: Function,
   // reports by state
   fetchReportsByState: Function,
   // selected report
@@ -124,6 +126,20 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
+  /*
+   * Recalculates and persists the report's completion status from its current
+   * field data (without touching lastAltered), then refreshes the report.
+   * Recalculation is best-effort: if it fails, the report is still fetched.
+   */
+  const recalculateReport = async (reportKeys: ReportKeys) => {
+    try {
+      await recalculateReportRequest(reportKeys);
+    } catch {
+      // fall through to fetch so the page still loads with the stored status
+    }
+    return await fetchReport(reportKeys);
+  };
+
   const updateReport = async (reportKeys: ReportKeys, report: ReportShape) => {
     try {
       const result = await putReport(reportKeys, report);
@@ -209,6 +225,7 @@ export const ReportProvider = ({ children }: Props) => {
       createReport,
       updateReport,
       submitReport,
+      recalculateReport,
       // reports by state
       reportsByState,
       copyEligibleReportsByState,

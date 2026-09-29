@@ -5,7 +5,7 @@ import { Form, ReportPageIntro, SaveReturnButton } from "components";
 // types
 import { EntityShape, EntityType, FormJson } from "types";
 // utils
-import { getProgramInfo } from "utils";
+import { getFormRequiredText, getProgramInfo } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
 import overlayVerbiage from "verbiage/pages/overlays";
@@ -20,12 +20,14 @@ export const EntityDetailsOverlayReporting = ({
   validateOnRender,
 }: Props) => {
   const programInfo = getProgramInfo(selectedEntity);
+  const formRequiredText = getFormRequiredText(form.fields);
 
   return (
     <>
       <ReportPageIntro
-        text={overlayVerbiage.MLR.intro}
         accordion={accordionVerbiage.MLR.detailIntro}
+        formRequiredText={formRequiredText}
+        text={overlayVerbiage.MLR.intro}
       />
       <Box sx={sx.programInfo}>
         <Text sx={sx.textHeading}>MLR report for:</Text>

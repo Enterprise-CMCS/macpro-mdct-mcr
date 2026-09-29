@@ -13,6 +13,10 @@ import s3Lib, {
   getFormTemplateKey,
 } from "../../utils/s3/s3-lib";
 import { convertDateUtcToEt } from "../../utils/time/time";
+import {
+  calculateCompletionStatus,
+  isComplete,
+} from "../../utils/validation/completionStatus";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import {
   badRequest,
@@ -68,13 +72,56 @@ export const submitReport = handler(async (event, _context) => {
     | MLRReportMetadata
     | MCPARReportMetadata
     | NAAARReportMetadata;
-  const { status, isComplete, fieldDataId, formTemplateId } = reportMetadata;
+  const { status, fieldDataId, formTemplateId } = reportMetadata;
 
   if (status === "Submitted") {
     return ok(reportMetadata);
   }
 
-  if (!isComplete) {
+  // Get field data
+  const fieldDataParams = {
+    Bucket: reportBucket,
+    Key: getFieldDataKey(state, fieldDataId),
+  };
+
+  let existingFieldData;
+
+  try {
+    existingFieldData = (await s3Lib.get(fieldDataParams)) as Record<
+      string,
+      any
+    >;
+  } catch {
+    return internalServerError(error.S3_OBJECT_GET_ERROR);
+  }
+
+  const getFormTemplateParams = {
+    Bucket: reportBucket,
+    Key: getFormTemplateKey(formTemplateId),
+  };
+
+  let formTemplate;
+
+  try {
+    formTemplate = (await s3Lib.get(getFormTemplateParams)) as Record<
+      string,
+      any
+    >;
+  } catch {
+    return internalServerError(error.S3_OBJECT_GET_ERROR);
+  }
+
+  /*
+   * Recalculate completion from the current field data rather than trusting the
+   * stored isComplete flag, which may be stale (e.g. validation rules changed
+   * after the report was last saved).
+   */
+  const completionStatus = await calculateCompletionStatus(
+    existingFieldData,
+    formTemplate
+  );
+
+  if (!isComplete(completionStatus)) {
     return conflict(error.REPORT_INCOMPLETE);
   }
 
@@ -87,6 +134,8 @@ export const submitReport = handler(async (event, _context) => {
   const fullName = `${jwt.given_name} ${jwt.family_name}`;
   const submittedReportMetadata = {
     ...reportMetadata,
+    completionStatus,
+    isComplete: true,
     submittedBy: fullName,
     submittedOnDate: date,
     submissionDates: [
@@ -111,23 +160,6 @@ export const submitReport = handler(async (event, _context) => {
     return internalServerError(error.DYNAMO_UPDATE_ERROR);
   }
 
-  // Get field data
-  const fieldDataParams = {
-    Bucket: reportBucket,
-    Key: getFieldDataKey(state, fieldDataId),
-  };
-
-  let existingFieldData;
-
-  try {
-    existingFieldData = (await s3Lib.get(fieldDataParams)) as Record<
-      string,
-      any
-    >;
-  } catch {
-    return internalServerError(error.S3_OBJECT_GET_ERROR);
-  }
-
   const fieldData = {
     ...existingFieldData,
     submitterName: fullName,
@@ -141,22 +173,6 @@ export const submitReport = handler(async (event, _context) => {
     Body: JSON.stringify(fieldData),
     ContentType: "application/json",
   };
-
-  const getFormTemplateParams = {
-    Bucket: reportBucket,
-    Key: getFormTemplateKey(formTemplateId),
-  };
-
-  let formTemplate;
-
-  try {
-    formTemplate = (await s3Lib.get(getFormTemplateParams)) as Record<
-      string,
-      any
-    >;
-  } catch {
-    return internalServerError(error.S3_OBJECT_GET_ERROR);
-  }
 
   try {
     await s3Lib.put(updateFieldDataParams);

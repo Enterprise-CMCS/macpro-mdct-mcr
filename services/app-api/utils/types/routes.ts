@@ -63,6 +63,8 @@ export interface ReportFormFieldProps {
     id: string;
     hint?: any;
     label: string;
+    // when checked, deselects all other choices in the field (and vice versa)
+    exclusive?: boolean;
     children?: {
       id: string;
       props?: {

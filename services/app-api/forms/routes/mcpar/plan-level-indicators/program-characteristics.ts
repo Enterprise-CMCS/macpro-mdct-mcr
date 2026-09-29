@@ -13,8 +13,8 @@ export const programCharacteristicsRoute: DrawerFormRoute = {
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic I. Program Characteristics & Enrollment",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic I. Program Characteristics & Enrollment",
       spreadsheet: "D1_Plan_Set",
     },
     dashboardTitle: "Report program characteristics & enrollment for each plan",

@@ -13,8 +13,8 @@ export const sanctionsRoute: ModalDrawerRoute = {
   entityType: EntityType.SANCTIONS,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic VIII. Sanctions",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic VIII. Sanctions",
       spreadsheet: "D3_Plan_Sanctions",
       info: [
         {

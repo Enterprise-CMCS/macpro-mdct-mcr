@@ -301,7 +301,7 @@ const getFormattedNonComplianceData = (plan: EntityShape) => {
     }: 42 C.F.R. § 438.68`,
     questions: [
       {
-        question: "Description",
+        question: "III.C.2b Plan deficiencies: description",
         answer: nonComplianceDescription,
       },
       {
@@ -309,15 +309,16 @@ const getFormattedNonComplianceData = (plan: EntityShape) => {
         answer: analysisMethodsUsed,
       },
       {
-        question: "What the plan will do to achieve compliance",
+        question:
+          "III.C.2c Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
         answer: nonCompliancePlanToAchieveCompliance,
       },
       {
-        question: "Monitoring progress",
+        question: "III.C.2d Plan deficiencies: monitoring progress",
         answer: nonComplianceMonitoringProgress,
       },
       {
-        question: "Reassessment date",
+        question: "III.C.2e Reassessment for plan deficiencies",
         answer: nonComplianceReassessmentDate,
       },
     ],
@@ -344,12 +345,12 @@ const getFormattedExceptionsData = (plan: EntityShape) => {
     questions: [
       {
         question:
-          "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d).",
+          "III.C.3b Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d).",
         answer: exceptionsDescription,
       },
       {
         question:
-          "Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
+          "III.C.3c Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
         answer: exceptionsJustification,
       },
     ],

@@ -45,11 +45,11 @@ describe("<EntityDetailsFormOverlay />", () => {
     render(entityDetailsFormOverlayComponent());
 
     // Verbiage
-    const h2 = screen.getByRole("heading", {
-      level: 2,
+    const h1 = screen.getByRole("heading", {
+      level: 1,
       name: "Mock Child Form",
     });
-    expect(h2).toBeVisible();
+    expect(h1).toBeVisible();
 
     // Form
     const radioButtonYes = screen.getByRole("radio", { name: "Mock Yes" });

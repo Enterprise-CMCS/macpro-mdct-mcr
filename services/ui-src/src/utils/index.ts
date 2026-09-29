@@ -30,6 +30,7 @@ export * from "./tables/getEntityStatus";
 export * from "./tables/getMcparEntityStatus";
 export * from "./tables/getMlrEntityStatus";
 export * from "./tables/getNaaarEntityStatus";
+export * from "./tables/getStandardStatus";
 export * from "./tables/mapNaaarStandardsData";
 // tracking
 export * from "./tracking/tealium";

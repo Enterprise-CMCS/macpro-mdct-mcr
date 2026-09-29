@@ -16,8 +16,8 @@ let text = { ...mockVerbiageIntro };
 describe("<ReportPageIntro />", () => {
   test("renders", () => {
     render(<ReportPageIntro text={text} />);
+    expect(screen.getByText(mockVerbiageIntro.formEyebrow)).toBeVisible();
     expect(screen.getByText(mockVerbiageIntro.section)).toBeVisible();
-    expect(screen.getByText(mockVerbiageIntro.subsection)).toBeVisible();
     expect(screen.getByText(mockVerbiageIntro.hint)).toBeVisible();
     expect(screen.getByText(mockVerbiageIntro.alert)).toBeVisible();
     expect(screen.getByText(mockVerbiageIntro.info[0].content)).toBeVisible();
@@ -33,13 +33,13 @@ describe("<ReportPageIntro />", () => {
   });
 
   test("shows alert for ilos", () => {
-    text.subsection = "Topic XI. ILOS";
+    text.section = "Topic XI. ILOS";
     render(<ReportPageIntro text={text} hasIlos={false} />);
     expect(screen.getByText(mockVerbiageIntro.alert)).toBeVisible();
   });
 
   test("hides alert for ilos", () => {
-    text.subsection = "Topic XI. ILOS";
+    text.section = "Topic XI. ILOS";
     render(<ReportPageIntro text={text} hasIlos={true} />);
     expect(screen.queryByText(mockVerbiageIntro.alert)).toBeNull();
   });

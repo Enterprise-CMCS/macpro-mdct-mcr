@@ -11,8 +11,8 @@ export const bssRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section C: Program-Level Indicators",
-      subsection: "Topic IX: Beneficiary Support System (BSS)",
+      formEyebrow: "Section C: Program-Level Indicators",
+      section: "Topic IX: Beneficiary Support System (BSS)",
       spreadsheet: "C1_Program_Set",
     },
   },

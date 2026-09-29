@@ -6,8 +6,8 @@ export const instructionsRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic VII: Quality & Performance Measures",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic VII: Quality & Performance Measures",
       spreadsheet: "D2_Program_QualityMeasures",
       info: [
         {
@@ -60,7 +60,7 @@ export const instructionsRoute: FormRoute = {
             "Include the measures that the state uses to evaluate plan performance, including these categories:",
         },
         {
-          type: "ol",
+          type: "ul",
           children: [
             {
               type: "li",

@@ -4,6 +4,7 @@ import * as completionStatus from "./completionStatus";
 // types
 import {
   EntityType,
+  FieldChoice,
   PageTypes,
   ReportFormFieldType,
   ValidationType,
@@ -89,6 +90,29 @@ describe("Completion Status Tests", () => {
       expect(result).toEqual(false);
     });
   });
+
+  const primaryCareChoiceId =
+    "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk"; // pragma: allowlist secret
+  const mockStandardsProviderTypeChoices: FieldChoice[] = [
+    {
+      id: primaryCareChoiceId,
+      name: "",
+      value: "",
+      label: "Primary care",
+      children: [
+        {
+          id: primaryCareChoiceId,
+          type: ReportFormFieldType.TEXT,
+          validation: {
+            type: ValidationType.TEXT,
+            nested: true,
+            parentFieldName: "standard_coreProviderType",
+            parentOptionId: primaryCareChoiceId,
+          },
+        },
+      ],
+    },
+  ];
 
   describe("getNestedFields()", () => {
     const nestedFieldId = "nested-field-1";
@@ -193,6 +217,58 @@ describe("Completion Status Tests", () => {
       );
       expect(result).toEqual([]);
     });
+
+    test("matches stored keys that are prefixed with the parent field id", () => {
+      const prefixedSelectedChoices = [
+        {
+          key: "parent-field-choice_1",
+          value: "Choice 1",
+        },
+      ];
+      const result = getNestedFields(
+        mockFieldChoices,
+        prefixedSelectedChoices,
+        mockDataForObject
+      );
+      expect(result).toEqual([nestedFieldId]);
+    });
+
+    test("matches template choice ids that already include the field prefix (NAAAR standards)", () => {
+      const result = getNestedFields(
+        mockStandardsProviderTypeChoices,
+        [
+          {
+            key: primaryCareChoiceId,
+            value: "Primary care",
+          },
+        ],
+        {}
+      );
+      expect(result).toEqual([primaryCareChoiceId]);
+    });
+
+    test("does not match a choice whose id is merely a suffix of another id", () => {
+      const result = getNestedFields(
+        [
+          {
+            id: "xchoice_1",
+            name: "",
+            value: "",
+            label: "Other Choice",
+            children: [
+              {
+                id: "should-not-be-returned",
+                type: ReportFormFieldType.TEXT,
+                validation: ValidationType.TEXT,
+              },
+            ],
+          },
+        ],
+        [{ key: "parent-field-choice_1", value: "Choice 1" }],
+        {}
+      );
+      expect(result).toEqual([]);
+    });
   });
 
   describe("calculateFormCompletion()", () => {
@@ -222,6 +298,40 @@ describe("Completion Status Tests", () => {
         {}
       );
       expect(result).toBe(true);
+    });
+
+    test("includes nested child fields of prefixed choice ids in validation", async () => {
+      validatorSpy.mockResolvedValue(true);
+      const standardsFormTemplate = {
+        id: "danas",
+        fields: [
+          {
+            id: "standard_coreProviderType",
+            type: ReportFormFieldType.RADIO,
+            validation: ValidationType.RADIO,
+            props: { choices: mockStandardsProviderTypeChoices },
+          },
+        ],
+      };
+      // Primary care selected, but specialty details never entered
+      const copiedStandard = {
+        standard_coreProviderType: [
+          { key: primaryCareChoiceId, value: "Primary care" },
+        ],
+      };
+      await calculateFormCompletion(
+        standardsFormTemplate,
+        copiedStandard,
+        {},
+        {}
+      );
+      expect(validatorSpy).toHaveBeenCalledWith(
+        {
+          standard_coreProviderType: copiedStandard.standard_coreProviderType,
+          [primaryCareChoiceId]: null,
+        },
+        {}
+      );
     });
 
     test("gets nested fields when data is array", async () => {
@@ -514,7 +624,9 @@ describe("Completion Status Tests", () => {
           {},
           {}
         );
-        expect(result).toEqual(undefined);
+        expect(result).toEqual({
+          [mockIlosRoute.path]: true,
+        });
       });
 
       test("Test analysis methods custom logic", async () => {
@@ -582,6 +694,147 @@ describe("Completion Status Tests", () => {
         );
         expect(result).toEqual({
           [mockDrawerReportPageJson.path]: false,
+        });
+      });
+
+      describe("Legacy: Prior Authorization (Section B)", () => {
+        const mockPriorAuthRoute = {
+          ...mockDrawerReportPageJson,
+          path: "/mcpar/state-level-indicators/prior-authorization",
+        };
+
+        test("If user is not reporting Prior Authorization (Section B) data, they're not required to complete that section", async () => {
+          const testData = {
+            state_priorAuthorizationReporting: [
+              {
+                key: "mock-key",
+                value: "Not reporting data",
+              },
+            ],
+          };
+          const result = await calculateRouteCompletion(
+            mockPriorAuthRoute,
+            testData,
+            {},
+            {}
+          );
+          expect(result).toEqual({
+            [mockPriorAuthRoute.path]: true,
+          });
+        });
+
+        test("If user is reporting Prior Authorization (Section B) data, they're required to complete that section", async () => {
+          const testData = {
+            state_priorAuthorizationReporting: [
+              {
+                key: "mock-key",
+                value: "Yes",
+              },
+            ],
+          };
+          const result = await calculateRouteCompletion(
+            mockPriorAuthRoute,
+            testData,
+            {},
+            {}
+          );
+          expect(result).toEqual({
+            [mockPriorAuthRoute.path]: false,
+          });
+        });
+      });
+
+      describe("Legacy: Prior Authorization (Section D)", () => {
+        const mockPriorAuthRoute = {
+          ...mockDrawerReportPageJson,
+          path: "/mcpar/plan-level-indicators/prior-authorization",
+        };
+
+        test("If user is not reporting Prior Authorization (Section D) data, they're not required to complete that section", async () => {
+          const testData = {
+            plan_priorAuthorizationReporting: [
+              {
+                key: "mock-key",
+                value: "Not reporting data",
+              },
+            ],
+          };
+          const result = await calculateRouteCompletion(
+            mockPriorAuthRoute,
+            testData,
+            {},
+            {}
+          );
+          expect(result).toEqual({
+            [mockPriorAuthRoute.path]: true,
+          });
+        });
+
+        test("If user is reporting Prior Authorization (Section D) data, they're required to complete that section", async () => {
+          const testData = {
+            plan_priorAuthorizationReporting: [
+              {
+                key: "mock-key",
+                value: "Yes",
+              },
+            ],
+          };
+          const result = await calculateRouteCompletion(
+            mockPriorAuthRoute,
+            testData,
+            {},
+            {}
+          );
+          expect(result).toEqual({
+            [mockPriorAuthRoute.path]: false,
+          });
+        });
+      });
+
+      describe("Legacy: Patient Access API", () => {
+        const mockPatientAccessApiRoute = {
+          ...mockDrawerReportPageJson,
+          path: "/mcpar/plan-level-indicators/patient-access-api",
+        };
+
+        test("If user is not reporting Patient Access API data, they're not required to complete that section", async () => {
+          const testData = {
+            plan_patientAccessApiReporting: [
+              {
+                key: "mock-key",
+                value: "Not reporting data",
+              },
+            ],
+          };
+          const result = await calculateRouteCompletion(
+            mockPatientAccessApiRoute,
+            testData,
+            {},
+            {}
+          );
+          expect(result).toEqual({
+            [mockPatientAccessApiRoute.path]: true,
+          });
+        });
+
+        test("If user is reporting Patient Access API data, they're required to complete that section", async () => {
+          const testData = {
+            plan_patientAccessApiReporting: [
+              {
+                key: "mock-key",
+                value: "Yes",
+              },
+            ],
+          };
+          const result = await calculateRouteCompletion(
+            mockPatientAccessApiRoute,
+            testData,
+            {},
+            {}
+          );
+          expect(result).toEqual({
+            [mockPatientAccessApiRoute.path]: false,
+          });
         });
       });
     });
