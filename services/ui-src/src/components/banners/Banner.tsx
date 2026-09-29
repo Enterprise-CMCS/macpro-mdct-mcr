@@ -1,5 +1,4 @@
 // components
-import { Box } from "@chakra-ui/react";
 import { Alert } from "components";
 // types
 import { BannerData } from "types/banners";
@@ -12,7 +11,7 @@ export const Banner = ({ bannerData, ...props }: Props) => {
     return (
       bannerData && (
         <Alert status={status} title={title} link={link} {...props}>
-          <Box>{parseAllowedHtml(description)}</Box>
+          {parseAllowedHtml(description)}
         </Alert>
       )
     );
