@@ -143,7 +143,6 @@ interface Props {
   name: string;
   label?: string;
   hint?: CustomHtmlElement[];
-  timetype?: string;
   nested?: boolean;
   autosave?: boolean;
   validateOnRender?: boolean;
