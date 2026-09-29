@@ -119,7 +119,7 @@ export const grievancesOverviewRoute: DrawerFormRoute = {
       {
         id: "plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledGrievance",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.13 Number of critical incidents filed during the reporting period by (or on behalf of) an LTSS user who previously filed a grievance",
