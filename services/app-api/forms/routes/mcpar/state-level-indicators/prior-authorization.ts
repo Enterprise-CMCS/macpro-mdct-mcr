@@ -48,11 +48,15 @@ export const priorAuthorizationRoute: FormRoute = {
                   id: "state_stateTimeframeForStandardPriorAuthorizationDecisions",
                   type: ReportFormFieldType.NUMBER,
                   validation: {
-                    type: ValidationType.NUMBER,
+                    type: ValidationType.POSITIVE_NUMBER_NO_NA,
                     nested: true,
                     parentFieldName:
                       "state_timeframesForStandardPriorAuthorizationDecisions",
                     parentOptionId: "2nAidFCWvENhYZvzLt3DxJWOqtx",
+                    options: {
+                      errorMessage:
+                        "Enter a valid response. N/A and NR are not accepted for this item.",
+                    },
                   },
                   props: {
                     label:
@@ -86,11 +90,15 @@ export const priorAuthorizationRoute: FormRoute = {
                   id: "state_stateTimeframeForExpeditedPriorAuthorizationDecisions",
                   type: ReportFormFieldType.NUMBER,
                   validation: {
-                    type: ValidationType.NUMBER,
+                    type: ValidationType.POSITIVE_NUMBER_NO_NA,
                     nested: true,
                     parentFieldName:
                       "state_timeframesForExpeditedPriorAuthorizationDecisions",
                     parentOptionId: "2nAidJFG47lnFfJsNJS2tU7d4pp",
+                    options: {
+                      errorMessage:
+                        "Enter a valid response. N/A and NR are not accepted for this item.",
+                    },
                   },
                   props: {
                     label:

@@ -22,7 +22,7 @@ export const programCharacteristicsRoute: FormRoute = {
       {
         id: "state_statewideMedicaidEnrollment",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.POSITIVE_NUMBER_NO_NA,
         props: {
           label: "B.I.1 Statewide Medicaid enrollment",
           hint: "Enter the average number of individuals enrolled in Medicaid per month during the reporting year (i.e., average member months).</br>Include all FFS and managed care enrollees and count each person only once, regardless of the delivery system(s) in which they are enrolled.",
@@ -33,7 +33,7 @@ export const programCharacteristicsRoute: FormRoute = {
       {
         id: "state_statewideMedicaidManagedCareEnrollment",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.POSITIVE_NUMBER_NO_NA,
         props: {
           label: "B.I.2 Statewide Medicaid managed care enrollment",
           hint: "Enter the average number of individuals enrolled in any type of Medicaid managed care per month during the reporting year (i.e., average member months).</br>Include all managed care programs and count each person only once, even if they are enrolled in multiple managed care programs or plans.",
