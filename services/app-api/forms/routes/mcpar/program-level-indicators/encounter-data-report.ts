@@ -151,7 +151,7 @@ export const encounterDataReportRoute: FormRoute = {
       {
         id: "program_encounterDataQualityIncentives",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT_NO_NA,
+        validation: ValidationType.TEXT,
         props: {
           label: "C1.III.5 Incentives for encounter data quality",
           hint: "Describe the types of incentives that may be awarded to managed care plans for encounter data quality. Reply with N/A if the program does not use incentives to reward encounter data quality.",
