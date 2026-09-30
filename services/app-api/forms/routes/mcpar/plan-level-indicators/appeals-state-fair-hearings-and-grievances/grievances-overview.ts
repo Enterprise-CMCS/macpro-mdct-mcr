@@ -156,7 +156,7 @@ export const grievancesOverviewRoute: DrawerFormRoute = {
       {
         id: "plan_timyleResolvedGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
+        validation: ValidationType.NUMBER,
         props: {
           label:
             "D1.IV.14 Number of grievances for which timely resolution was provided",
