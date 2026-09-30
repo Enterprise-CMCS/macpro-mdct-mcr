@@ -5,6 +5,7 @@ import {
   QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
+import * as LD from "@launchdarkly/node-server-sdk";
 // utils
 import * as reportUtils from "../../utils/reports/reports";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
@@ -23,6 +24,10 @@ const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
   hasPermissions: jest.fn().mockReturnValue(true),
+}));
+
+jest.mock("@launchdarkly/node-server-sdk", () => ({
+  init: jest.fn(),
 }));
 
 const mockProxyEvent = {
@@ -244,8 +249,10 @@ const mockSanctions = [
 
 let consoleSpy: {
   debug: jest.SpyInstance<void>;
+  log: jest.SpyInstance<void>;
 } = {
   debug: jest.fn() as jest.SpyInstance,
+  log: jest.fn() as jest.SpyInstance,
 };
 
 describe("Test createReport API method", () => {
@@ -253,6 +260,14 @@ describe("Test createReport API method", () => {
     jest.restoreAllMocks();
     dynamoClientMock.reset();
     consoleSpy.debug = jest.spyOn(console, "debug").mockImplementation();
+    consoleSpy.log = jest.spyOn(console, "log").mockImplementation();
+
+    // Turn feature flags off
+    process.env.launchDarklyServer = "mock-sdk-key";
+    (LD.init as jest.Mock).mockReturnValue({
+      variation: jest.fn().mockResolvedValue(false),
+      waitForInitialization: jest.fn().mockResolvedValue(undefined),
+    });
   });
 
   test("Test report creation by a state user without access to a report type throws 403 error", async () => {
