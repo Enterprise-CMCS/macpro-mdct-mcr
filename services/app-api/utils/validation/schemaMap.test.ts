@@ -1,4 +1,5 @@
 import { MixedSchema } from "yup/lib/mixed";
+import { object as yupObject } from "yup";
 import {
   isEndDateAfterStartDate,
   nested,
@@ -373,6 +374,24 @@ describe("Schemas", () => {
         [[{ id: "a", name: "N/A" }]],
         false
       );
+    });
+
+    test("does not strip extra entity fields when validated with stripUnknown (regression: plan-level fields were being wiped on save)", async () => {
+      const shape = yupObject().shape({
+        plans: schemaMap.dynamicNoPlaceholder,
+      });
+      const data = {
+        plans: [
+          {
+            id: "a",
+            name: "Plan A",
+            plan_enrollment: "123",
+            plan_parentOrganization: "Acme",
+          },
+        ],
+      };
+      const result = await shape.validate(data, { stripUnknown: true });
+      expect(result.plans[0]).toEqual(data.plans[0]);
     });
   });
 });

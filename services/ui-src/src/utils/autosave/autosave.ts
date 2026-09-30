@@ -96,30 +96,31 @@ export const autosaveFieldData = async ({
   const { id, reportType, updateReport, fieldData: reportFieldData } = report;
   const { userName, state } = user;
   // for each passed field, format for autosave payload (if changed)
-  const fieldsToSave: FieldDataTuple[] = await Promise.all(
-    fields
-      // filter to only changed fields
-      .filter((field: FieldInfo) => isFieldChanged(field))
-      // determine appropriate field value to set and return as tuple
-      .map(async (field: FieldInfo) => {
-        const { name, value, defaultValue, hydrationValue, overrideCheck } =
-          field;
-        let fieldValueIsValid = false;
-        /*
-         * This will trigger validation if and only if the field has been rendered on the page
-         * at least once and therefore has sent a value (empty or otherwise) to the db.
-         */
-        if (value !== hydrationValue && hydrationValue !== undefined) {
-          fieldValueIsValid = await form.trigger(name);
-        } else {
-          fieldValueIsValid = true;
-        }
-        // if field value is valid or validity check overridden, use field value
-        if (fieldValueIsValid || overrideCheck) return [name, value];
-        // otherwise, revert field to default value
-        return [name, defaultValue];
-      })
-  );
+  const fieldsToSave: FieldDataTuple[] = (
+    await Promise.all(
+      fields
+        // filter to only changed fields
+        .filter((field: FieldInfo) => isFieldChanged(field))
+        // determine appropriate field value to set and return as tuple
+        .map(async (field: FieldInfo) => {
+          const { name, value, hydrationValue, overrideCheck } = field;
+          let fieldValueIsValid = false;
+          /*
+           * This will trigger validation if and only if the field has been rendered on the page
+           * at least once and therefore has sent a value (empty or otherwise) to the db.
+           */
+          if (value !== hydrationValue && hydrationValue !== undefined) {
+            fieldValueIsValid = await form.trigger(name);
+          } else {
+            fieldValueIsValid = true;
+          }
+          // if field value is valid or validity check overridden, use field value
+          if (fieldValueIsValid || overrideCheck) return [name, value];
+          // otherwise, skip saving so previously persisted data isn't overwritten with blank
+          return null;
+        })
+    )
+  ).filter((entry): entry is FieldDataTuple => entry !== null);
 
   // if there are fields to save, create and send payload
   if (fieldsToSave.length > 0) {

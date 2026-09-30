@@ -515,12 +515,15 @@ export const dynamicOptional = () => dynamic(0).notRequired().nullable();
 export const dynamicNoPlaceholder = (min = 1) =>
   array()
     .min(min)
-    .of(
-      object().shape({
-        id: text(),
-        name: textNoNA(),
-      })
-    )
+    // Plans and BSS entities add fields other than id/name; validate the name
+    // via test() (not a nested object shape) so stripUnknown doesn't strip those fields
+    .of(mixed())
+    .test({
+      message: error.NA_NOT_ACCEPTED,
+      test: (entities) =>
+        !entities?.length ||
+        entities.every((entity: any) => textNoNA().isValidSync(entity?.name)),
+    })
     .required(error.REQUIRED_GENERIC);
 
 // NESTED
