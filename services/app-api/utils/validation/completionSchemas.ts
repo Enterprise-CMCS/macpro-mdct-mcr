@@ -35,6 +35,8 @@ export const error = {
     'Response must be a valid number, "Suppressed", "N/A", or "NR"',
   NA_NOT_ACCEPTED:
     "Enter a valid response. N/A and other placeholder text are not accepted for this item.",
+  NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED:
+    'Enter a valid numeric response or "Suppressed".',
 };
 
 // TEXT
@@ -211,7 +213,7 @@ export const numberOrSuppressedNoNA = () =>
         if (validNAValues.includes(value)) return false;
         return isSuppressed || validNumberRegex.test(value);
       },
-      message: error.NA_NOT_ACCEPTED,
+      message: error.NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED,
     });
 
 // Number - Ratio
@@ -474,6 +476,7 @@ export const completionSchemaMap: any = {
   emailOptional: emailOptional(),
   emailOrUrlNoNA: schemaMap.emailOrUrlNoNA,
   futureDate: futureDate(),
+  integerGreaterThanZeroNoNA: schemaMap.integerGreaterThanZeroNoNA,
   integerZeroOrGreaterNoNA: schemaMap.integerZeroOrGreaterNoNA,
   number: number(),
   numberNotLessThanOne: numberNotLessThanOne(),
@@ -484,6 +487,9 @@ export const completionSchemaMap: any = {
   numberOrSuppressedNoNA: numberOrSuppressedNoNA(),
   numberOrSuppressedOrNaNr: numberOrSuppressedOrNaNr(),
   numberSuppressible: numberSuppressible(),
+  numberZeroOrGreaterNoNA: schemaMap.numberZeroOrGreaterNoNA,
+  numberZeroOrGreaterTwoDecimalsNoNA:
+    schemaMap.numberZeroOrGreaterTwoDecimalsNoNA,
   pastDate: pastDate(),
   pastDateOptional: pastDateOptional(),
   percentageZeroToHundredNoNA: schemaMap.percentageZeroToHundredNoNA,

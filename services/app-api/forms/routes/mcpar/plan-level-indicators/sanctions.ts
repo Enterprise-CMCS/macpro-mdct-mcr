@@ -111,7 +111,7 @@ export const sanctionsRoute: ModalDrawerRoute = {
                   id: "sanction_interventionType-otherText",
                   type: ReportFormFieldType.TEXTAREA,
                   validation: {
-                    type: ValidationType.TEXT,
+                    type: ValidationType.TEXT_NO_NA,
                     nested: true,
                     parentFieldName: "sanction_interventionType",
                   },
@@ -175,7 +175,7 @@ export const sanctionsRoute: ModalDrawerRoute = {
                   id: "sanction_interventionTopic-otherText",
                   type: ReportFormFieldType.TEXTAREA,
                   validation: {
-                    type: ValidationType.TEXT,
+                    type: ValidationType.TEXT_NO_NA,
                     nested: true,
                     parentFieldName: "sanction_interventionTopic",
                   },
@@ -198,7 +198,7 @@ export const sanctionsRoute: ModalDrawerRoute = {
       {
         id: "sanction_interventionReason",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "D3.VIII.4 Reason for intervention",
           hint: "What was the reason for intervention? Add a description.",
@@ -212,7 +212,7 @@ export const sanctionsRoute: ModalDrawerRoute = {
       {
         id: "sanction_noncomplianceInstances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_GREATER_THAN_ZERO_NO_NA,
         props: {
           label: "D3.VIII.5 Instances of non-compliance",
           hint: "How many instances were there of non-compliance in the reporting year? Add a number.",

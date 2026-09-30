@@ -35,6 +35,8 @@ const error = {
   EMAIL_OR_URL_REQUIRED:
     "Response must include a valid hyperlink/URL or email address.",
   URL_LIST_REQUIRED: "Response must include one or more valid hyperlinks/URLs.",
+  NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED:
+    'Enter a valid numeric response or "Suppressed".',
 };
 
 const placeholderValues = [
@@ -243,6 +245,43 @@ export const integerZeroOrGreaterNoNA = (options?: ChoiceOptions) =>
       },
     });
 
+export const integerGreaterThanZeroNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        if (!/^\d+$/.test(stripNumberFormatting(value))) return false;
+        return Number(stripNumberFormatting(value)) > 0;
+      },
+    });
+
+export const numberZeroOrGreaterNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        if (!isStrictlyNumeric(value)) return false;
+        return Number(stripNumberFormatting(value)) >= 0;
+      },
+    });
+
+export const numberZeroOrGreaterTwoDecimalsNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        const cleaned = stripNumberFormatting(value);
+        if (!/^\d+(\.\d{1,2})?$/.test(cleaned)) return false;
+        return Number(cleaned) >= 0;
+      },
+    });
+
 export const percentageZeroToHundredNoNA = () =>
   string()
     .required(error.PERCENTAGE_RANGE_REQUIRED)
@@ -311,7 +350,7 @@ export const numberOrSuppressedNoNA = () =>
         if (validNAValues.includes(value)) return false;
         return isSuppressed || validNumberRegex.test(value);
       },
-      message: error.NA_NOT_ACCEPTED,
+      message: error.NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED,
     });
 
 // Number - Ratio
@@ -580,6 +619,8 @@ export const schemaMap: any = {
   emailOptional: emailOptional(),
   emailOrUrlNoNA: emailOrUrlNoNA(),
   futureDate: futureDate(),
+  integerGreaterThanZeroNoNA: (options?: ChoiceOptions) =>
+    integerGreaterThanZeroNoNA(options),
   integerZeroOrGreaterNoNA: (options?: ChoiceOptions) =>
     integerZeroOrGreaterNoNA(options),
   number: number(),
@@ -590,6 +631,10 @@ export const schemaMap: any = {
   numberOrSuppressed: numberOrSuppressed(),
   numberOrSuppressedNoNA: numberOrSuppressedNoNA(),
   numberSuppressible: numberSuppressible(),
+  numberZeroOrGreaterNoNA: (options?: ChoiceOptions) =>
+    numberZeroOrGreaterNoNA(options),
+  numberZeroOrGreaterTwoDecimalsNoNA: (options?: ChoiceOptions) =>
+    numberZeroOrGreaterTwoDecimalsNoNA(options),
   objectArray: objectArray(),
   pastDate: pastDate(),
   pastDateOptional: pastDateOptional(),

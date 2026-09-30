@@ -303,6 +303,45 @@ describe("Schemas", () => {
     );
   });
 
+  test("Test integerGreaterThanZeroNoNA schema", () => {
+    testTextSchema(
+      schemaMap.integerGreaterThanZeroNoNA(),
+      ["1", "5", "1,234"],
+      true
+    );
+    testTextSchema(
+      schemaMap.integerGreaterThanZeroNoNA(),
+      ["0", "-1", "5.5", "abc", undefined, ""],
+      false
+    );
+  });
+
+  test("Test numberZeroOrGreaterNoNA schema", () => {
+    testTextSchema(
+      schemaMap.numberZeroOrGreaterNoNA(),
+      ["0", "5", "5.75", "1,234"],
+      true
+    );
+    testTextSchema(
+      schemaMap.numberZeroOrGreaterNoNA(),
+      ["-1", "abc", undefined, ""],
+      false
+    );
+  });
+
+  test("Test numberZeroOrGreaterTwoDecimalsNoNA schema", () => {
+    testTextSchema(
+      schemaMap.numberZeroOrGreaterTwoDecimalsNoNA(),
+      ["0", "5", "5.75", "1,234.50"],
+      true
+    );
+    testTextSchema(
+      schemaMap.numberZeroOrGreaterTwoDecimalsNoNA(),
+      ["-1", "5.755", "abc", undefined, ""],
+      false
+    );
+  });
+
   test("Test percentageZeroToHundredNoNA schema", () => {
     testTextSchema(
       schemaMap.percentageZeroToHundredNoNA,
