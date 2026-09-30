@@ -10383,6 +10383,7 @@ __metadata:
   dependencies:
     "@aws-sdk/client-dynamodb": "npm:~3.1012.0"
     "@aws-sdk/client-s3": "npm:~3.1012.0"
+    "@aws-sdk/client-sts": "npm:~3.1012.0"
     "@aws-sdk/lib-dynamodb": "npm:~3.1012.0"
   languageName: unknown
   linkType: soft

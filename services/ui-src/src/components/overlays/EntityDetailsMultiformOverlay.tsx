@@ -39,7 +39,11 @@ import {
   ScreenReaderCustomHeaderName,
 } from "types";
 // utils
-import { isComplianceFormComplete, translateVerbiage } from "utils";
+import {
+  getFormRequiredText,
+  isComplianceFormComplete,
+  translateVerbiage,
+} from "utils";
 
 const ChildForm = ({
   childForms,
@@ -371,13 +375,19 @@ const ParentForms = ({
     }
   };
 
+  const allFormFields = forms.flatMap((formObject) => formObject.form.fields);
+  const formRequiredText = getFormRequiredText(allFormFields);
+
   return (
     <Box>
       <BackButton
         onClick={closeEntityDetailsOverlay}
         text={verbiage.backButton}
       />
-      <ReportPageIntro text={verbiage.intro} />
+      <ReportPageIntro
+        formRequiredText={formRequiredText}
+        text={verbiage.intro}
+      />
       <Box>
         {forms.map((formObject: EntityDetailsMultiformShape, index) => (
           <Box key={`${formObject.form.id}`} sx={sx.container}>

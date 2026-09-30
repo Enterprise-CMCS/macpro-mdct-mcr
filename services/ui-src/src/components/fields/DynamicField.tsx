@@ -382,8 +382,8 @@ export const DynamicField = ({
           sx={sx.appendButton}
           onClick={appendNewRecord}
         >
-          {getButtonVerbiage()}
           <Image sx={sx.addImage} src={addIcon} alt={""} aria-hidden />
+          {getButtonVerbiage()}
         </Button>
       )}
       <DeleteDynamicFieldRecordModal
@@ -441,7 +441,7 @@ const sx = {
     maxWidth: "none",
     width: "1rem",
     height: "1rem",
-    marginLeft: "spacer1",
+    marginRight: "spacer1",
     _hover: {
       filter: svgFilters.primary_darker,
     },
