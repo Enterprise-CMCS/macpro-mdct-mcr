@@ -71,49 +71,41 @@ export const BottomQualityMeasuresSectionV2 = ({
             (printVersion && notAnswered)}
         </Text>
       )}
-      {formattedEntityData?.measureResults?.map((result) => (
-        <>
-          {result.exempt ? (
-            <></>
-          ) : (
-            <Box
-              key={result.planName}
-              sx={sx.highlightContainer}
-              className={!result ? "error" : ""}
-            >
-              <Box sx={sx.highlightSection}>
-                <Text sx={sx.qualityMeasuresPlanName}>{result.planName}</Text>
-              </Box>
-              {result.notReporting ? (
-                <Box>
-                  <Text sx={sx.subtext}>
-                    {`Not reporting: ${result.notReportingReason?.[0]?.value}`}
-                  </Text>
-                </Box>
-              ) : (
-                <Box>
-                  <Text sx={sx.subtitle}>D2.VII.8 Data collection method</Text>
-                  {!result.dataCollectionMethod ? (
-                    <Text sx={sx.notAnswered}>Not answered</Text>
-                  ) : (
-                    <Text sx={sx.subtext}>{result.dataCollectionMethod}</Text>
-                  )}
-                  {result.rateResults?.map((rate: AnyObject) => (
-                    <Box key={rate.rate}>
-                      <Text sx={sx.subtitle}>{rate.rate}</Text>
-                      {!rate.rateResult ? (
-                        <Text sx={sx.notAnswered}>Not answered</Text>
-                      ) : (
-                        <Text sx={sx.subtext}>{rate.rateResult}</Text>
-                      )}
-                    </Box>
-                  ))}
-                </Box>
-              )}
+      {formattedEntityData?.measureResults
+        ?.filter((result) => !result.exempt)
+        .map((result) => (
+          <Box key={result.planName} sx={sx.highlightContainer}>
+            <Box sx={sx.highlightSection}>
+              <Text sx={sx.qualityMeasuresPlanName}>{result.planName}</Text>
             </Box>
-          )}
-        </>
-      ))}
+            {result.notReporting ? (
+              <Box>
+                <Text sx={sx.subtext}>
+                  {`Not reporting: ${result.notReportingReason?.[0]?.value}`}
+                </Text>
+              </Box>
+            ) : (
+              <Box>
+                <Text sx={sx.subtitle}>D2.VII.8 Data collection method</Text>
+                {!result.dataCollectionMethod ? (
+                  <Text sx={sx.notAnswered}>Not answered</Text>
+                ) : (
+                  <Text sx={sx.subtext}>{result.dataCollectionMethod}</Text>
+                )}
+                {result.rateResults?.map((rate: AnyObject) => (
+                  <Box key={rate.rate}>
+                    <Text sx={sx.subtitle}>{rate.rate}</Text>
+                    {!rate.rateResult ? (
+                      <Text sx={sx.notAnswered}>Not answered</Text>
+                    ) : (
+                      <Text sx={sx.subtext}>{rate.rateResult}</Text>
+                    )}
+                  </Box>
+                ))}
+              </Box>
+            )}
+          </Box>
+        ))}
     </>
   );
 };
