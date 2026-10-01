@@ -35,7 +35,6 @@ export const mlrReportingRoute: FormRoute = {
         props: {
           label: "C1.II.2 Most Recent MLR Reporting Period",
           hint: "Please report the beginning date of that MLR reporting period.",
-          timetype: "startDate",
         },
       },
       {
@@ -47,7 +46,6 @@ export const mlrReportingRoute: FormRoute = {
         },
         props: {
           hint: "Please report the end date of that MLR reporting period.",
-          timetype: "endDate",
         },
       },
       {
