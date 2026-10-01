@@ -95,10 +95,13 @@ export const DynamicField = ({
     }
 
     // prepare args for autosave
+    // exclude not-yet-named rows so a freshly added blank entity doesn't fail
+    // backend name validation for the rest of the (already valid) entities
+    const valuesToSave = displayValues.filter((entity) => entity.name?.trim());
     const fields = getAutosaveFields({
       name,
       type: "dynamic",
-      value: displayValues,
+      value: valuesToSave,
       defaultValue: undefined,
       overrideCheck: true,
       hydrationValue,

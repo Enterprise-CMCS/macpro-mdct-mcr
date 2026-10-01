@@ -114,9 +114,14 @@ export const autosaveFieldData = async ({
           } else {
             fieldValueIsValid = true;
           }
-          // if field value is valid or validity check overridden, use field value
-          if (fieldValueIsValid || overrideCheck) return [name, value];
-          // otherwise, skip saving so previously persisted data isn't overwritten with blank
+          // users must be able to intentionally clear a field back to blank/unanswered,
+          // even if "required" validation treats blank as invalid
+          const isBlankValue =
+            !value || (Array.isArray(value) && value.length === 0);
+          // if field value is valid, overridden, or intentionally cleared, use field value
+          if (fieldValueIsValid || overrideCheck || isBlankValue)
+            return [name, value];
+          // otherwise, skip saving so previously persisted data isn't overwritten with garbage input
           return null;
         })
     )
