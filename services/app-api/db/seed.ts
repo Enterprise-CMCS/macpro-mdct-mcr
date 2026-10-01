@@ -27,7 +27,9 @@ const getEnabledFlagsByReportType = async (reportType: string) => {
   };
 
   const flagsByReportType = flagMap[reportType];
-  const flagNames = Object.keys(flagsByReportType);
+  const flagNames = Object.keys(flagsByReportType).filter(
+    (f) => f !== "default"
+  );
 
   // Get status of each flag from LaunchDarkly
   const evaluations = await Promise.all(

@@ -75,7 +75,9 @@ export const formTemplateForReportType = async (reportType: ReportType) => {
   };
 
   const flagsByReportType = flagMap[reportType];
-  const flagNames = Object.keys(flagsByReportType);
+  const flagNames = Object.keys(flagsByReportType).filter(
+    (f) => f !== "default"
+  );
 
   // Loop through flags and replace routes if flag is enabled
   for (const flagName of flagNames) {
