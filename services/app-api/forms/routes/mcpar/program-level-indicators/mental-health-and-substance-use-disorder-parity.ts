@@ -89,7 +89,7 @@ export const mentalHealthAndSubstanceUseDisorderParityRoute: FormRoute = {
                             id: "program_didStateOrMCOsCompleteAnalysis-otherText",
                             type: ReportFormFieldType.TEXTAREA,
                             validation: {
-                              type: ReportFormFieldType.TEXT,
+                              type: ValidationType.TEXT_NO_NA,
                               nested: true,
                               parentFieldName:
                                 "program_didStateOrMCOsCompleteAnalysis",
@@ -170,7 +170,7 @@ export const mentalHealthAndSubstanceUseDisorderParityRoute: FormRoute = {
                                       id: "descriptionOfEventsInReportingPeriodThatNecessitatedUpdateToParityAnalysis-otherText",
                                       type: ReportFormFieldType.TEXTAREA,
                                       validation: {
-                                        type: ReportFormFieldType.TEXT,
+                                        type: ValidationType.TEXT_NO_NA,
                                         nested: true,
                                         parentFieldName:
                                           "descriptionOfEventsInReportingPeriodThatNecessitatedUpdateToParityAnalysis",
@@ -243,7 +243,7 @@ export const mentalHealthAndSubstanceUseDisorderParityRoute: FormRoute = {
                             id: "descriptionOfDeficienciesInLastAnalysisConducted",
                             type: ReportFormFieldType.TEXTAREA,
                             validation: {
-                              type: ReportFormFieldType.TEXT,
+                              type: ValidationType.TEXT_NO_NA,
                               nested: true,
                               parentFieldName:
                                 "program_wereAnyDeficienciesIdentifiedDuringTheAnalysisConducted",
@@ -309,7 +309,7 @@ export const mentalHealthAndSubstanceUseDisorderParityRoute: FormRoute = {
                                                 id: "reasonsForNoDeficiencyResolutionsForAllPlans-otherText",
                                                 type: ReportFormFieldType.TEXTAREA,
                                                 validation: {
-                                                  type: ReportFormFieldType.TEXT,
+                                                  type: ValidationType.TEXT_NO_NA,
                                                   nested: true,
                                                   parentFieldName:
                                                     "reasonsForNoDeficiencyResolutionsForAllPlans",
@@ -379,7 +379,7 @@ export const mentalHealthAndSubstanceUseDisorderParityRoute: FormRoute = {
                             id: "websiteStatePostedCurrentParityAnalysisCoveringThisProgram",
                             type: ReportFormFieldType.TEXT,
                             validation: {
-                              type: ValidationType.URL,
+                              type: ValidationType.URL_LIST,
                               nested: true,
                               parentFieldName:
                                 "program_hasStatePostedCurrentParityAnalysisCoveringThisProgram",

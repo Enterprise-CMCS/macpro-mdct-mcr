@@ -59,7 +59,7 @@ export const appealsOverviewRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedAppeals",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.IV.1 Appeals resolved (at the plan level)",
           hint: [
