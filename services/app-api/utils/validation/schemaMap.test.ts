@@ -375,11 +375,11 @@ describe("Schemas", () => {
       testSchema(schemaMap.dynamicNoPlaceholder, [[]], false);
     });
 
-    test("returns false for a placeholder entity name", () => {
+    test("returns true for a placeholder entity name (rejection happens at completion-status time, not on save)", () => {
       testSchema(
         schemaMap.dynamicNoPlaceholder,
         [[{ id: "a", name: "N/A" }]],
-        false
+        true
       );
     });
 

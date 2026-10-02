@@ -221,7 +221,7 @@ describe("<DropdownField />", () => {
       );
     });
 
-    test("Does not autosave when stateuser, autosave true, and field invalid", async () => {
+    test("Autosaves default value when stateuser, autosave true, and field invalid", async () => {
       mockTrigger.mockReturnValue(false);
       mockGetValues(undefined);
       render(dropdownComponentWithOptionsAndAutosave);
@@ -233,9 +233,23 @@ describe("<DropdownField />", () => {
         expect(option2.selected).toBe(true);
         await userEvent.tab();
       });
-      // invalid values are skipped rather than saved as blank, so previously
-      // persisted data isn't overwritten
-      expect(mockMcparReportContext.updateReport).not.toHaveBeenCalled();
+      expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+      expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
+        {
+          reportType: mockMcparReportContext.report.reportType,
+          state: mockStateUserStore.user?.state,
+          id: mockMcparReportContext.report.id,
+        },
+        {
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: mockStateUserStore.user?.full_name,
+          },
+          fieldData: {
+            testDropdown: { label: "- Select an option -", value: "" },
+          },
+        }
+      );
     });
 
     test("Does not autosave if autosave is false", async () => {

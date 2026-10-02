@@ -496,19 +496,10 @@ export const dynamic = (min = 1) =>
     .required(error.REQUIRED_GENERIC);
 export const dynamicOptional = () => dynamic(0).notRequired().nullable();
 
-export const dynamicNoPlaceholder = (min = 1) =>
-  array()
-    .min(min)
-    // Plans and BSS entities add fields other than id/name; validate the name
-    // via test() (not a nested object shape) so stripUnknown doesn't strip those fields
-    .of(mixed())
-    .test({
-      message: error.NA_NOT_ACCEPTED,
-      test: (entities) =>
-        !entities?.length ||
-        entities.every((entity: any) => textNoNA().isValidSync(entity?.name)),
-    })
-    .required(error.REQUIRED_GENERIC);
+// data acceptance: only validate the array shape, not entity name content;
+// "N/A"/placeholder name rejection is enforced at completion-status time
+// instead (completionSchemas.ts), so saving a draft name doesn't 400
+export const dynamicNoPlaceholder = (min = 1) => dynamic(min);
 
 // NESTED
 export const nested = (

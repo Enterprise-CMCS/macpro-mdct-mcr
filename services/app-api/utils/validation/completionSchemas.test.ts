@@ -389,6 +389,15 @@ describe("Completion schemas", () => {
   });
 
   test.each([
+    { value: [{ id: "a", name: "Sample Entity" }], expected: true },
+    { value: [], expected: false },
+    { value: [{ id: "a", name: "N/A" }], expected: false },
+    { value: [{ id: "a", name: "" }], expected: false },
+  ])("dynamicNoPlaceholder() $value -> $expected", ({ value, expected }) => {
+    expect(schemaMap.dynamicNoPlaceholder.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
     ...reject(emptyResponses),
     ...accept(["1:1", "123:123", "1,234:1.12", "0:1", "1:10,000"]),
     ...reject([
