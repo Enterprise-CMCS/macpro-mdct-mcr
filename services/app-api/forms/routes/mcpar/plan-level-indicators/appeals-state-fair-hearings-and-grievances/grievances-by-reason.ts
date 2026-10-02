@@ -64,7 +64,7 @@ export const grievancesByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedCustomerServiceGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.16a Resolved grievances related to plan or provider customer service",
@@ -93,7 +93,7 @@ export const grievancesByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedCareCaseManagementGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.16b Resolved grievances related to plan or provider care management/case management",
@@ -122,7 +122,7 @@ export const grievancesByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedAccessToCareGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.16c Resolved grievances related to network adequacy or access to care/services from plan or provider",
@@ -151,7 +151,7 @@ export const grievancesByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedQualityOfCareGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.IV.16d Resolved grievances related to quality of care",
           hint: [
@@ -179,7 +179,7 @@ export const grievancesByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedPlanCommunicationGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.IV.16e Resolved grievances related to plan communications",
           hint: [
@@ -207,7 +207,7 @@ export const grievancesByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedPaymentBillingGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.16f Resolved grievances related to payment or billing issues",
@@ -219,7 +219,7 @@ export const grievancesByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedSuspectedFraudGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.IV.16g Resolved grievances related to suspected fraud",
           hint: [
@@ -247,7 +247,7 @@ export const grievancesByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedAbuseNeglectExploitationGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.16h Resolved grievances related to abuse, neglect or exploitation",
@@ -276,7 +276,7 @@ export const grievancesByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedUntimelyResponseGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.16i Resolved grievances related to lack of timely plan response to a prior authorization/service authorization or appeal (including requests to expedite or extend appeals)",
@@ -288,7 +288,7 @@ export const grievancesByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedDenialOfExpeditedAppealGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.16j Resolved grievances related to plan denial of expedited appeal",
@@ -317,7 +317,7 @@ export const grievancesByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedOtherGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.IV.16k Resolved grievances filed for other reasons",
           hint: "Enter the total number of grievances resolved by the plan during the reporting year that were filed for a reason other than the reasons listed above.",

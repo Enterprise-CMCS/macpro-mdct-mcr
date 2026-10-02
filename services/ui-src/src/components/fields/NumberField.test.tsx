@@ -359,7 +359,7 @@ describe("<NumberField />", () => {
       );
     });
 
-    test("NumberField autosaves with default value when stateuser, autosave true, and form invalid", async () => {
+    test("NumberField does not autosave when stateuser, autosave true, and form invalid", async () => {
       mockTrigger.mockReturnValue(false);
       mockGetValues(undefined);
       render(numberFieldAutosavingComponent);
@@ -369,21 +369,9 @@ describe("<NumberField />", () => {
         await userEvent.type(textField, "    ");
         await userEvent.tab();
       });
-      expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
-      expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
-        {
-          reportType: mockMcparReportContext.report.reportType,
-          state: mockStateUserStore.user?.state,
-          id: mockMcparReportContext.report.id,
-        },
-        {
-          metadata: {
-            status: ReportStatus.IN_PROGRESS,
-            lastAlteredBy: mockStateUserStore.user?.full_name,
-          },
-          fieldData: { testNumberField: "" },
-        }
-      );
+      // invalid values are skipped rather than saved as blank, so previously
+      // persisted data isn't overwritten
+      expect(mockMcparReportContext.updateReport).not.toHaveBeenCalled();
     });
 
     test("NumberField does not autosave if autosave is false", async () => {

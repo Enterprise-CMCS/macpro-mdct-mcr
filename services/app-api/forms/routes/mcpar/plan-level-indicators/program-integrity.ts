@@ -45,7 +45,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
       {
         id: "plan_dedicatedProgramIntegrityStaff",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.NUMBER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.X.1 Dedicated program integrity staff",
           hint: "Report or enter the number of dedicated program integrity staff for routine internal monitoring and compliance risks. Refer to 42 CFR 438.608(a)(1)(vii).",
@@ -55,7 +55,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
       {
         id: "plan_openedProgramIntegrityInvestigations",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.X.2 Count of opened program integrity investigations",
           hint: "How many program integrity investigations were opened by the plan during the reporting year?",
@@ -66,7 +66,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedProgramIntegrityInvestigations",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.X.4 Count of resolved program integrity investigations",
           hint: "How many program integrity investigations were resolved by the plan during the reporting year?",
@@ -92,7 +92,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
                   id: "plan_mfcuProgramIntegrityReferrals",
                   type: ReportFormFieldType.NUMBER,
                   validation: {
-                    type: ValidationType.NUMBER,
+                    type: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
                     nested: true,
                     parentFieldName: "plan_programIntegrityReferralPath",
                   },
@@ -114,7 +114,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
                   id: "plan_smaProgramIntegrityReferrals",
                   type: ReportFormFieldType.NUMBER,
                   validation: {
-                    type: ValidationType.NUMBER,
+                    type: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
                     nested: true,
                     parentFieldName: "plan_programIntegrityReferralPath",
                   },
@@ -136,7 +136,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
                   id: "plan_smaMfcuConcurrentProgramIntegrityReferrals",
                   type: ReportFormFieldType.NUMBER,
                   validation: {
-                    type: ValidationType.NUMBER,
+                    type: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
                     nested: true,
                     parentFieldName: "plan_programIntegrityReferralPath",
                   },
@@ -159,7 +159,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
                   id: "plan_smaMfcuAggregateProgramIntegrityReferrals",
                   type: ReportFormFieldType.NUMBER,
                   validation: {
-                    type: ValidationType.NUMBER,
+                    type: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
                     nested: true,
                     parentFieldName: "plan_programIntegrityReferralPath",
                   },
@@ -197,7 +197,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
       {
         id: "plan_overpaymentReportingToStateDollarAmount",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.NUMBER_ZERO_OR_GREATER_TWO_DECIMALS_NO_NA,
         props: {
           label:
             "D1.X.9c: Plan overpayment reporting to the state: Dollar amount",
@@ -208,7 +208,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
       {
         id: "plan_overpaymentReportingToStateCorrespondingYearPremiumRevenue",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.NUMBER_ZERO_OR_GREATER_TWO_DECIMALS_NO_NA,
         props: {
           label:
             "D1.X.9d: Plan overpayment reporting to the state: Corresponding premium revenue",

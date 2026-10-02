@@ -263,6 +263,67 @@ describe("Completion schemas", () => {
 
   test.each([
     ...reject(emptyResponses),
+    ...reject(nonNumericValues),
+    ...accept(positiveNumbers),
+    ...accept(negativeNumbers),
+    ...reject(notApplicableValues),
+  ])("validNumberNoNA() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.validNumberNoNA.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...accept(emptyResponses),
+    ...reject(nonNumericValues),
+    ...accept(positiveNumbers),
+    ...accept(negativeNumbers),
+    ...reject(notApplicableValues),
+  ])(
+    "validNumberNoNAOptional() $description -> $expected",
+    ({ value, expected }) => {
+      expect(schemaMap.validNumberNoNAOptional.isValidSync(value)).toBe(
+        expected
+      );
+    }
+  );
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(["    "]),
+    ...reject(notApplicableValues),
+    ...reject(["not applicable", "unknown", "tbd", "---", "...", "!!!"]),
+    ...accept(["Sample response", "abc123"]),
+  ])("textNoNA() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.textNoNA.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...accept(emptyResponses),
+    ...reject(["    "]),
+    ...reject(["n/a", "unknown", "---"]),
+    ...accept(["Sample response"]),
+  ])("textNoNAOptional() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.textNoNAOptional.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(nonNumericValues),
+    ...accept(positiveNumbers),
+    ...accept(negativeNumbers),
+    ...reject(notApplicableValues),
+    ...accept(["suppressed", "Suppressed", " SUPPRESSED "]),
+    ...reject(["Suppressed for data privacy purposes"]),
+  ])(
+    "numberOrSuppressedNoNA() $description -> $expected",
+    ({ value, expected }) => {
+      expect(schemaMap.numberOrSuppressedNoNA.isValidSync(value)).toBe(
+        expected
+      );
+    }
+  );
+
+  test.each([
+    ...reject(emptyResponses),
     ...accept(["1:1", "123:123", "1,234:1.12", "0:1", "1:10,000"]),
     ...reject([
       ":",

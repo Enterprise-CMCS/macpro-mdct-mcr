@@ -33,6 +33,10 @@ export const error = {
     'Response must be a valid number or "Suppressed"',
   INVALID_NUMBER_OR_SUPPRESSED_OR_NA_NR:
     'Response must be a valid number, "Suppressed", "N/A", or "NR"',
+  NA_NOT_ACCEPTED:
+    "Enter a valid response. N/A and other placeholder text are not accepted for this item.",
+  NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED:
+    'Enter a valid numeric response or "Suppressed".',
 };
 
 // TEXT
@@ -167,6 +171,50 @@ export const validNumber = () =>
 
 export const validNumberOptional = () =>
   validNumberSchema().notRequired().nullable();
+
+const validNumberNoNASchema = () =>
+  string().test({
+    message: error.NA_NOT_ACCEPTED,
+    test: (value) => {
+      if (!value) return true;
+      if (validNAValues.includes(value)) return false;
+      return validNumberRegex.test(value);
+    },
+  });
+
+export const validNumberNoNA = () =>
+  validNumberNoNASchema().required(error.REQUIRED_GENERIC);
+
+export const validNumberNoNAOptional = () =>
+  validNumberNoNASchema().notRequired().nullable();
+
+const textNoNASchema = () =>
+  string()
+    .typeError(error.NA_NOT_ACCEPTED)
+    .test({
+      message: error.NA_NOT_ACCEPTED,
+      test: (value) => {
+        if (!value) return true;
+        return schemaMap.textNoNA.isValidSync(value);
+      },
+    });
+
+export const textNoNA = () => textNoNASchema().required(error.NA_NOT_ACCEPTED);
+
+export const textNoNAOptional = () => textNoNASchema().nullable();
+
+export const numberOrSuppressedNoNA = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (!value) return false;
+        const isSuppressed = value.trim().toLowerCase() === "suppressed";
+        if (validNAValues.includes(value)) return false;
+        return isSuppressed || validNumberRegex.test(value);
+      },
+      message: error.NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED,
+    });
 
 // Number - Ratio
 export const ratio = () =>
@@ -418,30 +466,46 @@ export const completionSchemaMap: any = {
   date: date(),
   dateMonthYear: dateMonthYear(),
   dateOptional: dateOptional(),
+  dateYear2000OrLater: schemaMap.dateYear2000OrLater,
   dropdown: dropdown(),
   dropdownOptional: dropdownOptional(),
   dynamic: schemaMap.dynamic,
   dynamicOptional: schemaMap.dynamicOptional,
+  dynamicNoPlaceholder: schemaMap.dynamicNoPlaceholder,
   email: email(),
   emailOptional: emailOptional(),
+  emailOrUrlNoNA: schemaMap.emailOrUrlNoNA,
   futureDate: futureDate(),
+  integerGreaterThanZeroNoNA: schemaMap.integerGreaterThanZeroNoNA,
+  integerZeroOrGreaterNoNA: schemaMap.integerZeroOrGreaterNoNA,
   number: number(),
   numberNotLessThanOne: numberNotLessThanOne(),
   numberNotLessThanZero: numberNotLessThanZero(),
   numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
   numberOptional: numberOptional(),
   numberOrSuppressed: numberOrSuppressed(),
+  numberOrSuppressedNoNA: numberOrSuppressedNoNA(),
   numberOrSuppressedOrNaNr: numberOrSuppressedOrNaNr(),
   numberSuppressible: numberSuppressible(),
+  numberZeroOrGreaterNoNA: schemaMap.numberZeroOrGreaterNoNA,
+  numberZeroOrGreaterTwoDecimalsNoNA:
+    schemaMap.numberZeroOrGreaterTwoDecimalsNoNA,
   pastDate: pastDate(),
   pastDateOptional: pastDateOptional(),
+  percentageZeroToHundredNoNA: schemaMap.percentageZeroToHundredNoNA,
+  positiveNumberNoNA: schemaMap.positiveNumberNoNA,
   radio: radio(),
   radioOptional: radioOptional(),
   ratio: ratio(),
   text: text(),
+  textNoNA: textNoNA(),
+  textNoNAOptional: textNoNAOptional(),
   textOptional: textOptional(),
   url: url(),
+  urlList: schemaMap.urlList,
   urlOptional: urlOptional(),
   validNumber: validNumber(),
+  validNumberNoNA: validNumberNoNA(),
+  validNumberNoNAOptional: validNumberNoNAOptional(),
   validNumberOptional: validNumberOptional(),
 };

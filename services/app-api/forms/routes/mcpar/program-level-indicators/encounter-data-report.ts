@@ -59,7 +59,7 @@ export const encounterDataReportRoute: FormRoute = {
                   id: "program_encounterDataUses-otherText",
                   type: ReportFormFieldType.TEXTAREA,
                   validation: {
-                    type: ValidationType.TEXT,
+                    type: ValidationType.TEXT_NO_NA,
                     nested: true,
                     parentFieldName: "program_encounterDataUses",
                   },
@@ -114,7 +114,7 @@ export const encounterDataReportRoute: FormRoute = {
                   id: "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-otherText",
                   type: ReportFormFieldType.TEXTAREA,
                   validation: {
-                    type: ValidationType.TEXT,
+                    type: ValidationType.TEXT_NO_NA,
                     nested: true,
                     parentFieldName:
                       "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria",
@@ -132,7 +132,7 @@ export const encounterDataReportRoute: FormRoute = {
       {
         id: "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteriaContractLanguageLocation",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label:
             "C1.III.3 Encounter data performance criteria contract language",
@@ -142,7 +142,7 @@ export const encounterDataReportRoute: FormRoute = {
       {
         id: "program_encounterDataSubmissionQualityFinancialPenaltiesContractLanguageLocation",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "C1.III.4 Financial penalties contract language",
           hint: "Provide reference(s) to the contract section(s) that describes any financial penalties the state may impose on plans for the types of failures to meet encounter data submission and quality standards. Use contract section references, not page numbers.",
@@ -160,7 +160,7 @@ export const encounterDataReportRoute: FormRoute = {
       {
         id: "program_encounterDataCollectionValidationBarriers",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "C1.III.6 Barriers to collecting/validating encounter data",
           hint: "Describe any barriers to collecting and/or validating managed care plan encounter data that the state has experienced during the reporting year. If there were no barriers, please enter “The state did not experience any barriers to collecting or validating encounter data during the reporting year” as your response. “N/A” is not an acceptable response.",
