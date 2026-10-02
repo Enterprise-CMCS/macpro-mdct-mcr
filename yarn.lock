@@ -4413,7 +4413,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@faker-js/faker@npm:^10.5.0":
+"@faker-js/faker@npm:^10.6.0":
   version: 10.6.0
   resolution: "@faker-js/faker@npm:10.6.0"
   checksum: 10c0/ee285d597249a019f3a11b6705d1908616ea9e880207ca4f89e6205dbf7e98abd1129f025f5da19484f5e88f556b0629a4363745ff0bbaf1984ebf54cffde6e3
@@ -10985,7 +10985,7 @@ __metadata:
   resolution: "e2e-tests@workspace:tests"
   dependencies:
     "@axe-core/playwright": "npm:^4.10.1"
-    "@faker-js/faker": "npm:^10.5.0"
+    "@faker-js/faker": "npm:^10.6.0"
     "@playwright/test": "npm:^1.56.1"
     "@types/aws4": "npm:^1.11.6"
     amazon-user-pool-srp-client: "npm:^1.0.4"
@@ -13613,7 +13613,7 @@ __metadata:
     "@aws-sdk/client-s3": "npm:~3.1012.0"
     "@aws-sdk/client-secrets-manager": "npm:~3.1012.0"
     "@aws-sdk/client-support": "npm:~3.1032.0"
-    "@faker-js/faker": "npm:^10.5.0"
+    "@faker-js/faker": "npm:^10.6.0"
     "@launchdarkly/node-server-sdk": "npm:^9.10.5"
     "@octokit/auth-action": "npm:^6.0.1"
     "@octokit/rest": "npm:^22.0.0"
