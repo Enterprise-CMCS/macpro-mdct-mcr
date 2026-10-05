@@ -271,6 +271,7 @@ export interface PlanOverlayReportPageVerbiage extends ReportPageVerbiage {
 
 export interface EntityDetailsMultiformVerbiage extends ReportPageVerbiage {
   backButton?: string;
+  formRequiredText?: string;
   heading?: string;
   hint?: string;
   accordion?: {

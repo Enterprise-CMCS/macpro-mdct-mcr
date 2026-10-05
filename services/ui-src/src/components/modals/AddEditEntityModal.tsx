@@ -17,6 +17,7 @@ import {
   entityWasUpdated,
   filterFormData,
   getEntriesToClear,
+  getFormRequiredText,
   setClearedEntriesToDefaultValue,
   useStore,
 } from "utils";
@@ -35,6 +36,7 @@ export const AddEditEntityModal = ({
   const { report } = useStore();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const formRequiredText = getFormRequiredText(form.fields);
 
   const writeEntity = async (enteredData: any) => {
     setSubmitting(true);
@@ -126,6 +128,7 @@ export const AddEditEntityModal = ({
           "Save"
         ),
         closeButtonText: "Cancel",
+        formRequiredText,
       }}
     >
       <Form
