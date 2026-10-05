@@ -244,7 +244,8 @@ describe("Schemas", () => {
 
   test("Test textNoNA schema", () => {
     testTextSchema(schemaMap.textNoNA, ["Sample response", "abc123"], true);
-    testTextSchema(schemaMap.textNoNA, [undefined, "", "   "], false);
+    testTextSchema(schemaMap.textNoNA, [undefined, ""], true);
+    testTextSchema(schemaMap.textNoNA, ["   "], false);
     testTextSchema(
       schemaMap.textNoNA,
       ["N/A", "na", "not reported", "tbd"],
@@ -274,20 +275,18 @@ describe("Schemas", () => {
       ["1", "-1", "1,000"],
       true
     );
+    testTextSchema(schemaMap.numberOrSuppressedNoNA, [undefined, ""], true);
     testTextSchema(
       schemaMap.numberOrSuppressedNoNA,
-      [...validNAValues, "badText", undefined],
+      [...validNAValues, "badText"],
       false
     );
   });
 
   test("Test positiveNumberNoNA schema", () => {
     testTextSchema(schemaMap.positiveNumberNoNA(), ["1", "1,234", "0.5"], true);
-    testTextSchema(
-      schemaMap.positiveNumberNoNA(),
-      ["0", "-1", "abc", undefined, ""],
-      false
-    );
+    testTextSchema(schemaMap.positiveNumberNoNA(), [undefined, ""], true);
+    testTextSchema(schemaMap.positiveNumberNoNA(), ["0", "-1", "abc"], false);
   });
 
   test("Test integerZeroOrGreaterNoNA schema", () => {
@@ -296,9 +295,10 @@ describe("Schemas", () => {
       ["0", "5", "1,234"],
       true
     );
+    testTextSchema(schemaMap.integerZeroOrGreaterNoNA(), [undefined, ""], true);
     testTextSchema(
       schemaMap.integerZeroOrGreaterNoNA(),
-      ["-1", "5.5", "abc", undefined, ""],
+      ["-1", "5.5", "abc"],
       false
     );
   });
@@ -350,7 +350,12 @@ describe("Schemas", () => {
     );
     testTextSchema(
       schemaMap.percentageZeroToHundredNoNA,
-      ["-1", "101", "abc", undefined, ""],
+      [undefined, ""],
+      true
+    );
+    testTextSchema(
+      schemaMap.percentageZeroToHundredNoNA,
+      ["-1", "101", "abc"],
       false
     );
   });
@@ -374,9 +379,10 @@ describe("Schemas", () => {
       ],
       true
     );
+    testTextSchema(schemaMap.emailOrUrlNoNA, [undefined, ""], true);
     testTextSchema(
       schemaMap.emailOrUrlNoNA,
-      ["not valid", "test@example.com, not valid", undefined, ""],
+      ["not valid", "test@example.com, not valid"],
       false
     );
   });
@@ -387,9 +393,10 @@ describe("Schemas", () => {
       ["https://example.com", "https://example.com, http://another.com"],
       true
     );
+    testTextSchema(schemaMap.urlList, [undefined, ""], true);
     testTextSchema(
       schemaMap.urlList,
-      ["not a url", "https://example.com, not a url", undefined, ""],
+      ["not a url", "https://example.com, not a url"],
       false
     );
   });
@@ -407,11 +414,11 @@ describe("Schemas", () => {
       testSchema(schemaMap.dynamicNoPlaceholder, [[]], false);
     });
 
-    test("returns false for a placeholder entity name", () => {
+    test("returns true for a placeholder entity name (rejection happens at completion-status time, not on save)", () => {
       testSchema(
         schemaMap.dynamicNoPlaceholder,
         [[{ id: "a", name: "N/A" }]],
-        false
+        true
       );
     });
 

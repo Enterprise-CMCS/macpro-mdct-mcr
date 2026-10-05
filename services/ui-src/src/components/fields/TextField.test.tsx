@@ -190,7 +190,7 @@ describe("<TextField />", () => {
       );
     });
 
-    test("TextField does not autosave when stateuser, autosave true, and form invalid", async () => {
+    test("TextField autosaves with default value when stateuser, autosave true, and form invalid", async () => {
       mockTrigger.mockReturnValue(false);
       mockGetValues(undefined);
       render(textFieldAutosavingComponent);
@@ -202,9 +202,21 @@ describe("<TextField />", () => {
         await userEvent.type(textField, "test value");
         await userEvent.tab();
       });
-      // invalid values are skipped rather than saved as blank, so previously
-      // persisted data isn't overwritten
-      expect(mockMcparReportContext.updateReport).not.toHaveBeenCalled();
+      expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
+      expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
+        {
+          reportType: mockMcparReportContext.report.reportType,
+          state: mockStateUserStore.user?.state,
+          id: mockMcparReportContext.report.id,
+        },
+        {
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: mockStateUserStore.user?.full_name,
+          },
+          fieldData: { testTextField: "" },
+        }
+      );
     });
 
     test("TextField does not autosave when not autosave not set to true", async () => {
