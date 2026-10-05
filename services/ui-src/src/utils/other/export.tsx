@@ -443,7 +443,10 @@ export const parseFormFieldInfo = (formFieldProps?: AnyObject) => {
     Object.values(formFieldProps).every((x) => x === undefined)
   )
     return {};
-  const labelArray = formFieldProps?.label?.split(" ");
+  // question layout elements carry their numbered text in content, not label
+  const labelArray = (formFieldProps?.label ?? formFieldProps?.content)?.split(
+    " "
+  );
   return {
     number: labelArray?.[0].match(/[-.0-9]+/) ? labelArray?.[0] : undefined,
     label: labelArray?.[0].match(/[-.0-9]+/)

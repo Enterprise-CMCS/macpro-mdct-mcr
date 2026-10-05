@@ -184,6 +184,41 @@ const mockMixedPageJson = {
   },
 };
 
+const mockQuestionHeadingPageJson = {
+  ...mockStandardReportPageJson,
+  form: {
+    id: "questionHeadings",
+    fields: [
+      {
+        id: "D1.IV.6a",
+        type: "question",
+        props: {
+          content: "D1.IV.6a First appeal reason",
+          hint: "First reason hint",
+        },
+      },
+      {
+        ...mockFormField,
+        id: "firstReasonDenied",
+        props: { label: "Appeals denied" },
+      },
+      {
+        id: "D1.IV.6b",
+        type: "question",
+        props: {
+          content: "D1.IV.6b Second appeal reason",
+          hint: "Second reason hint",
+        },
+      },
+      {
+        ...mockFormField,
+        id: "secondReasonDenied",
+        props: { label: "Appeals denied" },
+      },
+    ],
+  },
+};
+
 const exportedStandardTableComponent = (
   <ExportedReportFieldTable section={mockStandardPageJson} />
 );
@@ -382,6 +417,34 @@ describe("<ExportedReportFieldRow />", () => {
     render(noHintComponent);
     const hint = screen.queryByText(/Mock Hint Text/);
     expect(hint).not.toBeInTheDocument();
+  });
+
+  test("renders question layout elements as heading rows above their response rows", () => {
+    mockedUseStore.mockReturnValue({
+      ...mockMcparReportStore,
+    });
+    render(<ExportedReportFieldTable section={mockQuestionHeadingPageJson} />);
+
+    // the table renders all three columns
+    expect(screen.getByRole("columnheader", { name: "Number" })).toBeVisible();
+    expect(
+      screen.getByRole("columnheader", { name: "Indicator" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("columnheader", { name: "Response" })
+    ).toBeVisible();
+
+    // each question number renders in the Number column
+    expect(
+      screen.getByRole("columnheader", { name: "D1.IV.6a" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("columnheader", { name: "D1.IV.6b" })
+    ).toBeVisible();
+
+    // each question text renders in the Indicator column
+    expect(screen.getByText("First appeal reason")).toBeVisible();
+    expect(screen.getByText("Second appeal reason")).toBeVisible();
   });
 
   testA11yAct(exportedStandardTableComponent);
