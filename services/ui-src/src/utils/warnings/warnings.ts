@@ -1,37 +1,217 @@
-import { FieldValue } from "types";
+import { EntityShape, FieldValue, ReportShape } from "types";
 
 // Warning rules must remain pure functions with no React dependencies.
-// This ensures they can be called from either useFormWarnings or
+// This ensures they can be called from either useFieldWarning or
 // the custom resolver in Phase 3 without modification.
 
-// Warning rule functions — defined once per warning type
-const warningRules: Record<
-  string,
-  (value: FieldValue | null | undefined) => string | null
-> = {
-  // TODO: REMOVE BEFORE MERGE - test warning rule
-  DATE_BEFORE_2020: (value: FieldValue | null | undefined) =>
-    value && new Date(value as string) < new Date("2020-01-01")
-      ? "Date is before 2020 — is this correct?"
-      : null,
-  // Warning rules will be added here in subsequent tickets
+export interface WarningContext {
+  report?: ReportShape;
+  selectedEntity?: EntityShape;
+}
+
+export type WarningRule = (
+  value: FieldValue | null | undefined,
+  context: WarningContext
+) => string | null;
+
+// Helper to parse a number from a field value, handling comma-formatted numbers
+const parseNumber = (value: FieldValue | null | undefined): number | null => {
+  if (!value) return null;
+  const num = Number(String(value).replaceAll(",", ""));
+  return isNaN(num) ? null : num;
 };
 
-// Field to warning type mapping — assign warning types to field ids here
+// Helper to parse a date from a field value
+const parseDate = (value: FieldValue | null | undefined): Date | null => {
+  if (!value) return null;
+  const date = new Date(value as string);
+  return isNaN(date.getTime()) ? null : date;
+};
+
+// Warning rule functions — defined once per warning type
+const warningRules: Record<string, WarningRule> = {
+  // DATE WARNINGS
+  DATE_BEFORE_2020: (value) => {
+    const date = parseDate(value);
+    if (!date) return null;
+    return date < new Date("2020-01-01")
+      ? "Review for accuracy. Dates prior to 2020 are not expected in this field."
+      : null;
+  },
+
+  DATE_BEFORE_2023: (value) => {
+    const date = parseDate(value);
+    if (!date) return null;
+    return date < new Date("2023-01-01")
+      ? "Review for accuracy. Dates prior to 2023 are not expected in this field."
+      : null;
+  },
+
+  // NUMBER WARNINGS
+  DIVISIBLE_BY_1000: (value) => {
+    const num = parseNumber(value);
+    if (num === null || num === 0) return null;
+    return num % 1000 === 0
+      ? "Review for accuracy. Please enter an exact number."
+      : null;
+  },
+
+  PERCENTAGE_OVER_100: (value) => {
+    const num = parseNumber(value);
+    if (num === null) return null;
+    return num > 100
+      ? "Review for accuracy. Percentage is higher than 100%."
+      : null;
+  },
+
+  NUMBER_OVER_OR_EQUAL_100: (value) => {
+    const num = parseNumber(value);
+    if (num === null) return null;
+    return num >= 100
+      ? "Review for accuracy. This number is unusually high."
+      : null;
+  },
+
+  NUMBER_OVER_14: (value) => {
+    const num = parseNumber(value);
+    if (num === null) return null;
+    return num > 14
+      ? "Review for accuracy. This number is unusually high."
+      : null;
+  },
+
+  NUMBER_OVER_72: (value) => {
+    const num = parseNumber(value);
+    if (num === null) return null;
+    return num > 72
+      ? "Review for accuracy. This number is unusually high."
+      : null;
+  },
+
+  NUMBER_OVER_215000: (value) => {
+    const num = parseNumber(value);
+    if (num === null) return null;
+    return num > 215000
+      ? "Review for accuracy. This number is unusually high."
+      : null;
+  },
+
+  NUMBER_BELOW_75: (value) => {
+    const num = parseNumber(value);
+    if (num === null) return null;
+    return num < 75
+      ? "Review for accuracy. This number is unusually low."
+      : null;
+  },
+
+  NUMBER_BELOW_90: (value) => {
+    const num = parseNumber(value);
+    if (num === null) return null;
+    return num < 90
+      ? "Review for accuracy. This number is unusually low."
+      : null;
+  },
+
+  NUMBER_OVER_7_1: (value) => {
+    const num = parseNumber(value);
+    if (num === null) return null;
+    return num > 7.1
+      ? "Review for accuracy. This number is unusually high."
+      : null;
+  },
+
+  NUMBER_OVER_7: (value) => {
+    const num = parseNumber(value);
+    if (num === null) return null;
+    return num > 7
+      ? "Review for accuracy. This number is unusually high."
+      : null;
+  },
+
+  NUMBER_OVER_60: (value) => {
+    const num = parseNumber(value);
+    if (num === null) return null;
+    return num > 60
+      ? "Review for accuracy. This number is unusually high."
+      : null;
+  },
+
+  NUMBER_OVER_24: (value) => {
+    const num = parseNumber(value);
+    if (num === null) return null;
+    return num > 24
+      ? "Review for accuracy. This number is unusually high."
+      : null;
+  },
+};
+
+// Field to warning type mapping — organized by form/file location
 const fieldWarningMap: Record<string, string> = {
-  // TODO: REMOVE BEFORE MERGE - test field mapping
+  // A - Program Information (program-information/reporting-period.ts)
+  reportingPeriodStartDate: "DATE_BEFORE_2020",
+  reportingPeriodEndDate: "DATE_BEFORE_2020",
+
+  // B - State Level Indicators (state-level-indicators/program-characteristics.ts)
+  state_statewideMedicaidEnrollment: "DIVISIBLE_BY_1000",
+  state_statewideMedicaidManagedCareEnrollment: "DIVISIBLE_BY_1000",
+
+  // B - State Level Indicators (state-level-indicators/prior-authorization.ts)
+  state_stateTimeframeForStandardPriorAuthorizationDecisions: "NUMBER_OVER_14",
+  state_stateTimeframeForExpeditedPriorAuthorizationDecisions: "NUMBER_OVER_72",
+
+  // C - Program Level Indicators (program-level-indicators/program-characteristics.ts)
+  program_enrollment: "DIVISIBLE_BY_1000",
+
+  // C - Program Level Indicators (program-level-indicators/mental-health-and-substance-use-disorder-parity.ts)
   program_whenWasTheLastParityAnalysisCoveringThisProgramCompleted:
     "DATE_BEFORE_2020",
-  // Field mappings will be added here in subsequent tickets
+  program_whenWasTheLastParityAnalysisForThisProgramSubmittedToCMS:
+    "DATE_BEFORE_2020",
+  dateStateWillRemediateThisAreaOfNoncompliance: "DATE_BEFORE_2020",
+
+  // D - Plan Level Indicators (plan-level-indicators/program-characteristics.ts)
+  plan_medicaidEnrollmentSharePercentage: "PERCENTAGE_OVER_100",
+  plan_medicaidManagedCareEnrollmentSharePercentage: "PERCENTAGE_OVER_100",
+
+  // D - Plan Level Indicators (plan-level-indicators/encounter-data-report.ts)
+  plan_encounterDataSubmissionTimelinessCompliancePercentage: "NUMBER_BELOW_75",
+  plan_encounterDataSubmissionHipaaCompliancePercentage: "NUMBER_BELOW_90",
+
+  // D - Plan Level Indicators - Appeals (plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview.ts)
+  plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledAppeal:
+    "NUMBER_OVER_OR_EQUAL_100",
+
+  // D - Plan Level Indicators - Grievances (plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview.ts)
+  plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledGrievance:
+    "NUMBER_OVER_OR_EQUAL_100",
+
+  // D - Plan Level Indicators - Prior Authorization (plan-level-indicators/prior-authorization.ts)
+  plan_averageTimeToDecisionForStandardPriorAuthorizations: "NUMBER_OVER_7_1",
+  plan_medianTimeToDecisionOnStandardPriorAuthorizations: "NUMBER_OVER_7",
+  plan_averageTimeToDecisionForExpeditedPriorAuthorizations: "NUMBER_OVER_60",
+  plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests:
+    "NUMBER_OVER_24",
+
+  // D - Plan Level Indicators - Program Integrity (plan-level-indicators/program-integrity.ts)
+  plan_overpaymentReportingToStateStartDate: "DATE_BEFORE_2020",
+  plan_overpaymentReportingToStateEndDate: "DATE_BEFORE_2020",
+
+  // D - Plan Level Indicators - Sanctions (plan-level-indicators/sanctions.ts)
+  sanction_dollarAmount: "NUMBER_OVER_215000",
+  sanction_assessmentDate: "DATE_BEFORE_2023",
+  sanction_remediationDate: "DATE_BEFORE_2023",
 };
 
 export const validateFieldWarning = (
-  fieldId: string,
-  value: FieldValue | null | undefined
+  fieldName: string,
+  value: FieldValue | null | undefined,
+  context: WarningContext = {},
+  map: Record<string, string> = fieldWarningMap,
+  rules: Record<string, WarningRule> = warningRules
 ): string | null => {
-  const warningType = fieldWarningMap[fieldId];
+  const warningType = map[fieldName];
   if (!warningType) return null;
-  const warningRule = warningRules[warningType];
+  const warningRule = rules[warningType];
   if (!warningRule) return null;
-  return warningRule(value);
+  return warningRule(value, context);
 };

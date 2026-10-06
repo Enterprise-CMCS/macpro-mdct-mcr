@@ -14,6 +14,7 @@ import {
   useStore,
   getAutosaveFields,
 } from "utils";
+import { useFieldWarning } from "utils/warnings/useFieldWarning";
 
 export const DateField = ({
   name,
@@ -25,8 +26,6 @@ export const DateField = ({
   validateOnRender,
   styleAsOptional,
   clear,
-  // TODO: REMOVE BEFORE MERGE - warning system test wiring
-  warningMessage,
   ...props
 }: Props) => {
   const defaultValue = "";
@@ -116,6 +115,7 @@ export const DateField = ({
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message as ReactNode;
+  const warningMessage = useFieldWarning(name);
   const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
@@ -137,7 +137,6 @@ export const DateField = ({
         errorMessage={errorMessage}
         {...props}
       />
-      {/* TODO: REMOVE BEFORE MERGE - warning system test wiring */}
       {!errorMessage && warningMessage && (
         <Box sx={sx.warningMessage}>⚠️ {warningMessage}</Box>
       )}
@@ -173,7 +172,6 @@ const sx = {
   ".optional-text": {
     fontWeight: "lighter",
   },
-  // TODO: REMOVE BEFORE MERGE - warning system test wiring
   warningMessage: {
     color: "#856404",
     display: "flex",

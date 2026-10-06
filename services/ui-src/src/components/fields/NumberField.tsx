@@ -18,6 +18,7 @@ import {
   parseCustomHtml,
   useStore,
   makeStringParseableForDatabase,
+  useFieldWarning,
 } from "utils";
 
 export const NumberField = ({
@@ -165,6 +166,7 @@ export const NumberField = ({
 
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message as ReactNode;
+  const warningMessage = useFieldWarning(name);
   const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const maskClass = mask || "";
   const labelText =
@@ -193,6 +195,9 @@ export const NumberField = ({
           disabled={disabled || suppressed}
         />
       </Box>
+      {!errorMessage && warningMessage && (
+        <Box sx={sx.warningMessage}>⚠️ {warningMessage}</Box>
+      )}
     </Box>
   );
 };
@@ -276,5 +281,13 @@ const sx = {
       bottom: "11px",
       left: "10px",
     },
+  },
+  warningMessage: {
+    color: "#856404",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.25rem",
+    marginTop: "0.25rem",
+    fontSize: "sm",
   },
 };
