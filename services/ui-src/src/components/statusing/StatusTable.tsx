@@ -173,7 +173,7 @@ const sx = {
     },
   },
   parent: {
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     lineHeight: "1.125rem",
     fontSize: "sm",
     paddingTop: "spacer2",
@@ -193,7 +193,7 @@ const sx = {
     width: "4.25rem",
     height: "1.75rem",
     fontSize: "md",
-    fontWeight: "normal",
+    fontWeight: "body_md",
     border: "1px solid",
     borderColor: "gray_lighter",
     color: "primary",
@@ -231,7 +231,7 @@ const sx = {
       borderBottom: "1px solid",
       borderColor: "gray_lighter",
       color: "gray",
-      fontWeight: "600",
+      fontWeight: "heading_sm_bold",
       fontSize: "sm",
       lineHeight: "1.125rem",
       ".mobile &": {

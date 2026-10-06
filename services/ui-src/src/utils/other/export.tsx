@@ -534,7 +534,7 @@ const sx = {
     },
   },
   entityName: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   noResponse: {
     color: "error_darker",

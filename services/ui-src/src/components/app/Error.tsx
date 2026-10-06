@@ -50,14 +50,14 @@ const sx = {
   },
   headerText: {
     fontSize: "4xl",
-    fontWeight: "normal",
+    fontWeight: "heading_md",
     ".mobile &": {
       fontSize: "2xl",
     },
   },
   subHeadingText: {
     fontSize: "lg",
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     marginBottom: "spacer2",
     ".mobile &": {
       marginBottom: "spacer3",

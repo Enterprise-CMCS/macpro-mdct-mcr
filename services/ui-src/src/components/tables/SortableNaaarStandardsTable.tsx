@@ -140,7 +140,7 @@ const sx = {
   },
   statusText: {
     fontSize: "xs",
-    fontWeight: "bold",
+    fontWeight: "heading_xs",
   },
   deleteButton: {
     marginRight: "-2.5rem",
@@ -151,6 +151,6 @@ const sx = {
     },
   },
   bold: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
 };

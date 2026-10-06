@@ -263,7 +263,7 @@ const sx = {
     position: "absolute",
     paddingTop: "1px",
     fontSize: "lg",
-    fontWeight: "700",
+    fontWeight: "heading_sm_bold",
     "&.nested": {
       bottom: "15px",
       left: "245px",

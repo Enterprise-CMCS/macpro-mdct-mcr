@@ -102,7 +102,7 @@ const sx = {
   },
   headerText: {
     fontSize: "2rem",
-    fontWeight: "normal",
+    fontWeight: "heading_2xl",
   },
   navigationButton: {
     padding: "1.5rem 0 2rem 0",

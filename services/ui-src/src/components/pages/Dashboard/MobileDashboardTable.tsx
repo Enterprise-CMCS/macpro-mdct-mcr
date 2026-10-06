@@ -156,7 +156,7 @@ const sx = {
   },
   label: {
     fontSize: "sm",
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     color: "gray",
   },
   editDate: {

@@ -49,7 +49,7 @@ const sx = {
   },
   pdfLabelText: {
     fontSize: "0.667rem",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   statusIcon: {
     marginLeft: "0rem",

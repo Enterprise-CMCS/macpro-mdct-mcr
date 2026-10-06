@@ -200,7 +200,7 @@ const sx = {
       },
       padding: "0.75rem 0.5rem",
       borderStyle: "none",
-      fontWeight: "normal",
+      fontWeight: "heading_sm_bold",
       color: "base",
       ".shrink &": {
         padding: "0.375rem 0rem",
@@ -213,7 +213,7 @@ const sx = {
     th: {
       maxWidth: "100%",
       paddingBottom: "0.375rem",
-      fontWeight: "bold",
+      fontWeight: "heading_md",
       lineHeight: "lg",
       color: "gray",
       ".shrink &": {
@@ -234,7 +234,7 @@ const sx = {
   standardCount: {
     display: "block",
     fontSize: "md",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     marginTop: "spacer1",
   },
   entityList: {
@@ -242,7 +242,7 @@ const sx = {
   },
   tableIndex: {
     color: "gray",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   statusIcon: {
     paddingLeft: "spacer2",

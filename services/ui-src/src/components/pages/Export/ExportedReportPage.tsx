@@ -178,7 +178,7 @@ export const sx = {
     },
   },
   heading: {
-    fontWeight: "300",
+    fontWeight: "heading_sm_regular",
     lineHeight: "lineHeights.heading",
     fontSize: "4xl",
   },
@@ -188,7 +188,7 @@ export const sx = {
       display: "inline-block",
       marginBottom: "spacer1",
       fontSize: "md",
-      fontWeight: "bold",
+      fontWeight: "heading_md",
     },
     "th, td": {
       verticalAlign: "top",
@@ -211,7 +211,7 @@ export const sx = {
     },
   },
   sectionHeading: {
-    fontWeight: "bold",
+    fontWeight: "heading_2xl",
     fontSize: "2xl",
     marginBottom: "2xl",
   },

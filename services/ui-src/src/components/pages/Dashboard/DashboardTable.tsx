@@ -137,7 +137,7 @@ const sx = {
       borderBottom: "1px solid",
       borderColor: "gray_light",
       color: "gray",
-      fontWeight: "bold",
+      fontWeight: "heading_md",
       "&:last-of-type": {
         textAlign: "center",
       },

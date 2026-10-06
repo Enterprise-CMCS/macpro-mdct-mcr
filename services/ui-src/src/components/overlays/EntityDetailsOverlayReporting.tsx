@@ -72,7 +72,7 @@ interface Props {
 
 const sx = {
   textHeading: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     lineHeight: "1.25rem",
   },
   programInfo: {
@@ -85,7 +85,7 @@ const sx = {
         fontSize: "xl",
         lineHeight: "1.75rem",
         "&:first-of-type": {
-          fontWeight: "bold",
+          fontWeight: "heading_xl",
         },
       },
     },

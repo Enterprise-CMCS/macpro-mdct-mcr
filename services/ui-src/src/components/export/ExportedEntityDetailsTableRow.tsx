@@ -108,7 +108,7 @@ const sx = {
     paddingLeft: 0,
   },
   fieldNumber: {
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
   },
   labelColumn: {
     width: "14rem",
@@ -121,9 +121,9 @@ const sx = {
   },
   fieldLabel: {
     fontSize: "sm",
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     ".optional-text": {
-      fontWeight: "lighter",
+      fontWeight: "heading_sm_regular",
     },
   },
   fieldHint: {

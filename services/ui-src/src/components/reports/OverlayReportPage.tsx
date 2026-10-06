@@ -278,7 +278,7 @@ const sx = {
   },
   dashboardTitle: {
     fontSize: "md",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     color: "gray",
     textAlign: "left",
     ".tablet &, .mobile &": {
@@ -296,7 +296,7 @@ const sx = {
       borderBottom: "1px solid var(--mdct-colors-gray_lighter)",
       color: "gray",
       fontSize: "lg",
-      fontWeight: "bold",
+      fontWeight: "heading_lg",
       ".mobile &": {
         border: "none",
       },
@@ -318,7 +318,7 @@ const sx = {
   },
   missingEntityMessage: {
     padding: "0 0 1rem 0",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     a: {
       color: "primary",
       textDecoration: "underline",

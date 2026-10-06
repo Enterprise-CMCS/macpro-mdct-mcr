@@ -110,7 +110,7 @@ const sx = {
   },
   drawerEyebrowHeaderText: {
     fontSize: "md",
-    fontWeight: "bold",
+    fontWeight: "heading_md_bold",
   },
   drawerHeader: {
     position: "relative",
@@ -119,13 +119,13 @@ const sx = {
   drawerHeaderText: {
     paddingRight: "4rem",
     fontSize: "2xl",
-    fontWeight: "bold",
+    fontWeight: "heading_2xl",
   },
   drawerReminderText: {
     marginTop: "spacer2",
     paddingRight: "4rem",
     fontSize: "md",
-    fontWeight: "normal",
+    fontWeight: "body_md",
   },
   drawerCloseButton: {
     position: "absolute",
@@ -144,13 +144,13 @@ const sx = {
   },
   detailBox: {
     marginTop: "spacer4",
-    fontWeight: "normal",
+    fontWeight: "body_md",
     color: "base",
   },
   detailHeader: {
     marginBottom: "spacer1",
     fontSize: "md",
-    fontWeight: "bold",
+    fontWeight: "heading_md_bold",
     color: "gray",
   },
   detailDescription: {

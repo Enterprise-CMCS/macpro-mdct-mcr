@@ -295,11 +295,11 @@ const sx = {
   },
   editButton: {
     marginY: "spacer2",
-    fontWeight: "normal",
+    fontWeight: "body_md",
   },
   openDrawerButton: {
     marginTop: "spacer2",
-    fontWeight: "normal",
+    fontWeight: "body_md",
   },
   entitiesCount: {
     position: "absolute",

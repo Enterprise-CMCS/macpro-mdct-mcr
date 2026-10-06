@@ -80,11 +80,11 @@ const sx = {
   eyebrow: {
     color: "gray",
     fontSize: "md",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     marginBottom: "spacer1",
   },
   sectionHeading: {
-    fontWeight: "normal",
+    fontWeight: "body_md",
     fontSize: "4xl",
   },
   hintTextBox: {

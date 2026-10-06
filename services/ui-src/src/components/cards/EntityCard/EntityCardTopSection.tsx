@@ -95,7 +95,7 @@ const sx = {
   subtitle: {
     marginTop: "spacer2",
     fontSize: "xs",
-    fontWeight: "bold",
+    fontWeight: "heading_xs",
   },
   subtext: {
     marginTop: "spacer_half",
@@ -110,12 +110,12 @@ const sx = {
   },
   standardCount: {
     width: "44px",
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     fontSize: "sm",
     color: "gray",
   },
   standardHeading: {
-    fontWeight: "bold",
+    fontWeight: "heading_md_bold",
     fontSize: "md",
   },
   standardDescription: {
@@ -126,7 +126,7 @@ const sx = {
     paddingTop: "spacer2",
     borderTop: "1px solid",
     borderTopColor: "gray_lighter",
-    fontWeight: "bold",
+    fontWeight: "heading_md_bold",
     fontSize: "md",
   },
 };

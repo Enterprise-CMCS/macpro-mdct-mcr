@@ -379,11 +379,11 @@ const sx = {
   headerText: {
     marginBottom: "spacer2",
     fontSize: "4xl",
-    fontWeight: "normal",
+    fontWeight: "heading_4xl",
     ".tablet &, .mobile &": {
       fontSize: "xl",
       lineHeight: "1.75rem",
-      fontWeight: "bold",
+      fontWeight: "heading_xl",
     },
   },
   bodyBox: {
@@ -442,7 +442,7 @@ const sxChildStyles = {
   },
   programNameText: {
     fontSize: "md",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     textTransform: "none",
     letterSpacing: "normal",
     fontFamily: "body",
@@ -463,6 +463,6 @@ const sxChildStyles = {
   },
   adminActionButton: {
     fontSize: "1rem",
-    fontWeight: 700,
+    fontWeight: "heading_md",
   },
 };

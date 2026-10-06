@@ -146,7 +146,7 @@ const sx = {
   headerText: {
     marginBottom: "spacer2",
     fontSize: "2rem",
-    fontWeight: "normal",
+    fontWeight: "heading_2xl",
   },
   currentBannerSectionBox: {
     width: "100%",
@@ -154,7 +154,7 @@ const sx = {
   },
   sectionHeader: {
     fontSize: "1.5rem",
-    fontWeight: "bold",
+    fontWeight: "heading_2xl",
   },
   currentBannerInfo: {
     flexDirection: "column",

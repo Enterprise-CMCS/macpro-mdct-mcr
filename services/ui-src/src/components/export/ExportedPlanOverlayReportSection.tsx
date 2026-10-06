@@ -246,7 +246,7 @@ const sx = {
   },
   fieldLabel: {
     fontSize: "sm",
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     marginBottom: "spacer1",
   },
   fieldHint: {
@@ -261,7 +261,7 @@ const sx = {
   },
   count: {
     color: "gray",
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
   },
   h4: {
     fontSize: "lg",

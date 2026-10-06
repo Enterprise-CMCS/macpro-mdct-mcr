@@ -43,7 +43,7 @@ const theme = extendTheme({
         transition: "all 0.3s ease",
         width: "fit-content",
         borderRadius: "0.25rem",
-        fontWeight: "bold",
+        fontWeight: "heading_md",
         ".mobile &": {
           fontSize: "sm",
         },

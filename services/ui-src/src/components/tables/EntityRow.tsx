@@ -137,7 +137,7 @@ const sx = {
         fontSize: "md",
         color: "gray_darker",
         "&:first-of-type": {
-          fontWeight: "bold",
+          fontWeight: "heading_lg",
           fontSize: "lg",
         },
         ".mobile &": {
@@ -155,7 +155,7 @@ const sx = {
   },
   rowHeader: {
     display: "flex",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     paddingBottom: "spacer1",
     span: { color: "gray" },
     img: { marginRight: "spacer2" },

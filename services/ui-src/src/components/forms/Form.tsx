@@ -194,10 +194,10 @@ const sx = {
   },
   // optional text
   ".optional-text": {
-    fontWeight: "lighter",
+    fontWeight: "heading_sm_regular",
   },
   h1: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     fontSize: "md",
     color: "base",
     paddingTop: "spacer2",
@@ -217,7 +217,7 @@ const sx = {
   },
   ".fake-list-item::before": {
     content: '"•"',
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     display: "inline-block",
     width: "spacer1",
   },

@@ -334,7 +334,7 @@ const sx = {
   },
   dashboardTitle: {
     fontSize: "md",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     color: "gray",
     textAlign: "left",
     ".tablet &, .mobile &": {
@@ -348,7 +348,7 @@ const sx = {
     },
     th: {
       fontSize: "md",
-      fontWeight: "bold",
+      fontWeight: "heading_md",
       lineHeight: "130%",
       color: "gray",
       paddingLeft: "spacer2",

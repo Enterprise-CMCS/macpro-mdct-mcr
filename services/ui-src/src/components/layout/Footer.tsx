@@ -256,7 +256,7 @@ const sx = {
   },
   address: {
     color: "white",
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     alignSelf: "center",
     margin: "2.25rem 0 0",
     ".desktop &": {

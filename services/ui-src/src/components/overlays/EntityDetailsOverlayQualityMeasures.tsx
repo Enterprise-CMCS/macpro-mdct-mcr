@@ -230,7 +230,7 @@ function dashboardTitleStyling(canAddEntities: boolean) {
     borderBottom: "1.5px solid var(--mdct-colors-gray_lighter)",
     color: "gray",
     fontSize: "lg",
-    fontWeight: "bold",
+    fontWeight: "heading_lg",
     paddingBottom: "0.75rem",
     paddingLeft: canAddEntities && "3.75rem",
   };
@@ -245,7 +245,7 @@ const sx = {
     width: "100%",
   },
   listHeader: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     marginRight: "spacer3",
     width: "165px",
   },
@@ -265,12 +265,12 @@ const sx = {
   },
   measureName: {
     fontSize: "lg",
-    fontWeight: "bold",
+    fontWeight: "heading_lg",
     marginBottom: "spacer2",
   },
   reportTitle: {
     fontSize: "xl",
-    fontWeight: "bold",
+    fontWeight: "heading_xl",
     marginBottom: "spacer2",
   },
   reportSubtitle: {

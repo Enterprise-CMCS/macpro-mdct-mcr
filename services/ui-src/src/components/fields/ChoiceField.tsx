@@ -87,7 +87,7 @@ const sx = {
     boxSizing: "content-box",
   },
   label: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     fontSize: "md",
     marginTop: "spacer3",
   },

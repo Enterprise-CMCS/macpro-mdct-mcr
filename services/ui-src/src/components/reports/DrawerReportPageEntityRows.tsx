@@ -171,7 +171,7 @@ const sx = {
   },
   entityName: {
     fontSize: "lg",
-    fontWeight: "bold",
+    fontWeight: "heading_lg",
     flexGrow: 1,
     marginLeft: "2.25rem",
     alignContent: "center",
@@ -179,7 +179,7 @@ const sx = {
   },
   entityNameWithDescription: {
     fontSize: "lg",
-    fontWeight: "bold",
+    fontWeight: "heading_lg",
     flexGrow: 1,
     marginLeft: "2.25rem",
     paddingBottom: "0rem",
@@ -198,7 +198,7 @@ const sx = {
     width: "5.75rem",
     height: "2.5rem",
     fontSize: "md",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   deleteButton: {
     marginRight: "-2.5rem",
@@ -212,7 +212,7 @@ const sx = {
     width: "5.75rem",
     height: "2.5rem",
     fontSize: "md",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     color: "gray_lighter",
     borderColor: "gray_lighter",
     "&:hover": {

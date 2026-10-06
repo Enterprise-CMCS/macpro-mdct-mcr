@@ -50,7 +50,7 @@ const sx = {
   number: {
     margin: "auto",
     fontSize: "md",
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
   },
   header: {
     marginBottom: "spacer2",

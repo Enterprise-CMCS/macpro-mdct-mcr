@@ -62,13 +62,13 @@ const sx = {
   notAnswered: {
     display: "block",
     fontSize: "md",
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     color: "error_darker",
     marginTop: "spacer1",
   },
   dashboardTitle: {
     marginBottom: "1.25rem",
     fontSize: "md",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
 };

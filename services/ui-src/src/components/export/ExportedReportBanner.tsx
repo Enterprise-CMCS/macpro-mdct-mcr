@@ -61,7 +61,7 @@ const sx = {
     p: {
       marginBottom: "spacer2",
       fontSize: "xl",
-      fontWeight: "bold",
+      fontWeight: "heading_xl",
       ".mobile &": {
         fontSize: "lg",
       },

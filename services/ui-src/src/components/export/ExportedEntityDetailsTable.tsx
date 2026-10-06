@@ -152,7 +152,7 @@ const sx = {
       },
       padding: "0.75rem 0.5rem",
       borderStyle: "none",
-      fontWeight: "normal",
+      fontWeight: "body_md",
       color: "base",
       ".shrink &": {
         padding: "0.375rem 0rem",
@@ -163,7 +163,7 @@ const sx = {
     },
     th: {
       paddingBottom: "0.375rem",
-      fontWeight: "bold",
+      fontWeight: "heading_md",
       lineHeight: "lg",
       color: "gray",
       ".shrink &": {

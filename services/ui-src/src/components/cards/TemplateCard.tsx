@@ -95,7 +95,7 @@ const sx = {
   cardTitleText: {
     marginBottom: "spacer1",
     fontSize: "lg",
-    fontWeight: "bold",
+    fontWeight: "heading_lg",
     lineHeight: "1.5",
   },
   actionsFlex: {

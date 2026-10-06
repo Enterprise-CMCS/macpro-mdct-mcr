@@ -104,7 +104,7 @@ export const ActionButton = ({
         width: "5rem",
         height: "2.5rem",
         fontSize: "1rem",
-        fontWeight: 700,
+        fontWeight: "heading_md",
       }}
       aria-label={
         reportType !== ReportType.MLR

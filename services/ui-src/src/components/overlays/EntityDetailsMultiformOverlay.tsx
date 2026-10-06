@@ -559,7 +559,7 @@ const sx = {
   tableData: {
     display: "block",
     fontSize: "1rem",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     lineHeight: "1.5rem",
     maxWidth: "19rem",
   },

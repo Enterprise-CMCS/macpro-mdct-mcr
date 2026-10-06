@@ -62,7 +62,7 @@ const sx = {
     },
   },
   heading: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     h2: {
       fontSize: "2xl",
       margin: "1.5rem 0",

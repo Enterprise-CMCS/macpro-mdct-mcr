@@ -335,7 +335,7 @@ const sx = {
   headerText: {
     marginBottom: "spacer2",
     fontSize: "4xl",
-    fontWeight: "normal",
+    fontWeight: "body_md",
   },
   infoTextBox: {
     marginTop: "spacer4",
@@ -344,7 +344,7 @@ const sx = {
     },
   },
   infoHeading: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     marginBottom: ".5rem",
   },
   headerImage: {
@@ -354,7 +354,7 @@ const sx = {
   },
   additionalInfoHeader: {
     color: "gray",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     marginBottom: ".5rem",
   },
   additionalInfo: {
@@ -364,14 +364,14 @@ const sx = {
     minWidth: "6rem",
     height: "2rem",
     fontSize: "md",
-    fontWeight: "700",
+    fontWeight: "heading_md",
     border: "1px solid",
   },
   downloadButton: {
     minWidth: "6rem",
     height: "2rem",
     fontSize: "md",
-    fontWeight: "700",
+    fontWeight: "heading_md",
     color: "white !important",
     textDecoration: "none !important",
     "&:hover, &:focus": {

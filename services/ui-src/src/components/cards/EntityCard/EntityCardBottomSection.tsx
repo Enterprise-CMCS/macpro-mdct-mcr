@@ -82,21 +82,11 @@ const sx = {
   subtitle: {
     marginTop: "spacer2",
     fontSize: "xs",
-    fontWeight: "bold",
+    fontWeight: "heading_xs",
   },
   subtext: {
     marginTop: "spacer_half",
     fontSize: "sm",
-  },
-  qualityMeasuresPlanName: {
-    paddingTop: "spacer2",
-    fontSize: "sm",
-    fontWeight: "bold",
-  },
-  resultsHeader: {
-    marginY: "spacer2",
-    fontSize: "xs",
-    fontWeight: "bold",
   },
   missingResponseMessage: {
     marginBottom: "spacer2",

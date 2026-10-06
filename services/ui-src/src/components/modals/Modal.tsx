@@ -130,7 +130,7 @@ const sx = {
   modalHeaderText: {
     padding: "0 4rem 0 0",
     fontSize: "2xl",
-    fontWeight: "bold",
+    fontWeight: "heading_2xl",
   },
   modalSubheading: {
     marginTop: "spacer1",

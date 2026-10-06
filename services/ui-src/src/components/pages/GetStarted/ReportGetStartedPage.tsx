@@ -171,7 +171,7 @@ const sx = {
   headerText: {
     marginBottom: "spacer2",
     fontSize: "4xl",
-    fontWeight: "normal",
+    fontWeight: "heading_4xl",
   },
   sectionContent: {
     marginTop: "spacer2",
@@ -189,7 +189,7 @@ const sx = {
     borderColor: "primary",
   },
   widgetTitle: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   image: {
     maxWidth: "20rem",

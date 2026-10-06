@@ -155,7 +155,7 @@ const sx = {
     h3: {
       paddingBottom: "0.75rem",
       fontSize: "lg",
-      fontWeight: "bold",
+      fontWeight: "heading_lg",
     },
   },
   reportWidth: {
