@@ -96,7 +96,7 @@ const sx = {
     paddingTop: "spacer1",
   },
   fieldNumber: {
-    fontSize: "sm",
+    fontSize: "body_sm",
     fontWeight: "heading_sm_bold",
     textTransform: "none",
     paddingLeft: "spacer1",
@@ -111,7 +111,7 @@ const sx = {
     },
   },
   fieldLabel: {
-    fontSize: "sm",
+    fontSize: "body_sm",
     fontWeight: "heading_sm_bold",
     marginBottom: "spacer1",
   },

@@ -378,10 +378,10 @@ const sx = {
   },
   headerText: {
     marginBottom: "spacer2",
-    fontSize: "4xl",
+    fontSize: "heading_4xl",
     fontWeight: "heading_4xl",
     ".tablet &, .mobile &": {
-      fontSize: "xl",
+      fontSize: "heading_xl",
       lineHeight: "1.75rem",
       fontWeight: "heading_xl",
     },
@@ -441,7 +441,7 @@ const sxChildStyles = {
     },
   },
   programNameText: {
-    fontSize: "md",
+    fontSize: "body_md",
     fontWeight: "heading_md",
     textTransform: "none",
     letterSpacing: "normal",
@@ -462,7 +462,7 @@ const sxChildStyles = {
     },
   },
   adminActionButton: {
-    fontSize: "1rem",
+    fontSize: "body_md",
     fontWeight: "heading_md",
   },
 };

@@ -61,14 +61,14 @@ const sx = {
   },
   notAnswered: {
     display: "block",
-    fontSize: "md",
+    fontSize: "body_md",
     fontWeight: "heading_sm_bold",
     color: "error_darker",
     marginTop: "spacer1",
   },
   dashboardTitle: {
     marginBottom: "1.25rem",
-    fontSize: "md",
+    fontSize: "heading_md",
     fontWeight: "heading_md",
   },
 };

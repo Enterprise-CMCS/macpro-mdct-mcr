@@ -522,7 +522,7 @@ const sx = {
       ".entityResponse": {
         p: {
           lineHeight: "1.25rem",
-          fontSize: "sm",
+          fontSize: "body_sm",
         },
       },
       p: {

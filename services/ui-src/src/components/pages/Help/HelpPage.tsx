@@ -48,7 +48,7 @@ const sx = {
   },
   headerText: {
     marginBottom: "spacer2",
-    fontSize: "2rem",
+    fontSize: "heading_2xl",
     fontWeight: "heading_2xl",
   },
   emailCardBox: {

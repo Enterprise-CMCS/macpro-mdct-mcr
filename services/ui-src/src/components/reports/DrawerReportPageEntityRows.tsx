@@ -170,7 +170,7 @@ const sx = {
     padding: "spacer1",
   },
   entityName: {
-    fontSize: "lg",
+    fontSize: "heading_lg",
     fontWeight: "heading_lg",
     flexGrow: 1,
     marginLeft: "2.25rem",
@@ -178,7 +178,7 @@ const sx = {
     paddingBottom: "0rem",
   },
   entityNameWithDescription: {
-    fontSize: "lg",
+    fontSize: "heading_lg",
     fontWeight: "heading_lg",
     flexGrow: 1,
     marginLeft: "2.25rem",
@@ -186,18 +186,18 @@ const sx = {
   },
   incompleteText: {
     color: "error_dark",
-    fontSize: "sm",
+    fontSize: "body_sm",
     paddingLeft: "2.25rem",
   },
   completeText: {
-    fontSize: "md",
+    fontSize: "body_md",
     paddingLeft: "2.25rem",
     wordBreak: "break-word",
   },
   enterButton: {
     width: "5.75rem",
     height: "2.5rem",
-    fontSize: "md",
+    fontSize: "body_md",
     fontWeight: "heading_md",
   },
   deleteButton: {
@@ -211,7 +211,7 @@ const sx = {
   disabledButton: {
     width: "5.75rem",
     height: "2.5rem",
-    fontSize: "md",
+    fontSize: "body_md",
     fontWeight: "heading_md",
     color: "gray_lighter",
     borderColor: "gray_lighter",

@@ -145,7 +145,7 @@ const sx = {
   },
   headerText: {
     marginBottom: "spacer2",
-    fontSize: "2rem",
+    fontSize: "heading_2xl",
     fontWeight: "heading_2xl",
   },
   currentBannerSectionBox: {
@@ -153,7 +153,7 @@ const sx = {
     marginBottom: "2.25rem",
   },
   sectionHeader: {
-    fontSize: "1.5rem",
+    fontSize: "heading_2xl",
     fontWeight: "heading_2xl",
   },
   currentBannerInfo: {

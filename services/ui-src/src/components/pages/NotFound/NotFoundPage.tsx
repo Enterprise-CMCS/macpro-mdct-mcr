@@ -59,14 +59,14 @@ const sx = {
     },
   },
   headerText: {
-    fontSize: "4xl",
+    fontSize: "heading_4xl",
     fontWeight: "body_md",
     ".mobile &": {
-      fontSize: "2xl",
+      fontSize: "heading_2xl",
     },
   },
   subHeadingText: {
-    fontSize: "lg",
+    fontSize: "heading_lg",
     fontWeight: "heading_lg",
     marginBottom: "spacer2",
     ".mobile &": {
@@ -74,6 +74,6 @@ const sx = {
     },
   },
   descriptionText: {
-    fontSize: "md",
+    fontSize: "body_md",
   },
 };

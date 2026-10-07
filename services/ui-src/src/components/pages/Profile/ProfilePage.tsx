@@ -65,7 +65,7 @@ const sx = {
   },
   headerText: {
     marginBottom: "spacer4",
-    fontSize: "2rem",
+    fontSize: "heading_2xl",
     fontWeight: "body_md",
   },
   table: {

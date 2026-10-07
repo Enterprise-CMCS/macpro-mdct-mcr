@@ -163,7 +163,7 @@ const sx = {
     },
   },
   saveStatusText: {
-    fontSize: "sm",
+    fontSize: "body_sm",
     ".mobile &": {
       width: "5rem",
       textAlign: "right",

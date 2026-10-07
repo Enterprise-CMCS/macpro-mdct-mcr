@@ -120,7 +120,7 @@ const sx = {
     },
   },
   fieldLabel: {
-    fontSize: "sm",
+    fontSize: "body_md",
     fontWeight: "heading_sm_bold",
     ".optional-text": {
       fontWeight: "heading_sm_regular",
@@ -128,7 +128,7 @@ const sx = {
   },
   fieldHint: {
     lineHeight: "lg",
-    fontSize: "sm",
+    fontSize: "body_sm",
     color: "gray",
   },
 };

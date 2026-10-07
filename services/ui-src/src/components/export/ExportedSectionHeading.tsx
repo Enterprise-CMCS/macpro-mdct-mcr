@@ -64,15 +64,15 @@ const sx = {
   heading: {
     fontWeight: "heading_md",
     h2: {
-      fontSize: "2xl",
+      fontSize: "heading_2xl",
       margin: "1.5rem 0",
     },
     h3: {
-      fontSize: "xl",
+      fontSize: "heading_xl",
       margin: "1.5rem 0",
     },
     h4: {
-      fontSize: "lg",
+      fontSize: "heading_lg",
     },
   },
   info: {
@@ -92,10 +92,10 @@ const sx = {
       },
     },
     h3: {
-      fontSize: "xl",
+      fontSize: "heading_xl",
     },
     h4: {
-      fontSize: "lg",
+      fontSize: "heading_lg",
       paddingTop: "spacer2",
     },
   },

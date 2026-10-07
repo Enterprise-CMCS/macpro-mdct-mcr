@@ -277,7 +277,7 @@ const sx = {
     textAlign: "center",
   },
   dashboardTitle: {
-    fontSize: "md",
+    fontSize: "heading_md",
     fontWeight: "heading_md",
     color: "gray",
     textAlign: "left",
@@ -295,7 +295,7 @@ const sx = {
       paddingRight: "0",
       borderBottom: "1px solid var(--mdct-colors-gray_lighter)",
       color: "gray",
-      fontSize: "lg",
+      fontSize: "heading_lg",
       fontWeight: "heading_lg",
       ".mobile &": {
         border: "none",

@@ -79,13 +79,13 @@ const sx = {
   },
   eyebrow: {
     color: "gray",
-    fontSize: "md",
+    fontSize: "body_md",
     fontWeight: "heading_md",
     marginBottom: "spacer1",
   },
   sectionHeading: {
     fontWeight: "body_md",
-    fontSize: "4xl",
+    fontSize: "heading_4xl",
   },
   hintTextBox: {
     color: "#5B616B",
@@ -104,7 +104,7 @@ const sx = {
   infoTextBox: {
     marginTop: "spacer4",
     h4: {
-      fontSize: "lg",
+      fontSize: "heading_lg",
       marginBottom: "0.75rem",
     },
     "p, span": {

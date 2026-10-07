@@ -305,7 +305,7 @@ const sx = {
   },
   dashboardTitle: {
     marginBottom: "1.25rem",
-    fontSize: "md",
+    fontSize: "heading_md",
     fontWeight: "heading_md",
     color: "gray",
   },

@@ -82,11 +82,11 @@ interface Props {
 
 const sx = {
   heading: {
-    fontSize: "sm",
+    fontSize: "heading_sm",
   },
   description: {
     marginTop: "0.75rem",
-    fontSize: "sm",
+    fontSize: "body_sm",
   },
   grid: {
     gridTemplateColumns: "33% auto",
@@ -94,15 +94,15 @@ const sx = {
   },
   subtitle: {
     marginTop: "spacer2",
-    fontSize: "xs",
+    fontSize: "heading_xs",
     fontWeight: "heading_xs",
   },
   subtext: {
     marginTop: "spacer_half",
-    fontSize: "sm",
+    fontSize: "heading_sm",
   },
   unfinishedMessage: {
-    fontSize: "xs",
+    fontSize: "body_xs",
     color: "error_dark",
     "&.pdf-color": {
       color: "error_darker",
@@ -111,12 +111,12 @@ const sx = {
   standardCount: {
     width: "44px",
     fontWeight: "heading_sm_bold",
-    fontSize: "sm",
+    fontSize: "heading_sm",
     color: "gray",
   },
   standardHeading: {
     fontWeight: "heading_md_bold",
-    fontSize: "md",
+    fontSize: "heading_md",
   },
   standardDescription: {
     marginTop: "spacer2",
@@ -127,6 +127,6 @@ const sx = {
     borderTop: "1px solid",
     borderTopColor: "gray_lighter",
     fontWeight: "heading_md_bold",
-    fontSize: "md",
+    fontSize: "heading_md",
   },
 };

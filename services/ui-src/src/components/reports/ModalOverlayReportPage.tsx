@@ -333,7 +333,7 @@ const sx = {
     },
   },
   dashboardTitle: {
-    fontSize: "md",
+    fontSize: "heading_md",
     fontWeight: "heading_md",
     color: "gray",
     textAlign: "left",
@@ -347,7 +347,7 @@ const sx = {
       marginBottom: "spacer_half",
     },
     th: {
-      fontSize: "md",
+      fontSize: "heading_md",
       fontWeight: "heading_md",
       lineHeight: "130%",
       color: "gray",

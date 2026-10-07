@@ -241,11 +241,11 @@ const sx = {
     },
   },
   planNameHeading: {
-    fontSize: "xl",
+    fontSize: "heading_xl",
     paddingBottom: "spacer3",
   },
   fieldLabel: {
-    fontSize: "sm",
+    fontSize: "body_sm",
     fontWeight: "heading_sm_bold",
     marginBottom: "spacer1",
   },
@@ -264,11 +264,11 @@ const sx = {
     fontWeight: "heading_sm_bold",
   },
   h4: {
-    fontSize: "lg",
+    fontSize: "heading_lg",
     paddingBottom: "spacer2",
   },
   h5: {
-    fontSize: "md",
+    fontSize: "heading_md",
     paddingBottom: "spacer3",
   },
 };

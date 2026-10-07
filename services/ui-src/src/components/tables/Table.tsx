@@ -122,13 +122,13 @@ const sx = {
   },
   tableHeader: {
     padding: "0.75rem 0.5rem",
-    fontSize: "sm",
+    fontSize: "heading_sm",
     fontWeight: "heading_sm_bold",
     borderColor: "gray_lighter",
     textTransform: "none",
     letterSpacing: "normal",
     ".mobile &": {
-      fontSize: "xs",
+      fontSize: "heading_xs",
     },
   },
   tableCell: {
@@ -136,7 +136,7 @@ const sx = {
     borderStyle: "none",
     fontWeight: "body_md",
     ".mobile &": {
-      fontSize: "xs",
+      fontSize: "body_xs",
     },
   },
   tableCellBorder: {
@@ -145,7 +145,7 @@ const sx = {
     borderColor: "gray_lighter",
     fontWeight: "body_md",
     ".mobile &": {
-      fontSize: "xs",
+      fontSize: "body_xs",
     },
   },
 };

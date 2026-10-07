@@ -94,7 +94,7 @@ const sx = {
   },
   cardTitleText: {
     marginBottom: "spacer1",
-    fontSize: "lg",
+    fontSize: "body_lg",
     fontWeight: "heading_lg",
     lineHeight: "1.5",
   },

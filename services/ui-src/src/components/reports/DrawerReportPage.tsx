@@ -468,7 +468,7 @@ function dashboardTitleStyling(canAddEntities: boolean) {
     paddingBottom: "0.75rem",
     borderBottom: "1.5px solid var(--mdct-colors-gray_lighter)",
     color: "gray",
-    fontSize: "lg",
+    fontSize: "heading_lg",
     fontWeight: "heading_lg",
   };
 }
@@ -482,7 +482,7 @@ const sx = {
   },
   dashboardTitle: {
     marginBottom: "1.25rem",
-    fontSize: "md",
+    fontSize: "heading_md",
     fontWeight: "heading_md",
     color: "gray",
   },
@@ -490,7 +490,7 @@ const sx = {
     height: "1rem",
   },
   entityName: {
-    fontSize: "lg",
+    fontSize: "heading_lg",
     fontWeight: "heading_lg",
     flexGrow: 1,
     marginLeft: "2.25rem",

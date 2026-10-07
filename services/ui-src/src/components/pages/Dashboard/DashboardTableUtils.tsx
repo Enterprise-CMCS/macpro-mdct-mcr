@@ -103,7 +103,7 @@ export const ActionButton = ({
       sx={{
         width: "5rem",
         height: "2.5rem",
-        fontSize: "1rem",
+        fontSize: "body_md",
         fontWeight: "heading_md",
       }}
       aria-label={

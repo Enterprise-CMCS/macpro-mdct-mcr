@@ -262,7 +262,7 @@ const sx = {
   symbolOverlay: {
     position: "absolute",
     paddingTop: "1px",
-    fontSize: "lg",
+    fontSize: "body_lg",
     fontWeight: "heading_sm_bold",
     "&.nested": {
       bottom: "15px",

@@ -170,7 +170,7 @@ const sx = {
   },
   headerText: {
     marginBottom: "spacer2",
-    fontSize: "4xl",
+    fontSize: "heading_4xl",
     fontWeight: "heading_4xl",
   },
   sectionContent: {
@@ -197,7 +197,7 @@ const sx = {
   },
   additionalInfo: {
     marginTop: "spacer2",
-    fontSize: "sm",
+    fontSize: "body_sm",
   },
   pageLinkContainer: {
     marginTop: "spacer2",

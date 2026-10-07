@@ -184,7 +184,7 @@ const sx = {
     display: "inline-block",
     textAlign: "left",
     verticalAlign: "top",
-    fontSize: "sm",
+    fontSize: "body_sm",
     lineHeight: "21px",
     marginTop: 0,
   },
@@ -202,7 +202,7 @@ const sx = {
 
   footerText: {
     maxW: "20rem",
-    fontSize: "0.875rem",
+    fontSize: "body_sm",
     ".mobile &": {
       maxW: "100%",
       marginX: "spacer2",
@@ -211,7 +211,7 @@ const sx = {
   footerBottom: {
     minHeight: "3rem",
     bg: "primary_darkest",
-    fontSize: 14,
+    fontSize: "body_sm",
   },
   footerBottomContainer: {
     maxW: "appMax",

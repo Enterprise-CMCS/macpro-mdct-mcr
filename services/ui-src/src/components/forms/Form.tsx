@@ -171,7 +171,7 @@ const sx = {
   },
   // field hint and error message
   ".ds-c-hint, .ds-c-inline-error": {
-    fontSize: "sm",
+    fontSize: "body_sm",
     ul: {
       gap: 0,
     },
@@ -198,7 +198,7 @@ const sx = {
   },
   h1: {
     fontWeight: "heading_md",
-    fontSize: "md",
+    fontSize: "heading_md",
     color: "base",
     paddingTop: "spacer2",
   },

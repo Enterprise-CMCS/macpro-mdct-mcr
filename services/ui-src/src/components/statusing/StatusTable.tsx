@@ -175,7 +175,7 @@ const sx = {
   parent: {
     fontWeight: "heading_sm_bold",
     lineHeight: "1.125rem",
-    fontSize: "sm",
+    fontSize: "heading_sm",
     paddingTop: "spacer2",
     paddingBottom: "spacer2",
     ".mobile &": {
@@ -187,12 +187,12 @@ const sx = {
     paddingTop: "spacer2",
     paddingBottom: "spacer2",
     lineHeight: "1.125rem",
-    fontSize: "sm",
+    fontSize: "heading_sm",
   },
   enterButton: {
     width: "4.25rem",
     height: "1.75rem",
-    fontSize: "md",
+    fontSize: "body_md",
     fontWeight: "body_md",
     border: "1px solid",
     borderColor: "gray_lighter",
@@ -232,7 +232,7 @@ const sx = {
       borderColor: "gray_lighter",
       color: "gray",
       fontWeight: "heading_sm_bold",
-      fontSize: "sm",
+      fontSize: "heading_sm",
       lineHeight: "1.125rem",
       ".mobile &": {
         padding: "0.75rem 0rem",

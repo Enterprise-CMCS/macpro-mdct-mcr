@@ -253,7 +253,7 @@ const sx = {
   },
   tableHeader: {
     padding: "0.75rem 0.5rem",
-    fontSize: "sm",
+    fontSize: "heading_sm",
     fontWeight: "heading_sm_bold",
     borderColor: "gray_lighter",
     textTransform: "none",

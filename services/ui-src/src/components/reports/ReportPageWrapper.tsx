@@ -154,7 +154,7 @@ const sx = {
     },
     h3: {
       paddingBottom: "0.75rem",
-      fontSize: "lg",
+      fontSize: "heading_lg",
       fontWeight: "heading_lg",
     },
   },

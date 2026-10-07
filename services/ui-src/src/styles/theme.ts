@@ -45,7 +45,7 @@ const theme = extendTheme({
         borderRadius: "0.25rem",
         fontWeight: "heading_md",
         ".mobile &": {
-          fontSize: "sm",
+          fontSize: "body_sm",
         },
       },
       variants: {

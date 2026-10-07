@@ -229,7 +229,7 @@ function dashboardTitleStyling(canAddEntities: boolean) {
   return {
     borderBottom: "1.5px solid var(--mdct-colors-gray_lighter)",
     color: "gray",
-    fontSize: "lg",
+    fontSize: "heading_lg",
     fontWeight: "heading_lg",
     paddingBottom: "0.75rem",
     paddingLeft: canAddEntities && "3.75rem",
@@ -251,7 +251,7 @@ const sx = {
   },
   listItem: {
     display: "flex",
-    fontSize: "sm",
+    fontSize: "body_sm",
     marginBottom: "spacer2",
   },
   listValues: {
@@ -264,17 +264,17 @@ const sx = {
     },
   },
   measureName: {
-    fontSize: "lg",
+    fontSize: "body_lg",
     fontWeight: "heading_lg",
     marginBottom: "spacer2",
   },
   reportTitle: {
-    fontSize: "xl",
+    fontSize: "heading_xl",
     fontWeight: "heading_xl",
     marginBottom: "spacer2",
   },
   reportSubtitle: {
-    fontSize: "md",
+    fontSize: "heading_md",
     color: "gray",
     marginBottom: "spacer2",
   },

@@ -48,7 +48,7 @@ const sx = {
     alignItems: "center",
   },
   pdfLabelText: {
-    fontSize: "0.667rem",
+    fontSize: "body_xs",
     fontWeight: "heading_md",
   },
   statusIcon: {

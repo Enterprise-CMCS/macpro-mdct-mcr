@@ -180,14 +180,14 @@ export const sx = {
   heading: {
     fontWeight: "heading_sm_regular",
     lineHeight: "lineHeights.heading",
-    fontSize: "4xl",
+    fontSize: "heading_4xl",
   },
   combinedDataTable: {
     marginBottom: "spacer2",
     ".combined-data-title": {
       display: "inline-block",
       marginBottom: "spacer1",
-      fontSize: "md",
+      fontSize: "heading_md",
       fontWeight: "heading_md",
     },
     "th, td": {
@@ -212,7 +212,7 @@ export const sx = {
   },
   sectionHeading: {
     fontWeight: "heading_2xl",
-    fontSize: "2xl",
+    fontSize: "heading_2xl",
     marginBottom: "2xl",
   },
 };

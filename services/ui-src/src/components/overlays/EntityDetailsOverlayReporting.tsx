@@ -82,7 +82,7 @@ const sx = {
       li: {
         wordWrap: "break-word",
         whiteSpace: "break-spaces",
-        fontSize: "xl",
+        fontSize: "heading_xl",
         lineHeight: "1.75rem",
         "&:first-of-type": {
           fontWeight: "heading_xl",

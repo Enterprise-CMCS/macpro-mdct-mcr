@@ -158,7 +158,7 @@ const sx = {
         padding: "0.375rem 0rem",
       },
       ".mobile &": {
-        fontSize: "xs",
+        fontSize: "body_xs",
       },
     },
     th: {

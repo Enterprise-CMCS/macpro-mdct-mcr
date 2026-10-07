@@ -89,7 +89,7 @@ const sx = {
     color: "base",
   },
   detailHeader: {
-    fontSize: "md",
+    fontSize: "heading_md",
     fontWeight: "heading_sm_bold",
     color: "gray",
   },
@@ -100,15 +100,15 @@ const sx = {
   },
   detailDescription: {
     marginBottom: "spacer1",
-    fontSize: "md",
+    fontSize: "body_md",
   },
   detailSubtitle: {
     marginTop: "spacer2",
-    fontSize: "xs",
+    fontSize: "body_xs",
     fontWeight: "body_xs",
   },
   detailSubtext: {
     marginTop: "spacer_half",
-    fontSize: "sm",
+    fontSize: "body_sm",
   },
 };

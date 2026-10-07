@@ -161,7 +161,7 @@ const sx = {
   },
   enterButton: {
     height: "2.25rem",
-    fontSize: "md",
+    fontSize: "body_md",
     fontWeight: "heading_md",
     paddingX: "spacer3",
   },

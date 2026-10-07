@@ -52,7 +52,7 @@ interface Props {
 
 const sx = {
   title: {
-    fontSize: "lg",
+    fontSize: "heading_lg",
   },
   descriptionText: {
     marginTop: "spacer_half",

@@ -88,7 +88,7 @@ const sx = {
   },
   label: {
     fontWeight: "heading_md",
-    fontSize: "md",
+    fontSize: "body_md",
     marginTop: "spacer3",
   },
   ".ds-c-hint": {

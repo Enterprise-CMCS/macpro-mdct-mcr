@@ -206,7 +206,7 @@ const sx = {
         padding: "0.375rem 0rem",
       },
       ".mobile &": {
-        fontSize: "xs",
+        fontSize: "body_xs",
       },
       verticalAlign: "middle",
     },
@@ -233,7 +233,7 @@ const sx = {
   },
   standardCount: {
     display: "block",
-    fontSize: "md",
+    fontSize: "heading_md",
     fontWeight: "heading_md",
     marginTop: "spacer1",
   },

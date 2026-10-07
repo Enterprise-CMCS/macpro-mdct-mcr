@@ -423,7 +423,7 @@ const sx = {
     borderColor: "primary",
   },
   legend: {
-    fontSize: "md",
+    fontSize: "body_md",
   },
   removeBox: {
     marginBottom: "0.625rem",

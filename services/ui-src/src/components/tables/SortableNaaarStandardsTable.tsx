@@ -139,7 +139,7 @@ const sx = {
     alignItems: "center",
   },
   statusText: {
-    fontSize: "xs",
+    fontSize: "heading_xs",
     fontWeight: "heading_xs",
   },
   deleteButton: {

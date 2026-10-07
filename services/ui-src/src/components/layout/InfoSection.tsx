@@ -49,12 +49,12 @@ const sx = {
   },
   number: {
     margin: "auto",
-    fontSize: "md",
+    fontSize: "body_md",
     fontWeight: "heading_sm_bold",
   },
   header: {
     marginBottom: "spacer2",
     color: "gray",
-    fontSize: "2xl",
+    fontSize: "heading_2xl",
   },
 };

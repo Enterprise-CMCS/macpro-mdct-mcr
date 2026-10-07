@@ -334,7 +334,7 @@ const sx = {
   },
   headerText: {
     marginBottom: "spacer2",
-    fontSize: "4xl",
+    fontSize: "heading_4xl",
     fontWeight: "body_md",
   },
   infoTextBox: {
@@ -363,14 +363,14 @@ const sx = {
   printButton: {
     minWidth: "6rem",
     height: "2rem",
-    fontSize: "md",
+    fontSize: "body_md",
     fontWeight: "heading_md",
     border: "1px solid",
   },
   downloadButton: {
     minWidth: "6rem",
     height: "2rem",
-    fontSize: "md",
+    fontSize: "body_md",
     fontWeight: "heading_md",
     color: "white !important",
     textDecoration: "none !important",
