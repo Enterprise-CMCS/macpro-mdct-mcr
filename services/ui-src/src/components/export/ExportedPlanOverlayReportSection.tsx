@@ -250,7 +250,7 @@ const sx = {
     marginBottom: "spacer1",
   },
   fieldHint: {
-    lineHeight: "lg",
+    lineHeight: "body_lg",
     color: "gray",
   },
   answerCell: {

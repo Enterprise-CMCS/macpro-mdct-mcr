@@ -211,7 +211,7 @@ const sx = {
   title: {
     fontSize: "heading_xl",
     fontWeight: "heading_xl",
-    lineHeight: "1.33",
+    lineHeight: "heading_xl",
     width: "15rem",
     padding: "1rem 1rem",
     ".desktop &": {

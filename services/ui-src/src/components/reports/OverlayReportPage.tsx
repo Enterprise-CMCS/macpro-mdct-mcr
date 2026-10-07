@@ -334,7 +334,7 @@ const sx = {
     },
     li: {
       marginLeft: "spacer4",
-      lineHeight: "2rem",
+      lineHeight: "body_md",
       "&:first-of-type": {
         paddingTop: "0.75rem",
       },

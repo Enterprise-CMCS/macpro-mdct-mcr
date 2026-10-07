@@ -148,7 +148,7 @@ const sx = {
     },
     td: {
       p: {
-        lineHeight: "1.25rem",
+        lineHeight: "heading_md",
       },
       padding: "0.75rem 0.5rem",
       borderStyle: "none",
@@ -164,7 +164,7 @@ const sx = {
     th: {
       paddingBottom: "0.375rem",
       fontWeight: "heading_md",
-      lineHeight: "lg",
+      lineHeight: "body_md",
       color: "gray",
       ".shrink &": {
         padding: "0.375rem 0rem",

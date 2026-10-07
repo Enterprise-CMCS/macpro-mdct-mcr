@@ -131,7 +131,7 @@ const sx = {
         margin: "0.5rem auto",
       },
       li: {
-        lineHeight: "130%",
+        lineHeight: "body_md",
         wordWrap: "break-word",
         whiteSpace: "break-spaces",
         fontSize: "body_md",

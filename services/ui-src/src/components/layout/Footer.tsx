@@ -185,7 +185,7 @@ const sx = {
     textAlign: "left",
     verticalAlign: "top",
     fontSize: "body_sm",
-    lineHeight: "21px",
+    lineHeight: "body_sm",
     marginTop: 0,
   },
   footerCMSMedicaid: {

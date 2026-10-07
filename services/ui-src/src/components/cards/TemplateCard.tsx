@@ -96,7 +96,7 @@ const sx = {
     marginBottom: "spacer1",
     fontSize: "body_lg",
     fontWeight: "heading_lg",
-    lineHeight: "1.5",
+    lineHeight: "body_lg",
   },
   actionsFlex: {
     flexFlow: "wrap",

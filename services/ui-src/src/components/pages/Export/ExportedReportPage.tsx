@@ -179,7 +179,7 @@ export const sx = {
   },
   heading: {
     fontWeight: "heading_sm_regular",
-    lineHeight: "lineHeights.heading",
+    lineHeight: "heading_4xl",
     fontSize: "heading_4xl",
   },
   combinedDataTable: {

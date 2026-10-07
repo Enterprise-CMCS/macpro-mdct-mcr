@@ -349,7 +349,7 @@ const sx = {
     th: {
       fontSize: "heading_md",
       fontWeight: "heading_md",
-      lineHeight: "130%",
+      lineHeight: "body_md",
       color: "gray",
       paddingLeft: "spacer2",
       paddingRight: "0",

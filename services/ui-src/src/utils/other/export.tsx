@@ -521,12 +521,12 @@ const sx = {
       listStyle: "none",
       ".entityResponse": {
         p: {
-          lineHeight: "1.25rem",
+          lineHeight: "heading_sm",
           fontSize: "body_sm",
         },
       },
       p: {
-        lineHeight: "1.25rem",
+        lineHeight: "heading_sm",
       },
     },
     "&:last-of-type": {

@@ -105,7 +105,7 @@ const sx = {
       maxWidth: "36rem",
     },
     h2: {
-      lineHeight: "1.3rem",
+      lineHeight: "heading_md",
     },
   },
   drawerEyebrowHeaderText: {

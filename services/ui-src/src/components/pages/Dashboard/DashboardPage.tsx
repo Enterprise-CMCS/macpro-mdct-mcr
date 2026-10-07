@@ -382,7 +382,7 @@ const sx = {
     fontWeight: "heading_4xl",
     ".tablet &, .mobile &": {
       fontSize: "heading_xl",
-      lineHeight: "1.75rem",
+      lineHeight: "body_xl",
       fontWeight: "heading_xl",
     },
   },

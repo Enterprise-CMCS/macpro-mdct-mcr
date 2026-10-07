@@ -560,7 +560,7 @@ const sx = {
     display: "block",
     fontSize: "body_md",
     fontWeight: "heading_md",
-    lineHeight: "1.5rem",
+    lineHeight: "body_md",
     maxWidth: "19rem",
   },
   tableButton: {
