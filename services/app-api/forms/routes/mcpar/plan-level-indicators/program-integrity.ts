@@ -208,7 +208,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
       {
         id: "plan_overpaymentReportingToStateCorrespondingYearPremiumRevenue",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER_ZERO_OR_GREATER_TWO_DECIMALS_NO_NA,
+        validation: ValidationType.NUMBER,
         props: {
           label:
             "D1.X.9d: Plan overpayment reporting to the state: Corresponding premium revenue",
