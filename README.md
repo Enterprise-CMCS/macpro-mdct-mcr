@@ -132,9 +132,9 @@ We use Playwright for integration (end-to-end) tests. See additional info [here 
 
 ### Accessibility Testing
 
-We use [axe](https://www.deque.com/axe/) and [pa11y](https://github.com/pa11y/pa11y) for primary accessibility testing.
+We use [axe](https://www.deque.com/axe/) for primary accessibility testing.
 
-Unit tests can use [jest-axe](https://github.com/nickcolley/jest-axe), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
+Unit tests can use [jest-axe](https://github.com/nickcolley/jest-axe).
 
 Integration tests can use [@axe-core/playwright](https://github.com/axe-core/axe-playwright) for accessibility checks within Playwright tests.
 
