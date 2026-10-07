@@ -6,6 +6,7 @@ import {
   FormField,
   FormLayoutElement,
   isFieldElement,
+  ReportFormFieldType,
 } from "types";
 // utils
 import {
@@ -31,6 +32,31 @@ export const ExportedReportFieldRow = ({
   // guard against double-rendering "otherText" response
   const isOtherTextEntry = formField.id.endsWith("-otherText");
   if (isOtherTextEntry) return null;
+
+  // render question layout elements as a grouping header for their response rows
+  if (formField.type === ReportFormFieldType.QUESTION) {
+    return (
+      <Tr data-testid="exportQuestionHeadingRow">
+        {/* number column/cell */}
+        {hasNumberColumn && (
+          <Th sx={sx.numberColumn}>
+            <Text sx={sx.fieldNumber}>{formFieldInfo?.number ?? ""}</Text>
+          </Th>
+        )}
+
+        {/* question text and hint live in the indicator column */}
+        <Td sx={sx.labelColumn}>
+          <Text sx={sx.fieldLabel}>{formFieldInfo?.label}</Text>
+          {showHintText && formField.props?.hint && (
+            <Box sx={sx.fieldHint}>{parseCustomHtml(formField.props.hint)}</Box>
+          )}
+        </Td>
+
+        {/* empty response column/cell */}
+        <Td sx={sx.dataColumn} />
+      </Tr>
+    );
+  }
 
   return (
     <Tr data-testid="exportRow">

@@ -16,6 +16,7 @@ import {
   ReportType,
   EntityType,
   PageTypes,
+  ReportFormFieldType,
 } from "types";
 // utils
 import {
@@ -210,6 +211,9 @@ export const renderFieldTableBody = (
   formFields?.map((field: FormField | FormLayoutElement) => {
     if (isFieldElement(field)) {
       renderFieldRow(field);
+    } else if (field.type === ReportFormFieldType.QUESTION) {
+      // render question layout elements as heading rows above their responses
+      rowDescriptors.push({ formField: field });
     }
   });
   const hasAnyNumberedRow = rowDescriptors.some(
