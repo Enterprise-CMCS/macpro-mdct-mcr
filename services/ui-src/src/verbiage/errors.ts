@@ -61,6 +61,17 @@ export const validationErrors = {
     'Response must be a valid number or "Suppressed"',
   INVALID_NUMBER_OR_SUPPRESSED_OR_NA_NR:
     'Response must be a valid number, "Suppressed", "N/A", or "NR"',
+  NA_NOT_ACCEPTED:
+    "Enter a valid response. N/A and other placeholder text are not accepted for this item.",
+  POSITIVE_NUMBER_REQUIRED: "Enter a valid numeric response greater than 0.",
+  INTEGER_ZERO_OR_GREATER_REQUIRED: "Enter a valid numeric response.",
+  PERCENTAGE_RANGE_REQUIRED: "Enter a value between 0 and 100.",
+  DATE_YEAR_2000_OR_LATER: "Enter a date in 2000 or later.",
+  EMAIL_OR_URL_REQUIRED:
+    "Response must include a valid hyperlink/URL or email address.",
+  URL_LIST_REQUIRED: "Response must include one or more valid hyperlinks/URLs.",
+  NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED:
+    'Enter a valid numeric response or "Suppressed".',
 };
 
 export const reportErrors = {

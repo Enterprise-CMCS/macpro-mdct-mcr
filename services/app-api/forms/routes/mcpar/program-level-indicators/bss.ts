@@ -22,7 +22,7 @@ export const bssRoute: FormRoute = {
       {
         id: "state_bssWebsite",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.EMAIL_OR_URL_NO_NA,
         props: {
           label: "C1.IX.1 BSS website",
           hint: "List the website(s) and/or email address(es) that beneficiaries use to seek assistance from the BSS through electronic means. Separate entries with commas.",
@@ -31,7 +31,7 @@ export const bssRoute: FormRoute = {
       {
         id: "state_bssEntityServiceAccessibility",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "C1.IX.2 BSS auxiliary aids and services",
           hint: "How do BSS entities offer services in a manner that is accessible to all beneficiaries who need their services, including beneficiaries with disabilities, as required by 42 CFR 438.71(b)(2))?</br>CFR 438.71 requires that the beneficiary support system be accessible in multiple ways including phone, Internet, in-person, and via auxiliary aids and services when requested.",
@@ -49,7 +49,7 @@ export const bssRoute: FormRoute = {
       {
         id: "state_bssEntityPerformanceEvaluationMethods",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "C1.IX.4 State evaluation of BSS entity performance",
           hint: "What are steps taken by the state to evaluate the quality, effectiveness, and efficiency of the BSS entities’ performance?",

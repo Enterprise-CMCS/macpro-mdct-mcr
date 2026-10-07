@@ -102,7 +102,7 @@ export const priorAuthorizationRoute: DrawerFormRoute = {
       {
         id: "plan_percentageOfStandardPriorAuthorizationRequestsApproved",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.PERCENTAGE_ZERO_TO_HUNDRED_NO_NA,
         props: {
           label:
             "D1.XIII.6 Percentage of standard prior authorization requests that were approved",
@@ -114,7 +114,7 @@ export const priorAuthorizationRoute: DrawerFormRoute = {
       {
         id: "plan_percentageOfStandardPriorAuthorizationRequestsDenied",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.PERCENTAGE_ZERO_TO_HUNDRED_NO_NA,
         props: {
           label:
             "D1.XIII.7 Percentage of standard prior authorization requests that were denied",
@@ -126,7 +126,7 @@ export const priorAuthorizationRoute: DrawerFormRoute = {
       {
         id: "plan_percentageOfStandardPriorAuthorizationRequestsApprovedAfterAppeal",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.PERCENTAGE_ZERO_TO_HUNDRED_NO_NA,
         props: {
           label:
             "D1.XIII.8 Percentage of standard prior authorization requests approved after appeal",
@@ -160,7 +160,7 @@ export const priorAuthorizationRoute: DrawerFormRoute = {
       {
         id: "plan_percentageOfExpeditedPriorAuthorizationRequestsApproved",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.PERCENTAGE_ZERO_TO_HUNDRED_NO_NA,
         props: {
           label:
             "D1.XIII.11 Percentage of expedited prior authorization requests that were approved",
@@ -172,7 +172,7 @@ export const priorAuthorizationRoute: DrawerFormRoute = {
       {
         id: "plan_percentageOfExpeditedPriorAuthorizationRequestsDenied",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.PERCENTAGE_ZERO_TO_HUNDRED_NO_NA,
         props: {
           label:
             "D1.XIII.12 Percentage of expedited prior authorization requests that were denied",
@@ -206,7 +206,7 @@ export const priorAuthorizationRoute: DrawerFormRoute = {
       {
         id: "plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER_NOT_LESS_THAN_ZERO,
+        validation: ValidationType.PERCENTAGE_ZERO_TO_HUNDRED_NO_NA,
         props: {
           label:
             "D1.XIII.15 Percentage of total prior authorization requests approved with extended timeframe",

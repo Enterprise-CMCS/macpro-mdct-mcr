@@ -33,6 +33,17 @@ export const error = {
     'Response must be a valid number or "Suppressed"',
   INVALID_NUMBER_OR_SUPPRESSED_OR_NA_NR:
     'Response must be a valid number, "Suppressed", "N/A", or "NR"',
+  NA_NOT_ACCEPTED:
+    "Enter a valid response. N/A and other placeholder text are not accepted for this item.",
+  POSITIVE_NUMBER_REQUIRED: "Enter a valid numeric response greater than 0.",
+  INTEGER_ZERO_OR_GREATER_REQUIRED: "Enter a valid numeric response.",
+  PERCENTAGE_RANGE_REQUIRED: "Enter a value between 0 and 100.",
+  DATE_YEAR_2000_OR_LATER: "Enter a date in 2000 or later.",
+  EMAIL_OR_URL_REQUIRED:
+    "Response must include a valid hyperlink/URL or email address.",
+  URL_LIST_REQUIRED: "Response must include one or more valid hyperlinks/URLs.",
+  NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED:
+    'Enter a valid numeric response or "Suppressed".',
 };
 
 // TEXT
@@ -61,6 +72,14 @@ export const validNAValues = [
 
 /** This regex must be at least as permissive as the one in ui-src */
 const validNumberRegex = /^\.$|[0-9]/;
+
+const isWhitespaceString = (value?: string) => value?.trim().length === 0;
+const stripNumberFormatting = (value: string) =>
+  value.replaceAll(",", "").trim();
+const isStrictlyNumeric = (value: string) => {
+  const cleaned = stripNumberFormatting(value);
+  return cleaned !== "" && !Number.isNaN(Number(cleaned));
+};
 
 // NUMBER - Number or Valid Strings
 const numberSchema = () =>
@@ -167,6 +186,154 @@ export const validNumber = () =>
 
 export const validNumberOptional = () =>
   validNumberSchema().notRequired().nullable();
+
+const validNumberNoNASchema = () =>
+  string().test({
+    message: error.NA_NOT_ACCEPTED,
+    test: (value) => {
+      if (!value) return true;
+      if (validNAValues.includes(value)) return false;
+      return validNumberRegex.test(value);
+    },
+  });
+
+export const validNumberNoNA = () =>
+  validNumberNoNASchema().required(error.REQUIRED_GENERIC);
+
+export const validNumberNoNAOptional = () =>
+  validNumberNoNASchema().notRequired().nullable();
+
+const textNoNASchema = () =>
+  string()
+    .typeError(error.NA_NOT_ACCEPTED)
+    .test({
+      message: error.NA_NOT_ACCEPTED,
+      test: (value) => {
+        if (!value) return true;
+        return schemaMap.textNoNA.isValidSync(value);
+      },
+    });
+
+export const textNoNA = () => textNoNASchema().required(error.NA_NOT_ACCEPTED);
+
+export const textNoNAOptional = () => textNoNASchema().nullable();
+
+export const numberOrSuppressedNoNA = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (!value) return false;
+        const isSuppressed = value.trim().toLowerCase() === "suppressed";
+        if (validNAValues.includes(value)) return false;
+        if (isSuppressed) return true;
+        if (!validNumberRegex.test(value)) return false;
+        return parseFloat(value) >= 0;
+      },
+      message: error.NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED,
+    });
+
+/*
+ * These NoNA schemas are intentionally stricter (still require an answer) than
+ * their schemaMap.ts counterparts, which allow blank so a cleared field can be
+ * saved. This file is used for completion-status checks, where blank must still
+ * count as incomplete.
+ */
+export const positiveNumberNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        if (!isStrictlyNumeric(value)) return false;
+        return Number(stripNumberFormatting(value)) > 0;
+      },
+    });
+
+export const integerZeroOrGreaterNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        return /^\d+$/.test(stripNumberFormatting(value));
+      },
+    });
+
+export const percentageZeroToHundredNoNA = () =>
+  string()
+    .required(error.PERCENTAGE_RANGE_REQUIRED)
+    .test({
+      message: error.PERCENTAGE_RANGE_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        if (!isStrictlyNumeric(value)) return false;
+        const num = Number(stripNumberFormatting(value));
+        return num >= 0 && num <= 100;
+      },
+    });
+
+export const dateYear2000OrLater = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .matches(dateFormatRegex, error.INVALID_DATE)
+    .test({
+      message: error.DATE_YEAR_2000_OR_LATER,
+      test: (value) => {
+        if (!value) return true;
+        const year = value.includes("/")
+          ? Number(value.split("/")[2])
+          : Number(value.substring(4));
+        return year >= 2000;
+      },
+    });
+
+const emailOrUrlItemRegex = /^[^\s@]+@[^\s@]+\.\S+$|^https?:\/\/\S+$/i;
+
+export const emailOrUrlNoNA = () =>
+  string()
+    .required(error.EMAIL_OR_URL_REQUIRED)
+    .test({
+      message: error.EMAIL_OR_URL_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        return value
+          .split(",")
+          .map((item) => item.trim())
+          .every((item) => item.length > 0 && emailOrUrlItemRegex.test(item));
+      },
+    });
+
+export const urlList = () =>
+  string()
+    .required(error.URL_LIST_REQUIRED)
+    .test({
+      message: error.URL_LIST_REQUIRED,
+      test: (value) => {
+        if (!value) return false;
+        return value
+          .split(",")
+          .map((item) => item.trim())
+          .every((item) => text().url().isValidSync(item));
+      },
+    });
+
+// DYNAMIC
+// unlike schemaMap.ts's dynamicNoPlaceholder, entity names must be non-blank
+// here, since a blank/unanswered entity name means the report is incomplete
+export const dynamicNoPlaceholder = (min = 1) =>
+  array()
+    .min(min)
+    .of(mixed())
+    .test({
+      message: error.NA_NOT_ACCEPTED,
+      test: (entities) =>
+        !entities?.length ||
+        entities.every((entity: any) => textNoNA().isValidSync(entity?.name)),
+    })
+    .required(error.REQUIRED_GENERIC);
 
 // Number - Ratio
 export const ratio = () =>
@@ -418,30 +585,46 @@ export const completionSchemaMap: any = {
   date: date(),
   dateMonthYear: dateMonthYear(),
   dateOptional: dateOptional(),
+  dateYear2000OrLater: dateYear2000OrLater(),
   dropdown: dropdown(),
   dropdownOptional: dropdownOptional(),
   dynamic: schemaMap.dynamic,
   dynamicOptional: schemaMap.dynamicOptional,
+  dynamicNoPlaceholder: dynamicNoPlaceholder(),
   email: email(),
   emailOptional: emailOptional(),
+  emailOrUrlNoNA: emailOrUrlNoNA(),
   futureDate: futureDate(),
+  integerZeroOrGreaterNoNA: (options?: ChoiceOptions) =>
+    integerZeroOrGreaterNoNA(options),
   number: number(),
   numberNotLessThanOne: numberNotLessThanOne(),
   numberNotLessThanZero: numberNotLessThanZero(),
   numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
   numberOptional: numberOptional(),
   numberOrSuppressed: numberOrSuppressed(),
+  numberOrSuppressedNoNA: numberOrSuppressedNoNA(),
   numberOrSuppressedOrNaNr: numberOrSuppressedOrNaNr(),
   numberSuppressible: numberSuppressible(),
+  numberZeroOrGreaterNoNA: schemaMap.numberZeroOrGreaterNoNA,
+  numberZeroOrGreaterTwoDecimalsNoNA:
+    schemaMap.numberZeroOrGreaterTwoDecimalsNoNA,
   pastDate: pastDate(),
   pastDateOptional: pastDateOptional(),
+  percentageZeroToHundredNoNA: percentageZeroToHundredNoNA(),
+  positiveNumberNoNA: (options?: ChoiceOptions) => positiveNumberNoNA(options),
   radio: radio(),
   radioOptional: radioOptional(),
   ratio: ratio(),
   text: text(),
+  textNoNA: textNoNA(),
+  textNoNAOptional: textNoNAOptional(),
   textOptional: textOptional(),
   url: url(),
+  urlList: urlList(),
   urlOptional: urlOptional(),
   validNumber: validNumber(),
+  validNumberNoNA: validNumberNoNA(),
+  validNumberNoNAOptional: validNumberNoNAOptional(),
   validNumberOptional: validNumberOptional(),
 };

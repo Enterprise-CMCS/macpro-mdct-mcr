@@ -47,6 +47,34 @@ export const validNAValues = [
   ...validNRValues,
 ];
 
+const placeholderValues = [
+  "n/a",
+  "na",
+  "nr",
+  "not applicable",
+  "not available",
+  "data not available",
+  "data unavailable",
+  "not reported",
+  "no data",
+  "no response",
+  "not provided",
+  "unknown",
+  "null",
+  "none",
+  "tbd",
+  "to be determined",
+];
+const isPlaceholderValue = (value: string) =>
+  placeholderValues.includes(value.trim().toLowerCase());
+const isPunctuationOnly = (value: string) => !/[a-zA-Z0-9]/.test(value);
+const stripNumberFormatting = (value: string) =>
+  value.replaceAll(",", "").trim();
+const isStrictlyNumeric = (value: string) => {
+  const cleaned = stripNumberFormatting(value);
+  return cleaned !== "" && !Number.isNaN(Number(cleaned));
+};
+
 // NUMBER - Number or Valid Strings
 export const numberSchema = () =>
   string().test({
@@ -134,6 +162,163 @@ export const validNumber = () =>
 export const validNumberOptional = () =>
   validNumberSchema().notRequired().nullable();
 
+const validNumberNoNASchema = () =>
+  string().test({
+    message: error.NA_NOT_ACCEPTED,
+    test: (value) => {
+      if (!value) return true;
+      if (validNAValues.includes(value)) return false;
+      return checkStandardNumberInputAgainstRegexes(value);
+    },
+  });
+
+export const validNumberNoNA = () =>
+  validNumberNoNASchema()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => !isWhitespaceString(value),
+      message: error.REQUIRED_GENERIC,
+    });
+
+export const validNumberNoNAOptional = () =>
+  validNumberNoNASchema().notRequired().nullable();
+
+const textNoNASchema = () =>
+  string()
+    .typeError(error.NA_NOT_ACCEPTED)
+    .test({
+      message: error.NA_NOT_ACCEPTED,
+      test: (value) => {
+        if (!value) return true;
+        if (isWhitespaceString(value)) return false;
+        if (isPlaceholderValue(value)) return false;
+        if (isPunctuationOnly(value)) return false;
+        return true;
+      },
+    });
+
+export const textNoNA = () => textNoNASchema().required(error.NA_NOT_ACCEPTED);
+
+export const textNoNAOptional = () => textNoNASchema().nullable();
+
+export const positiveNumberNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        if (!isStrictlyNumeric(value)) return false;
+        return Number(stripNumberFormatting(value)) > 0;
+      },
+    });
+
+export const integerZeroOrGreaterNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        return /^\d+$/.test(stripNumberFormatting(value));
+      },
+    });
+
+export const integerGreaterThanZeroNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        if (!/^\d+$/.test(stripNumberFormatting(value))) return false;
+        return Number(stripNumberFormatting(value)) > 0;
+      },
+    });
+
+export const numberZeroOrGreaterNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        if (!isStrictlyNumeric(value)) return false;
+        return Number(stripNumberFormatting(value)) >= 0;
+      },
+    });
+
+export const numberZeroOrGreaterTwoDecimalsNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        const cleaned = stripNumberFormatting(value);
+        if (!/^\d+(\.\d{1,2})?$/.test(cleaned)) return false;
+        return Number(cleaned) >= 0;
+      },
+    });
+
+export const percentageZeroToHundredNoNA = () =>
+  string()
+    .required(error.PERCENTAGE_RANGE_REQUIRED)
+    .test({
+      message: error.PERCENTAGE_RANGE_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        if (!isStrictlyNumeric(value)) return false;
+        const num = Number(stripNumberFormatting(value));
+        return num >= 0 && num <= 100;
+      },
+    });
+
+const emailOrUrlItemRegex = /^[^\s@]+@[^\s@]+\.\S+$|^https?:\/\/\S+$/i;
+
+export const emailOrUrlNoNA = () =>
+  string()
+    .required(error.EMAIL_OR_URL_REQUIRED)
+    .test({
+      message: error.EMAIL_OR_URL_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        return value
+          .split(",")
+          .map((item) => item.trim())
+          .every((item) => item.length > 0 && emailOrUrlItemRegex.test(item));
+      },
+    });
+
+export const urlList = () =>
+  string()
+    .required(error.URL_LIST_REQUIRED)
+    .test({
+      message: error.URL_LIST_REQUIRED,
+      test: (value) => {
+        if (!value) return false;
+        return value
+          .split(",")
+          .map((item) => item.trim())
+          .every((item) => text().url().isValidSync(item));
+      },
+    });
+
+export const numberOrSuppressedNoNA = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (!value) return false;
+        const isSuppressed = value.trim().toLowerCase() === "suppressed";
+        if (validNAValues.includes(value)) return false;
+        if (isSuppressed) return true;
+        if (!checkStandardNumberInputAgainstRegexes(value)) return false;
+        return parseFloat(value) >= 0;
+      },
+      message: error.NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED,
+    });
+
 // NUMBER NOT LESS THAN ONE
 export const numberNotLessThanOne = () =>
   number().test({
@@ -217,6 +402,18 @@ export const date = () =>
       }
       return result;
     });
+
+export const dateYear2000OrLater = () =>
+  date().test({
+    message: error.DATE_YEAR_2000_OR_LATER,
+    test: (value) => {
+      if (!value) return true;
+      const year = value.includes("/")
+        ? Number(value.split("/")[2])
+        : Number(value.substring(4));
+      return year >= 2000;
+    },
+  });
 
 export const dateMonthYear = () =>
   string()
@@ -358,6 +555,17 @@ export const dynamic = (min = 1) =>
     .required(error.REQUIRED_GENERIC);
 export const dynamicOptional = () => dynamic(0).notRequired().nullable();
 
+export const dynamicNoPlaceholder = (min = 1) =>
+  array()
+    .min(min)
+    .of(
+      object().shape({
+        id: text(),
+        name: textNoNA(),
+      })
+    )
+    .required(error.REQUIRED_GENERIC);
+
 // NESTED
 export const nested = (
   fieldSchema: Function,
@@ -398,30 +606,49 @@ export const schemaMap: any = {
   date: date(),
   dateMonthYear: dateMonthYear(),
   dateOptional: dateOptional(),
+  dateYear2000OrLater: dateYear2000OrLater(),
   dropdown: dropdown(),
   dropdownOptional: dropdownOptional(),
   dynamic: dynamic(),
   dynamicOptional: dynamicOptional(),
+  dynamicNoPlaceholder: dynamicNoPlaceholder(),
   email: email(),
   emailOptional: emailOptional(),
+  emailOrUrlNoNA: emailOrUrlNoNA(),
   futureDate: futureDate(),
+  integerGreaterThanZeroNoNA: (options?: ChoiceOptions) =>
+    integerGreaterThanZeroNoNA(options),
+  integerZeroOrGreaterNoNA: (options?: ChoiceOptions) =>
+    integerZeroOrGreaterNoNA(options),
   number: number(),
   numberNotLessThanOne: numberNotLessThanOne(),
   numberNotLessThanZero: numberNotLessThanZero(),
   numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
   numberOptional: numberOptional(),
   numberOrSuppressed: numberOrSuppressed(),
+  numberOrSuppressedNoNA: numberOrSuppressedNoNA(),
   numberOrSuppressedOrNaNr: numberOrSuppressedOrNaNr(),
   numberSuppressible: numberSuppressible(),
+  numberZeroOrGreaterNoNA: (options?: ChoiceOptions) =>
+    numberZeroOrGreaterNoNA(options),
+  numberZeroOrGreaterTwoDecimalsNoNA: (options?: ChoiceOptions) =>
+    numberZeroOrGreaterTwoDecimalsNoNA(options),
   pastDate: pastDate(),
   pastDateOptional: pastDateOptional(),
+  percentageZeroToHundredNoNA: percentageZeroToHundredNoNA(),
+  positiveNumberNoNA: (options?: ChoiceOptions) => positiveNumberNoNA(options),
   radio: radio(),
   radioOptional: radioOptional(),
   ratio: ratio(),
   text: text(),
+  textNoNA: textNoNA(),
+  textNoNAOptional: textNoNAOptional(),
   textOptional: textOptional(),
   url: url(),
+  urlList: urlList(),
   urlOptional: urlOptional(),
   validNumber: validNumber(),
+  validNumberNoNA: validNumberNoNA(),
+  validNumberNoNAOptional: validNumberNoNAOptional(),
   validNumberOptional: validNumberOptional(),
 };
