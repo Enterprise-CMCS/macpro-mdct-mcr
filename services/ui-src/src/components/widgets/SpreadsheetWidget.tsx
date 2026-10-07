@@ -62,7 +62,7 @@ const sx = {
     color: "success_darkest",
   },
   description: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     color: "success_darkest",
   },
 };

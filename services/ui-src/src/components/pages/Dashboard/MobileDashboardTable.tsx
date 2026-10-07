@@ -155,8 +155,8 @@ const sx = {
     marginBottom: "spacer1",
   },
   label: {
-    fontSize: "sm",
-    fontWeight: "bold",
+    fontSize: "body_sm",
+    fontWeight: "heading_sm_bold",
     color: "gray",
   },
   editDate: {

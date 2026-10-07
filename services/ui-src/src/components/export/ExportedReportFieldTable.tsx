@@ -259,23 +259,23 @@ export const exportTableSx = {
   },
   td: {
     p: {
-      lineHeight: "1.25rem",
+      lineHeight: "heading_md",
     },
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
-    fontWeight: "normal",
+    fontWeight: "body_md",
     color: "base",
     ".shrink &": {
       padding: "0.375rem 0rem",
     },
     ".mobile &": {
-      fontSize: "xs",
+      fontSize: "body_xs",
     },
   },
   th: {
     paddingBottom: "0.375rem",
-    fontWeight: "bold",
-    lineHeight: "lg",
+    fontWeight: "heading_md",
+    lineHeight: "body_md",
     color: "gray",
     ".shrink &": {
       padding: "0.375rem 0rem",
@@ -295,7 +295,7 @@ export const exportTableSx = {
 
 const sx = {
   missingEntityMessage: {
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     ol: {
       paddingLeft: "spacer2",
     },

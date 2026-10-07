@@ -65,15 +65,15 @@ const sx = {
   },
   headerText: {
     marginBottom: "spacer4",
-    fontSize: "2rem",
-    fontWeight: "normal",
+    fontSize: "heading_2xl",
+    fontWeight: "body_md",
   },
   table: {
     marginTop: "spacer4",
     maxWidth: "100%",
     "tr td:first-of-type": {
       width: "8rem",
-      fontWeight: "semibold",
+      fontWeight: "heading_sm_bold",
     },
     "tr:nth-of-type(odd)": {
       background: "gray_lightest",

@@ -164,6 +164,6 @@ const sx = {
     },
   },
   ".optional-text": {
-    fontWeight: "lighter",
+    fontWeight: "heading_sm_regular",
   },
 };

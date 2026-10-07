@@ -121,7 +121,7 @@ interface Props {
 
 const sx = {
   missingEntity: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     marginBottom: "spacer4",
     a: {
       color: "primary",
@@ -133,7 +133,7 @@ const sx = {
   },
   missingEntityMessage: {
     paddingTop: "spacer2",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     a: {
       color: "primary",
       textDecoration: "underline",

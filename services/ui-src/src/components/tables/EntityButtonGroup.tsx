@@ -154,15 +154,15 @@ const sx = {
     },
   },
   editButton: {
-    fontWeight: "normal",
+    fontWeight: "body_md",
     textDecoration: "underline",
     color: "primary",
     padding: 0,
   },
   enterButton: {
     height: "2.25rem",
-    fontSize: "md",
-    fontWeight: "bold",
+    fontSize: "body_md",
+    fontWeight: "heading_md",
     paddingX: "spacer3",
   },
   deleteButton: {

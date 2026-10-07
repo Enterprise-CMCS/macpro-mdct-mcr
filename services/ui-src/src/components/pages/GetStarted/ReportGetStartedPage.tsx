@@ -170,8 +170,8 @@ const sx = {
   },
   headerText: {
     marginBottom: "spacer2",
-    fontSize: "4xl",
-    fontWeight: "normal",
+    fontSize: "heading_4xl",
+    fontWeight: "heading_4xl",
   },
   sectionContent: {
     marginTop: "spacer2",
@@ -189,7 +189,7 @@ const sx = {
     borderColor: "primary",
   },
   widgetTitle: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   image: {
     maxWidth: "20rem",
@@ -197,7 +197,7 @@ const sx = {
   },
   additionalInfo: {
     marginTop: "spacer2",
-    fontSize: "sm",
+    fontSize: "body_sm",
   },
   pageLinkContainer: {
     marginTop: "spacer2",

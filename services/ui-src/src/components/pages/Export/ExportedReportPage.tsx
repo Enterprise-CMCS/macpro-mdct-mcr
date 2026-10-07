@@ -178,17 +178,17 @@ export const sx = {
     },
   },
   heading: {
-    fontWeight: "300",
-    lineHeight: "lineHeights.heading",
-    fontSize: "4xl",
+    fontWeight: "heading_sm_regular",
+    lineHeight: "heading_4xl",
+    fontSize: "heading_4xl",
   },
   combinedDataTable: {
     marginBottom: "spacer2",
     ".combined-data-title": {
       display: "inline-block",
       marginBottom: "spacer1",
-      fontSize: "md",
-      fontWeight: "bold",
+      fontSize: "heading_md",
+      fontWeight: "heading_md",
     },
     "th, td": {
       verticalAlign: "top",
@@ -211,8 +211,8 @@ export const sx = {
     },
   },
   sectionHeading: {
-    fontWeight: "bold",
-    fontSize: "2xl",
+    fontWeight: "heading_2xl",
+    fontSize: "heading_2xl",
     marginBottom: "2xl",
   },
 };

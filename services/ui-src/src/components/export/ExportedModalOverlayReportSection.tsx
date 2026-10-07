@@ -196,25 +196,25 @@ const sx = {
     },
     td: {
       p: {
-        lineHeight: "1.25rem",
+        lineHeight: "heading_md",
       },
       padding: "0.75rem 0.5rem",
       borderStyle: "none",
-      fontWeight: "normal",
+      fontWeight: "heading_sm_bold",
       color: "base",
       ".shrink &": {
         padding: "0.375rem 0rem",
       },
       ".mobile &": {
-        fontSize: "xs",
+        fontSize: "body_xs",
       },
       verticalAlign: "middle",
     },
     th: {
       maxWidth: "100%",
       paddingBottom: "0.375rem",
-      fontWeight: "bold",
-      lineHeight: "lg",
+      fontWeight: "heading_md",
+      lineHeight: "body_md",
       color: "gray",
       ".shrink &": {
         padding: "0.375rem 0rem",
@@ -233,8 +233,8 @@ const sx = {
   },
   standardCount: {
     display: "block",
-    fontSize: "md",
-    fontWeight: "bold",
+    fontSize: "heading_md",
+    fontWeight: "heading_md",
     marginTop: "spacer1",
   },
   entityList: {
@@ -242,7 +242,7 @@ const sx = {
   },
   tableIndex: {
     color: "gray",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   statusIcon: {
     paddingLeft: "spacer2",

@@ -139,8 +139,8 @@ const sx = {
     alignItems: "center",
   },
   statusText: {
-    fontSize: "xs",
-    fontWeight: "bold",
+    fontSize: "heading_xs",
+    fontWeight: "heading_xs",
   },
   deleteButton: {
     marginRight: "-2.5rem",
@@ -151,6 +151,6 @@ const sx = {
     },
   },
   bold: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
 };
