@@ -226,7 +226,9 @@ export const numberOrSuppressedNoNA = () =>
         if (!value) return false;
         const isSuppressed = value.trim().toLowerCase() === "suppressed";
         if (validNAValues.includes(value)) return false;
-        return isSuppressed || validNumberRegex.test(value);
+        if (isSuppressed) return true;
+        if (!validNumberRegex.test(value)) return false;
+        return parseFloat(value) >= 0;
       },
       message: error.NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED,
     });

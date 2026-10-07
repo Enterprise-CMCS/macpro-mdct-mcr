@@ -309,7 +309,7 @@ describe("Completion schemas", () => {
     ...reject(emptyResponses),
     ...reject(nonNumericValues),
     ...accept(positiveNumbers),
-    ...accept(negativeNumbers),
+    ...reject(negativeNumbers),
     ...reject(notApplicableValues),
     ...accept(["suppressed", "Suppressed", " SUPPRESSED "]),
     ...reject(["Suppressed for data privacy purposes"]),

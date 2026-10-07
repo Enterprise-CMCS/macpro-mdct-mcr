@@ -332,7 +332,9 @@ export const numberOrSuppressedNoNA = () =>
       if (!value) return true;
       const isSuppressed = value.trim().toLowerCase() === "suppressed";
       if (validNAValues.includes(value)) return false;
-      return isSuppressed || validNumberRegex.test(value);
+      if (isSuppressed) return true;
+      if (!validNumberRegex.test(value)) return false;
+      return parseFloat(value) >= 0;
     },
     message: error.NA_NOT_ACCEPTED,
   });

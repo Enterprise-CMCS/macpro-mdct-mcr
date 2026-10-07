@@ -312,7 +312,9 @@ export const numberOrSuppressedNoNA = () =>
         if (!value) return false;
         const isSuppressed = value.trim().toLowerCase() === "suppressed";
         if (validNAValues.includes(value)) return false;
-        return isSuppressed || checkStandardNumberInputAgainstRegexes(value);
+        if (isSuppressed) return true;
+        if (!checkStandardNumberInputAgainstRegexes(value)) return false;
+        return parseFloat(value) >= 0;
       },
       message: error.NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED,
     });

@@ -300,11 +300,8 @@ describe("Schemas", () => {
       ["suppressed", "Suppressed", " SUPPRESSED "],
       true
     );
-    testValidNumber(
-      schemaMap.numberOrSuppressedNoNA,
-      ["1", "-1", "1,000"],
-      true
-    );
+    testValidNumber(schemaMap.numberOrSuppressedNoNA, ["1", "1,000"], true);
+    testValidNumber(schemaMap.numberOrSuppressedNoNA, ["-1", "-1,000"], false);
     testTextSchema(
       schemaMap.numberOrSuppressedNoNA,
       [...validNAValues, "badText", undefined],
