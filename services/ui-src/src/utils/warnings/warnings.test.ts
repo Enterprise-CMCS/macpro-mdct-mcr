@@ -84,7 +84,7 @@ describe("validateFieldWarning", () => {
     test("returns warning for date before 2020", () => {
       const result = validateFieldWarning("testField", "01/01/2019", {}, map);
       expect(result).toBe(
-        "Review for accuracy. Dates prior to 2020 are not expected in this field."
+        "Dates prior to 2020 are not expected in this field. Review for accuracy."
       );
     });
 
@@ -120,7 +120,7 @@ describe("validateFieldWarning", () => {
     test("returns warning for date before 2023", () => {
       const result = validateFieldWarning("testField", "01/01/2022", {}, map);
       expect(result).toBe(
-        "Review for accuracy. Dates prior to 2023 are not expected in this field."
+        "Dates prior to 2023 are not expected in this field. Review for accuracy."
       );
     });
 
@@ -150,12 +150,16 @@ describe("validateFieldWarning", () => {
 
     test("returns warning for number divisible by 1000", () => {
       const result = validateFieldWarning("testField", "1000", {}, map);
-      expect(result).toBe("Review for accuracy. Please enter an exact number.");
+      expect(result).toBe(
+        "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value."
+      );
     });
 
     test("returns warning for comma-formatted number divisible by 1000", () => {
       const result = validateFieldWarning("testField", "10,000", {}, map);
-      expect(result).toBe("Review for accuracy. Please enter an exact number.");
+      expect(result).toBe(
+        "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value."
+      );
     });
 
     test("returns null for number not divisible by 1000", () => {
@@ -177,6 +181,11 @@ describe("validateFieldWarning", () => {
       const result = validateFieldWarning("testField", "0", {}, map);
       expect(result).toBeNull();
     });
+
+    test("returns null for Suppressed", () => {
+      const result = validateFieldWarning("testField", "Suppressed", {}, map);
+      expect(result).toBeNull();
+    });
   });
 
   describe("PERCENTAGE_OVER_100", () => {
@@ -185,7 +194,7 @@ describe("validateFieldWarning", () => {
     test("returns warning for percentage over 100", () => {
       const result = validateFieldWarning("testField", "101", {}, map);
       expect(result).toBe(
-        "Review for accuracy. Percentage is higher than 100%."
+        "Percentage is higher than 100%. Review for accuracy."
       );
     });
 
@@ -216,14 +225,14 @@ describe("validateFieldWarning", () => {
     test("returns warning for number equal to 100", () => {
       const result = validateFieldWarning("testField", "100", {}, map);
       expect(result).toBe(
-        "Review for accuracy. This number is unusually high."
+        "This number is unusually high. Review for accuracy."
       );
     });
 
     test("returns warning for number over 100", () => {
       const result = validateFieldWarning("testField", "101", {}, map);
       expect(result).toBe(
-        "Review for accuracy. This number is unusually high."
+        "This number is unusually high. Review for accuracy."
       );
     });
 
@@ -249,7 +258,7 @@ describe("validateFieldWarning", () => {
     test("returns warning for number over 14", () => {
       const result = validateFieldWarning("testField", "15", {}, map);
       expect(result).toBe(
-        "Review for accuracy. This number is unusually high."
+        "This number is unusually high. Review for accuracy."
       );
     });
 
@@ -275,7 +284,7 @@ describe("validateFieldWarning", () => {
     test("returns warning for number over 72", () => {
       const result = validateFieldWarning("testField", "73", {}, map);
       expect(result).toBe(
-        "Review for accuracy. This number is unusually high."
+        "This number is unusually high. Review for accuracy."
       );
     });
 
@@ -296,14 +305,14 @@ describe("validateFieldWarning", () => {
     test("returns warning for number over 215000", () => {
       const result = validateFieldWarning("testField", "215001", {}, map);
       expect(result).toBe(
-        "Review for accuracy. This number is unusually high."
+        "This number is unusually high. Review for accuracy."
       );
     });
 
     test("returns warning for comma-formatted number over 215000", () => {
       const result = validateFieldWarning("testField", "215,001", {}, map);
       expect(result).toBe(
-        "Review for accuracy. This number is unusually high."
+        "This number is unusually high. Review for accuracy."
       );
     });
 
@@ -323,7 +332,7 @@ describe("validateFieldWarning", () => {
 
     test("returns warning for number below 75", () => {
       const result = validateFieldWarning("testField", "74", {}, map);
-      expect(result).toBe("Review for accuracy. This number is unusually low.");
+      expect(result).toBe("This number is unusually low. Review for accuracy.");
     });
 
     test("returns null for exactly 75", () => {
@@ -352,7 +361,7 @@ describe("validateFieldWarning", () => {
 
     test("returns warning for number below 90", () => {
       const result = validateFieldWarning("testField", "89", {}, map);
-      expect(result).toBe("Review for accuracy. This number is unusually low.");
+      expect(result).toBe("This number is unusually low. Review for accuracy.");
     });
 
     test("returns null for exactly 90", () => {
@@ -372,7 +381,7 @@ describe("validateFieldWarning", () => {
     test("returns warning for number over 7.1", () => {
       const result = validateFieldWarning("testField", "7.2", {}, map);
       expect(result).toBe(
-        "Review for accuracy. This number is unusually high."
+        "This number is unusually high. Review for accuracy."
       );
     });
 
@@ -398,7 +407,7 @@ describe("validateFieldWarning", () => {
     test("returns warning for number over 7", () => {
       const result = validateFieldWarning("testField", "8", {}, map);
       expect(result).toBe(
-        "Review for accuracy. This number is unusually high."
+        "This number is unusually high. Review for accuracy."
       );
     });
 
@@ -419,7 +428,7 @@ describe("validateFieldWarning", () => {
     test("returns warning for number over 60", () => {
       const result = validateFieldWarning("testField", "61", {}, map);
       expect(result).toBe(
-        "Review for accuracy. This number is unusually high."
+        "This number is unusually high. Review for accuracy."
       );
     });
 
@@ -440,7 +449,7 @@ describe("validateFieldWarning", () => {
     test("returns warning for number over 24", () => {
       const result = validateFieldWarning("testField", "25", {}, map);
       expect(result).toBe(
-        "Review for accuracy. This number is unusually high."
+        "This number is unusually high. Review for accuracy."
       );
     });
 

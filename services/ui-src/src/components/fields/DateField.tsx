@@ -1,8 +1,13 @@
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
-import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
-import { Box, SystemStyleObject } from "@chakra-ui/react";
+import {
+  SingleInputDateField as CmsdsDateField,
+  Label,
+  Hint,
+  InlineError,
+} from "@cmsgov/design-system";
+import { Box, SystemStyleObject, Text } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 // types
 import { CustomHtmlElement, InputChangeEvent } from "types";
@@ -13,8 +18,10 @@ import {
   parseCustomHtml,
   useStore,
   getAutosaveFields,
+  warningMessageSx,
+  fieldWithWarningSx,
+  useFieldWarning,
 } from "utils";
-import { useFieldWarning } from "utils/warnings/useFieldWarning";
 
 export const DateField = ({
   name,
@@ -122,24 +129,42 @@ export const DateField = ({
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
 
+  const isWarning = !errorMessage && !!warningMessage && !props?.disabled;
+
   return (
     <Box
-      sx={{ ...sx, ...sxOverride }}
+      sx={{ ...sx, ...sxOverride, ...fieldWithWarningSx }}
       className={`${labelClass} ${nestedChildClasses} date-field`}
     >
+      <Label htmlFor={name} id={`${name}-label`}>
+        {labelText || ""}
+      </Label>
+      {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
+      <InlineError id={`${name}__error`} />
+      {isWarning && (
+        <Text sx={warningMessageSx} role="alert" id={`${name}__warning`}>
+          ⚠️ {warningMessage}
+        </Text>
+      )}
       <CmsdsDateField
+        id={name}
         name={name}
-        label={labelText || ""}
+        label=""
+        hint=""
+        errorMessage={errorMessage}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         value={displayValue}
-        hint={parsedHint}
-        errorMessage={errorMessage}
+        aria-describedby={
+          [
+            parsedHint ? `${name}-hint` : "",
+            isWarning ? `${name}__warning` : "",
+          ]
+            .filter(Boolean)
+            .join(" ") || undefined
+        }
         {...props}
       />
-      {!errorMessage && warningMessage && (
-        <Box sx={sx.warningMessage}>⚠️ {warningMessage}</Box>
-      )}
     </Box>
   );
 };
@@ -171,13 +196,5 @@ const sx = {
   },
   ".optional-text": {
     fontWeight: "lighter",
-  },
-  warningMessage: {
-    color: "#856404",
-    display: "flex",
-    alignItems: "center",
-    gap: "0.25rem",
-    marginTop: "0.25rem",
-    fontSize: "sm",
   },
 };

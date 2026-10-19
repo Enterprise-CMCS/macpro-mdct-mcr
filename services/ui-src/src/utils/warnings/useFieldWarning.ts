@@ -2,7 +2,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 // types
 import { FieldValue } from "types";
 // utils
-import { useStore } from "utils/state/useStore";
+import { useStore } from "utils";
 import { validateFieldWarning } from "./warnings";
 
 /**

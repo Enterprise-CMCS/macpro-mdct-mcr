@@ -1,9 +1,14 @@
 import React, { ReactNode, useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
-import { Box, SystemStyleObject } from "@chakra-ui/react";
+import { Box, SystemStyleObject, Text } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
-import { TextField as CmsdsTextField } from "@cmsgov/design-system";
+import {
+  TextField as CmsdsTextField,
+  Label,
+  Hint,
+  InlineError,
+} from "@cmsgov/design-system";
 // constants
 import { suppressionText } from "../../constants";
 // types
@@ -19,6 +24,8 @@ import {
   useStore,
   makeStringParseableForDatabase,
   useFieldWarning,
+  fieldWithWarningSx,
+  warningMessageSx,
 } from "utils";
 
 export const NumberField = ({
@@ -173,20 +180,43 @@ export const NumberField = ({
     label && styleAsOptional ? labelTextWithOptional(label) : label;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
+  const isWarning = !errorMessage && !!warningMessage;
+
   return (
-    <Box sx={{ ...sx, ...sxOverride }} className={`${nestedChildClasses}`}>
+    <Box
+      sx={{ ...sx, ...sxOverride, ...fieldWithWarningSx }}
+      className={`${nestedChildClasses}`}
+    >
+      <Label htmlFor={name} id={`${name}-label`}>
+        {labelText || ""}
+      </Label>
+      {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
+      <InlineError id={`${name}__error`} />
+      {isWarning && (
+        <Text sx={warningMessageSx} role="alert" id={`${name}__warning`}>
+          ⚠️ {warningMessage}
+        </Text>
+      )}
       <Box sx={sx.numberFieldContainer} className={maskClass}>
         <CmsdsTextField
           id={name}
           name={name}
-          label={labelText || ""}
-          hint={parsedHint}
+          label=""
+          hint=""
+          errorMessage={errorMessage}
           placeholder={placeholder}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
           value={suppressed ? "" : displayValue}
-          errorMessage={errorMessage}
           disabled={disabled || suppressed}
+          aria-describedby={
+            [
+              parsedHint ? `${name}-hint` : "",
+              isWarning ? `${name}__warning` : "",
+            ]
+              .filter(Boolean)
+              .join(" ") || undefined
+          }
           {...props}
         />
         <SymbolOverlay
@@ -195,9 +225,6 @@ export const NumberField = ({
           disabled={disabled || suppressed}
         />
       </Box>
-      {!errorMessage && warningMessage && (
-        <Box sx={sx.warningMessage}>⚠️ {warningMessage}</Box>
-      )}
     </Box>
   );
 };
@@ -281,13 +308,5 @@ const sx = {
       bottom: "11px",
       left: "10px",
     },
-  },
-  warningMessage: {
-    color: "#856404",
-    display: "flex",
-    alignItems: "center",
-    gap: "0.25rem",
-    marginTop: "0.25rem",
-    fontSize: "sm",
   },
 };

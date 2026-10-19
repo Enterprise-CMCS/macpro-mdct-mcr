@@ -68,7 +68,7 @@ const warningRules: Record<string, WarningRule> = {
     const num = parseNumber(value);
     if (num === null) return null;
     return num >= 100
-      ? "This number is unusually high. Review for accuracy"
+      ? "This number is unusually high. Review for accuracy."
       : null;
   },
 
@@ -76,7 +76,7 @@ const warningRules: Record<string, WarningRule> = {
     const num = parseNumber(value);
     if (num === null) return null;
     return num > 14
-      ? "This number is unusually high. Review for accuracy"
+      ? "This number is unusually high. Review for accuracy."
       : null;
   },
 
@@ -84,7 +84,7 @@ const warningRules: Record<string, WarningRule> = {
     const num = parseNumber(value);
     if (num === null) return null;
     return num > 72
-      ? "This number is unusually high. Review for accuracy"
+      ? "This number is unusually high. Review for accuracy."
       : null;
   },
 
@@ -92,7 +92,7 @@ const warningRules: Record<string, WarningRule> = {
     const num = parseNumber(value);
     if (num === null) return null;
     return num > 215000
-      ? "This number is unusually high. Review for accuracy"
+      ? "This number is unusually high. Review for accuracy."
       : null;
   },
 
@@ -100,7 +100,7 @@ const warningRules: Record<string, WarningRule> = {
     const num = parseNumber(value);
     if (num === null) return null;
     return num < 75
-      ? "This number is unusually low. Review for accuracy"
+      ? "This number is unusually low. Review for accuracy."
       : null;
   },
 
@@ -108,7 +108,7 @@ const warningRules: Record<string, WarningRule> = {
     const num = parseNumber(value);
     if (num === null) return null;
     return num < 90
-      ? "This number is unusually low. Review for accuracy"
+      ? "This number is unusually low. Review for accuracy."
       : null;
   },
 
@@ -116,7 +116,7 @@ const warningRules: Record<string, WarningRule> = {
     const num = parseNumber(value);
     if (num === null) return null;
     return num > 7.1
-      ? "This number is unusually high. Review for accuracy"
+      ? "This number is unusually high. Review for accuracy."
       : null;
   },
 
@@ -124,7 +124,7 @@ const warningRules: Record<string, WarningRule> = {
     const num = parseNumber(value);
     if (num === null) return null;
     return num > 7
-      ? "This number is unusually high. Review for accuracy"
+      ? "This number is unusually high. Review for accuracy."
       : null;
   },
 
@@ -132,7 +132,7 @@ const warningRules: Record<string, WarningRule> = {
     const num = parseNumber(value);
     if (num === null) return null;
     return num > 60
-      ? "This number is unusually high. Review for accuracy"
+      ? "This number is unusually high. Review for accuracy."
       : null;
   },
 
@@ -140,7 +140,7 @@ const warningRules: Record<string, WarningRule> = {
     const num = parseNumber(value);
     if (num === null) return null;
     return num > 24
-      ? "This number is unusually high. Review for accuracy"
+      ? "This number is unusually high. Review for accuracy."
       : null;
   },
 };
