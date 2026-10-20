@@ -148,58 +148,58 @@ const warningRules: Record<string, WarningRule> = {
 // Field to warning type mapping — organized by form/file location
 const fieldWarningMap: Record<string, string> = {
   // A - Program Information (program-information/reporting-period.ts)
-  reportingPeriodStartDate: "DATE_BEFORE_2020",
-  reportingPeriodEndDate: "DATE_BEFORE_2020",
+  reportingPeriodStartDate: "DATE_BEFORE_2020", // A.5a
+  reportingPeriodEndDate: "DATE_BEFORE_2020", // A.5b
 
   // B - State Level Indicators (state-level-indicators/program-characteristics.ts)
-  state_statewideMedicaidEnrollment: "DIVISIBLE_BY_1000",
-  state_statewideMedicaidManagedCareEnrollment: "DIVISIBLE_BY_1000",
+  state_statewideMedicaidEnrollment: "DIVISIBLE_BY_1000", // B.I.1
+  state_statewideMedicaidManagedCareEnrollment: "DIVISIBLE_BY_1000", // B.I.2
 
   // B - State Level Indicators (state-level-indicators/prior-authorization.ts)
-  state_stateTimeframeForStandardPriorAuthorizationDecisions: "NUMBER_OVER_14",
-  state_stateTimeframeForExpeditedPriorAuthorizationDecisions: "NUMBER_OVER_72",
+  state_stateTimeframeForStandardPriorAuthorizationDecisions: "NUMBER_OVER_14", // B.XIII.1b
+  state_stateTimeframeForExpeditedPriorAuthorizationDecisions: "NUMBER_OVER_72", // B.XIII.2b
 
   // C - Program Level Indicators (program-level-indicators/program-characteristics.ts)
-  program_enrollment: "DIVISIBLE_BY_1000",
+  program_enrollment: "DIVISIBLE_BY_1000", // C1.I.5
 
   // C - Program Level Indicators (program-level-indicators/mental-health-and-substance-use-disorder-parity.ts)
   program_whenWasTheLastParityAnalysisCoveringThisProgramCompleted:
-    "DATE_BEFORE_2020",
+    "DATE_BEFORE_2020", // C1.XII.8
   program_whenWasTheLastParityAnalysisForThisProgramSubmittedToCMS:
-    "DATE_BEFORE_2020",
-  dateStateWillRemediateThisAreaOfNoncompliance: "DATE_BEFORE_2020",
+    "DATE_BEFORE_2020", // C1.XII.9
+  dateStateWillRemediateThisAreaOfNoncompliance: "DATE_BEFORE_2020", // C1.XII.12c
 
   // D - Plan Level Indicators (plan-level-indicators/program-characteristics.ts)
-  plan_medicaidEnrollmentSharePercentage: "PERCENTAGE_OVER_100",
-  plan_medicaidManagedCareEnrollmentSharePercentage: "PERCENTAGE_OVER_100",
+  plan_medicaidEnrollmentSharePercentage: "PERCENTAGE_OVER_100", // D1.I.2
+  plan_medicaidManagedCareEnrollmentSharePercentage: "PERCENTAGE_OVER_100", // D1.I.3
 
   // D - Plan Level Indicators (plan-level-indicators/encounter-data-report.ts)
-  plan_encounterDataSubmissionTimelinessCompliancePercentage: "NUMBER_BELOW_75",
-  plan_encounterDataSubmissionHipaaCompliancePercentage: "NUMBER_BELOW_90",
+  plan_encounterDataSubmissionTimelinessCompliancePercentage: "NUMBER_BELOW_75", // D1.III.2
+  plan_encounterDataSubmissionHipaaCompliancePercentage: "NUMBER_BELOW_90", // D1.III.3
 
   // D - Plan Level Indicators - Appeals (plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview.ts)
   plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledAppeal:
-    "NUMBER_OVER_OR_EQUAL_100",
+    "NUMBER_OVER_OR_EQUAL_100", // D1.IV.4
 
   // D - Plan Level Indicators - Grievances (plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview.ts)
   plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledGrievance:
-    "NUMBER_OVER_OR_EQUAL_100",
-
-  // D - Plan Level Indicators - Prior Authorization (plan-level-indicators/prior-authorization.ts)
-  plan_averageTimeToDecisionForStandardPriorAuthorizations: "NUMBER_OVER_7_1",
-  plan_medianTimeToDecisionOnStandardPriorAuthorizations: "NUMBER_OVER_7",
-  plan_averageTimeToDecisionForExpeditedPriorAuthorizations: "NUMBER_OVER_60",
-  plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests:
-    "NUMBER_OVER_24",
+    "NUMBER_OVER_OR_EQUAL_100", // D1.IV.13
 
   // D - Plan Level Indicators - Program Integrity (plan-level-indicators/program-integrity.ts)
-  plan_overpaymentReportingToStateStartDate: "DATE_BEFORE_2020",
-  plan_overpaymentReportingToStateEndDate: "DATE_BEFORE_2020",
+  plan_overpaymentReportingToStateStartDate: "DATE_BEFORE_2020", // D1.X.9a
+  plan_overpaymentReportingToStateEndDate: "DATE_BEFORE_2020", // D1.X.9b
+
+  // D - Plan Level Indicators - Prior Authorization (plan-level-indicators/prior-authorization.ts)
+  plan_averageTimeToDecisionForStandardPriorAuthorizations: "NUMBER_OVER_7_1", // D1.XIII.9
+  plan_medianTimeToDecisionOnStandardPriorAuthorizations: "NUMBER_OVER_7", // D1.XIII.10
+  plan_averageTimeToDecisionForExpeditedPriorAuthorizations: "NUMBER_OVER_60", // D1.XIII.13
+  plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests:
+    "NUMBER_OVER_24", // D1.XIII.14
 
   // D - Plan Level Indicators - Sanctions (plan-level-indicators/sanctions.ts)
-  sanction_dollarAmount: "NUMBER_OVER_215000",
-  sanction_assessmentDate: "DATE_BEFORE_2023",
-  sanction_remediationDate: "DATE_BEFORE_2023",
+  sanction_dollarAmount: "NUMBER_OVER_215000", // D3.VIII.6
+  sanction_assessmentDate: "DATE_BEFORE_2023", // D3.VIII.7
+  sanction_remediationDate: "DATE_BEFORE_2023", // D3.VIII.8a
 };
 
 export const validateFieldWarning = (
