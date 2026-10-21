@@ -74,7 +74,7 @@ export default {
         props: {
           style: {
             marginTop: "1.5rem",
-            fontWeight: "600",
+            fontWeight: "heading_md",
           },
         },
       },

@@ -524,12 +524,12 @@ const sx = {
       listStyle: "none",
       ".entityResponse": {
         p: {
-          lineHeight: "1.25rem",
-          fontSize: "sm",
+          lineHeight: "heading_sm",
+          fontSize: "body_sm",
         },
       },
       p: {
-        lineHeight: "1.25rem",
+        lineHeight: "heading_sm",
       },
     },
     "&:last-of-type": {
@@ -537,7 +537,7 @@ const sx = {
     },
   },
   entityName: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   noResponse: {
     color: "error_darker",

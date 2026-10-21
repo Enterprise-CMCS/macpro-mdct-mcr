@@ -77,30 +77,20 @@ interface Props {
 const sx = {
   heading: {
     marginTop: "spacer2",
-    fontSize: "sm",
+    fontSize: "heading_sm",
   },
   subtitle: {
     marginTop: "spacer2",
-    fontSize: "xs",
-    fontWeight: "bold",
+    fontSize: "heading_xs",
+    fontWeight: "heading_xs",
   },
   subtext: {
     marginTop: "spacer_half",
-    fontSize: "sm",
-  },
-  qualityMeasuresPlanName: {
-    paddingTop: "spacer2",
-    fontSize: "sm",
-    fontWeight: "bold",
-  },
-  resultsHeader: {
-    marginY: "spacer2",
-    fontSize: "xs",
-    fontWeight: "bold",
+    fontSize: "body_sm",
   },
   missingResponseMessage: {
     marginBottom: "spacer2",
-    fontSize: "xs",
+    fontSize: "body_xs",
     color: "error_dark",
   },
   highlightContainer: {
@@ -124,7 +114,7 @@ const sx = {
     },
   },
   notAnswered: {
-    fontSize: "sm",
+    fontSize: "body_sm",
     color: "error_darker",
   },
   standardDetailsBoxes: {

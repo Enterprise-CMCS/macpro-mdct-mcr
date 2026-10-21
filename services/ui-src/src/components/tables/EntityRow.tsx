@@ -131,20 +131,20 @@ const sx = {
         margin: "0.5rem auto",
       },
       li: {
-        lineHeight: "130%",
+        lineHeight: "body_md",
         wordWrap: "break-word",
         whiteSpace: "break-spaces",
-        fontSize: "md",
+        fontSize: "body_md",
         color: "gray_darker",
         "&:first-of-type": {
-          fontWeight: "bold",
-          fontSize: "lg",
+          fontWeight: "heading_lg",
+          fontSize: "body_lg",
         },
         ".mobile &": {
           paddingTop: 0,
           paddingBottom: "spacer_half",
           "&:first-of-type": {
-            fontSize: "md",
+            fontSize: "body_md",
           },
         },
       },
@@ -155,17 +155,17 @@ const sx = {
   },
   rowHeader: {
     display: "flex",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     paddingBottom: "spacer1",
     span: { color: "gray" },
     img: { marginRight: "spacer2" },
   },
   errorText: {
     color: "error_dark",
-    fontSize: "xs",
+    fontSize: "body_xs",
     marginBottom: "0.75rem",
     ".mobile &": {
-      fontSize: "xs",
+      fontSize: "body_xs",
     },
   },
   desktopButtonGroup: {

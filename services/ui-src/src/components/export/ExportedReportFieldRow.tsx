@@ -122,8 +122,8 @@ const sx = {
     paddingTop: "spacer1",
   },
   fieldNumber: {
-    fontSize: "sm",
-    fontWeight: "bold",
+    fontSize: "body_sm",
+    fontWeight: "heading_sm_bold",
     textTransform: "none",
     paddingLeft: "spacer1",
   },
@@ -137,12 +137,12 @@ const sx = {
     },
   },
   fieldLabel: {
-    fontSize: "sm",
-    fontWeight: "bold",
+    fontSize: "body_sm",
+    fontWeight: "heading_sm_bold",
     marginBottom: "spacer1",
   },
   fieldHint: {
-    lineHeight: "lg",
+    lineHeight: "body_lg",
     color: "gray",
   },
   dataColumn: {
