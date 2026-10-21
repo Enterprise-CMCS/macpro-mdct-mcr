@@ -61,7 +61,7 @@
     "jest-environment-jsdom": "30.4.1",
     "jest-launchdarkly-mock": "^2.0.3",
     "typescript": "^5.9.3",
-    "vite": "8.0.16",
+    "vite": "8.1.6",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "browserslist": {
