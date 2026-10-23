@@ -1,7 +1,12 @@
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
-import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
+import {
+  SingleInputDateField as CmsdsDateField,
+  Label,
+  Hint,
+  InlineError,
+} from "@cmsgov/design-system";
 import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 // types
@@ -13,7 +18,12 @@ import {
   parseCustomHtml,
   useStore,
   getAutosaveFields,
+  fieldWarningLayoutSx,
+  useFieldWarning,
+  fieldWarningActiveSx,
 } from "utils";
+
+import { WarningMessage } from "utils/warnings/WarningMessage";
 
 export const DateField = ({
   name,
@@ -114,25 +124,50 @@ export const DateField = ({
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message as ReactNode;
+  const warningMessage = useFieldWarning(name);
   const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
 
+  const isWarning = !errorMessage && !!warningMessage && !props?.disabled;
+
   return (
     <Box
-      sx={{ ...sx, ...sxOverride }}
+      sx={{
+        ...sx,
+        ...sxOverride,
+        ...fieldWarningLayoutSx,
+        ...(isWarning ? fieldWarningActiveSx : {}),
+      }}
       className={`${labelClass} ${nestedChildClasses} date-field`}
     >
+      <Label htmlFor={name} id={`${name}-label`}>
+        {labelText || ""}
+      </Label>
+      {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
+      <InlineError id={`${name}__error`} />
+      {isWarning && (
+        <WarningMessage message={warningMessage} id={`${name}__warning`} />
+      )}
       <CmsdsDateField
+        id={name}
         name={name}
-        label={labelText || ""}
+        label=""
+        hint=""
+        errorMessage={errorMessage}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         value={displayValue}
-        hint={parsedHint}
-        errorMessage={errorMessage}
+        aria-describedby={
+          [
+            parsedHint ? `${name}-hint` : "",
+            isWarning ? `${name}__warning` : "",
+          ]
+            .filter(Boolean)
+            .join(" ") || undefined
+        }
         {...props}
       />
     </Box>

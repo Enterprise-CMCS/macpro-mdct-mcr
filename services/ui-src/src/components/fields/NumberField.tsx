@@ -3,7 +3,12 @@ import { useFormContext } from "react-hook-form";
 // components
 import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
-import { TextField as CmsdsTextField } from "@cmsgov/design-system";
+import {
+  TextField as CmsdsTextField,
+  Label,
+  Hint,
+  InlineError,
+} from "@cmsgov/design-system";
 // constants
 import { suppressionText } from "../../constants";
 // types
@@ -18,7 +23,11 @@ import {
   parseCustomHtml,
   useStore,
   makeStringParseableForDatabase,
+  useFieldWarning,
+  fieldWarningLayoutSx,
+  fieldWarningActiveSx,
 } from "utils";
+import { WarningMessage } from "utils/warnings/WarningMessage";
 
 export const NumberField = ({
   name,
@@ -165,26 +174,53 @@ export const NumberField = ({
 
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message as ReactNode;
+  const warningMessage = useFieldWarning(name);
   const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const maskClass = mask || "";
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
+  const isWarning = !errorMessage && !!warningMessage;
+
   return (
-    <Box sx={{ ...sx, ...sxOverride }} className={`${nestedChildClasses}`}>
+    <Box
+      sx={{
+        ...sx,
+        ...sxOverride,
+        ...fieldWarningLayoutSx,
+        ...(isWarning ? fieldWarningActiveSx : {}),
+      }}
+      className={`${nestedChildClasses}`}
+    >
+      <Label htmlFor={name} id={`${name}-label`}>
+        {labelText || ""}
+      </Label>
+      {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
+      <InlineError id={`${name}__error`} />
+      {isWarning && (
+        <WarningMessage message={warningMessage} id={`${name}__warning`} />
+      )}
       <Box sx={sx.numberFieldContainer} className={maskClass}>
         <CmsdsTextField
           id={name}
           name={name}
-          label={labelText || ""}
-          hint={parsedHint}
+          label=""
+          hint=""
+          errorMessage={errorMessage}
           placeholder={placeholder}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
           value={suppressed ? "" : displayValue}
-          errorMessage={errorMessage}
           disabled={disabled || suppressed}
+          aria-describedby={
+            [
+              parsedHint ? `${name}-hint` : "",
+              isWarning ? `${name}__warning` : "",
+            ]
+              .filter(Boolean)
+              .join(" ") || undefined
+          }
           {...props}
         />
         <SymbolOverlay
