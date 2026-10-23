@@ -28,6 +28,29 @@ const parseDate = (value: FieldValue | null | undefined): Date | null => {
   return isNaN(date.getTime()) ? null : date;
 };
 
+// Comparator types and map
+type Comparator = ">" | ">=" | "<" | "<=";
+const comparatorMap: Record<Comparator, (a: number, b: number) => boolean> = {
+  ">": (a, b) => a > b,
+  ">=": (a, b) => a >= b,
+  "<": (a, b) => a < b,
+  "<=": (a, b) => a <= b,
+};
+
+// Helper for simple number threshold warnings
+const compareNumber = (
+  value: FieldValue | null | undefined,
+  limit: number,
+  comparator: Comparator
+): string | null => {
+  const num = parseNumber(value);
+  if (num === null) return null;
+  const isHigh = comparator === ">" || comparator === ">=";
+  return comparatorMap[comparator](num, limit)
+    ? `This number is unusually ${isHigh ? "high" : "low"}. Review for accuracy.`
+    : null;
+};
+
 // Warning rule functions — defined once per warning type
 const warningRules: Record<string, WarningRule> = {
   // DATE WARNINGS
@@ -64,85 +87,16 @@ const warningRules: Record<string, WarningRule> = {
       : null;
   },
 
-  NUMBER_OVER_OR_EQUAL_100: (value) => {
-    const num = parseNumber(value);
-    if (num === null) return null;
-    return num >= 100
-      ? "This number is unusually high. Review for accuracy."
-      : null;
-  },
-
-  NUMBER_OVER_14: (value) => {
-    const num = parseNumber(value);
-    if (num === null) return null;
-    return num > 14
-      ? "This number is unusually high. Review for accuracy."
-      : null;
-  },
-
-  NUMBER_OVER_72: (value) => {
-    const num = parseNumber(value);
-    if (num === null) return null;
-    return num > 72
-      ? "This number is unusually high. Review for accuracy."
-      : null;
-  },
-
-  NUMBER_OVER_215000: (value) => {
-    const num = parseNumber(value);
-    if (num === null) return null;
-    return num > 215000
-      ? "This number is unusually high. Review for accuracy."
-      : null;
-  },
-
-  NUMBER_BELOW_75: (value) => {
-    const num = parseNumber(value);
-    if (num === null) return null;
-    return num < 75
-      ? "This number is unusually low. Review for accuracy."
-      : null;
-  },
-
-  NUMBER_BELOW_90: (value) => {
-    const num = parseNumber(value);
-    if (num === null) return null;
-    return num < 90
-      ? "This number is unusually low. Review for accuracy."
-      : null;
-  },
-
-  NUMBER_OVER_7_1: (value) => {
-    const num = parseNumber(value);
-    if (num === null) return null;
-    return num > 7.1
-      ? "This number is unusually high. Review for accuracy."
-      : null;
-  },
-
-  NUMBER_OVER_7: (value) => {
-    const num = parseNumber(value);
-    if (num === null) return null;
-    return num > 7
-      ? "This number is unusually high. Review for accuracy."
-      : null;
-  },
-
-  NUMBER_OVER_60: (value) => {
-    const num = parseNumber(value);
-    if (num === null) return null;
-    return num > 60
-      ? "This number is unusually high. Review for accuracy."
-      : null;
-  },
-
-  NUMBER_OVER_24: (value) => {
-    const num = parseNumber(value);
-    if (num === null) return null;
-    return num > 24
-      ? "This number is unusually high. Review for accuracy."
-      : null;
-  },
+  NUMBER_OVER_OR_EQUAL_100: (value) => compareNumber(value, 100, ">="),
+  NUMBER_OVER_14: (value) => compareNumber(value, 14, ">"),
+  NUMBER_OVER_72: (value) => compareNumber(value, 72, ">"),
+  NUMBER_OVER_215000: (value) => compareNumber(value, 215000, ">"),
+  NUMBER_BELOW_75: (value) => compareNumber(value, 75, "<"),
+  NUMBER_BELOW_90: (value) => compareNumber(value, 90, "<"),
+  NUMBER_OVER_7_1: (value) => compareNumber(value, 7.1, ">"),
+  NUMBER_OVER_7: (value) => compareNumber(value, 7, ">"),
+  NUMBER_OVER_60: (value) => compareNumber(value, 60, ">"),
+  NUMBER_OVER_24: (value) => compareNumber(value, 24, ">"),
 };
 
 // Field to warning type mapping — organized by form/file location

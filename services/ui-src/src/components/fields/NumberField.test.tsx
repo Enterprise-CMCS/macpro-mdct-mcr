@@ -466,6 +466,7 @@ describe("<NumberField />", () => {
       }));
       render(numberFieldComponent);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      expect(screen.getByText("This field is required")).toBeVisible();
     });
   });
 

@@ -281,6 +281,7 @@ describe("<DateField />", () => {
       }));
       render(dateFieldComponent);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      expect(screen.getByText("This field is required")).toBeVisible();
     });
 
     test("warning message is not displayed when field is disabled", () => {

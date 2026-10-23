@@ -2,7 +2,7 @@ export const warningMessageSx = {
   display: "block",
   fontSize: "sm",
   color: "warn_darkest",
-  marginTop: "0.25rem",
+  marginTop: "spacer_half",
 };
 
 export const fieldWarningLayoutSx = {
