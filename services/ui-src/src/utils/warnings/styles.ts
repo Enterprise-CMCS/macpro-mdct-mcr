@@ -1,12 +1,19 @@
 export const warningMessageSx = {
   display: "block",
   fontSize: "sm",
-  color: "#856404",
+  color: "warn_darkest",
   marginTop: "0.25rem",
 };
 
-export const fieldWithWarningSx = {
+export const fieldWarningLayoutSx = {
   "& .ds-c-label:empty": {
     display: "none",
+  },
+};
+
+export const fieldWarningActiveSx = {
+  "& .ds-c-field": {
+    borderColor: "warn_darkest",
+    borderWidth: "3px",
   },
 };

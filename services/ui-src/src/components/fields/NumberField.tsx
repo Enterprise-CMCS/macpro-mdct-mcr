@@ -1,7 +1,7 @@
 import React, { ReactNode, useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
-import { Box, SystemStyleObject, Text } from "@chakra-ui/react";
+import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 import {
   TextField as CmsdsTextField,
@@ -24,9 +24,10 @@ import {
   useStore,
   makeStringParseableForDatabase,
   useFieldWarning,
-  fieldWithWarningSx,
-  warningMessageSx,
+  fieldWarningLayoutSx,
+  fieldWarningActiveSx,
 } from "utils";
+import { WarningMessage } from "utils/warnings/WarningMessage";
 
 export const NumberField = ({
   name,
@@ -184,7 +185,12 @@ export const NumberField = ({
 
   return (
     <Box
-      sx={{ ...sx, ...sxOverride, ...fieldWithWarningSx }}
+      sx={{
+        ...sx,
+        ...sxOverride,
+        ...fieldWarningLayoutSx,
+        ...(isWarning ? fieldWarningActiveSx : {}),
+      }}
       className={`${nestedChildClasses}`}
     >
       <Label htmlFor={name} id={`${name}-label`}>
@@ -193,9 +199,7 @@ export const NumberField = ({
       {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
       <InlineError id={`${name}__error`} />
       {isWarning && (
-        <Text sx={warningMessageSx} role="alert" id={`${name}__warning`}>
-          ⚠️ {warningMessage}
-        </Text>
+        <WarningMessage message={warningMessage} id={`${name}__warning`} />
       )}
       <Box sx={sx.numberFieldContainer} className={maskClass}>
         <CmsdsTextField

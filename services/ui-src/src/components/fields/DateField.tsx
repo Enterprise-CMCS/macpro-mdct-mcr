@@ -7,7 +7,7 @@ import {
   Hint,
   InlineError,
 } from "@cmsgov/design-system";
-import { Box, SystemStyleObject, Text } from "@chakra-ui/react";
+import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 // types
 import { CustomHtmlElement, InputChangeEvent } from "types";
@@ -18,10 +18,12 @@ import {
   parseCustomHtml,
   useStore,
   getAutosaveFields,
-  warningMessageSx,
-  fieldWithWarningSx,
+  fieldWarningLayoutSx,
   useFieldWarning,
+  fieldWarningActiveSx,
 } from "utils";
+
+import { WarningMessage } from "utils/warnings/WarningMessage";
 
 export const DateField = ({
   name,
@@ -133,7 +135,12 @@ export const DateField = ({
 
   return (
     <Box
-      sx={{ ...sx, ...sxOverride, ...fieldWithWarningSx }}
+      sx={{
+        ...sx,
+        ...sxOverride,
+        ...fieldWarningLayoutSx,
+        ...(isWarning ? fieldWarningActiveSx : {}),
+      }}
       className={`${labelClass} ${nestedChildClasses} date-field`}
     >
       <Label htmlFor={name} id={`${name}-label`}>
@@ -142,9 +149,7 @@ export const DateField = ({
       {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
       <InlineError id={`${name}__error`} />
       {isWarning && (
-        <Text sx={warningMessageSx} role="alert" id={`${name}__warning`}>
-          ⚠️ {warningMessage}
-        </Text>
+        <WarningMessage message={warningMessage} id={`${name}__warning`} />
       )}
       <CmsdsDateField
         id={name}
