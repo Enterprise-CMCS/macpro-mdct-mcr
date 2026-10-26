@@ -1,7 +1,12 @@
 import { ReactNode, useState, useEffect, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 // components
-import { TextField as CmsdsTextField } from "@cmsgov/design-system";
+import {
+  TextField as CmsdsTextField,
+  Hint,
+  InlineError,
+  Label,
+} from "@cmsgov/design-system";
 import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 // types
@@ -9,11 +14,15 @@ import { InputChangeEvent, CustomHtmlElement } from "types";
 // utils
 import {
   autosaveFieldData,
+  fieldWarningActiveSx,
+  fieldWarningLayoutSx,
   getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
+  useFieldWarning,
   useStore,
 } from "utils";
+import { WarningMessage } from "utils/warnings/WarningMessage";
 
 export const TextField = ({
   name,
@@ -116,6 +125,8 @@ export const TextField = ({
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message as ReactNode;
+  const warningMessage = useFieldWarning(name);
+  const isWarning = !errorMessage && !!warningMessage;
   const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
@@ -123,17 +134,40 @@ export const TextField = ({
     label && styleAsOptional ? labelTextWithOptional(label) : label;
 
   return (
-    <Box sx={sxOverride} className={`${nestedChildClasses} ${labelClass}`}>
+    <Box
+      sx={{
+        ...fieldWarningLayoutSx,
+        ...(isWarning ? fieldWarningActiveSx : {}),
+        ...sxOverride,
+      }}
+      className={`${nestedChildClasses} ${labelClass}`}
+    >
+      <Label htmlFor={name} id={`${name}-label`}>
+        {labelText || ""}
+      </Label>
+      {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
+      <InlineError id={`${name}__error`} />
+      {isWarning && (
+        <WarningMessage message={warningMessage} id={`${name}__warning`} />
+      )}
       <CmsdsTextField
         id={name}
         name={name}
-        label={labelText || ""}
-        hint={parsedHint}
+        label=""
+        hint=""
         placeholder={placeholder}
         onChange={(e) => onChangeHandler(e)}
         onBlur={(e) => onBlurHandler(e)}
         errorMessage={errorMessage}
         value={displayValue}
+        aria-describedby={
+          [
+            parsedHint ? `${name}-hint` : "",
+            isWarning ? `${name}__warning` : "",
+          ]
+            .filter(Boolean)
+            .join(" ") || undefined
+        }
         {...props}
       />
     </Box>

@@ -463,4 +463,261 @@ describe("validateFieldWarning", () => {
       expect(result).toBeNull();
     });
   });
+
+  describe("compareNumberPer1000 rules", () => {
+    const mockContext = (enrollment: number): WarningContext => ({
+      selectedEntity: { plan_enrollment: String(enrollment) } as any,
+    });
+
+    describe("NUMBER_HIGH_PER_1000_OVER_25", () => {
+      const map = { testField: "NUMBER_HIGH_PER_1000_OVER_25" };
+
+      test("returns warning when per 1000 rate exceeds 25", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "26",
+          mockContext(1000),
+          map
+        );
+        expect(result).toBe(
+          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy."
+        );
+      });
+
+      test("returns null when per 1000 rate is below 25", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "24",
+          mockContext(1000),
+          map
+        );
+        expect(result).toBeNull();
+      });
+
+      test("returns null when enrollment is null", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "100",
+          { selectedEntity: { plan_enrollment: undefined } as any },
+          map
+        );
+        expect(result).toBeNull();
+      });
+
+      test("returns null when enrollment is zero", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "100",
+          mockContext(0),
+          map
+        );
+        expect(result).toBeNull();
+      });
+
+      test("returns null when value is null", () => {
+        const result = validateFieldWarning(
+          "testField",
+          null,
+          mockContext(1000),
+          map
+        );
+        expect(result).toBeNull();
+      });
+
+      test("interpolates enrollment value in message", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "251",
+          mockContext(10000),
+          map
+        );
+        expect(result).toBe(
+          "This number is unusually high based on your reported plan enrollment (D1.I.1: 10,000). Review for accuracy."
+        );
+      });
+    });
+
+    describe("NUMBER_HIGH_PER_1000_OVER_40", () => {
+      const map = { testField: "NUMBER_HIGH_PER_1000_OVER_40" };
+
+      test("returns warning when per 1000 rate exceeds 40", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "41",
+          mockContext(1000),
+          map
+        );
+        expect(result).toBe(
+          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy."
+        );
+      });
+
+      test("returns null when per 1000 rate is below 40", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "39",
+          mockContext(1000),
+          map
+        );
+        expect(result).toBeNull();
+      });
+    });
+
+    describe("NUMBER_HIGH_PER_1000_OVER_35", () => {
+      const map = { testField: "NUMBER_HIGH_PER_1000_OVER_35" };
+
+      test("returns warning when per 1000 rate exceeds 35", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "36",
+          mockContext(1000),
+          map
+        );
+        expect(result).toBe(
+          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy."
+        );
+      });
+
+      test("returns null when per 1000 rate is below 35", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "34",
+          mockContext(1000),
+          map
+        );
+        expect(result).toBeNull();
+      });
+    });
+
+    describe("NUMBER_HIGH_PER_1000_OVER_3_5", () => {
+      const map = { testField: "NUMBER_HIGH_PER_1000_OVER_3_5" };
+
+      test("returns warning when per 1000 rate exceeds 3.5", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "4",
+          mockContext(1000),
+          map
+        );
+        expect(result).toBe(
+          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy."
+        );
+      });
+
+      test("returns null when per 1000 rate is below 3.5", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "3",
+          mockContext(1000),
+          map
+        );
+        expect(result).toBeNull();
+      });
+    });
+
+    describe("NUMBER_HIGH_PER_1000_OVER_300", () => {
+      const map = { testField: "NUMBER_HIGH_PER_1000_OVER_300" };
+
+      test("returns warning when per 1000 rate exceeds 300", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "301",
+          mockContext(1000),
+          map
+        );
+        expect(result).toBe(
+          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy."
+        );
+      });
+
+      test("returns null when per 1000 rate is below 300", () => {
+        const result = validateFieldWarning(
+          "testField",
+          "299",
+          mockContext(1000),
+          map
+        );
+        expect(result).toBeNull();
+      });
+    });
+  });
+
+  describe("IDENTICAL_TO_STATE_OR_PROGRAM_NAME", () => {
+    const map = { testField: "IDENTICAL_TO_STATE_OR_PROGRAM_NAME" };
+    const mockContext = (
+      stateName: string,
+      programName: string
+    ): WarningContext => ({
+      report: {
+        fieldData: { stateName },
+        programName: `${programName}2026-10-26t19:41:37.798z`, // timestamp appended as in real data
+      } as any,
+    });
+
+    test("returns warning when value matches state name", () => {
+      const result = validateFieldWarning(
+        "testField",
+        "Texas",
+        mockContext("Texas", "Star Plus"),
+        map
+      );
+      expect(result).toBe(
+        "Response is identical to program or state name. Review for accuracy."
+      );
+    });
+
+    test("returns warning when value matches program name", () => {
+      const result = validateFieldWarning(
+        "testField",
+        "Star Plus",
+        mockContext("Texas", "Star Plus"),
+        map
+      );
+      expect(result).toBe(
+        "Response is identical to program or state name. Review for accuracy."
+      );
+    });
+
+    test("is case insensitive", () => {
+      const result = validateFieldWarning(
+        "testField",
+        "texas",
+        mockContext("Texas", "Star Plus"),
+        map
+      );
+      expect(result).toBe(
+        "Response is identical to program or state name. Review for accuracy."
+      );
+    });
+
+    test("returns null when value does not match state or program name", () => {
+      const result = validateFieldWarning(
+        "testField",
+        "Acme Health Plan",
+        mockContext("Texas", "Star Plus"),
+        map
+      );
+      expect(result).toBeNull();
+    });
+
+    test("returns null for empty value", () => {
+      const result = validateFieldWarning(
+        "testField",
+        null,
+        mockContext("Texas", "Star Plus"),
+        map
+      );
+      expect(result).toBeNull();
+    });
+
+    test("returns null when context has no state or program name", () => {
+      const result = validateFieldWarning(
+        "testField",
+        "Texas",
+        { report: undefined },
+        map
+      );
+      expect(result).toBeNull();
+    });
+  });
 });

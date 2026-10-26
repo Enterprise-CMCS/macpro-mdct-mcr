@@ -51,6 +51,23 @@ const compareNumber = (
     : null;
 };
 
+// Helper for per-1000-enrollees warnings
+const compareNumberPer1000 = (
+  value: FieldValue | null | undefined,
+  limit: number,
+  comparator: Comparator,
+  context: WarningContext
+): string | null => {
+  const num = parseNumber(value);
+  if (num === null) return null;
+  const enrollment = parseNumber(context.selectedEntity?.plan_enrollment);
+  if (enrollment === null || enrollment === 0) return null;
+  const per1000 = (num / enrollment) * 1000;
+  return comparatorMap[comparator](per1000, limit)
+    ? `This number is unusually high based on your reported plan enrollment (D1.I.1: ${enrollment.toLocaleString()}). Review for accuracy.`
+    : null;
+};
+
 // Warning rule functions — defined once per warning type
 const warningRules: Record<string, WarningRule> = {
   // DATE WARNINGS
@@ -97,6 +114,37 @@ const warningRules: Record<string, WarningRule> = {
   NUMBER_OVER_7: (value) => compareNumber(value, 7, ">"),
   NUMBER_OVER_60: (value) => compareNumber(value, 60, ">"),
   NUMBER_OVER_24: (value) => compareNumber(value, 24, ">"),
+
+  // PER 1000 ENROLLEES WARNINGS
+  NUMBER_HIGH_PER_1000_OVER_25: (value, context) =>
+    compareNumberPer1000(value, 25, ">", context), // D1.X.1
+  NUMBER_HIGH_PER_1000_OVER_40: (value, context) =>
+    compareNumberPer1000(value, 40, ">", context), // D1.X.2
+  NUMBER_HIGH_PER_1000_OVER_35: (value, context) =>
+    compareNumberPer1000(value, 35, ">", context), // D1.X.4
+  NUMBER_HIGH_PER_1000_OVER_3_5: (value, context) =>
+    compareNumberPer1000(value, 3.5, ">", context), // D1.X.7
+  NUMBER_HIGH_PER_1000_OVER_300: (value, context) =>
+    compareNumberPer1000(value, 300, ">", context), // D1.XIII.4
+
+  IDENTICAL_TO_STATE_OR_PROGRAM_NAME: (value, context) => {
+    if (!value) return null;
+    const valueStr = String(value).trim().toLowerCase();
+    const stateName = context.report?.fieldData?.stateName
+      ?.trim()
+      .toLowerCase();
+    const programName = context.report?.programName
+      ?.replace(/\d{4}-\d{2}-\d{2}t[\d:.z]+$/i, "")
+      .trim()
+      .toLowerCase();
+    if (
+      (stateName && valueStr === stateName) ||
+      (programName && valueStr === programName)
+    ) {
+      return "Response is identical to program or state name. Review for accuracy.";
+    }
+    return null;
+  },
 };
 
 // Field to warning type mapping — organized by form/file location
@@ -124,6 +172,7 @@ const fieldWarningMap: Record<string, string> = {
   dateStateWillRemediateThisAreaOfNoncompliance: "DATE_BEFORE_2020", // C1.XII.12c
 
   // D - Plan Level Indicators (plan-level-indicators/program-characteristics.ts)
+  plan_parentOrganization: "IDENTICAL_TO_STATE_OR_PROGRAM_NAME", // D1.I.4
   plan_medicaidEnrollmentSharePercentage: "PERCENTAGE_OVER_100", // D1.I.2
   plan_medicaidManagedCareEnrollmentSharePercentage: "PERCENTAGE_OVER_100", // D1.I.3
 
@@ -140,12 +189,23 @@ const fieldWarningMap: Record<string, string> = {
     "NUMBER_OVER_OR_EQUAL_100", // D1.IV.13
 
   // D - Plan Level Indicators - Program Integrity (plan-level-indicators/program-integrity.ts)
+  plan_dedicatedProgramIntegrityStaff: "NUMBER_HIGH_PER_1000_OVER_25", // D1.X.1
+  plan_openedProgramIntegrityInvestigations: "NUMBER_HIGH_PER_1000_OVER_40", // D1.X.2
+  plan_resolvedProgramIntegrityInvestigations: "NUMBER_HIGH_PER_1000_OVER_35", // D1.X.4
+  plan_mfcuProgramIntegrityReferrals: "NUMBER_HIGH_PER_1000_OVER_3_5", // D1.X.7
+  plan_smaProgramIntegrityReferrals: "NUMBER_HIGH_PER_1000_OVER_3_5", // D1.X.7
+  plan_smaMfcuConcurrentProgramIntegrityReferrals:
+    "NUMBER_HIGH_PER_1000_OVER_3_5", // D1.X.7
+  plan_smaMfcuAggregateProgramIntegrityReferrals:
+    "NUMBER_HIGH_PER_1000_OVER_3_5", // D1.X.7
   plan_overpaymentReportingToStateStartDate: "DATE_BEFORE_2020", // D1.X.9a
   plan_overpaymentReportingToStateEndDate: "DATE_BEFORE_2020", // D1.X.9b
 
   // D - Plan Level Indicators - Prior Authorization (plan-level-indicators/prior-authorization.ts)
   plan_averageTimeToDecisionForStandardPriorAuthorizations: "NUMBER_OVER_7_1", // D1.XIII.9
   plan_medianTimeToDecisionOnStandardPriorAuthorizations: "NUMBER_OVER_7", // D1.XIII.10
+  plan_totalExpeditedPriorAuthorizationRequestsReceived:
+    "NUMBER_HIGH_PER_1000_OVER_300", // D1.XIII.4
   plan_averageTimeToDecisionForExpeditedPriorAuthorizations: "NUMBER_OVER_60", // D1.XIII.13
   plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests:
     "NUMBER_OVER_24", // D1.XIII.14
