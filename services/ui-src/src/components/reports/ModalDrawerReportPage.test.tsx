@@ -5,7 +5,7 @@ import { ReportContext, ModalDrawerReportPage } from "components";
 // constants
 import { saveAndCloseText } from "../../constants";
 // types
-import { ModalDrawerReportPageShape } from "types";
+import { EntityType, ModalDrawerReportPageShape } from "types";
 // utils
 import { useBreakpoint, useStore } from "utils";
 import {
@@ -198,6 +198,63 @@ describe("<ModalDrawerReportPage />", () => {
       // there are 2 plans in the mock report context and 1 field to repeat, so 2 fields should render
       const renderedFields = screen.getAllByRole("textbox");
       expect(renderedFields.length).toEqual(2);
+    });
+  });
+
+  describe("Test ModalDrawerReportPage quality measures warning banner", () => {
+    const mockQualityMeasuresRoute = {
+      ...mockModalDrawerReportPageJson,
+      entityType: EntityType.QUALITY_MEASURES,
+    };
+    test("shows warning banner when quality measures count is 10 or fewer", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMcparReportStore,
+      });
+      render(
+        modalDrawerReportPageComponentWithEntities(mockQualityMeasuresRoute)
+      );
+      expect(
+        screen.getByText(
+          /quality and performance measures reported appears low/i
+        )
+      ).toBeVisible();
+    });
+
+    test("does not show warning banner when quality measures count is greater than 10", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        report: {
+          ...mockMcparReportStore.report,
+          fieldData: {
+            ...mockMcparReportStore.report?.fieldData,
+            qualityMeasures: Array.from({ length: 11 }, (_, i) => ({
+              id: `mock-id-${i}`,
+            })),
+          },
+        },
+      });
+      render(
+        modalDrawerReportPageComponentWithEntities(mockQualityMeasuresRoute)
+      );
+      expect(
+        screen.queryByText(
+          /quality and performance measures reported appears low/i
+        )
+      ).not.toBeInTheDocument();
+    });
+
+    test("does not show warning banner for non-quality-measures pages", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMcparReportStore,
+      });
+      render(modalDrawerReportPageComponentWithEntities());
+      expect(
+        screen.queryByText(
+          /quality and performance measures reported appears low/i
+        )
+      ).not.toBeInTheDocument();
     });
   });
 

@@ -14,6 +14,11 @@ import { validateFieldWarning } from "./warnings";
 export const useFieldWarning = (name: string): string | null => {
   const { control } = useFormContext();
   const value = useWatch({ control, name }) as FieldValue | null | undefined;
+  const allValues = useWatch({ control }); // watch all form values
   const { report, selectedEntity } = useStore();
-  return validateFieldWarning(name, value, { report, selectedEntity });
+  return validateFieldWarning(name, value, {
+    report,
+    selectedEntity,
+    formValues: allValues, // pass live form values
+  });
 };

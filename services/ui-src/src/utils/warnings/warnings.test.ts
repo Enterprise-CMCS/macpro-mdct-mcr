@@ -720,4 +720,84 @@ describe("validateFieldWarning", () => {
       expect(result).toBeNull();
     });
   });
+
+  describe("OVERPAYMENT_VS_PREMIUM_REVENUE", () => {
+    const map = { testField: "OVERPAYMENT_VS_PREMIUM_REVENUE" };
+    const mockContext = (overpaymentAmount: number): WarningContext => ({
+      formValues: {
+        plan_overpaymentReportingToStateDollarAmount: String(overpaymentAmount),
+      } as any,
+    });
+
+    test("returns high proportion warning when overpayment exceeds 10% of premium revenue", () => {
+      // overpayment = 1500, premium = 10000, percentage = 15% > 10%
+      const result = validateFieldWarning(
+        "testField",
+        "10000",
+        mockContext(1500),
+        map
+      );
+      expect(result).toBe(
+        "The overpayment amount entered in D1.X.9c represents a high proportion of this premium revenue. Review for accuracy."
+      );
+    });
+
+    test("returns low proportion warning when overpayment is less than 0.001% of premium revenue", () => {
+      // overpayment = 1, premium = 1000000, percentage = 0.0001% < 0.001%
+      const result = validateFieldWarning(
+        "testField",
+        "1000000",
+        mockContext(1),
+        map
+      );
+      expect(result).toBe(
+        "The overpayment amount entered in D1.X.9c represents a very small proportion of this premium revenue. Review for accuracy."
+      );
+    });
+
+    test("returns null when percentage is within normal range", () => {
+      // overpayment = 500, premium = 10000, percentage = 5%
+      const result = validateFieldWarning(
+        "testField",
+        "10000",
+        mockContext(500),
+        map
+      );
+      expect(result).toBeNull();
+    });
+
+    test("returns null when premium revenue is null", () => {
+      const result = validateFieldWarning(
+        "testField",
+        null,
+        mockContext(1000),
+        map
+      );
+      expect(result).toBeNull();
+    });
+
+    test("returns null when premium revenue is zero", () => {
+      const result = validateFieldWarning(
+        "testField",
+        "0",
+        mockContext(1000),
+        map
+      );
+      expect(result).toBeNull();
+    });
+
+    test("returns null when overpayment amount is null", () => {
+      const result = validateFieldWarning(
+        "testField",
+        "10000",
+        {
+          formValues: {
+            plan_overpaymentReportingToStateDollarAmount: undefined,
+          } as any,
+        },
+        map
+      );
+      expect(result).toBeNull();
+    });
+  });
 });

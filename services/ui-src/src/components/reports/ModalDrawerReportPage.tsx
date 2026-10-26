@@ -4,6 +4,7 @@ import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 import { Box, Button, Heading, Image, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
+  Alert,
   DeleteEntityModal,
   EntityCard,
   ReportContext,
@@ -20,6 +21,7 @@ import {
   EntityType,
   ModalDrawerReportPageShape,
   ReportStatus,
+  AlertTypes,
 } from "types";
 // utils
 import {
@@ -195,6 +197,14 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
         <title>{report && getPageTitle(report.reportType, route)}</title>
       </Helmet>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
+
+      {entityType === EntityType.QUALITY_MEASURES &&
+        reportFieldDataEntities.length <= 10 && (
+          <Alert
+            status={AlertTypes.WARN}
+            description="The number of quality and performance measures reported appears low. Review the instructions and confirm that all applicable measures are included. If the reported information is accurate, no action is needed."
+          />
+        )}
       <Box>
         {!checkForPlans() ? (
           <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">

@@ -7,6 +7,7 @@ import { EntityShape, FieldValue, ReportShape } from "types";
 export interface WarningContext {
   report?: ReportShape;
   selectedEntity?: EntityShape;
+  formValues?: Record<string, any>;
 }
 
 export type WarningRule = (
@@ -145,6 +146,23 @@ const warningRules: Record<string, WarningRule> = {
     }
     return null;
   },
+
+  OVERPAYMENT_VS_PREMIUM_REVENUE: (value, context) => {
+    const premiumRevenue = parseNumber(value);
+    if (premiumRevenue === null || premiumRevenue === 0) return null;
+    const overpayment = parseNumber(
+      context.formValues?.plan_overpaymentReportingToStateDollarAmount
+    );
+    if (overpayment === null) return null;
+    const percentage = (overpayment / premiumRevenue) * 100;
+    if (percentage > 10) {
+      return "The overpayment amount entered in D1.X.9c represents a high proportion of this premium revenue. Review for accuracy.";
+    }
+    if (percentage < 0.001) {
+      return "The overpayment amount entered in D1.X.9c represents a very small proportion of this premium revenue. Review for accuracy.";
+    }
+    return null;
+  },
 };
 
 // Field to warning type mapping — organized by form/file location
@@ -200,6 +218,8 @@ const fieldWarningMap: Record<string, string> = {
     "NUMBER_HIGH_PER_1000_OVER_3_5", // D1.X.7
   plan_overpaymentReportingToStateStartDate: "DATE_BEFORE_2020", // D1.X.9a
   plan_overpaymentReportingToStateEndDate: "DATE_BEFORE_2020", // D1.X.9b
+  plan_overpaymentReportingToStateCorrespondingYearPremiumRevenue:
+    "OVERPAYMENT_VS_PREMIUM_REVENUE", // D1.X.9d
 
   // D - Plan Level Indicators - Prior Authorization (plan-level-indicators/prior-authorization.ts)
   plan_averageTimeToDecisionForStandardPriorAuthorizations: "NUMBER_OVER_7_1", // D1.XIII.9
