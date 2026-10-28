@@ -111,6 +111,26 @@ const unnumberedRowWithColumn = (
   </Table>
 );
 
+const questionHeadingField = {
+  id: "D1.IV.6a",
+  type: "question",
+  props: {
+    content: "D1.IV.6a First appeal reason",
+    hint: "Question hint",
+  },
+};
+
+const questionHeadingRow = (
+  <Table>
+    <tbody>
+      <ExportedReportFieldRow
+        formField={questionHeadingField}
+        pageType="drawer"
+      />
+    </tbody>
+  </Table>
+);
+
 describe("<ExportedReportFieldRow />", () => {
   test("Is present", async () => {
     render(exportRow);
@@ -159,6 +179,19 @@ describe("<ExportedReportFieldRow />", () => {
     const numberCell = row.querySelector("th");
     expect(numberCell).toBeVisible();
     expect(numberCell).toHaveTextContent("");
+  });
+
+  test("renders a question layout element as a heading row with its content and hint", () => {
+    render(questionHeadingRow);
+    const headingRow = screen.getByTestId("exportQuestionHeadingRow");
+    expect(headingRow).toBeVisible();
+    // question number renders in the Number column
+    expect(
+      screen.getByRole("columnheader", { name: "D1.IV.6a" })
+    ).toBeVisible();
+    // question text and hint render in the Indicator column
+    expect(screen.getByText("First appeal reason")).toBeVisible();
+    expect(screen.getByText("Question hint")).toBeVisible();
   });
 
   testA11yAct(exportRow);

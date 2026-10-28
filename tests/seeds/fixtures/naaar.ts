@@ -64,7 +64,7 @@ export const newNaaar = (
   const { isNewProgram } = options;
 
   const planIndex = randomIndex(enums.planTypeIncludedInProgram.length);
-  const generatedProgramName = `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}${new Date().toISOString()}`;
+  const generatedProgramName = `${faker.vehicle.manufacturer()} ${faker.vehicle.model()} ${new Date().toISOString()}`;
 
   // Pick an existing program name
   const existingPrograms =

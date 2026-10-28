@@ -378,12 +378,12 @@ const sx = {
   },
   headerText: {
     marginBottom: "spacer2",
-    fontSize: "4xl",
-    fontWeight: "normal",
+    fontSize: "heading_4xl",
+    fontWeight: "heading_4xl",
     ".tablet &, .mobile &": {
-      fontSize: "xl",
-      lineHeight: "1.75rem",
-      fontWeight: "bold",
+      fontSize: "heading_xl",
+      lineHeight: "body_xl",
+      fontWeight: "heading_xl",
     },
   },
   bodyBox: {
@@ -441,8 +441,8 @@ const sxChildStyles = {
     },
   },
   programNameText: {
-    fontSize: "md",
-    fontWeight: "bold",
+    fontSize: "body_md",
+    fontWeight: "heading_md",
     textTransform: "none",
     letterSpacing: "normal",
     fontFamily: "body",
@@ -462,7 +462,7 @@ const sxChildStyles = {
     },
   },
   adminActionButton: {
-    fontSize: "1rem",
-    fontWeight: 700,
+    fontSize: "body_md",
+    fontWeight: "heading_md",
   },
 };

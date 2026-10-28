@@ -143,7 +143,6 @@ interface Props {
   name: string;
   label?: string;
   hint?: CustomHtmlElement[];
-  timetype?: string;
   nested?: boolean;
   autosave?: boolean;
   validateOnRender?: boolean;
@@ -165,6 +164,6 @@ const sx = {
     },
   },
   ".optional-text": {
-    fontWeight: "lighter",
+    fontWeight: "heading_sm_regular",
   },
 };

@@ -67,5 +67,50 @@ describe("BottomQualityMeasuresSectionV2", () => {
     expect(screen.getByText("Not reporting: Mock Reason")).toBeVisible();
   });
 
+  test("Does not apply error class to completed or not-reporting plans", () => {
+    const { container } = render(
+      <BottomQualityMeasuresSectionV2 {...defaultProps} />
+    );
+    expect(container.querySelectorAll(".error")).toHaveLength(0);
+  });
+
+  test("Applies error class to a reporting plan missing results", () => {
+    const props = {
+      ...defaultProps,
+      formattedEntityData: {
+        ...defaultProps.formattedEntityData,
+        measureResults: [
+          { planName: "mock-plan-missing-method", rateResults: [] },
+          {
+            planName: "mock-plan-missing-rates",
+            dataCollectionMethod: "Administrative",
+          },
+        ],
+      },
+    };
+    const { container } = render(<BottomQualityMeasuresSectionV2 {...props} />);
+    expect(container.querySelectorAll(".error")).toHaveLength(2);
+  });
+
+  test("Filters out exempt plans", () => {
+    const props = {
+      ...defaultProps,
+      formattedEntityData: {
+        ...defaultProps.formattedEntityData,
+        measureResults: [
+          { planName: "mock-plan-exempt", exempt: true },
+          {
+            planName: "mock-plan-reporting",
+            dataCollectionMethod: "Administrative",
+            rateResults: [{ rate: "mock-rate", rateResult: "12345" }],
+          },
+        ],
+      },
+    };
+    render(<BottomQualityMeasuresSectionV2 {...props} />);
+    expect(screen.queryByText("mock-plan-exempt")).not.toBeInTheDocument();
+    expect(screen.getByText("mock-plan-reporting")).toBeVisible();
+  });
+
   testA11yAct(<BottomQualityMeasuresSectionV2 {...defaultProps} />);
 });

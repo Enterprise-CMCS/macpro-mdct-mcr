@@ -131,7 +131,7 @@ const sx = {
     },
     th: {
       border: "none",
-      fontWeight: "bold",
+      fontWeight: "heading_md",
       color: "gray",
     },
   },

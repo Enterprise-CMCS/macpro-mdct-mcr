@@ -106,7 +106,7 @@ const sx = {
     marginLeft: "auto",
   },
   praStatement: {
-    fontSize: "0.875rem",
+    fontSize: "body_sm",
     marginTop: "spacer4",
   },
 };

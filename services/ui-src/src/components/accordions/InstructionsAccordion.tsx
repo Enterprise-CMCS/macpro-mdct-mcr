@@ -69,7 +69,7 @@ const sx = {
       marginLeft: "spacer6",
     },
     ".marker-normal > li::marker": {
-      fontWeight: "normal",
+      fontWeight: "body_md",
     },
     "ol > li > ol": {
       listStyleType: "lower-roman",
