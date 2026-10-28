@@ -85,7 +85,7 @@ export const formFieldFactory = (
       key: field.id,
       name: field.groupId ?? field.id,
       hydrate: field.props?.hydrate,
-      autoComplete: isFieldElement(field) ? "off" : undefined,
+      autoComplete: isFieldElement(field) ? "off" : undefined, // stops browsers from forcing autofill
       ...options,
       ...field?.props,
     };
