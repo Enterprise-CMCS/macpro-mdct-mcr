@@ -350,6 +350,19 @@ describe("Completion schemas", () => {
 
   test.each([
     ...reject(emptyResponses),
+    ...reject(["0", "-1", "5.5", "abc"]),
+    ...accept(["1", "5", "1,234"]),
+  ])(
+    "integerGreaterThanZeroNoNA() $description -> $expected",
+    ({ value, expected }) => {
+      expect(schemaMap.integerGreaterThanZeroNoNA().isValidSync(value)).toBe(
+        expected
+      );
+    }
+  );
+
+  test.each([
+    ...reject(emptyResponses),
     ...reject(["-1", "101", "abc"]),
     ...accept(["0", "100", "50.5"]),
   ])(

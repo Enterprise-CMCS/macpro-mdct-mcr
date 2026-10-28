@@ -262,6 +262,18 @@ export const integerZeroOrGreaterNoNA = (options?: ChoiceOptions) =>
       },
     });
 
+export const integerGreaterThanZeroNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        if (!/^\d+$/.test(stripNumberFormatting(value))) return false;
+        return Number(stripNumberFormatting(value)) > 0;
+      },
+    });
+
 export const percentageZeroToHundredNoNA = () =>
   string()
     .required(error.PERCENTAGE_RANGE_REQUIRED)
@@ -595,6 +607,8 @@ export const completionSchemaMap: any = {
   emailOptional: emailOptional(),
   emailOrUrlNoNA: emailOrUrlNoNA(),
   futureDate: futureDate(),
+  integerGreaterThanZeroNoNA: (options?: ChoiceOptions) =>
+    integerGreaterThanZeroNoNA(options),
   integerZeroOrGreaterNoNA: (options?: ChoiceOptions) =>
     integerZeroOrGreaterNoNA(options),
   number: number(),
