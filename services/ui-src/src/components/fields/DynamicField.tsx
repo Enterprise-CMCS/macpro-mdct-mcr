@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 // components
 import { Box, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
@@ -95,10 +95,19 @@ export const DynamicField = ({
     }
 
     // prepare args for autosave
+    // exclude not-yet-named NEW rows (so a freshly added blank entity doesn't fail
+    // backend name validation), but keep existing/previously-saved entities even
+    // if their name was just cleared, so clearing a name doesn't delete the entity
+    const valuesToSave = displayValues.filter((entity) => {
+      const wasAlreadySaved = hydrationValue?.some(
+        (savedEntity: EntityShape) => savedEntity.id === entity.id
+      );
+      return wasAlreadySaved || entity.name?.trim();
+    });
     const fields = getAutosaveFields({
       name,
       type: "dynamic",
-      value: displayValues,
+      value: valuesToSave,
       defaultValue: undefined,
       overrideCheck: true,
       hydrationValue,
@@ -330,8 +339,13 @@ export const DynamicField = ({
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
   // on displayValue change, set field array value to match
+  const isInitialMount = useRef(true);
   useEffect(() => {
-    form.setValue(name, displayValues, { shouldValidate: true });
+    // skip validation on initial load so empty rows don't show errors before user interaction
+    form.setValue(name, displayValues, {
+      shouldValidate: !isInitialMount.current,
+    });
+    isInitialMount.current = false;
   }, [displayValues]);
 
   const fieldErrorState: AnyObject | undefined =

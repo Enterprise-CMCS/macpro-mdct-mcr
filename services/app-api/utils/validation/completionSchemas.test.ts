@@ -263,6 +263,142 @@ describe("Completion schemas", () => {
 
   test.each([
     ...reject(emptyResponses),
+    ...reject(nonNumericValues),
+    ...accept(positiveNumbers),
+    ...accept(negativeNumbers),
+    ...reject(notApplicableValues),
+  ])("validNumberNoNA() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.validNumberNoNA.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...accept(emptyResponses),
+    ...reject(nonNumericValues),
+    ...accept(positiveNumbers),
+    ...accept(negativeNumbers),
+    ...reject(notApplicableValues),
+  ])(
+    "validNumberNoNAOptional() $description -> $expected",
+    ({ value, expected }) => {
+      expect(schemaMap.validNumberNoNAOptional.isValidSync(value)).toBe(
+        expected
+      );
+    }
+  );
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(["    "]),
+    ...reject(notApplicableValues),
+    ...reject(["not applicable", "unknown", "tbd", "---", "...", "!!!"]),
+    ...accept(["Sample response", "abc123"]),
+  ])("textNoNA() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.textNoNA.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...accept(emptyResponses),
+    ...reject(["    "]),
+    ...reject(["n/a", "unknown", "---"]),
+    ...accept(["Sample response"]),
+  ])("textNoNAOptional() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.textNoNAOptional.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(nonNumericValues),
+    ...accept(positiveNumbers),
+    ...accept(negativeNumbers),
+    ...reject(notApplicableValues),
+    ...accept(["suppressed", "Suppressed", " SUPPRESSED "]),
+    ...reject(["Suppressed for data privacy purposes"]),
+  ])(
+    "numberOrSuppressedNoNA() $description -> $expected",
+    ({ value, expected }) => {
+      expect(schemaMap.numberOrSuppressedNoNA.isValidSync(value)).toBe(
+        expected
+      );
+    }
+  );
+
+  // regression: completion status must still treat a cleared/blank NoNA field
+  // as incomplete, even though schemaMap.ts allows blank for data acceptance
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(["0", "-1", "abc"]),
+    ...accept(["1", "1,234", "0.5"]),
+  ])(
+    "positiveNumberNoNA() $description -> $expected",
+    ({ value, expected }) => {
+      expect(schemaMap.positiveNumberNoNA().isValidSync(value)).toBe(expected);
+    }
+  );
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(["-1", "5.5", "abc"]),
+    ...accept(["0", "5", "1,234"]),
+  ])(
+    "integerZeroOrGreaterNoNA() $description -> $expected",
+    ({ value, expected }) => {
+      expect(schemaMap.integerZeroOrGreaterNoNA().isValidSync(value)).toBe(
+        expected
+      );
+    }
+  );
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(["-1", "101", "abc"]),
+    ...accept(["0", "100", "50.5"]),
+  ])(
+    "percentageZeroToHundredNoNA() $description -> $expected",
+    ({ value, expected }) => {
+      expect(schemaMap.percentageZeroToHundredNoNA.isValidSync(value)).toBe(
+        expected
+      );
+    }
+  );
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(["01/01/1999"]),
+    ...accept(["01/01/2000", "12/31/2020"]),
+  ])(
+    "dateYear2000OrLater() $description -> $expected",
+    ({ value, expected }) => {
+      expect(schemaMap.dateYear2000OrLater.isValidSync(value)).toBe(expected);
+    }
+  );
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(["not valid"]),
+    ...accept(["test@example.com", "https://example.com"]),
+  ])("emailOrUrlNoNA() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.emailOrUrlNoNA.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(["not a url"]),
+    ...accept(["https://example.com", "https://example.com, http://a.com"]),
+  ])("urlList() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.urlList.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    { value: [{ id: "a", name: "Sample Entity" }], expected: true },
+    { value: [], expected: false },
+    { value: [{ id: "a", name: "N/A" }], expected: false },
+    { value: [{ id: "a", name: "" }], expected: false },
+  ])("dynamicNoPlaceholder() $value -> $expected", ({ value, expected }) => {
+    expect(schemaMap.dynamicNoPlaceholder.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...reject(emptyResponses),
     ...accept(["1:1", "123:123", "1,234:1.12", "0:1", "1:10,000"]),
     ...reject([
       ":",

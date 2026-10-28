@@ -85,7 +85,7 @@ export const encounterDataReportRoute: FormRoute = {
                   id: "state_encounterDataValidationEntity-otherText",
                   type: ReportFormFieldType.TEXTAREA,
                   validation: {
-                    type: ValidationType.TEXT,
+                    type: ValidationType.TEXT_NO_NA,
                     nested: true,
                     parentFieldName: "state_encounterDataValidationEntity",
                   },

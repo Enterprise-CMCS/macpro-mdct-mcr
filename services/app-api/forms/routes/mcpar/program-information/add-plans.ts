@@ -23,7 +23,7 @@ export const addPlansRoute: FormRoute = {
       {
         id: "plans",
         type: ReportFormFieldType.DYNAMIC,
-        validation: ValidationType.DYNAMIC,
+        validation: ValidationType.DYNAMIC_NO_PLACEHOLDER,
         props: {
           label: "Plan name",
         },

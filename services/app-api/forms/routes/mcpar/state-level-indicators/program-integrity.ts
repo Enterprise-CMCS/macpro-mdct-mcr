@@ -22,7 +22,7 @@ export const programIntegrityRoute: FormRoute = {
       {
         id: "state_focusedProgramIntegrityActivitiesConducted",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "B.X.1 Payment risks between the state and plans",
           hint: "Describe service-specific or other focused PI activities that the state conducted during the past year in this managed care program.</br>Examples include analyses focused on use of long-term services and supports (LTSS) or prescription drugs or activities that focused on specific payment issues to identify, address, and prevent fraud, waste or abuse. Consider data analytics, reviews of under/overutilization, and other activities. If no PI activities were performed, enter “No PI activities were performed during the reporting period” as your response. “N/A” is not an acceptable response.",
@@ -56,7 +56,7 @@ export const programIntegrityRoute: FormRoute = {
                   id: "state_overpaymentStandard-otherText",
                   type: ReportFormFieldType.TEXTAREA,
                   validation: {
-                    type: ValidationType.TEXT,
+                    type: ValidationType.TEXT_NO_NA,
                     nested: true,
                     parentFieldName: "state_overpaymentStandard",
                   },
@@ -69,7 +69,7 @@ export const programIntegrityRoute: FormRoute = {
       {
         id: "state_overpaymentStandardContractLanguageLocation",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label:
             "B.X.3 Location of contract provision stating overpayment standard",
@@ -79,7 +79,7 @@ export const programIntegrityRoute: FormRoute = {
       {
         id: "state_overpaymentStandardDescription",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "B.X.4 Description of overpayment contract standard",
           hint: "Briefly describe the overpayment standard selected in indicator B.X.2.",
@@ -88,7 +88,7 @@ export const programIntegrityRoute: FormRoute = {
       {
         id: "state_overpaymentReportingMonitoringEfforts",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "B.X.5 State overpayment reporting monitoring",
           hint: "Describe how the state monitors plan performance in reporting overpayments to the state, e.g. does the state track compliance with this requirement and/or timeliness of reporting?</br>The regulations at 438.604(a)(7), 608(a)(2) and 608(a)(3) require plan reporting to the state on various overpayment topics (whether annually or promptly). This indicator is asking the state how it monitors that reporting.",
@@ -97,7 +97,7 @@ export const programIntegrityRoute: FormRoute = {
       {
         id: "state_beneficiaryCircumstanceChangeReconciliationEfforts",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "B.X.6 Changes in beneficiary circumstances",
           hint: "Describe how the state ensures timely and accurate reconciliation of enrollment files between the state and plans to ensure appropriate payments for enrollees experiencing a change in status (e.g., incarcerated, deceased, switching plans).",
@@ -136,7 +136,7 @@ export const programIntegrityRoute: FormRoute = {
                             id: "state_providerTerminationReportingMonitoringMetricsDescription",
                             type: ReportFormFieldType.TEXTAREA,
                             validation: {
-                              type: ValidationType.TEXT,
+                              type: ValidationType.TEXT_NO_NA,
                               nested: true,
                               parentFieldName:
                                 "state_providerTerminationReportingMonitoringMetrics",
@@ -181,7 +181,7 @@ export const programIntegrityRoute: FormRoute = {
                   id: "state_excludedEntityIdentificationInstancesSummary",
                   type: ReportFormFieldType.TEXTAREA,
                   validation: {
-                    type: ValidationType.TEXT,
+                    type: ValidationType.TEXT_NO_NA,
                     nested: true,
                     parentFieldName:
                       "state_excludedEntityIdentifiedInFederalDatabaseCheck",
@@ -240,7 +240,7 @@ export const programIntegrityRoute: FormRoute = {
       {
         id: "state_submittedDataAuditResults",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "B.X.10 Periodic audits",
           hint: "If the state conducted any audits during the contract year to determine the accuracy, truthfulness, and completeness of the encounter and financial data submitted by the plans, provide the link(s) to the audit results. Refer to 42 CFR 438.602(e). If no audits were conducted, please enter “No such audits were conducted during the reporting year” as your response. “N/A” is not an acceptable response.",

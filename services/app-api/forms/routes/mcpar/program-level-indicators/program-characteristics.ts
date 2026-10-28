@@ -22,7 +22,7 @@ export const programCharacteristicsRoute: FormRoute = {
       {
         id: "program_contractTitle",
         type: ReportFormFieldType.TEXT,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "C1.I.1 Program contract",
           hint: "Enter the title of the contract between the state and plans participating in the managed care program.",
@@ -31,7 +31,7 @@ export const programCharacteristicsRoute: FormRoute = {
       {
         id: "program_contractDate",
         type: ReportFormFieldType.DATE,
-        validation: ValidationType.DATE,
+        validation: ValidationType.DATE_YEAR_2000_OR_LATER,
         props: {
           hint: "Enter the date of the contract between the state and plans participating in the managed care program.",
         },
@@ -141,7 +141,7 @@ export const programCharacteristicsRoute: FormRoute = {
       {
         id: "program_enrollment",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.POSITIVE_NUMBER_NO_NA,
         props: {
           label: "C1.I.5 Program enrollment",
           hint: "Enter the average number of individuals enrolled in this managed care program per month during the reporting year (i.e., average member months).",
@@ -152,7 +152,7 @@ export const programCharacteristicsRoute: FormRoute = {
       {
         id: "program_enrollmentBenefitChanges",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "C1.I.6 Changes to enrollment or benefits",
           hint: "Briefly explain any major changes to the population enrolled in or benefits provided by the managed care program during the reporting year. If there were no major changes, please enter “There were no major changes to the population or benefits during the reporting year” as your response. “N/A” is not an acceptable response.",
