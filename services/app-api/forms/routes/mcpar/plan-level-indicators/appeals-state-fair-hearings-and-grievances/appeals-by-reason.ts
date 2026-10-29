@@ -83,7 +83,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedPreServiceAuthorizationDenialAppealsDenied",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals denied",
           mask: "comma-separated",
@@ -93,7 +93,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedPreServiceAuthorizationDenialAppealsPartiallyFavorable",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals resolved in partial favor of enrollee",
           mask: "comma-separated",
@@ -103,7 +103,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedPreServiceAuthorizationDenialAppealsFavorable",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals resolved in favor of enrollee",
           mask: "comma-separated",
@@ -122,7 +122,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppealsDenied",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals denied",
           mask: "comma-separated",
@@ -132,7 +132,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppealsPartiallyFavorable",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals resolved in partial favor of enrollee",
           mask: "comma-separated",
@@ -142,7 +142,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppealsFavorable",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals resolved in favor of enrollee",
           mask: "comma-separated",
@@ -161,7 +161,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedPostServiceAuthorizationDenialAppealsDenied",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals denied",
           mask: "comma-separated",
@@ -171,7 +171,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedPostServiceAuthorizationDenialAppealsPartiallyFavorable",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals resolved in partial favor of enrollee",
           mask: "comma-separated",
@@ -181,7 +181,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedPostServiceAuthorizationDenialAppealsFavorable",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals resolved in favor of enrollee",
           mask: "comma-separated",
@@ -200,7 +200,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedServiceTimelinessAppealsDenied",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals denied",
           mask: "comma-separated",
@@ -210,7 +210,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedServiceTimelinessAppealsPartiallyFavorable",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals resolved in partial favor of enrollee",
           mask: "comma-separated",
@@ -220,7 +220,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedServiceTimelinessAppealsFavorable",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals resolved in favor of enrollee",
           mask: "comma-separated",
@@ -239,7 +239,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedUntimelyResponseAppealsDenied",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals denied",
           mask: "comma-separated",
@@ -249,7 +249,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedUntimelyResponseAppealsPartiallyFavorable",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals resolved in partial favor of enrollee",
           mask: "comma-separated",
@@ -259,7 +259,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedUntimelyResponseAppealsFavorable",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals resolved in favor of enrollee",
           mask: "comma-separated",
@@ -317,7 +317,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedRequestToDisputeFinancialLiabilityDenialAppealsDenied",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals denied",
           mask: "comma-separated",
@@ -327,7 +327,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedRequestToDisputeFinancialLiabilityDenialAppealsPartiallyFavorable",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals resolved in partial favor of enrollee",
           mask: "comma-separated",
@@ -337,7 +337,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedRequestToDisputeFinancialLiabilityDenialAppealsFavorable",
         type: ReportFormFieldType.NUMBER_OR_SUPPRESSED,
-        validation: ValidationType.NUMBER_OR_SUPPRESSED,
+        validation: ValidationType.NUMBER_OR_SUPPRESSED_NO_NA,
         props: {
           label: "Appeals resolved in favor of enrollee",
           mask: "comma-separated",

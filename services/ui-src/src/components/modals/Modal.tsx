@@ -129,8 +129,8 @@ const sx = {
   },
   modalHeaderText: {
     padding: "0 4rem 0 0",
-    fontSize: "2xl",
-    fontWeight: "bold",
+    fontSize: "heading_2xl",
+    fontWeight: "heading_2xl",
   },
   modalSubheading: {
     marginTop: "spacer1",
@@ -154,7 +154,7 @@ const sx = {
       margin: "spacer_half",
       paddingTop: "0.06rem",
       svg: {
-        fontSize: "xs",
+        fontSize: "body_xs",
         width: "xs",
         height: "xs",
       },
@@ -182,7 +182,7 @@ const sx = {
       },
     },
     ".mobile &": {
-      fontSize: "sm",
+      fontSize: "body_sm",
     },
   },
   close: {
@@ -194,7 +194,7 @@ const sx = {
       marginRight: "spacer1",
     },
     ".mobile &": {
-      fontSize: "sm",
+      fontSize: "body_sm",
       marginRight: "0",
     },
   },

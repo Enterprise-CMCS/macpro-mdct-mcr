@@ -149,7 +149,7 @@ const sx = {
     alignItems: "center",
   },
   headerNameText: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   subnavFlexRight: {
     alignItems: "center",
@@ -163,7 +163,7 @@ const sx = {
     },
   },
   saveStatusText: {
-    fontSize: "sm",
+    fontSize: "body_sm",
     ".mobile &": {
       width: "5rem",
       textAlign: "right",
@@ -180,6 +180,6 @@ const sx = {
     padding: "0.5rem 1rem",
     borderRadius: "5px",
     color: "primary",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
 };

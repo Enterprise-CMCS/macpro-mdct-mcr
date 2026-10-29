@@ -1,5 +1,5 @@
 // components
-import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Link } from "@chakra-ui/react";
 import { Alert as AlertRoot } from "@cmsgov/design-system";
 import { ReactNode } from "react";
 // types
@@ -27,7 +27,7 @@ export const Alert = ({
           )}
           {content && (
             <>
-              <Text sx={sx.descriptionText}>{content}</Text>
+              <Box sx={sx.descriptionText}>{content}</Box>
               {link && (
                 <Link href={link} isExternal>
                   {link}
@@ -52,7 +52,7 @@ interface Props {
 
 const sx = {
   title: {
-    fontSize: "lg",
+    fontSize: "heading_lg",
   },
   descriptionText: {
     marginTop: "spacer_half",

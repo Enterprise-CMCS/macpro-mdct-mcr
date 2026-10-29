@@ -76,7 +76,6 @@ export interface ReportFormFieldProps {
         label?: string;
         mask?: string;
         styleAsOptional?: boolean;
-        timetype?: string;
       };
       styleAsOptional?: boolean;
       type: ReportFormFieldType;
@@ -95,7 +94,6 @@ export interface ReportFormFieldProps {
   options?: string;
   styleAsOptional?: boolean;
   sxOverride?: any;
-  timetype?: string;
 }
 
 // Routes

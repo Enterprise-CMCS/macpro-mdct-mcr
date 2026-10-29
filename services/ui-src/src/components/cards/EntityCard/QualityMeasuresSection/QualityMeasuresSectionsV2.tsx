@@ -71,15 +71,18 @@ export const BottomQualityMeasuresSectionV2 = ({
             (printVersion && notAnswered)}
         </Text>
       )}
-      {formattedEntityData?.measureResults?.map((result) => (
-        <>
-          {result.exempt ? (
-            <></>
-          ) : (
+      {formattedEntityData?.measureResults
+        ?.filter((result) => !result.exempt)
+        .map((result) => {
+          // A reporting plan is incomplete until it has a data collection method and rate results
+          const isError =
+            !result.notReporting &&
+            (!result.dataCollectionMethod || !result.rateResults?.length);
+          return (
             <Box
               key={result.planName}
               sx={sx.highlightContainer}
-              className={!result ? "error" : ""}
+              className={isError ? "error" : ""}
             >
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.qualityMeasuresPlanName}>{result.planName}</Text>
@@ -111,9 +114,8 @@ export const BottomQualityMeasuresSectionV2 = ({
                 </Box>
               )}
             </Box>
-          )}
-        </>
-      ))}
+          );
+        })}
     </>
   );
 };

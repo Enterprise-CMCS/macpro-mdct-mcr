@@ -102,7 +102,7 @@ interface Props {
 const sx = {
   noFormMessage: {
     margin: "0.5rem auto 0.25rem",
-    fontSize: "lg",
+    fontSize: "body_lg",
     color: "error_darker",
   },
   footerBox: {

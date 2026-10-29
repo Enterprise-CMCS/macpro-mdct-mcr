@@ -210,7 +210,6 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         props: {
           label: "O. MLR reporting period end date",
           hint: "Enter the end date of the MLR reporting period.",
-          timetype: "endDate",
         },
       },
       {

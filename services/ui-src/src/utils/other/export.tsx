@@ -443,7 +443,10 @@ export const parseFormFieldInfo = (formFieldProps?: AnyObject) => {
     Object.values(formFieldProps).every((x) => x === undefined)
   )
     return {};
-  const labelArray = formFieldProps?.label?.split(" ");
+  // question layout elements carry their numbered text in content, not label
+  const labelArray = (formFieldProps?.label ?? formFieldProps?.content)?.split(
+    " "
+  );
   return {
     number: labelArray?.[0].match(/[-.0-9]+/) ? labelArray?.[0] : undefined,
     label: labelArray?.[0].match(/[-.0-9]+/)
@@ -521,12 +524,12 @@ const sx = {
       listStyle: "none",
       ".entityResponse": {
         p: {
-          lineHeight: "1.25rem",
-          fontSize: "sm",
+          lineHeight: "heading_sm",
+          fontSize: "body_sm",
         },
       },
       p: {
-        lineHeight: "1.25rem",
+        lineHeight: "heading_sm",
       },
     },
     "&:last-of-type": {
@@ -534,7 +537,7 @@ const sx = {
     },
   },
   entityName: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   noResponse: {
     color: "error_darker",
