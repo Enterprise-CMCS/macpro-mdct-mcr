@@ -309,7 +309,7 @@ describe("Completion schemas", () => {
     ...reject(emptyResponses),
     ...reject(nonNumericValues),
     ...accept(positiveNumbers),
-    ...accept(negativeNumbers),
+    ...reject(negativeNumbers),
     ...reject(notApplicableValues),
     ...accept(["suppressed", "Suppressed", " SUPPRESSED "]),
     ...reject(["Suppressed for data privacy purposes"]),
@@ -343,6 +343,19 @@ describe("Completion schemas", () => {
     "integerZeroOrGreaterNoNA() $description -> $expected",
     ({ value, expected }) => {
       expect(schemaMap.integerZeroOrGreaterNoNA().isValidSync(value)).toBe(
+        expected
+      );
+    }
+  );
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(["0", "-1", "5.5", "abc"]),
+    ...accept(["1", "5", "1,234"]),
+  ])(
+    "integerGreaterThanZeroNoNA() $description -> $expected",
+    ({ value, expected }) => {
+      expect(schemaMap.integerGreaterThanZeroNoNA().isValidSync(value)).toBe(
         expected
       );
     }

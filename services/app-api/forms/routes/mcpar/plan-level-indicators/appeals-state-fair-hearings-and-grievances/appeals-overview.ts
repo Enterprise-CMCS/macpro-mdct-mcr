@@ -87,7 +87,7 @@ export const appealsOverviewRoute: DrawerFormRoute = {
       {
         id: "plan_appealsDenied",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.IV.1a Appeals denied",
           hint: "Enter the total number of appeals resolved during the reporting period (D1.IV.1) that were denied (adverse) to the enrollee.",
@@ -98,7 +98,7 @@ export const appealsOverviewRoute: DrawerFormRoute = {
       {
         id: "plan_appealsResolvedInPartialFavorOfEnrollee",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.IV.1b Appeals resolved in partial favor of enrollee",
           hint: "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in partial favor of the enrollee.",
@@ -109,7 +109,7 @@ export const appealsOverviewRoute: DrawerFormRoute = {
       {
         id: "plan_appealsResolvedInFavorOfEnrollee",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.IV.1c Appeals resolved in favor of enrollee",
           hint: "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in favor of the enrollee.",
@@ -120,7 +120,7 @@ export const appealsOverviewRoute: DrawerFormRoute = {
       {
         id: "plan_activeAppeals",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.IV.2 Active appeals",
           hint: "Enter the total number of appeals still pending or in process (not yet resolved) as of the end of the reporting year.",
@@ -204,7 +204,7 @@ export const appealsOverviewRoute: DrawerFormRoute = {
       {
         id: "plan_timelyResolvedStandardAppeals",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.5a Standard appeals for which timely resolution was provided",
@@ -233,7 +233,7 @@ export const appealsOverviewRoute: DrawerFormRoute = {
       {
         id: "plan_timelyResolvedExpeditedAppeals",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.5b Expedited appeals for which timely resolution was provided",

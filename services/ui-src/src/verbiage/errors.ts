@@ -70,6 +70,8 @@ export const validationErrors = {
   EMAIL_OR_URL_REQUIRED:
     "Response must include a valid hyperlink/URL or email address.",
   URL_LIST_REQUIRED: "Response must include one or more valid hyperlinks/URLs.",
+  NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED:
+    'Enter a valid numeric response or "Suppressed".',
 };
 
 export const reportErrors = {

@@ -54,7 +54,7 @@ export const stateFairHearingsRoute: DrawerFormRoute = {
       {
         id: "plan_stateFairHearingRequestsFiled",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.IV.8a State Fair Hearing requests",
           hint: "Enter the total number of State Fair Hearing requests resolved during the reporting year with the plan that issued an adverse benefit determination.",
@@ -65,7 +65,7 @@ export const stateFairHearingsRoute: DrawerFormRoute = {
       {
         id: "plan_stateFairHearingRequestsWithFavorableDecision",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.8b State Fair Hearings resulting in a favorable decision for the enrollee",
@@ -77,7 +77,7 @@ export const stateFairHearingsRoute: DrawerFormRoute = {
       {
         id: "plan_stateFairHearingRequestsWithAdverseDecision",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.8c State Fair Hearings resulting in an adverse decision for the enrollee",
@@ -89,7 +89,7 @@ export const stateFairHearingsRoute: DrawerFormRoute = {
       {
         id: "plan_stateFairHearingRequestsRetracted",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.8d State Fair Hearings retracted prior to reaching a decision",

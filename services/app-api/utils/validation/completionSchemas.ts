@@ -42,6 +42,8 @@ export const error = {
   EMAIL_OR_URL_REQUIRED:
     "Response must include a valid hyperlink/URL or email address.",
   URL_LIST_REQUIRED: "Response must include one or more valid hyperlinks/URLs.",
+  NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED:
+    'Enter a valid numeric response or "Suppressed".',
 };
 
 // TEXT
@@ -224,9 +226,11 @@ export const numberOrSuppressedNoNA = () =>
         if (!value) return false;
         const isSuppressed = value.trim().toLowerCase() === "suppressed";
         if (validNAValues.includes(value)) return false;
-        return isSuppressed || validNumberRegex.test(value);
+        if (isSuppressed) return true;
+        if (!validNumberRegex.test(value)) return false;
+        return parseFloat(value) >= 0;
       },
-      message: error.NA_NOT_ACCEPTED,
+      message: error.NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED,
     });
 
 /*
@@ -255,6 +259,18 @@ export const integerZeroOrGreaterNoNA = (options?: ChoiceOptions) =>
       test: (value) => {
         if (!value || isWhitespaceString(value)) return false;
         return /^\d+$/.test(stripNumberFormatting(value));
+      },
+    });
+
+export const integerGreaterThanZeroNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        if (!/^\d+$/.test(stripNumberFormatting(value))) return false;
+        return Number(stripNumberFormatting(value)) > 0;
       },
     });
 
@@ -591,6 +607,8 @@ export const completionSchemaMap: any = {
   emailOptional: emailOptional(),
   emailOrUrlNoNA: emailOrUrlNoNA(),
   futureDate: futureDate(),
+  integerGreaterThanZeroNoNA: (options?: ChoiceOptions) =>
+    integerGreaterThanZeroNoNA(options),
   integerZeroOrGreaterNoNA: (options?: ChoiceOptions) =>
     integerZeroOrGreaterNoNA(options),
   number: number(),
@@ -602,6 +620,9 @@ export const completionSchemaMap: any = {
   numberOrSuppressedNoNA: numberOrSuppressedNoNA(),
   numberOrSuppressedOrNaNr: numberOrSuppressedOrNaNr(),
   numberSuppressible: numberSuppressible(),
+  numberZeroOrGreaterNoNA: schemaMap.numberZeroOrGreaterNoNA,
+  numberZeroOrGreaterTwoDecimalsNoNA:
+    schemaMap.numberZeroOrGreaterTwoDecimalsNoNA,
   pastDate: pastDate(),
   pastDateOptional: pastDateOptional(),
   percentageZeroToHundredNoNA: percentageZeroToHundredNoNA(),

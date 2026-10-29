@@ -300,11 +300,8 @@ describe("Schemas", () => {
       ["suppressed", "Suppressed", " SUPPRESSED "],
       true
     );
-    testValidNumber(
-      schemaMap.numberOrSuppressedNoNA,
-      ["1", "-1", "1,000"],
-      true
-    );
+    testValidNumber(schemaMap.numberOrSuppressedNoNA, ["1", "1,000"], true);
+    testValidNumber(schemaMap.numberOrSuppressedNoNA, ["-1", "-1,000"], false);
     testTextSchema(
       schemaMap.numberOrSuppressedNoNA,
       [...validNAValues, "badText", undefined],
@@ -330,6 +327,45 @@ describe("Schemas", () => {
     testTextSchema(
       schemaMap.integerZeroOrGreaterNoNA(),
       ["-1", "5.5", "abc", undefined, ""],
+      false
+    );
+  });
+
+  test("Test integerGreaterThanZeroNoNA schema", () => {
+    testTextSchema(
+      schemaMap.integerGreaterThanZeroNoNA(),
+      ["1", "5", "1,234"],
+      true
+    );
+    testTextSchema(
+      schemaMap.integerGreaterThanZeroNoNA(),
+      ["0", "-1", "5.5", "abc", undefined, ""],
+      false
+    );
+  });
+
+  test("Test numberZeroOrGreaterNoNA schema", () => {
+    testTextSchema(
+      schemaMap.numberZeroOrGreaterNoNA(),
+      ["0", "5", "5.75", "1,234"],
+      true
+    );
+    testTextSchema(
+      schemaMap.numberZeroOrGreaterNoNA(),
+      ["-1", "abc", undefined, ""],
+      false
+    );
+  });
+
+  test("Test numberZeroOrGreaterTwoDecimalsNoNA schema", () => {
+    testTextSchema(
+      schemaMap.numberZeroOrGreaterTwoDecimalsNoNA(),
+      ["0", "5", "5.75", "1,234.50"],
+      true
+    );
+    testTextSchema(
+      schemaMap.numberZeroOrGreaterTwoDecimalsNoNA(),
+      ["-1", "5.755", "abc", undefined, ""],
       false
     );
   });
