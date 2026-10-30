@@ -198,14 +198,6 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
       </Helmet>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
 
-      {entityType === EntityType.QUALITY_MEASURES &&
-        reportFieldDataEntities.length <= 10 && (
-          <Alert
-            status={AlertTypes.WARN}
-            description="The number of quality and performance measures reported appears low. Review the instructions and confirm that all applicable measures are included. If the reported information is accurate, no action is needed."
-          />
-        )}
-
       {entityType === EntityType.SANCTIONS &&
         reportFieldDataEntities.length <= 2 && (
           <Alert

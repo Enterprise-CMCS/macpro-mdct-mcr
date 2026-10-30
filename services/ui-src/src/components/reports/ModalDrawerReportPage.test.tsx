@@ -202,102 +202,39 @@ describe("<ModalDrawerReportPage />", () => {
     });
   });
 
-  describe("Test ModalDrawerReportPage quality measures warning banner", () => {
-    const mockQualityMeasuresRoute = {
-      ...mockModalDrawerReportPageJson,
-      entityType: EntityType.QUALITY_MEASURES,
-    };
-    test("shows warning banner when quality measures count is 10 or fewer", () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockMcparReportStore,
-      });
-      render(
-        modalDrawerReportPageComponentWithEntities(mockQualityMeasuresRoute)
-      );
-      expect(
-        screen.getByText(
-          /quality and performance measures reported appears low/i
-        )
-      ).toBeVisible();
-    });
-
-    test("does not show warning banner when quality measures count is greater than 10", () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        report: {
-          ...mockMcparReportStore.report,
-          fieldData: {
-            ...mockMcparReportStore.report?.fieldData,
-            qualityMeasures: Array.from({ length: 11 }, (_, i) => ({
-              id: `mock-id-${i}`,
-            })),
-          },
-        },
-      });
-      render(
-        modalDrawerReportPageComponentWithEntities(mockQualityMeasuresRoute)
-      );
-      expect(
-        screen.queryByText(
-          /quality and performance measures reported appears low/i
-        )
-      ).not.toBeInTheDocument();
-    });
-
-    test("does not show warning banner for non-quality-measures pages", () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockMcparReportStore,
-      });
-      render(modalDrawerReportPageComponentWithEntities());
-      expect(
-        screen.queryByText(
-          /quality and performance measures reported appears low/i
-        )
-      ).not.toBeInTheDocument();
-    });
-  });
-
   describe("Test ModalDrawerReportPage sanctions warning banner", () => {
+    const bannerText =
+      /sanctions, corrective actions, or other interventions reported appears low/i;
+
     const mockSanctionsRoute = {
       ...mockModalDrawerReportPageJson,
       entityType: EntityType.SANCTIONS,
     };
 
-    test("shows warning banner when sanctions count is 2 or fewer", () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockMcparReportStore,
-      });
-      render(modalDrawerReportPageComponentWithEntities(mockSanctionsRoute));
-      expect(
-        screen.getByText(
-          /sanctions, corrective actions, or other interventions reported appears low/i
-        )
-      ).toBeVisible();
+    const storeWithSanctions = (count: number) => ({
+      ...mockStateUserStore,
+      report: {
+        ...mockMcparReportStore.report,
+        fieldData: {
+          ...mockMcparReportStore.report?.fieldData,
+          sanctions: Array.from({ length: count }, (_, i) => ({
+            ...mockSanctionsEntity,
+            id: `mock-sanction-${i}`,
+          })),
+        },
+      },
     });
 
-    test("does not show warning banner when sanctions count is greater than 2", () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        report: {
-          ...mockMcparReportStore.report,
-          fieldData: {
-            ...mockMcparReportStore.report?.fieldData,
-            sanctions: Array.from({ length: 3 }, (_, i) => ({
-              ...mockSanctionsEntity,
-              id: `mock-sanction-${i}`,
-            })),
-          },
-        },
-      });
+    test.each([1, 2])("shows warning banner with %s sanctions", (count) => {
+      mockedUseStore.mockReturnValue(storeWithSanctions(count));
       render(modalDrawerReportPageComponentWithEntities(mockSanctionsRoute));
-      expect(
-        screen.queryByText(
-          /sanctions, corrective actions, or other interventions reported appears low/i
-        )
-      ).not.toBeInTheDocument();
+      expect(screen.getByText(bannerText)).toBeVisible();
+    });
+
+    test("does not show warning banner with more than 2 sanctions", () => {
+      mockedUseStore.mockReturnValue(storeWithSanctions(3));
+      render(modalDrawerReportPageComponentWithEntities(mockSanctionsRoute));
+      expect(screen.queryByText(bannerText)).not.toBeInTheDocument();
     });
 
     test("does not show sanctions banner for non-sanctions pages", () => {
@@ -306,11 +243,7 @@ describe("<ModalDrawerReportPage />", () => {
         ...mockMcparReportStore,
       });
       render(modalDrawerReportPageComponentWithEntities());
-      expect(
-        screen.queryByText(
-          /sanctions, corrective actions, or other interventions reported appears low/i
-        )
-      ).not.toBeInTheDocument();
+      expect(screen.queryByText(bannerText)).not.toBeInTheDocument();
     });
   });
 
