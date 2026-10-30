@@ -13,8 +13,8 @@ export const programCharacteristicsRoute: DrawerFormRoute = {
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic I. Program Characteristics & Enrollment",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic I. Program Characteristics & Enrollment",
       spreadsheet: "D1_Plan_Set",
     },
     dashboardTitle: "Report program characteristics & enrollment for each plan",
@@ -123,7 +123,7 @@ export const programCharacteristicsRoute: DrawerFormRoute = {
       {
         id: "plan_parentOrganization",
         type: ReportFormFieldType.TEXT,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label:
             "D1.I.4: Parent Organization: The name of the parent entity that controls the Medicaid Managed Care Plan.",

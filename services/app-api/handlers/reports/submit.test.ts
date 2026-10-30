@@ -18,6 +18,7 @@ import {
   mockS3PutObjectCommandOutput,
 } from "../../utils/testing/setupJest";
 import s3Lib from "../../utils/s3/s3-lib";
+import * as completionStatus from "../../utils/validation/completionStatus";
 import { hasPermissions } from "../../utils/auth/authorization";
 // types
 import { APIGatewayProxyEvent } from "../../utils/types";
@@ -66,8 +67,8 @@ describe("Test submitReport API method", () => {
     // s3 mocks
     const s3GetSpy = jest.spyOn(s3Lib, "get");
     s3GetSpy
-      .mockResolvedValueOnce(mockReportJson)
-      .mockResolvedValueOnce(mockReportFieldData);
+      .mockResolvedValueOnce(mockReportFieldData)
+      .mockResolvedValueOnce(mockReportJson);
     const s3PutSpy = jest.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     // dynamodb mocks
@@ -82,6 +83,10 @@ describe("Test submitReport API method", () => {
     expect(body.lastAlteredBy).toContain("Thelonious States");
     expect(body.programName).toContain("testProgram");
     expect(body.isComplete).toStrictEqual(true);
+    expect(body.completionStatus).toEqual({
+      "/mock/mock-route-1": true,
+      "/mock/mock-route-2": {},
+    });
     expect(body.status).toStrictEqual("Submitted");
     expect(body.submittedBy).toStrictEqual("Thelonious States");
     expect(body.submittedOnDate).toBeTruthy();
@@ -94,8 +99,8 @@ describe("Test submitReport API method", () => {
     // s3 mocks
     const s3GetSpy = jest.spyOn(s3Lib, "get");
     s3GetSpy
-      .mockResolvedValueOnce(mockReportJson)
-      .mockResolvedValueOnce(mockReportFieldData);
+      .mockResolvedValueOnce(mockReportFieldData)
+      .mockResolvedValueOnce(mockReportJson);
     const s3PutSpy = jest.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     // dynamodb mocks
@@ -120,15 +125,42 @@ describe("Test submitReport API method", () => {
     expect(body.submissionCount).toBe(1);
   });
 
-  test("Test report submittal fails if incomplete.", async () => {
+  test("Test report submittal fails if recalculated completion is incomplete, even when stored isComplete is true", async () => {
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportFieldData)
+      .mockResolvedValueOnce(mockReportJson);
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    jest
+      .spyOn(completionStatus, "calculateCompletionStatus")
+      .mockResolvedValueOnce({ "/mock/mock-route-1": false });
     dynamoClientMock.on(GetCommand).resolves({
-      Item: mockDynamoData,
+      Item: mockDynamoDataCompleted,
     });
     const res = await submitReport(testSubmitEvent, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Conflict);
     const body = JSON.parse(res.body!);
     expect(body).toStrictEqual(error.REPORT_INCOMPLETE);
+    expect(dynamoClientMock.commandCalls(PutCommand)).toHaveLength(0);
+    expect(s3PutSpy).not.toHaveBeenCalled();
+  });
+
+  test("Test report submittal succeeds when recalculated completion is complete, even when stored isComplete is false", async () => {
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportFieldData)
+      .mockResolvedValueOnce(mockReportJson);
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    dynamoClientMock.on(GetCommand).resolves({
+      Item: mockDynamoData,
+    });
+    const res = await submitReport(testSubmitEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.Ok);
+    const body = JSON.parse(res.body!);
+    expect(body.isComplete).toStrictEqual(true);
+    expect(body.status).toStrictEqual("Submitted");
   });
 
   test("Test reportKeys not provided throws 400 error", async () => {
@@ -161,6 +193,10 @@ describe("Test submitReport API method", () => {
   });
 
   test("Test dynamo issue throws error", async () => {
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportFieldData)
+      .mockResolvedValueOnce(mockReportJson);
     dynamoClientMock
       .on(GetCommand)
       .resolves({
@@ -179,7 +215,7 @@ describe("Test submitReport API method", () => {
     });
     const s3GetSpy = jest.spyOn(s3Lib, "get");
     s3GetSpy
-      .mockResolvedValueOnce(mockS3PutObjectCommandOutput)
+      .mockResolvedValueOnce(mockReportFieldData)
       .mockRejectedValueOnce("error");
     const res = await submitReport(testSubmitEvent, null);
     expect(res.statusCode).toBe(StatusCodes.InternalServerError);
@@ -193,7 +229,7 @@ describe("Test submitReport API method", () => {
     const s3GetSpy = jest.spyOn(s3Lib, "get");
     s3GetSpy
       .mockRejectedValueOnce("error")
-      .mockResolvedValueOnce(mockS3PutObjectCommandOutput);
+      .mockResolvedValueOnce(mockReportJson);
     const res = await submitReport(testSubmitEvent, null);
     expect(res.statusCode).toBe(StatusCodes.InternalServerError);
     expect(res.body).toContain(error.S3_OBJECT_GET_ERROR);
@@ -205,8 +241,8 @@ describe("Test submitReport API method", () => {
     });
     const s3GetSpy = jest.spyOn(s3Lib, "get");
     s3GetSpy
-      .mockResolvedValueOnce(mockReportJson)
-      .mockResolvedValueOnce(mockReportFieldData);
+      .mockResolvedValueOnce(mockReportFieldData)
+      .mockResolvedValueOnce(mockReportJson);
     const s3PutSpy = jest.spyOn(s3Lib, "put");
     s3PutSpy.mockRejectedValueOnce("error");
     const res = await submitReport(testSubmitEvent, null);

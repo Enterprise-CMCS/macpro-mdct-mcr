@@ -10,7 +10,12 @@ import { svgFilters } from "styles/theme";
 // types
 import { AnyObject, EntityShape, EntityType } from "types";
 // utils
-import { useStore } from "utils";
+import {
+  isQualityMeasureV1,
+  qualityMeasureV1Status,
+  qualityMeasureV2Status,
+  useStore,
+} from "utils";
 // assets
 import completedIcon from "assets/icons/icon_check_circle.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
@@ -33,10 +38,12 @@ export const EntityCard = ({
 
   let entityStarted = false;
   let entityCompleted = false;
-  const reportingPeriodCompletedOrOptional =
-    entityType == EntityType.QUALITY_MEASURES
-      ? formattedEntityData.reportingPeriod
-      : true;
+
+  const isV1QualityMeasure = isQualityMeasureV1(entityType, entity);
+
+  const reportingPeriodCompletedOrOptional = isV1QualityMeasure
+    ? !!formattedEntityData.reportingPeriod
+    : true;
 
   // get index and length of entities
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
@@ -53,15 +60,19 @@ export const EntityCard = ({
       entityCompleted = !!formattedEntityData?.assessmentDate;
       break;
     case EntityType.QUALITY_MEASURES: {
-      const perPlanResponses = formattedEntityData?.perPlanResponses;
-      const validPerPlanResponses = perPlanResponses?.filter(
-        (el: any) => el.response
-      );
-      entityStarted = !!validPerPlanResponses?.length;
-      // perPlanResponses already excludes exempted plans (filtered in getFormattedEntityData)
-      entityCompleted =
-        entityStarted &&
-        validPerPlanResponses?.length === perPlanResponses?.length;
+      // If all plans are exempted, return true (nothing to complete)
+      if (formattedEntityData.allPlansExempted) {
+        entityStarted = true;
+        entityCompleted = true;
+        break;
+      }
+
+      const { started, completed } = isV1QualityMeasure
+        ? qualityMeasureV1Status(formattedEntityData?.perPlanResponses)
+        : qualityMeasureV2Status(formattedEntityData?.measureResults);
+
+      entityStarted = started;
+      entityCompleted = completed;
       break;
     }
     default:
@@ -142,6 +153,7 @@ export const EntityCard = ({
         {openAddEditEntityModal && (
           <>
             {entityType == EntityType.QUALITY_MEASURES &&
+              isV1QualityMeasure &&
               !formattedEntityData.reportingPeriod && (
                 <Text sx={sx.missingReportingPeriodMessage}>
                   {verbiage.missingReportingPeriodMessage}
@@ -245,12 +257,12 @@ const sx = {
     },
     ".error-text": {
       color: "error_darker",
-      fontSize: ".75rem",
+      fontSize: "body_xs",
       textAlign: "center",
     },
     ".completed-text": {
       color: "green",
-      fontSize: ".75rem",
+      fontSize: "body_xs",
       textAlign: "center",
     },
   },
@@ -274,25 +286,25 @@ const sx = {
   },
   missingReportingPeriodMessage: {
     marginTop: "spacer2",
-    fontSize: "xs",
+    fontSize: "body_xs",
     color: "error_dark",
   },
   unfinishedMessage: {
-    fontSize: "xs",
+    fontSize: "body_xs",
     color: "error_dark",
   },
   editButton: {
     marginY: "spacer2",
-    fontWeight: "normal",
+    fontWeight: "body_md",
   },
   openDrawerButton: {
     marginTop: "spacer2",
-    fontWeight: "normal",
+    fontWeight: "body_md",
   },
   entitiesCount: {
     position: "absolute",
     right: "-2rem",
-    fontSize: ".75rem",
+    fontSize: "heading_xs",
     color: "gray",
     ".mobile &": {
       right: "-1.5rem",

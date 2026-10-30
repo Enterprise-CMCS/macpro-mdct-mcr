@@ -104,6 +104,8 @@ export interface FieldChoice {
   checked?: boolean;
   children?: FormField[];
   checkedChildren?: React.ReactNode;
+  // when checked, deselects all other choices in the field (and vice versa)
+  exclusive?: boolean;
 }
 
 export interface ChoiceFieldProps {
@@ -213,6 +215,7 @@ export interface PlanData {
 
 export enum ReportFormFieldType {
   CHECKBOX = "checkbox",
+  CHECKBOX_SINGLE = "checkboxSingle",
   DATE = "date",
   DATE_MONTH_YEAR = "dateMonthYear",
   DROPDOWN = "dropdown",

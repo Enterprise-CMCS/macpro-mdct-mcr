@@ -69,7 +69,7 @@ export const OverlayReportPage = ({
     setSidebarHidden(openOverlay);
   };
 
-  const TablePage = () => {
+  const renderTablePage = () => {
     const entityData = report?.fieldData[entityType] || [];
     const standardEntities = report?.fieldData["standards"] || [];
     const hasStandards = standardEntities.length > 0;
@@ -158,13 +158,13 @@ export const OverlayReportPage = ({
     );
   };
 
-  const DetailsOverlay = () => {
-    useEffect(() => {
-      if (!details?.verbiage || !details?.forms) {
-        toggleOverlay();
-      }
-    }, [details]);
+  useEffect(() => {
+    if (isEntityDetailsOpen && (!details?.verbiage || !details?.forms)) {
+      toggleOverlay();
+    }
+  }, [details, isEntityDetailsOpen]);
 
+  const renderDetailsOverlay = () => {
     if (!details?.verbiage || !details?.forms) {
       return <></>;
     }
@@ -258,7 +258,7 @@ export const OverlayReportPage = ({
     );
   };
 
-  return isEntityDetailsOpen ? <DetailsOverlay /> : <TablePage />;
+  return isEntityDetailsOpen ? renderDetailsOverlay() : renderTablePage();
 };
 
 interface Props {
@@ -277,8 +277,8 @@ const sx = {
     textAlign: "center",
   },
   dashboardTitle: {
-    fontSize: "md",
-    fontWeight: "bold",
+    fontSize: "heading_md",
+    fontWeight: "heading_md",
     color: "gray",
     textAlign: "left",
     ".tablet &, .mobile &": {
@@ -295,8 +295,8 @@ const sx = {
       paddingRight: "0",
       borderBottom: "1px solid var(--mdct-colors-gray_lighter)",
       color: "gray",
-      fontSize: "lg",
-      fontWeight: "bold",
+      fontSize: "heading_lg",
+      fontWeight: "heading_lg",
       ".mobile &": {
         border: "none",
       },
@@ -318,7 +318,7 @@ const sx = {
   },
   missingEntityMessage: {
     padding: "0 0 1rem 0",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     a: {
       color: "primary",
       textDecoration: "underline",
@@ -334,7 +334,7 @@ const sx = {
     },
     li: {
       marginLeft: "spacer4",
-      lineHeight: "2rem",
+      lineHeight: "body_md",
       "&:first-of-type": {
         paddingTop: "0.75rem",
       },

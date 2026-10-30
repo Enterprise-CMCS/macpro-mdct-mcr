@@ -13,8 +13,8 @@ export const accessMeasuresRoute: ModalDrawerRoute = {
   entityType: EntityType.ACCESS_MEASURES,
   verbiage: {
     intro: {
-      section: "Section C: Program-Level Indicators",
-      subsection: "Topic V. Availability, Accessibility and Network Adequacy",
+      formEyebrow: "Section C: Program-Level Indicators",
+      section: "Topic V. Availability, Accessibility and Network Adequacy",
       spreadsheet: "C2_Program_State",
       info: [
         {

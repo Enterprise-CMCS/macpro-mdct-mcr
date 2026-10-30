@@ -16,7 +16,7 @@ export const SectionHeader = ({
       borderColor: "gray_lighter",
     },
     hintText: {
-      fontSize: "sm",
+      fontSize: "body_sm",
       color: "gray_dark",
       marginBottom: "spacer2",
     },

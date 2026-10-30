@@ -27,7 +27,7 @@ interface Props {
 const sx = {
   backButton: {
     padding: 0,
-    fontWeight: "normal",
+    fontWeight: "body_md",
     color: "primary",
     display: "flex",
     marginBottom: "spacer4",

@@ -11,8 +11,8 @@ export const informationForPrimaryContactRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Program Information",
-      subsection: "Information for Primary Contact",
+      formEyebrow: "Program Information",
+      section: "Information for Primary Contact",
       hint: "Please identify the individual whom CMS should contact with questions regarding the MLR report. Follow up communications related to this report will be made to the primary contact.",
       spreadsheet: "Program Information",
       exportSection: "Information for Primary Contact",

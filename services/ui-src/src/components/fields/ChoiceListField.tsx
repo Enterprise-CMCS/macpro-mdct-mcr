@@ -214,7 +214,23 @@ export const ChoiceListField = ({
       selectedOptions = [...(form.getValues(name) || displayValue || [])];
 
       if (isOptionChecked) {
-        selectedOptions.push(clickedOption);
+        const exclusiveChoice = choices.find((choice) => choice.exclusive);
+        if (exclusiveChoice?.id === clickedOption.key) {
+          // Checking the exclusive option clears every other option (and their nested data)
+          const everyOtherOption = choices.filter(
+            (choice) => choice.id !== clickedOption.key
+          );
+          clearUncheckedNestedFields(everyOtherOption);
+          selectedOptions = [clickedOption];
+        } else {
+          selectedOptions.push(clickedOption);
+          // Checking any other option clears the exclusive option
+          if (exclusiveChoice) {
+            selectedOptions = selectedOptions.filter(
+              (field) => field.key !== exclusiveChoice.id
+            );
+          }
+        }
       } else {
         selectedOptions = selectedOptions.filter(
           (field) => field.key !== clickedOption.key
@@ -263,9 +279,17 @@ export const ChoiceListField = ({
           return choice;
         });
 
+        const selectedChoiceIds = (displayValue || []).map(
+          (option: Choice) => option.key
+        );
+
         const combinedFields = [
           ...fields,
-          ...getNestedChildFields(choicesWithNestedEnabledFields, form),
+          ...getNestedChildFields(
+            choicesWithNestedEnabledFields,
+            form,
+            selectedChoiceIds
+          ),
         ];
 
         const reportArgs = {
@@ -392,21 +416,31 @@ export const applyAccessibleLabelsToChildFields = (
 
 export const getNestedChildFields = (
   choices: FieldChoice[],
-  form: UseFormReturn<FieldValues, any>
+  form: UseFormReturn<FieldValues, any>,
+  selectedChoiceIds: string[] = []
 ): AutosaveField[] => {
   // set up nested field compilation
   const nestedFields: any = [];
-  const compileNestedFields = (fields: FormField[]) => {
+  const compileNestedFields = (
+    fields: FormField[],
+    parentIsSelected: boolean
+  ) => {
     fields.forEach((field: FormField) => {
       // for each child field, get field info
       const fieldDefaultValue = ["radio", "checkbox"].includes(field.type)
         ? []
         : "";
+      const currentValue = form.getValues(field.id);
+      const isBlank =
+        !currentValue ||
+        (Array.isArray(currentValue) && currentValue.length === 0);
+
+      if (parentIsSelected && isBlank) return;
 
       const fieldInfo = getAutosaveFields({
         name: field.id,
         type: field.type,
-        value: form.getValues(field.id) || fieldDefaultValue,
+        value: currentValue || fieldDefaultValue,
         overrideCheck: true,
         defaultValue: undefined,
         hydrationValue: undefined,
@@ -415,17 +449,29 @@ export const getNestedChildFields = (
       nestedFields.push(fieldInfo);
       // recurse through additional nested children as needed
       const fieldChoices = field.props?.choices;
-      fieldChoices?.forEach(
-        (choice: FieldChoice) =>
-          choice.children && compileNestedFields(choice.children)
-      );
+      if (fieldChoices?.length) {
+        const selectedSubKeys = Array.isArray(currentValue)
+          ? currentValue.map((option: Choice) => option.key)
+          : [];
+        fieldChoices.forEach((choice: FieldChoice) => {
+          if (choice.children) {
+            compileNestedFields(
+              choice.children,
+              selectedSubKeys.includes(choice.id)
+            );
+          }
+        });
+      }
     });
   };
 
   choices.forEach((choice: FieldChoice) => {
     // if choice has children
     if (choice.children) {
-      compileNestedFields(choice.children);
+      compileNestedFields(
+        choice.children,
+        selectedChoiceIds.includes(choice.id)
+      );
     }
   });
   return nestedFields;

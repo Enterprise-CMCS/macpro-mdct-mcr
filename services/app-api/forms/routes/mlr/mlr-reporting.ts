@@ -14,8 +14,8 @@ export const mlrReportingRoute: ModalOverlayRoute = {
   verbiage: {
     intro: {
       exportSectionHeader: "Program Reporting Information",
-      section: "MLR Reporting",
-      subsection: "Medicaid Medical Loss Ratio (MLR) & Remittances",
+      formEyebrow: "MLR Reporting",
+      section: "Medicaid Medical Loss Ratio (MLR) & Remittances",
       spreadsheet: "Program Information",
       info: [
         {
@@ -79,16 +79,6 @@ export const mlrReportingRoute: ModalOverlayRoute = {
           label: "J. Program name",
           hint: "Select an existing program for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should select all relevant program names.",
           choices: [],
-        },
-      },
-      {
-        id: "report_otherProgramName",
-        type: ReportFormFieldType.DYNAMIC,
-        validation: ValidationType.DYNAMIC_OPTIONAL,
-        props: {
-          dynamicLabel:
-            "J.a If you don’t see your program listed, please detail the program name as it was during the reporting period.",
-          styleAsOptional: true,
         },
       },
       {
@@ -220,7 +210,6 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         props: {
           label: "O. MLR reporting period end date",
           hint: "Enter the end date of the MLR reporting period.",
-          timetype: "endDate",
         },
       },
       {

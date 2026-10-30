@@ -76,12 +76,12 @@ describe("<PlanComplianceTableOverlay />", () => {
     render(planComplianceTableOverlayComponent());
 
     // Verbiage
-    const h2 = screen.getByRole("heading", {
-      level: 2,
+    const h1 = screen.getByRole("heading", {
+      level: 1,
       name: "Mock Details: Child Table",
     });
 
-    expect(h2).toBeVisible();
+    expect(h1).toBeVisible();
   });
 
   test("renders table", async () => {
@@ -111,12 +111,12 @@ describe("<PlanComplianceTableOverlay />", () => {
     });
 
     // Form
-    const h2 = screen.getByRole("heading", {
-      level: 2,
+    const h1 = screen.getByRole("heading", {
+      level: 1,
       name: "Mock Details: Form 2",
     });
 
-    expect(h2).toBeVisible();
+    expect(h1).toBeVisible();
 
     const closeButton = screen.getByRole("button", {
       name: "Mock Back Button: Form 2",
@@ -126,12 +126,12 @@ describe("<PlanComplianceTableOverlay />", () => {
     });
 
     // Back to Table
-    const tableH2 = await screen.getByRole("heading", {
-      level: 2,
+    const tableH1 = await screen.getByRole("heading", {
+      level: 1,
       name: "Mock Details: Child Table",
     });
 
-    expect(tableH2).toBeVisible();
+    expect(tableH1).toBeVisible();
   });
 
   test("submits form", async () => {

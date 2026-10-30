@@ -53,12 +53,16 @@ describe("<Sidebar />", () => {
         expect(sidebarNav).toHaveClass("closed");
       });
 
-      const sidebarButton = screen.getByLabelText("Open/Close sidebar menu");
+      const sidebarButton = screen.getByLabelText("Sidebar");
+      await waitFor(() => {
+        expect(sidebarButton).toHaveAttribute("aria-expanded", "false");
+      });
       await act(async () => {
         await userEvent.click(sidebarButton);
       });
       await waitFor(() => {
         expect(sidebarNav).toHaveClass("open");
+        expect(sidebarButton).toHaveAttribute("aria-expanded", "true");
       });
     });
 

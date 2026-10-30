@@ -11,8 +11,8 @@ export const reportingPeriodRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section A: Program Information",
-      subsection: "Reporting Period",
+      formEyebrow: "Section A: Program Information",
+      section: "Reporting Period",
       spreadsheet: "A_Program_Info",
     },
   },

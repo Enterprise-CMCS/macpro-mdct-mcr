@@ -11,8 +11,8 @@ export const mlrReportingRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section C: Program-Level Indicators",
-      subsection: "Topic II: Medical Loss Ratio (MLR) Reporting",
+      formEyebrow: "Section C: Program-Level Indicators",
+      section: "Topic II: Medical Loss Ratio (MLR) Reporting",
       spreadsheet: "C1_Program_Set",
     },
   },
@@ -35,7 +35,6 @@ export const mlrReportingRoute: FormRoute = {
         props: {
           label: "C1.II.2 Most Recent MLR Reporting Period",
           hint: "Please report the beginning date of that MLR reporting period.",
-          timetype: "startDate",
         },
       },
       {
@@ -47,7 +46,6 @@ export const mlrReportingRoute: FormRoute = {
         },
         props: {
           hint: "Please report the end date of that MLR reporting period.",
-          timetype: "endDate",
         },
       },
       {

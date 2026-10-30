@@ -1,14 +1,11 @@
 import { randomUUID } from "node:crypto";
-import {
-  mcparFieldsToCopy,
-  naaarFieldsToCopy,
-  qualityMeasuresV2FieldsToCopy,
-} from "../constants/copyover";
+import { mcparFieldsToCopy, naaarFieldsToCopy } from "../constants/copyover";
 import { mcparQualityMeasuresList } from "../data/mcparQualityMeasuresList";
 import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplates";
 import s3Lib, { getFieldDataKey } from "../s3/s3-lib";
 import {
   AnyObject,
+  Choice,
   EntityShape,
   EntityType,
   ReportType,
@@ -27,8 +24,7 @@ export async function copyFieldDataFromSource(
   sourceFieldData: AnyObject | undefined,
   formTemplate: any,
   validatedFieldData: AnyObject,
-  reportType: ReportType,
-  newQualityMeasuresSectionEnabled: boolean = false
+  reportType: ReportType
 ) {
   // If we couldn't find the data to copy, we will quietly do nothing
   if (!sourceFieldData) return validatedFieldData;
@@ -39,11 +35,6 @@ export async function copyFieldDataFromSource(
     fieldsToCopy = naaarFieldsToCopy;
   } else if (reportType !== ReportType.MCPAR) {
     return validatedFieldData;
-  }
-
-  // if newQualityMeasuresSectionEnabled is true, copy new quality measure fields
-  if (reportType === ReportType.MCPAR && newQualityMeasuresSectionEnabled) {
-    fieldsToCopy.qualityMeasures = qualityMeasuresV2FieldsToCopy;
   }
 
   // All fields in the current form template are valid. Additionally, entities have IDs and names that should be copied.
@@ -169,7 +160,7 @@ export function cleanupOtherTextFields(fieldData: AnyObject): AnyObject {
 
 export const getPlansNotExemptFromQualityMeasures = (
   plans: EntityShape[] = [],
-  exemptPlans: AnyObject[] = []
+  exemptPlans: Choice[] = []
 ): EntityShape[] => {
   const exemptedPlanIds = exemptPlans.map((exemption) =>
     exemption.key.replace("plansExemptFromQualityMeasures-", "")

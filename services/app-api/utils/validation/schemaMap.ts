@@ -26,6 +26,45 @@ const error = {
   INVALID_NUMBER: "Response must be a valid number",
   INVALID_NUMBER_OR_NA: 'Response must be a valid number, "N/A" or "NR"',
   INVALID_RATIO: "Response must be a valid ratio",
+  NA_NOT_ACCEPTED:
+    "Enter a valid response. N/A and other placeholder text are not accepted for this item.",
+  POSITIVE_NUMBER_REQUIRED: "Enter a valid numeric response greater than 0.",
+  INTEGER_ZERO_OR_GREATER_REQUIRED: "Enter a valid numeric response.",
+  PERCENTAGE_RANGE_REQUIRED: "Enter a value between 0 and 100.",
+  DATE_YEAR_2000_OR_LATER: "Enter a date in 2000 or later.",
+  EMAIL_OR_URL_REQUIRED:
+    "Response must include a valid hyperlink/URL or email address.",
+  URL_LIST_REQUIRED: "Response must include one or more valid hyperlinks/URLs.",
+  NUMBER_OR_SUPPRESSED_NO_NA_REQUIRED:
+    'Enter a valid numeric response or "Suppressed".',
+};
+
+const placeholderValues = [
+  "n/a",
+  "na",
+  "nr",
+  "not applicable",
+  "not available",
+  "data not available",
+  "data unavailable",
+  "not reported",
+  "no data",
+  "no response",
+  "not provided",
+  "unknown",
+  "null",
+  "none",
+  "tbd",
+  "to be determined",
+];
+const isPlaceholderValue = (value: string) =>
+  placeholderValues.includes(value.trim().toLowerCase());
+const isPunctuationOnly = (value: string) => !/[a-zA-Z0-9]/.test(value);
+const stripNumberFormatting = (value: string) =>
+  value.replaceAll(",", "").trim();
+const isStrictlyNumeric = (value: string) => {
+  const cleaned = stripNumberFormatting(value);
+  return cleaned !== "" && !Number.isNaN(Number(cleaned));
 };
 
 const isWhitespaceString = (value?: string) => value?.trim().length === 0;
@@ -143,6 +182,162 @@ export const validNumber = () =>
 
 export const validNumberOptional = () =>
   validNumberSchema().notRequired().nullable();
+
+const validNumberNoNASchema = () =>
+  string().test({
+    message: error.NA_NOT_ACCEPTED,
+    test: (value) => {
+      if (!value) return true;
+      if (validNAValues.includes(value)) return false;
+      return validNumberRegex.test(value);
+    },
+  });
+
+export const validNumberNoNA = () => validNumberNoNASchema();
+
+export const validNumberNoNAOptional = () =>
+  validNumberNoNASchema().notRequired().nullable();
+
+const textNoNASchema = () =>
+  string()
+    .typeError(error.NA_NOT_ACCEPTED)
+    .test({
+      message: error.NA_NOT_ACCEPTED,
+      test: (value) => {
+        if (!value) return true;
+        if (isWhitespaceString(value)) return false;
+        if (isPlaceholderValue(value)) return false;
+        if (isPunctuationOnly(value)) return false;
+        return true;
+      },
+    });
+
+export const textNoNA = () => textNoNASchema();
+
+export const textNoNAOptional = () => textNoNASchema().nullable();
+
+export const positiveNumberNoNA = (options?: ChoiceOptions) =>
+  string().test({
+    message: options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED,
+    test: (value) => {
+      if (!value || isWhitespaceString(value)) return true;
+      if (!isStrictlyNumeric(value)) return false;
+      return Number(stripNumberFormatting(value)) > 0;
+    },
+  });
+
+export const integerZeroOrGreaterNoNA = (options?: ChoiceOptions) =>
+  string().test({
+    message: options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED,
+    test: (value) => {
+      if (!value || isWhitespaceString(value)) return true;
+      return /^\d+$/.test(stripNumberFormatting(value));
+    },
+  });
+
+export const integerGreaterThanZeroNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.POSITIVE_NUMBER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        if (!/^\d+$/.test(stripNumberFormatting(value))) return false;
+        return Number(stripNumberFormatting(value)) > 0;
+      },
+    });
+
+export const numberZeroOrGreaterNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        if (!isStrictlyNumeric(value)) return false;
+        return Number(stripNumberFormatting(value)) >= 0;
+      },
+    });
+
+export const numberZeroOrGreaterTwoDecimalsNoNA = (options?: ChoiceOptions) =>
+  string()
+    .required(options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED)
+    .test({
+      message: options?.errorMessage ?? error.INTEGER_ZERO_OR_GREATER_REQUIRED,
+      test: (value) => {
+        if (!value || isWhitespaceString(value)) return false;
+        const cleaned = stripNumberFormatting(value);
+        if (!/^\d+(\.\d{1,2})?$/.test(cleaned)) return false;
+        return Number(cleaned) >= 0;
+      },
+    });
+
+export const percentageZeroToHundredNoNA = () =>
+  string().test({
+    message: error.PERCENTAGE_RANGE_REQUIRED,
+    test: (value) => {
+      if (!value || isWhitespaceString(value)) return true;
+      if (!isStrictlyNumeric(value)) return false;
+      const num = Number(stripNumberFormatting(value));
+      return num >= 0 && num <= 100;
+    },
+  });
+
+export const dateYear2000OrLater = () =>
+  string()
+    .test({
+      message: error.INVALID_DATE,
+      test: (value) => !value || dateFormatRegex.test(value),
+    })
+    .test({
+      message: error.DATE_YEAR_2000_OR_LATER,
+      test: (value) => {
+        if (!value) return true;
+        const year = value.includes("/")
+          ? Number(value.split("/")[2])
+          : Number(value.substring(4));
+        return year >= 2000;
+      },
+    });
+
+const emailOrUrlItemRegex = /^[^\s@]+@[^\s@]+\.\S+$|^https?:\/\/\S+$/i;
+
+export const emailOrUrlNoNA = () =>
+  string().test({
+    message: error.EMAIL_OR_URL_REQUIRED,
+    test: (value) => {
+      if (!value || isWhitespaceString(value)) return true;
+      return value
+        .split(",")
+        .map((item) => item.trim())
+        .every((item) => item.length > 0 && emailOrUrlItemRegex.test(item));
+    },
+  });
+
+export const urlList = () =>
+  string().test({
+    message: error.URL_LIST_REQUIRED,
+    test: (value) => {
+      if (!value) return true;
+      return value
+        .split(",")
+        .map((item) => item.trim())
+        .every((item) => text().url().isValidSync(item));
+    },
+  });
+
+export const numberOrSuppressedNoNA = () =>
+  string().test({
+    test: (value) => {
+      if (!value) return true;
+      const isSuppressed = value.trim().toLowerCase() === "suppressed";
+      if (validNAValues.includes(value)) return false;
+      if (isSuppressed) return true;
+      if (!validNumberRegex.test(value)) return false;
+      return parseFloat(value) >= 0;
+    },
+    message: error.NA_NOT_ACCEPTED,
+  });
 
 // Number - Ratio
 export const ratio = () =>
@@ -342,6 +537,11 @@ export const dynamic = (min = 1) =>
     .required(error.REQUIRED_GENERIC);
 export const dynamicOptional = () => dynamic(0).notRequired().nullable();
 
+// data acceptance: only validate the array shape, not entity name content;
+// "N/A"/placeholder name rejection is enforced at completion-status time
+// instead (completionSchemas.ts), so saving a draft name doesn't 400
+export const dynamicNoPlaceholder = (min = 1) => dynamic(min);
+
 // NESTED
 export const nested = (
   fieldSchema: Function,
@@ -386,30 +586,49 @@ export const schemaMap: any = {
   date: date(),
   dateMonthYear: dateMonthYear(),
   dateOptional: dateOptional(),
+  dateYear2000OrLater: dateYear2000OrLater(),
   dropdown: dropdown(),
   dropdownOptional: dropdownOptional(),
   dynamic: dynamic(),
   dynamicOptional: dynamicOptional(),
+  dynamicNoPlaceholder: dynamicNoPlaceholder(),
   email: email(),
   emailOptional: emailOptional(),
+  emailOrUrlNoNA: emailOrUrlNoNA(),
   futureDate: futureDate(),
+  integerGreaterThanZeroNoNA: (options?: ChoiceOptions) =>
+    integerGreaterThanZeroNoNA(options),
+  integerZeroOrGreaterNoNA: (options?: ChoiceOptions) =>
+    integerZeroOrGreaterNoNA(options),
   number: number(),
   numberNotLessThanOne: numberNotLessThanOne(),
   numberNotLessThanZero: numberNotLessThanZero(),
   numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
   numberOptional: numberOptional(),
   numberOrSuppressed: numberOrSuppressed(),
+  numberOrSuppressedNoNA: numberOrSuppressedNoNA(),
   numberSuppressible: numberSuppressible(),
+  numberZeroOrGreaterNoNA: (options?: ChoiceOptions) =>
+    numberZeroOrGreaterNoNA(options),
+  numberZeroOrGreaterTwoDecimalsNoNA: (options?: ChoiceOptions) =>
+    numberZeroOrGreaterTwoDecimalsNoNA(options),
   objectArray: objectArray(),
   pastDate: pastDate(),
   pastDateOptional: pastDateOptional(),
+  percentageZeroToHundredNoNA: percentageZeroToHundredNoNA(),
+  positiveNumberNoNA: (options?: ChoiceOptions) => positiveNumberNoNA(options),
   radio: radio(),
   radioOptional: radioOptional(),
   ratio: ratio(),
   text: text(),
+  textNoNA: textNoNA(),
+  textNoNAOptional: textNoNAOptional(),
   textOptional: textOptional(),
   url: url(),
+  urlList: urlList(),
   urlOptional: urlOptional(),
   validNumber: validNumber(),
+  validNumberNoNA: validNumberNoNA(),
+  validNumberNoNAOptional: validNumberNoNAOptional(),
   validNumberOptional: validNumberOptional(),
 };

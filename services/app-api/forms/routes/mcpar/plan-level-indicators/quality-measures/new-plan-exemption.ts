@@ -4,7 +4,7 @@ import {
   PageTypes,
   ReportFormFieldType,
   ValidationType,
-} from "../../../../../../../utils/types";
+} from "../../../../../utils/types";
 
 export const newPlanExemptionRoute: FormRoute = {
   name: "New plan exemption",
@@ -13,8 +13,8 @@ export const newPlanExemptionRoute: FormRoute = {
   entityType: EntityType.QUALITY_MEASURES,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic VII: Quality & Performance Measures",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic VII: Quality & Performance Measures",
       spreadsheet: "D2_Program_QualityMeasures",
       hint: [
         {

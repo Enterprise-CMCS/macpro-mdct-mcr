@@ -77,6 +77,13 @@ export const MobileDashboardTable = ({
             {isStateLevelUser && !report?.locked && (
               <Button
                 variant="link"
+                aria-label={
+                  reportType === ReportType.MLR
+                    ? `Edit reporting of ${report.programName}`
+                    : `Edit reporting of ${
+                        report.programName
+                      } due ${convertDateUtcToEt(report.dueDate)}`
+                }
                 onClick={() => openAddEditReportModal(report)}
               >
                 Edit reporting
@@ -148,8 +155,8 @@ const sx = {
     marginBottom: "spacer1",
   },
   label: {
-    fontSize: "sm",
-    fontWeight: "bold",
+    fontSize: "body_sm",
+    fontWeight: "heading_sm_bold",
     color: "gray",
   },
   editDate: {

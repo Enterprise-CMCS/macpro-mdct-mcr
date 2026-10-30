@@ -1,5 +1,5 @@
 // components
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import {
   Alert,
   InstructionsAccordion,
@@ -12,30 +12,35 @@ import { AlertTypes, AnyObject, TableContentShape } from "types";
 import { parseCustomHtml } from "utils";
 
 export const ReportPageIntro = ({
-  text,
+  text = {},
   accordion,
   reportType,
   hasIlos,
   sxOverride,
   table,
+  formRequiredText,
   ...props
 }: Props) => {
-  const { section, subsection, hint, info, spreadsheet, alert } = text;
-  const sectionDForIlos = subsection === "Topic XI. ILOS";
+  const { formEyebrow, section, hint, info, spreadsheet, alert } = text;
+  const sectionDForIlos = section === "Topic XI. ILOS";
   const showAlert = sectionDForIlos ? !hasIlos : alert;
 
   return (
     <Box sx={sx.introBox} {...props}>
-      <Heading as="h1" sx={sx.sectionHeading}>
-        {section}
-      </Heading>
-      <Heading as="h2" sx={sx.subsectionHeading}>
-        {subsection}
-      </Heading>
+      {formEyebrow && <Text sx={sx.eyebrow}>{formEyebrow}</Text>}
+      {section && (
+        <Heading as="h1" sx={sx.sectionHeading}>
+          {section}
+        </Heading>
+      )}
       {table && (
         <Table content={table} sx={{ ...sx.table, ...sxOverride?.table }} />
       )}
       {hint && <Box sx={sx.hintTextBox}>{parseCustomHtml(hint)}</Box>}
+      {/* If there's a hint, put the form required text after hint */}
+      {hint && formRequiredText && (
+        <Text sx={sx.formRequiredText}>{formRequiredText}</Text>
+      )}
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
           <SpreadsheetWidget
@@ -45,6 +50,10 @@ export const ReportPageIntro = ({
         </Box>
       )}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
+      {/* If there's no hint, put the form required text after info */}
+      {!hint && formRequiredText && (
+        <Text sx={sx.formRequiredText}>{formRequiredText}</Text>
+      )}
       {showAlert && <Alert status={AlertTypes.WARN} description={alert} />}
       {accordion && <InstructionsAccordion verbiage={accordion} />}
     </Box>
@@ -60,6 +69,7 @@ interface Props {
   reportType?: string;
   hasIlos?: boolean;
   table?: TableContentShape;
+  formRequiredText?: string;
   [key: string]: any;
 }
 
@@ -67,14 +77,15 @@ const sx = {
   introBox: {
     marginBottom: "spacer4",
   },
-  sectionHeading: {
+  eyebrow: {
     color: "gray",
-    fontSize: "md",
+    fontSize: "body_md",
+    fontWeight: "heading_md",
     marginBottom: "spacer1",
   },
-  subsectionHeading: {
-    fontWeight: "normal",
-    fontSize: "4xl",
+  sectionHeading: {
+    fontWeight: "body_md",
+    fontSize: "heading_4xl",
   },
   hintTextBox: {
     color: "#5B616B",
@@ -93,7 +104,7 @@ const sx = {
   infoTextBox: {
     marginTop: "spacer4",
     h4: {
-      fontSize: "lg",
+      fontSize: "heading_lg",
       marginBottom: "0.75rem",
     },
     "p, span": {
@@ -118,6 +129,10 @@ const sx = {
     "b, strong": {
       color: "base",
     },
+  },
+  formRequiredText: {
+    color: "gray",
+    marginTop: "spacer2",
   },
   table: {
     marginTop: "spacer3",

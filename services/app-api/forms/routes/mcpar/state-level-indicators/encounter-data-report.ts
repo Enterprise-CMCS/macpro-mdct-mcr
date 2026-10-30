@@ -11,8 +11,8 @@ export const encounterDataReportRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section B: State-Level Indicators",
-      subsection: "Topic III. Encounter Data Report",
+      formEyebrow: "Section B: State-Level Indicators",
+      section: "Topic III. Encounter Data Report",
       spreadsheet: "B_State",
     },
   },
@@ -85,7 +85,7 @@ export const encounterDataReportRoute: FormRoute = {
                   id: "state_encounterDataValidationEntity-otherText",
                   type: ReportFormFieldType.TEXTAREA,
                   validation: {
-                    type: ValidationType.TEXT,
+                    type: ValidationType.TEXT_NO_NA,
                     nested: true,
                     parentFieldName: "state_encounterDataValidationEntity",
                   },

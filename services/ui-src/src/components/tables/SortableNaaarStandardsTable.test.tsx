@@ -11,6 +11,8 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { testA11yAct } from "utils/testing/commonTests";
+// types
+import { FormJson } from "types";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -31,6 +33,84 @@ const sortableTableComponent = (
     />
   </RouterWrappedComponent>
 );
+
+const primaryCareId = "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk"; // pragma: allowlist secret
+const mockDrawerForm = {
+  id: "danas",
+  fields: [
+    {
+      id: "standard_coreProviderType",
+      type: "radio",
+      validation: "radio",
+      props: {
+        choices: [
+          {
+            id: primaryCareId,
+            label: "Primary care",
+            children: [
+              {
+                id: primaryCareId,
+                type: "text",
+                validation: {
+                  type: "text",
+                  nested: true,
+                  parentFieldName: "standard_coreProviderType",
+                  parentOptionId: primaryCareId,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as FormJson;
+
+const completeStandard = {
+  ...mockNaaarStandards[0],
+  id: "complete-standard",
+  standard_coreProviderType: [{ key: primaryCareId, value: "Primary care" }],
+  [primaryCareId]: "Family physician",
+};
+
+const incompleteStandard = {
+  ...mockNaaarStandards[0],
+  id: "incomplete-standard",
+  standard_coreProviderType: [{ key: primaryCareId, value: "Primary care" }],
+};
+delete (incompleteStandard as any)[primaryCareId];
+
+const tableWithStatusComponent = (
+  <RouterWrappedComponent>
+    <SortableNaaarStandardsTable
+      entities={[completeStandard, incompleteStandard]}
+      drawerForm={mockDrawerForm}
+      openRowDrawer={mockOpenRowDrawer}
+      openDeleteEntityModal={mockOpenDeleteEntityModal}
+    />
+  </RouterWrappedComponent>
+);
+
+describe("<SortableNaaarStandardsTable /> status column", () => {
+  test("does not render a status column without a drawer form", () => {
+    render(sortableTableComponent);
+    expect(
+      screen.queryByRole("columnheader", { name: /Status/ })
+    ).not.toBeInTheDocument();
+    expect(screen.queryByAltText("warning icon")).not.toBeInTheDocument();
+  });
+
+  test("flags standards missing a required nested field", () => {
+    render(tableWithStatusComponent);
+    expect(screen.getByRole("columnheader", { name: /Status/ })).toBeVisible();
+    expect(screen.getAllByAltText("complete icon")).toHaveLength(1);
+    expect(screen.getAllByAltText("warning icon")).toHaveLength(1);
+    expect(screen.getByText("Error")).toBeVisible();
+    expect(screen.getByText("Complete")).toBeVisible();
+  });
+
+  testA11yAct(tableWithStatusComponent);
+});
 
 describe("<SortableNaaarStandardsTable />", () => {
   beforeEach(() => {

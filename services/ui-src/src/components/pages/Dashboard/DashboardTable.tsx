@@ -1,5 +1,5 @@
 // components
-import { Box, Button, Flex, Td, Tr } from "@chakra-ui/react";
+import { Box, Button, Flex, Th, Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
 // types
 import { ReportMetadataShape, ReportType } from "types";
@@ -39,9 +39,9 @@ export const DashboardTable = ({
       return (
         <Tr key={report.id}>
           {/* Report Name */}
-          <Td sx={sxOverride.programNameText}>
+          <Th scope="row" sx={sxOverride.programNameText}>
             {report.submissionName || report.programName}
-          </Td>
+          </Th>
           {/* Plan type (NAAAR only) */}
           {report.reportType === ReportType.NAAAR && (
             <Td>
@@ -79,6 +79,13 @@ export const DashboardTable = ({
                   {!report?.locked && (
                     <Button
                       variant="link"
+                      aria-label={
+                        reportType === ReportType.MLR
+                          ? `Edit reporting of ${report.programName}`
+                          : `Edit reporting of ${
+                              report.programName
+                            } due ${convertDateUtcToEt(report.dueDate)}`
+                      }
                       onClick={() => openAddEditReportModal(report)}
                     >
                       Edit reporting
@@ -125,12 +132,12 @@ export const DashboardTable = ({
 const sx = {
   table: {
     marginBottom: "spacer5",
-    th: {
+    "thead th": {
       padding: "0.5rem 0",
       borderBottom: "1px solid",
       borderColor: "gray_light",
       color: "gray",
-      fontWeight: "bold",
+      fontWeight: "heading_md",
       "&:last-of-type": {
         textAlign: "center",
       },
@@ -139,7 +146,7 @@ const sx = {
       borderBottom: "1px solid",
       borderColor: "gray_light",
     },
-    td: {
+    "td, th[scope='row']": {
       minWidth: "6rem",
       padding: "0.5rem",
       paddingLeft: 0,

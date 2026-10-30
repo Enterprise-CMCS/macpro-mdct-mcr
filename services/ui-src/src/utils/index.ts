@@ -19,6 +19,7 @@ export * from "./forms/standards";
 // reports
 export * from "./reports/entities";
 export * from "./reports/entities.plans";
+export * from "./reports/entities.qualityMeasures";
 export * from "./reports/reports";
 export * from "./reports/routing";
 // statusing
@@ -29,6 +30,7 @@ export * from "./tables/getEntityStatus";
 export * from "./tables/getMcparEntityStatus";
 export * from "./tables/getMlrEntityStatus";
 export * from "./tables/getNaaarEntityStatus";
+export * from "./tables/getStandardStatus";
 export * from "./tables/mapNaaarStandardsData";
 // tracking
 export * from "./tracking/tealium";

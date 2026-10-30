@@ -22,6 +22,9 @@ const theme = extendTheme({
   },
   styles: {
     global: {
+      body: {
+        color: "base",
+      },
       textarea: {
         fieldSizing: "content",
         // need min-height because fieldSizing overrides the rows attribute
@@ -40,9 +43,9 @@ const theme = extendTheme({
         transition: "all 0.3s ease",
         width: "fit-content",
         borderRadius: "0.25rem",
-        fontWeight: "bold",
+        fontWeight: "heading_md",
         ".mobile &": {
-          fontSize: "sm",
+          fontSize: "body_sm",
         },
       },
       variants: {

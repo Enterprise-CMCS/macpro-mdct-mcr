@@ -52,7 +52,8 @@ export const Sidebar = ({ isHidden }: SidebarProps) => {
               as="button"
               sx={sx.closeButton}
               onClick={() => toggleSidebar(!isOpen)}
-              aria-label="Open/Close sidebar menu"
+              aria-label="Sidebar"
+              aria-expanded={isOpen}
             >
               <Image
                 src={arrowDownIcon}
@@ -61,10 +62,14 @@ export const Sidebar = ({ isHidden }: SidebarProps) => {
                 className={isOpen ? "left" : "right"}
               />
             </Box>
-            <Box id="sidebar-title-box" sx={sx.topBox}>
+            <Box id="sidebar-title-box" sx={sx.topBox} inert={!isOpen}>
               <Text sx={sx.title}>{reportJson.name}</Text>
             </Box>
-            <Box sx={sx.navSectionsBox} className="nav-sections-box">
+            <Box
+              sx={sx.navSectionsBox}
+              className="nav-sections-box"
+              inert={!isOpen}
+            >
               {reportJson.routes.map((section) => (
                 <NavSection key={section.name} section={section} level={1} />
               ))}
@@ -204,9 +209,9 @@ const sx = {
     borderBottom: "1px solid var(--mdct-colors-gray_lighter)",
   },
   title: {
-    fontSize: "xl",
-    fontWeight: "bold",
-    lineHeight: "1.33",
+    fontSize: "heading_xl",
+    fontWeight: "heading_xl",
+    lineHeight: "heading_xl",
     width: "15rem",
     padding: "1rem 1rem",
     ".desktop &": {
@@ -246,12 +251,12 @@ const sx = {
     align: "center",
     role: "group",
     borderBottom: "1px solid var(--mdct-colors-gray_lighter)",
-    fontSize: "0.875rem",
+    fontSize: "body_sm",
     ".ds-c-icon--arrow": {
       position: "absolute",
       top: "10px",
       right: "spacer1",
-      fontSize: "13px",
+      fontSize: "body_sm",
       color: "gray",
     },
     "&.selected": {
@@ -281,7 +286,7 @@ const sx = {
   },
   navItemTitle: {
     marginRight: "spacer5",
-    fontSize: "14px",
+    fontSize: "body_sm",
     marginY: "10px",
     textAlign: "left",
     "&.level-1": {

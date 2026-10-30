@@ -13,8 +13,8 @@ export const bssEntityIndicatorsRoute: DrawerFormRoute = {
   entityType: EntityType.BSS_ENTITIES,
   verbiage: {
     intro: {
-      section: "Section E: BSS Entity Indicators",
-      subsection: "Topic IX. Beneficiary Support System (BSS) Entities",
+      formEyebrow: "Section E: BSS Entity Indicators",
+      section: "Topic IX. Beneficiary Support System (BSS) Entities",
       spreadsheet: "E_BSS_Entities",
       info: [
         {

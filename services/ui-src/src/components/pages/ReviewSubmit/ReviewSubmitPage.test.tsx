@@ -13,6 +13,7 @@ import {
   mockMcparReportStore,
   mockMlrReportContext,
   mockMlrReportStore,
+  mockNaaarReport,
   mockNaaarReportContext,
   mockNaaarReportStore,
   mockStateUserStore,
@@ -107,9 +108,38 @@ const ReviewSubmitPageComponent = (context: ReportContextShape) => (
 );
 
 describe("<ReviewSubmitPage />", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+      report: mockMcparReport,
+    });
+  });
+
   describe("MCPAR Review and Submit Page Functionality", () => {
     afterEach(() => {
       jest.clearAllMocks();
+    });
+
+    test("Recalculates completion status on load for state users", () => {
+      render(ReviewSubmitPageComponent(mockMcparReportContext));
+      expect(mockMcparReportContext.recalculateReport).toHaveBeenCalledWith(
+        expect.objectContaining({
+          reportType: mockMcparReportContext.report.reportType,
+          id: mockMcparReportContext.report.id,
+        })
+      );
+      expect(mockMcparReportContext.fetchReport).not.toHaveBeenCalled();
+    });
+
+    test("Only fetches the report on load for admin users", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockAdminUserStore,
+        ...mockMcparReportStore,
+      });
+      render(ReviewSubmitPageComponent(mockMcparReportContext));
+      expect(mockMcparReportContext.fetchReport).toHaveBeenCalledTimes(1);
+      expect(mockMcparReportContext.recalculateReport).not.toHaveBeenCalled();
     });
 
     describe("User has not started filling out the form", () => {
@@ -359,6 +389,34 @@ describe("<ReviewSubmitPage />", () => {
       expect(screen.getByText(title)).toBeVisible();
       expect(screen.getByText(description)).toBeVisible();
       expect(screen.getByText("Submit NAAAR")!).toBeDisabled();
+    });
+
+    test("disables submit for an in-progress NAAAR report that is incomplete", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarReportStore,
+        report: {
+          ...mockNaaarReport,
+          status: ReportStatus.IN_PROGRESS,
+          isComplete: false,
+        },
+      });
+      render(ReviewSubmitPageComponent(mockNaaarReportContext));
+      expect(screen.getByText("Submit NAAAR")!).toBeDisabled();
+    });
+
+    test("enables submit for an in-progress NAAAR report that is complete", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarReportStore,
+        report: {
+          ...mockNaaarReport,
+          status: ReportStatus.IN_PROGRESS,
+          isComplete: true,
+        },
+      });
+      render(ReviewSubmitPageComponent(mockNaaarReportContext));
+      expect(screen.getByText("Submit NAAAR")!).not.toBeDisabled();
     });
   });
 

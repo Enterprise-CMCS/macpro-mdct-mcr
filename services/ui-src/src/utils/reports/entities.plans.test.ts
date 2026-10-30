@@ -1,4 +1,5 @@
 import { getFormattedEntityData } from "./entities";
+import { getPlansNotExemptFromQualityMeasures } from "./entities.plans";
 // constants
 import { exceptionsStatus, nonComplianceStatus } from "../../constants";
 // types
@@ -68,7 +69,7 @@ describe("plans", () => {
       heading: `Plan deficiencies for ${mockNonCompliantPlan.name}: 42 C.F.R. § 438.68`,
       questions: [
         {
-          question: "Description",
+          question: "III.C.2b Plan deficiencies: description",
           answer: "mock description",
         },
         {
@@ -90,15 +91,16 @@ describe("plans", () => {
           ],
         },
         {
-          question: "What the plan will do to achieve compliance",
+          question:
+            "III.C.2c Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
           answer: "mock plan to achieve compliance",
         },
         {
-          question: "Monitoring progress",
+          question: "III.C.2d Plan deficiencies: monitoring progress",
           answer: "mock monitoring progress",
         },
         {
-          question: "Reassessment date",
+          question: "III.C.2e Reassessment for plan deficiencies",
           answer: "mock reassessment date",
         },
       ],
@@ -165,7 +167,7 @@ describe("plans", () => {
       heading: `Plan deficiencies for ${mockNonCompliantPlan.name}: 42 C.F.R. § 438.68`,
       questions: [
         {
-          question: "Description",
+          question: "III.C.2b Plan deficiencies: description",
           answer: "mock description",
         },
         {
@@ -187,15 +189,16 @@ describe("plans", () => {
           ],
         },
         {
-          question: "What the plan will do to achieve compliance",
+          question:
+            "III.C.2c Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
           answer: "mock plan to achieve compliance",
         },
         {
-          question: "Monitoring progress",
+          question: "III.C.2d Plan deficiencies: monitoring progress",
           answer: "mock monitoring progress",
         },
         {
-          question: "Reassessment date",
+          question: "III.C.2e Reassessment for plan deficiencies",
           answer: "mock reassessment date",
         },
       ],
@@ -262,7 +265,7 @@ describe("plans", () => {
       heading: `Plan deficiencies for ${mockNonCompliantPlan.name}: 42 C.F.R. § 438.68`,
       questions: [
         {
-          question: "Description",
+          question: "III.C.2b Plan deficiencies: description",
           answer: "mock description",
         },
         {
@@ -284,15 +287,16 @@ describe("plans", () => {
           ],
         },
         {
-          question: "What the plan will do to achieve compliance",
+          question:
+            "III.C.2c Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
           answer: "mock plan to achieve compliance",
         },
         {
-          question: "Monitoring progress",
+          question: "III.C.2d Plan deficiencies: monitoring progress",
           answer: "mock monitoring progress",
         },
         {
-          question: "Reassessment date",
+          question: "III.C.2e Reassessment for plan deficiencies",
           answer: "mock reassessment date",
         },
       ],
@@ -319,17 +323,108 @@ describe("plans", () => {
       questions: [
         {
           question:
-            "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d).",
+            "III.C.3b Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d).",
           answer: "mock description",
         },
         {
           question:
-            "Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
+            "III.C.3c Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
           answer: "mock justification",
         },
       ],
     };
 
     expect(entityData).toEqual(expectedData);
+  });
+
+  test("Returns correct data for non-compliant plan with no analysis methods saved", () => {
+    const mockNonCompliantPlan = {
+      ...mockPlanData,
+      exceptionsNonCompliance: nonComplianceStatus,
+      "mock-nonComplianceDescription": "mock description",
+      "mock-nonCompliancePlanToAchieveCompliance":
+        "mock plan to achieve compliance",
+      "mock-nonComplianceMonitoringProgress": "mock monitoring progress",
+      "mock-nonComplianceReassessmentDate": "mock reassessment date",
+    };
+
+    const entityData = getFormattedEntityData(
+      EntityType.PLANS,
+      mockNonCompliantPlan
+    );
+
+    const expectedData = {
+      heading: `Plan deficiencies for ${mockNonCompliantPlan.name}: 42 C.F.R. § 438.68`,
+      questions: [
+        {
+          question: "III.C.2b Plan deficiencies: description",
+          answer: "mock description",
+        },
+        {
+          question: "Analyses used to identify deficiencies",
+          answer: [],
+        },
+        {
+          question:
+            "III.C.2c Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
+          answer: "mock plan to achieve compliance",
+        },
+        {
+          question: "III.C.2d Plan deficiencies: monitoring progress",
+          answer: "mock monitoring progress",
+        },
+        {
+          question: "III.C.2e Reassessment for plan deficiencies",
+          answer: "mock reassessment date",
+        },
+      ],
+    };
+
+    expect(entityData).toEqual(expectedData);
+  });
+
+  describe("getPlansNotExemptFromQualityMeasures()", () => {
+    test("removes exempt plans", () => {
+      const plans = [
+        {
+          id: "mock-active-plan-id-1",
+          name: "Active plan 1",
+        },
+        {
+          id: "mock-exempt-plan-id-2",
+          name: "Exempt plan 2",
+        },
+        {
+          id: "mock-active-plan-id-2",
+          name: "Active plan 2",
+        },
+        {
+          id: "mock-exempt-plan-id-2",
+          name: "Exempt plan 2",
+        },
+      ];
+      const exemptPlans = [
+        {
+          key: "plansExemptFromQualityMeasures-mock-exempt-plan-id-1",
+          value: "Exempt plan 1",
+        },
+        {
+          key: "plansExemptFromQualityMeasures-mock-exempt-plan-id-2",
+          value: "Exempt plan 2",
+        },
+      ];
+      const filteredPlans = [
+        {
+          id: "mock-active-plan-id-1",
+          name: "Active plan 1",
+        },
+        {
+          id: "mock-active-plan-id-2",
+          name: "Active plan 2",
+        },
+      ];
+      const result = getPlansNotExemptFromQualityMeasures(plans, exemptPlans);
+      expect(result).toEqual(filteredPlans);
+    });
   });
 });

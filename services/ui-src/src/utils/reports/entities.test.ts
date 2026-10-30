@@ -93,7 +93,7 @@ describe("utils/reports/entities", () => {
     });
 
     describe("entity type: quality measures", () => {
-      test("Returns correct data for  quality measures", () => {
+      test("Returns correct data for quality measures", () => {
         const entityData = getFormattedEntityData(
           EntityType.QUALITY_MEASURES,
           mockQualityMeasuresEntity,
@@ -102,6 +102,73 @@ describe("utils/reports/entities", () => {
         expect(entityData).toEqual(
           mockCompletedQualityMeasuresFormattedEntityData
         );
+      });
+
+      describe("non-legacy template: measure identifier (CMIT/CBE/neither)", () => {
+        test("Returns cmitNumber when measure_identifier is 'Yes'", () => {
+          const entityData = getFormattedEntityData(
+            EntityType.QUALITY_MEASURES,
+            mockQualityMeasuresEntityV2,
+            mockReportFieldData
+          );
+
+          expect(entityData).toMatchObject({
+            cmitNumber: "123",
+            cbeNumber: false,
+          });
+        });
+
+        test("Returns cbeNumber when measure_identifier is the CBE option", () => {
+          const cbeEntity = {
+            ...mockQualityMeasuresEntityV2,
+            measure_identifier: [
+              {
+                key: "measure_identifier-123",
+                value: "No, it has a Consensus Based Entity (CBE) number",
+              },
+            ],
+            measure_identifierCbe: "456",
+          };
+
+          const entityData = getFormattedEntityData(
+            EntityType.QUALITY_MEASURES,
+            cbeEntity,
+            mockReportFieldData
+          );
+
+          expect(entityData).toMatchObject({
+            cbeNumber: "456",
+            cmitNumber: false,
+          });
+        });
+
+        test("Returns description, identifierDomain, and identifierUrl when neither CMIT nor CBE selected", () => {
+          const neitherEntity = {
+            ...mockQualityMeasuresEntityV2,
+            measure_identifier: [
+              {
+                key: "measure_identifier-123",
+                value: "No, it uses neither CMIT or CBE",
+              },
+            ],
+            measure_identifierCmit: undefined,
+            measure_identifierDefinition: "Mock definition text",
+            measure_identifierUrl: "https://example.com/spec",
+          };
+
+          const entityData = getFormattedEntityData(
+            EntityType.QUALITY_MEASURES,
+            neitherEntity,
+            mockReportFieldData
+          );
+
+          expect(entityData).toMatchObject({
+            cmitNumber: false,
+            cbeNumber: false,
+            description: "Mock definition text",
+            identifierUrl: "https://example.com/spec",
+          });
+        });
       });
     });
 
