@@ -15,6 +15,7 @@ import {
   mockStateUserStore,
   RouterWrappedComponent,
   mockMcparReportStore,
+  mockSanctionsEntity,
 } from "utils/testing/setupJest";
 import { testA11yAct } from "utils/testing/commonTests";
 
@@ -253,6 +254,61 @@ describe("<ModalDrawerReportPage />", () => {
       expect(
         screen.queryByText(
           /quality and performance measures reported appears low/i
+        )
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe("Test ModalDrawerReportPage sanctions warning banner", () => {
+    const mockSanctionsRoute = {
+      ...mockModalDrawerReportPageJson,
+      entityType: EntityType.SANCTIONS,
+    };
+
+    test("shows warning banner when sanctions count is 2 or fewer", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMcparReportStore,
+      });
+      render(modalDrawerReportPageComponentWithEntities(mockSanctionsRoute));
+      expect(
+        screen.getByText(
+          /sanctions, corrective actions, or other interventions reported appears low/i
+        )
+      ).toBeVisible();
+    });
+
+    test("does not show warning banner when sanctions count is greater than 2", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        report: {
+          ...mockMcparReportStore.report,
+          fieldData: {
+            ...mockMcparReportStore.report?.fieldData,
+            sanctions: Array.from({ length: 3 }, (_, i) => ({
+              ...mockSanctionsEntity,
+              id: `mock-sanction-${i}`,
+            })),
+          },
+        },
+      });
+      render(modalDrawerReportPageComponentWithEntities(mockSanctionsRoute));
+      expect(
+        screen.queryByText(
+          /sanctions, corrective actions, or other interventions reported appears low/i
+        )
+      ).not.toBeInTheDocument();
+    });
+
+    test("does not show sanctions banner for non-sanctions pages", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMcparReportStore,
+      });
+      render(modalDrawerReportPageComponentWithEntities());
+      expect(
+        screen.queryByText(
+          /sanctions, corrective actions, or other interventions reported appears low/i
         )
       ).not.toBeInTheDocument();
     });

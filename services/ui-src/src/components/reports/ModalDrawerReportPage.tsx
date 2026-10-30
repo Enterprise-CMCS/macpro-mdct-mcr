@@ -205,6 +205,14 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
             description="The number of quality and performance measures reported appears low. Review the instructions and confirm that all applicable measures are included. If the reported information is accurate, no action is needed."
           />
         )}
+
+      {entityType === EntityType.SANCTIONS &&
+        reportFieldDataEntities.length <= 2 && (
+          <Alert
+            status={AlertTypes.WARN}
+            description="The number of sanctions, corrective actions, or other interventions reported appears low. Review the instructions and confirm that all applicable actions, including informal interventions such as compliance letters, are included. If the reported information is accurate, no action is needed."
+          />
+        )}
       <Box>
         {!checkForPlans() ? (
           <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
