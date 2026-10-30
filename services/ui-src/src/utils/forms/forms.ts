@@ -83,7 +83,6 @@ export const formFieldFactory = (
     const componentFieldType = fieldToComponentMap[field.type];
     const fieldProps = {
       key: field.id,
-      // Use groupId for a single validation across different field ids
       name: field.groupId ?? field.id,
       hydrate: field.props?.hydrate,
       autoComplete: isFieldElement(field) ? "off" : undefined, // stops browsers from forcing autofill
