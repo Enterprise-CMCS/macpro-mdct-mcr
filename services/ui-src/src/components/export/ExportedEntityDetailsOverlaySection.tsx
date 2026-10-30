@@ -91,9 +91,7 @@ export function getEntityTableComponents(
   formSections: (FormField | FormLayoutElement)[][]
 ) {
   return entities?.map((entity, idx) => {
-    const entityHeading = `${idx + 1}. ${
-      section.verbiage.intro.subsection
-    } for:`;
+    const entityHeading = `${idx + 1}. ${section.verbiage.intro.section} for:`;
 
     const programInfo = getProgramInfo(entity);
 
@@ -190,25 +188,25 @@ const sx = {
     },
     td: {
       p: {
-        lineHeight: "1.25rem",
+        lineHeight: "heading_md",
       },
       padding: "0.75rem 0.5rem",
       borderStyle: "none",
-      fontWeight: "normal",
+      fontWeight: "body_md",
       color: "base",
       ".shrink &": {
         padding: "0.375rem 0rem",
       },
       ".mobile &": {
-        fontSize: "xs",
+        fontSize: "body_xs",
       },
       verticalAlign: "top",
     },
     th: {
       maxWidth: "100%",
       paddingBottom: "0.375rem",
-      fontWeight: "bold",
-      lineHeight: "lg",
+      fontWeight: "heading_lg",
+      lineHeight: "heading_lg",
       color: "gray",
       ".shrink &": {
         padding: "0.375rem 0rem",
@@ -227,7 +225,7 @@ const sx = {
   },
   tableIndex: {
     color: "gray",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   statusIcon: {
     paddingLeft: "spacer2",
@@ -242,7 +240,7 @@ const sx = {
   },
   entityInformation: {
     padding: "1rem 0 1rem 0",
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
   },
   entityHeading: {
     padding: "2rem 0 0.5rem 0",

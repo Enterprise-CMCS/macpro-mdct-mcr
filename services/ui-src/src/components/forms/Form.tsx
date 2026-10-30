@@ -171,7 +171,7 @@ const sx = {
   },
   // field hint and error message
   ".ds-c-hint, .ds-c-inline-error": {
-    fontSize: "sm",
+    fontSize: "body_sm",
     ul: {
       gap: 0,
     },
@@ -194,11 +194,11 @@ const sx = {
   },
   // optional text
   ".optional-text": {
-    fontWeight: "lighter",
+    fontWeight: "heading_sm_regular",
   },
   h1: {
-    fontWeight: "bold",
-    fontSize: "md",
+    fontWeight: "heading_md",
+    fontSize: "heading_md",
     color: "base",
     paddingTop: "spacer2",
   },
@@ -217,7 +217,7 @@ const sx = {
   },
   ".fake-list-item::before": {
     content: '"•"',
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     display: "inline-block",
     width: "spacer1",
   },

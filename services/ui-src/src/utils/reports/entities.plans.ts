@@ -7,7 +7,7 @@ import {
   UNIT_PERCENT,
 } from "../../constants";
 // types
-import { AnalysisMethods, EntityShape, ReportShape } from "types";
+import { AnalysisMethods, Choice, EntityShape } from "types";
 
 const analysisMethodKeys = [
   { method: "Geomapping", filterKey: "_geomappingComplianceFrequency" },
@@ -256,7 +256,8 @@ const getFormattedNonComplianceData = (plan: EntityShape) => {
   const nonComplianceAnalysesKey: any = planKeys.find((key: string) =>
     key.endsWith("-nonComplianceAnalyses")
   );
-  const analysisMethodsUsed = plan[nonComplianceAnalysesKey].map(
+  // default to [] when no analysis methods are selected
+  const analysisMethodsUsed = (plan[nonComplianceAnalysesKey] ?? []).map(
     (method: EntityShape) => method.value
   );
 
@@ -300,7 +301,7 @@ const getFormattedNonComplianceData = (plan: EntityShape) => {
     }: 42 C.F.R. § 438.68`,
     questions: [
       {
-        question: "Description",
+        question: "III.C.2b Plan deficiencies: description",
         answer: nonComplianceDescription,
       },
       {
@@ -308,15 +309,16 @@ const getFormattedNonComplianceData = (plan: EntityShape) => {
         answer: analysisMethodsUsed,
       },
       {
-        question: "What the plan will do to achieve compliance",
+        question:
+          "III.C.2c Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
         answer: nonCompliancePlanToAchieveCompliance,
       },
       {
-        question: "Monitoring progress",
+        question: "III.C.2d Plan deficiencies: monitoring progress",
         answer: nonComplianceMonitoringProgress,
       },
       {
-        question: "Reassessment date",
+        question: "III.C.2e Reassessment for plan deficiencies",
         answer: nonComplianceReassessmentDate,
       },
     ],
@@ -343,12 +345,12 @@ const getFormattedExceptionsData = (plan: EntityShape) => {
     questions: [
       {
         question:
-          "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d).",
+          "III.C.3b Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d).",
         answer: exceptionsDescription,
       },
       {
         question:
-          "Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
+          "III.C.3c Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
         answer: exceptionsJustification,
       },
     ],
@@ -371,16 +373,20 @@ export const getFormattedPlanData = (plan: EntityShape) => {
 };
 
 export const getPlansNotExemptFromQualityMeasures = (
-  report: ReportShape
+  plans: EntityShape[] = [],
+  exemptPlans: Choice[] = []
 ): EntityShape[] => {
-  const plans = report.fieldData?.plans || [];
-  const exemptPlans = report.fieldData?.plansExemptFromQualityMeasures || [];
-
-  const exemptedPlanIds = exemptPlans.map((exemption: EntityShape) =>
-    exemption.key.replace("plansExemptFromQualityMeasures-", "")
-  );
+  const exemptedPlanIds = getExemptedPlanIds(exemptPlans);
 
   return plans.filter(
     (plan: EntityShape) => !exemptedPlanIds.includes(plan.id)
   );
+};
+
+export const getExemptedPlanIds = (exemptPlans: Choice[] = []): string[] => {
+  const exemptedPlanIds = exemptPlans.map((exemption) =>
+    exemption.key.replace("plansExemptFromQualityMeasures-", "")
+  );
+
+  return exemptedPlanIds;
 };

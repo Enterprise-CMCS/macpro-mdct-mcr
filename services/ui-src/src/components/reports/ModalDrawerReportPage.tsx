@@ -323,8 +323,8 @@ const sx = {
   },
   dashboardTitle: {
     marginBottom: "1.25rem",
-    fontSize: "md",
-    fontWeight: "bold",
+    fontSize: "heading_md",
+    fontWeight: "heading_md",
     color: "gray",
   },
   topAddEntityButton: {
@@ -337,7 +337,7 @@ const sx = {
   },
   missingEntityMessage: {
     paddingTop: "spacer2",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     a: {
       color: "primary",
       textDecoration: "underline",

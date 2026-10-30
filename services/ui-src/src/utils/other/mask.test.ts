@@ -158,6 +158,12 @@ describe("Test maskResponseData", () => {
     expect(result).toEqual(suppressionText);
   });
 
+  test("Renders 'Suppressed' for any casing of suppressed instead of NaN", () => {
+    for (const value of ["Suppressed", "suppressed", " SUPPRESSED "]) {
+      expect(maskResponseData(value, "comma-separated")).toBe("Suppressed");
+    }
+  });
+
   test("Percentage mask works correctly", () => {
     const result = maskResponseData("12", "percentage");
     expect(result).toEqual("12%");

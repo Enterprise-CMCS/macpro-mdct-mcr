@@ -13,8 +13,8 @@ export const patientAccessApiRoute: DrawerFormRoute = {
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic XIV. Patient Access API Usage",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic XIV. Patient Access API Usage",
       spreadsheet: "D1_Plan_Set",
     },
     dashboardTitle:

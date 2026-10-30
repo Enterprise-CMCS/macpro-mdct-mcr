@@ -11,8 +11,8 @@ export const appealsStateFairHearingsAndGrievancesRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section C: Program-Level Indicators",
-      subsection: "Topic IV. Appeals, State Fair Hearings & Grievances",
+      formEyebrow: "Section C: Program-Level Indicators",
+      section: "Topic IV. Appeals, State Fair Hearings & Grievances",
       spreadsheet: "C1_Program_Set",
     },
   },
@@ -32,7 +32,7 @@ export const appealsStateFairHearingsAndGrievancesRoute: FormRoute = {
       {
         id: "program_standardAppealTimelyResolutionDefinition",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label:
             "C1.IV.2 State definition of “timely” resolution for standard appeals",
@@ -42,7 +42,7 @@ export const appealsStateFairHearingsAndGrievancesRoute: FormRoute = {
       {
         id: "program_expeditedAppealTimelyResolutionDefinition",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label:
             "C1.IV.3 State definition of “timely” resolution for expedited appeals",
@@ -52,7 +52,7 @@ export const appealsStateFairHearingsAndGrievancesRoute: FormRoute = {
       {
         id: "program_grievanceTimelyResolutionDefinition",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label:
             "C1.IV.4 State definition of “timely” resolution for grievances",

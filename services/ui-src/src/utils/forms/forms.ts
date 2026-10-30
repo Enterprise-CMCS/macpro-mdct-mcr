@@ -85,7 +85,7 @@ export const formFieldFactory = (
       key: field.id,
       name: field.groupId ?? field.id,
       hydrate: field.props?.hydrate,
-      autoComplete: isFieldElement(field) ? "off" : undefined,
+      autoComplete: isFieldElement(field) ? "off" : undefined, // stops browsers from forcing autofill
       ...options,
       ...field?.props,
     };
@@ -421,4 +421,24 @@ export const isFieldValidationOptional = (
     typeof validation === "object" ? validation.type : validation;
 
   return validationType.toLowerCase().includes("optional");
+};
+
+export const getFormRequiredText = (
+  formFields?: (FormField | FormLayoutElement)[]
+) => {
+  if (!formFields) return;
+
+  const flattenedFields = flattenFormFields(formFields.filter(isFieldElement));
+  const activeFields = flattenedFields.filter(
+    (f) => Boolean(f.props?.disabled) === false
+  );
+  const hasAllOptionalFields = activeFields.every(isFieldValidationOptional);
+  if (activeFields.length === 0 || hasAllOptionalFields) return;
+
+  const hasOptionalFields = activeFields.some(isFieldValidationOptional);
+  if (hasOptionalFields) {
+    return "All fields are required unless marked optional.";
+  }
+
+  return "All fields are required.";
 };

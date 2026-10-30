@@ -37,7 +37,10 @@ export const isReportLevelField = (
     return false;
   }
 
-  // Special case: These are the only fields that appear on drawer pages but are stored at report level
+  /**
+   * Legacy: These fields are only in reports created prior to June 2026
+   * and appear on drawer pages but are stored at report level
+   */
   const isPageLevelGatingRadio =
     formField.id === "plan_priorAuthorizationReporting" ||
     formField.id === "plan_patientAccessApiReporting";
@@ -440,9 +443,12 @@ export const parseFormFieldInfo = (formFieldProps?: AnyObject) => {
     Object.values(formFieldProps).every((x) => x === undefined)
   )
     return {};
-  const labelArray = formFieldProps?.label?.split(" ");
+  // question layout elements carry their numbered text in content, not label
+  const labelArray = (formFieldProps?.label ?? formFieldProps?.content)?.split(
+    " "
+  );
   return {
-    number: labelArray?.[0].match(/[-.0-9]+/) ? labelArray?.[0] : "N/A",
+    number: labelArray?.[0].match(/[-.0-9]+/) ? labelArray?.[0] : undefined,
     label: labelArray?.[0].match(/[-.0-9]+/)
       ? labelArray?.slice(1)?.join(" ")
       : labelArray?.join(" "),
@@ -518,12 +524,12 @@ const sx = {
       listStyle: "none",
       ".entityResponse": {
         p: {
-          lineHeight: "1.25rem",
-          fontSize: "sm",
+          lineHeight: "heading_sm",
+          fontSize: "body_sm",
         },
       },
       p: {
-        lineHeight: "1.25rem",
+        lineHeight: "heading_sm",
       },
     },
     "&:last-of-type": {
@@ -531,7 +537,7 @@ const sx = {
     },
   },
   entityName: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   noResponse: {
     color: "error_darker",

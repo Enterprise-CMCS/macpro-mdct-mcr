@@ -16,9 +16,15 @@ import {
   ReportType,
   EntityType,
   PageTypes,
+  ReportFormFieldType,
 } from "types";
 // utils
-import { parseCustomHtml, routeChecker, useStore } from "utils";
+import {
+  parseCustomHtml,
+  parseFormFieldInfo,
+  routeChecker,
+  useStore,
+} from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
@@ -59,9 +65,6 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
     tableHeaders.indicator,
     tableHeaders.response,
   ];
-  const headRowItems = formHasOnlyDynamicFields
-    ? twoColumnHeaderItems
-    : threeColumnHeaderItems;
 
   const reportType = report?.reportType as ReportType;
   const hideHintText = reportType === ReportType.MLR;
@@ -84,6 +87,25 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
   };
 
   const missingPlansOrIlos = !(hasIlos || hasPlans);
+
+  const shouldRenderTable =
+    !(entityType === EntityType.PLANS && missingPlansOrIlos) &&
+    !(entityType === EntityType.BSS_ENTITIES && !hasBss);
+
+  const { tableRows, hasAnyNumberedRow } = shouldRenderTable
+    ? renderFieldTableBody(
+        formFields!,
+        pageType!,
+        report,
+        !hideHintText,
+        entityType
+      )
+    : { tableRows: [], hasAnyNumberedRow: false };
+
+  const headRowItems =
+    !formHasOnlyDynamicFields && hasAnyNumberedRow
+      ? threeColumnHeaderItems
+      : twoColumnHeaderItems;
 
   return (
     // if there are no plans added, render the appropriate verbiage
@@ -111,13 +133,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
           }}
           data-testid="exportTable"
         >
-          {renderFieldTableBody(
-            formFields!,
-            pageType!,
-            report,
-            !hideHintText,
-            entityType
-          )}
+          {tableRows}
         </Table>
       )}
     </Box>
@@ -131,22 +147,16 @@ export const renderFieldTableBody = (
   showHintText: boolean,
   entityType?: EntityType
 ) => {
-  const tableRows: ReactElement[] = [];
-  // recursively renders field rows
+  const rowDescriptors: {
+    formField: FormField | FormLayoutElement;
+    parentFieldCheckedChoiceIds?: string[];
+  }[] = [];
+  // recursively collects row descriptors (same traversal as before, just data instead of JSX)
   const renderFieldRow = (
     formField: FormField | FormLayoutElement,
     parentFieldCheckedChoiceIds?: string[]
   ) => {
-    tableRows.push(
-      <ExportedReportFieldRow
-        key={formField.id}
-        formField={formField}
-        pageType={pageType}
-        entityType={entityType}
-        parentFieldCheckedChoiceIds={parentFieldCheckedChoiceIds}
-        showHintText={showHintText}
-      />
-    );
+    rowDescriptors.push({ formField, parentFieldCheckedChoiceIds });
     // for drawer pages, render nested child field if any entity has a checked parent choice
     if (pageType === "drawer") {
       const entityData = report?.fieldData[entityType!];
@@ -201,9 +211,30 @@ export const renderFieldTableBody = (
   formFields?.map((field: FormField | FormLayoutElement) => {
     if (isFieldElement(field)) {
       renderFieldRow(field);
+    } else if (field.type === ReportFormFieldType.QUESTION) {
+      // render question layout elements as heading rows above their responses
+      rowDescriptors.push({ formField: field });
     }
   });
-  return tableRows;
+  const hasAnyNumberedRow = rowDescriptors.some(
+    ({ formField }) => !!parseFormFieldInfo(formField.props)?.number
+  );
+
+  const tableRows: ReactElement[] = rowDescriptors.map(
+    ({ formField, parentFieldCheckedChoiceIds }) => (
+      <ExportedReportFieldRow
+        key={formField.id}
+        formField={formField}
+        pageType={pageType}
+        entityType={entityType}
+        parentFieldCheckedChoiceIds={parentFieldCheckedChoiceIds}
+        showHintText={showHintText}
+        hasNumberColumn={hasAnyNumberedRow}
+      />
+    )
+  );
+
+  return { tableRows, hasAnyNumberedRow };
 };
 
 export interface Props {
@@ -228,23 +259,23 @@ export const exportTableSx = {
   },
   td: {
     p: {
-      lineHeight: "1.25rem",
+      lineHeight: "heading_md",
     },
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
-    fontWeight: "normal",
+    fontWeight: "body_md",
     color: "base",
     ".shrink &": {
       padding: "0.375rem 0rem",
     },
     ".mobile &": {
-      fontSize: "xs",
+      fontSize: "body_xs",
     },
   },
   th: {
     paddingBottom: "0.375rem",
-    fontWeight: "bold",
-    lineHeight: "lg",
+    fontWeight: "heading_md",
+    lineHeight: "body_md",
     color: "gray",
     ".shrink &": {
       padding: "0.375rem 0rem",
@@ -264,7 +295,7 @@ export const exportTableSx = {
 
 const sx = {
   missingEntityMessage: {
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     ol: {
       paddingLeft: "spacer2",
     },

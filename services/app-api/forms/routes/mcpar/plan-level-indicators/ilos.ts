@@ -13,8 +13,8 @@ export const ilosRoute: DrawerFormRoute = {
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic XI: ILOS",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic XI: ILOS",
       spreadsheet: "D4_Plan_ILOS",
       info: [
         {

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { ErrorAlert, Form, PreviewBanner } from "components";
 // types
-import { ErrorVerbiage, FormJson } from "types";
+import { ErrorVerbiage } from "types";
 // utils
 import {
   convertDateEtToUtc,
@@ -13,7 +13,7 @@ import {
 // verbiage
 import { bannerErrors } from "verbiage/errors";
 // form
-import formJson from "forms/addAdminBanner/addAdminBanner.json";
+import { adminFormJson } from "forms/addAdminBanner/addAdminBanner";
 
 const dateOverlapErrorMessage = {
   title: "Banners cannot have overlapping dates.",
@@ -27,7 +27,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const { allBanners } = useStore();
 
   // add validation to formJson
-  const form: FormJson = formJson;
+  const form = adminFormJson;
 
   // ensure banner dates in form don't overlap with existing banners
   const newDatesOverlap = (formData: any) => {

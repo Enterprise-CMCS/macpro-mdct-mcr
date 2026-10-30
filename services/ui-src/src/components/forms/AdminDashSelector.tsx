@@ -96,13 +96,13 @@ interface Props {
 const sx = {
   root: {
     ".ds-c-field__hint": {
-      fontSize: "md",
+      fontSize: "body_md",
       color: "base",
     },
   },
   headerText: {
-    fontSize: "2rem",
-    fontWeight: "normal",
+    fontSize: "heading_2xl",
+    fontWeight: "heading_2xl",
   },
   navigationButton: {
     padding: "1.5rem 0 2rem 0",

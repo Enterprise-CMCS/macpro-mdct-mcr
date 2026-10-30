@@ -11,8 +11,8 @@ export const addBssEntitiesRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section A: Program Information",
-      subsection: "Add BSS entities (A.8)",
+      formEyebrow: "Section A: Program Information",
+      section: "Add BSS entities (A.8)",
       spreadsheet: "A_Program_Info",
       info: [
         {
@@ -53,7 +53,7 @@ export const addBssEntitiesRoute: FormRoute = {
       {
         id: "bssEntities",
         type: ReportFormFieldType.DYNAMIC,
-        validation: ValidationType.DYNAMIC,
+        validation: ValidationType.DYNAMIC_NO_PLACEHOLDER,
         props: {
           label: "BSS entity name",
         },

@@ -1,0 +1,193 @@
+import { FormJson, ReportFormFieldType, ValidationType } from "types";
+
+export const mcparFormJson: FormJson = {
+  id: "aep",
+  options: {
+    mode: "onChange",
+  },
+  heading: {
+    add: "Add / Copy a MCPAR",
+    intro:
+      "Complete the form below to generate a MCPAR for your managed care program. You may choose to copy an existing MCPAR report, which will retain many key responses (e.g., plan names, quality measures, etc.). Copied MCPARs will still have several blank fields and all responses can be edited. To create a blank MCPAR form, leave the “copy a report” field as “Select an option”.",
+    edit: "Edit Program",
+  },
+  fields: [
+    {
+      id: "newOrExistingProgram",
+      type: ReportFormFieldType.RADIO,
+      validation: ValidationType.RADIO,
+      props: {
+        label: "Is this MCPAR for an existing or new program?",
+        hint: "Select from an existing program or add a new program.",
+        choices: [
+          {
+            id: "isExistingProgram",
+            label: "Existing program",
+            children: [
+              {
+                id: "existingProgramNameSelection",
+                type: ReportFormFieldType.DROPDOWN,
+                validation: {
+                  type: ValidationType.DROPDOWN,
+                  nested: true,
+                  parentFieldName: "newOrExistingProgram",
+                },
+                props: {
+                  label: "Program name",
+                  hint: "Select an existing program from the options below. This list was compiled using official program names submitted to CMS by states.",
+                  options: "programList",
+                },
+              },
+              {
+                id: "existingProgramNameSuggestion",
+                type: ReportFormFieldType.TEXT,
+                validation: {
+                  type: ValidationType.TEXT_OPTIONAL,
+                  nested: true,
+                  parentFieldName: "newOrExistingProgram",
+                },
+                props: {
+                  label: "Rename selected program (optional)",
+                  hint: "If you need to replace or rename the selected program, enter its new name in the blank field below. Note: this will not change the name of the program in this report. CMS will update it for a future report.",
+                },
+              },
+            ],
+          },
+          {
+            id: "isNewProgram",
+            label: "Add new program",
+            children: [
+              {
+                id: "newProgramName",
+                type: ReportFormFieldType.TEXT,
+                validation: {
+                  type: ReportFormFieldType.TEXT,
+                  nested: true,
+                  parentFieldName: "newOrExistingProgram",
+                },
+                props: {
+                  label: "Specify new program name",
+                  hint: "",
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      id: "copyFieldDataSourceId",
+      type: ReportFormFieldType.DROPDOWN,
+      validation: ValidationType.DROPDOWN_OPTIONAL,
+      props: {
+        label: "If you want to copy an existing report, select one (optional)",
+        hint: "You may copy over the contents of an existing report from any program for your state for any reason.",
+        options: "copyEligibleReports",
+      },
+    },
+    {
+      id: "reportingPeriodStartDate",
+      type: ReportFormFieldType.DATE,
+      validation: ValidationType.DATE,
+      props: {
+        label: "A.5a Reporting period (i.e. contract period) start date",
+        hint: "Enter start date of the reporting period represented in the report.",
+      },
+    },
+    {
+      id: "reportingPeriodEndDate",
+      type: ReportFormFieldType.DATE,
+      validation: {
+        type: ValidationType.END_DATE,
+        dependentFieldName: "reportingPeriodStartDate",
+      },
+      props: {
+        label: "A.5b Reporting period  (i.e. contract period) end date",
+        hint: "Enter end date of the reporting period represented in the report.",
+      },
+    },
+    {
+      id: "combinedData",
+      type: ReportFormFieldType.CHECKBOX_SINGLE,
+      validation: ValidationType.CHECKBOX_SINGLE,
+      props: {
+        label: "Exclusion of CHIP from MCPAR",
+        hint: "Enrollees in separate CHIP programs funded under Title XXI should not be reported in the MCPAR. Please check this box if the state is unable to remove information about Separate CHIP enrollees from its reporting on this program.",
+      },
+    },
+    {
+      id: "programIsPCCM",
+      type: ReportFormFieldType.RADIO,
+      validation: ValidationType.RADIO,
+      props: {
+        label: "Is your program a Primary Care Case Management (PCCM) entity?",
+        hint: "If you designate the managed care program as a Primary Care Case Management Entity (PCCM-E), you are not required to complete the entire MCPAR Report. Please <a href='/help'>visit the “Get Help”</a> section for more information on how to complete the PCCM-E specific form.",
+        choices: [
+          {
+            id: "yes_programIsPCCM",
+            label: "Yes",
+          },
+          {
+            id: "no_programIsNotPCCM",
+            label: "No",
+          },
+        ],
+      },
+    },
+    {
+      id: "naaarSubmissionForThisProgram",
+      type: ReportFormFieldType.RADIO,
+      validation: ValidationType.RADIO,
+      props: {
+        label:
+          "Did you submit or do you plan on submitting a Network Adequacy and Access Assurances Report (NAAAR) for this program for this reporting period through the MDCT online tool?",
+        choices: [
+          {
+            id: "Oidjp5sYMuMEmkVYjNxZ5aDV",
+            label: "Yes, I submitted it in MDCT",
+            children: [
+              {
+                id: "naaarSubmissionDateForThisProgram",
+                type: ReportFormFieldType.DATE,
+                validation: {
+                  type: ValidationType.DATE,
+                  nested: true,
+                  parentFieldName: "naaarSubmissionForThisProgram",
+                  parentOptionId: "Oidjp5sYMuMEmkVYjNxZ5aDV",
+                },
+                props: {
+                  label: "NAAAR submission date",
+                  hint: "Provide the date of the NAAAR submission.",
+                },
+              },
+            ],
+          },
+          {
+            id: "Z9Ysnff8zxb1IVjxQgoG9ndW",
+            label: "Yes, I plan on submitting it in MDCT",
+            children: [
+              {
+                id: "naaarExpectedSubmissionDateForThisProgram",
+                type: ReportFormFieldType.DATE,
+                validation: {
+                  type: ValidationType.FUTURE_DATE,
+                  nested: true,
+                  parentFieldName: "naaarSubmissionForThisProgram",
+                  parentOptionId: "Z9Ysnff8zxb1IVjxQgoG9ndW",
+                },
+                props: {
+                  label: "NAAAR submission date",
+                  hint: "Provide the expected date of the NAAAR submission.",
+                },
+              },
+            ],
+          },
+          {
+            id: "yG8AlzEtPXPnE7rvek6Q1xIk",
+            label: "No (Excel submission)",
+          },
+        ],
+      },
+    },
+  ],
+};

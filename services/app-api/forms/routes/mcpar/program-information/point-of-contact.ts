@@ -11,8 +11,8 @@ export const pointOfContactRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section A: Program Information",
-      subsection: "Point of Contact",
+      formEyebrow: "Section A: Program Information",
+      section: "Point of Contact",
       spreadsheet: "A_Program_Info",
     },
     praDisclosure: [
@@ -43,7 +43,7 @@ export const pointOfContactRoute: FormRoute = {
       {
         id: "contactName",
         type: ReportFormFieldType.TEXT,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "A.2a Contact name",
           hint: "First and last name of the contact person. <br/> States that do not wish to list a specific individual on the report are encouraged to use a department or program-wide email address that will allow anyone with questions to quickly reach someone who can provide answers.",

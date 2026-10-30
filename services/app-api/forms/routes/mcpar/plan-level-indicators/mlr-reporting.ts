@@ -13,8 +13,8 @@ export const mlrReportingRoute: DrawerFormRoute = {
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
-      section: "Section D: Plan-Level Indicators",
-      subsection: "Topic II: Medical Loss Ratio (MLR) Reporting",
+      formEyebrow: "Section D: Plan-Level Indicators",
+      section: "Topic II: Medical Loss Ratio (MLR) Reporting",
       spreadsheet: "D1_Plan_Set",
     },
     dashboardTitle: "Enter MLR reporting information for each plan",

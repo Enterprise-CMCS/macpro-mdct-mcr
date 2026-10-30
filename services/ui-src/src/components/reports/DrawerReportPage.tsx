@@ -38,6 +38,7 @@ import {
   filterStandardsByUtilizedAnalysisMethods,
   getEntriesToClear,
   getForm,
+  getFormRequiredText,
   getPageTitle,
   parseCustomHtml,
   routeChecker,
@@ -73,7 +74,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     originalOnClose();
   };
 
-  const { entityType, verbiage, form: standardForm } = route;
+  const { entityType, verbiage, form } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const canAddEntities =
     !!addEntityDrawerForm.id || entityType === EntityType.STANDARDS;
@@ -134,7 +135,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     ilos,
     reportingOnIlos,
   };
-  const form = getForm(formParams);
+  const reportDrawerForm = getForm(formParams);
   const addEntityForm = getForm({ ...formParams, isCustomEntityForm: true });
 
   useEffect(() => {
@@ -203,7 +204,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         selectedEntityIndex = currentEntities.length;
       }
 
-      let referenceForm = form;
+      let referenceForm = reportDrawerForm;
       if (selectedIsCustomEntity) {
         referenceForm = addEntityForm;
       }
@@ -335,15 +336,19 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     </Button>
   );
 
+  const formRequiredText = getFormRequiredText(form?.fields);
+
   return (
     <Box sx={sx.tablePage}>
       {/* page title */}
       <Helmet>
         <title>{report && getPageTitle(report.reportType, route)}</title>
       </Helmet>
-      {verbiage.intro && (
-        <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
-      )}
+      <ReportPageIntro
+        formRequiredText={formRequiredText}
+        text={verbiage.intro}
+        hasIlos={hasIlos}
+      />
       {isAnalysisMethodsPage && (
         <ErrorAlert
           error={analysisMethodsError}
@@ -351,11 +356,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         />
       )}
       {displayErrorMessages()}
-      {standardForm && (
-        <Box sx={sx.standardForm}>
+      {form && (
+        <Box sx={sx.form}>
           <Form
-            id={standardForm.id}
-            formJson={standardForm}
+            id={form.id}
+            formJson={form}
             onSubmit={onSubmit}
             onChange={onChange}
             formData={report?.fieldData}
@@ -373,6 +378,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             {existingStandards && (
               <SortableNaaarStandardsTable
                 entities={entities}
+                drawerForm={route.drawerForm}
                 openRowDrawer={openRowDrawer}
                 openDeleteEntityModal={openDeleteEntityModal}
               />
@@ -381,7 +387,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           </Box>
         ) : (
           <Box>
-            <Heading as="h3" sx={dashboardTitleStyling(canAddEntities)}>
+            <Heading as="h2" sx={dashboardTitleStyling(canAddEntities)}>
               {parseCustomHtml(verbiage.dashboardTitle)}
             </Heading>
             {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (
@@ -426,7 +432,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           drawerTitle: getDrawerTitle(),
           drawerInfo: verbiage.drawerInfo,
         }}
-        form={selectedIsCustomEntity ? addEntityForm : form}
+        form={selectedIsCustomEntity ? addEntityForm : reportDrawerForm}
         onSubmit={onSubmit}
         submitting={submitting}
         drawerDisclosure={{
@@ -462,8 +468,8 @@ function dashboardTitleStyling(canAddEntities: boolean) {
     paddingBottom: "0.75rem",
     borderBottom: "1.5px solid var(--mdct-colors-gray_lighter)",
     color: "gray",
-    fontSize: "lg",
-    fontWeight: "bold",
+    fontSize: "heading_lg",
+    fontWeight: "heading_lg",
   };
 }
 
@@ -476,22 +482,22 @@ const sx = {
   },
   dashboardTitle: {
     marginBottom: "1.25rem",
-    fontSize: "md",
-    fontWeight: "bold",
+    fontSize: "heading_md",
+    fontWeight: "heading_md",
     color: "gray",
   },
   buttonIcons: {
     height: "1rem",
   },
   entityName: {
-    fontSize: "lg",
-    fontWeight: "bold",
+    fontSize: "heading_lg",
+    fontWeight: "heading_lg",
     flexGrow: 1,
     marginLeft: "2.25rem",
     paddingRight: "spacer2",
   },
   missingEntity: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     marginBottom: "spacer4",
     a: {
       color: "primary",
@@ -503,7 +509,7 @@ const sx = {
   },
   missingEntityMessage: {
     paddingTop: "spacer2",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     a: {
       color: "primary",
       textDecoration: "underline",
@@ -515,7 +521,7 @@ const sx = {
       paddingLeft: "spacer2",
     },
   },
-  standardForm: {
+  form: {
     paddingBottom: "spacer2",
   },
   addEntityButton: {

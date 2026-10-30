@@ -3,9 +3,9 @@ export default {
     backButton: "Return to quality & performance measures dashboard",
     dashboardTitle: "Plan<br/>Status",
     intro: {
-      section:
+      formEyebrow:
         "Section D: Program-Level Indicators: Topic VII: Quality & Performance Measures",
-      subsection: "Quality & Performance measure results",
+      section: "Quality & Performance measure results",
     },
     reportTitle: "Report results by plan:",
     reportSubtitle:
@@ -14,8 +14,8 @@ export default {
   MLR: {
     backButton: "Return to MLR Reporting",
     intro: {
-      section: "MLR Reporting",
-      subsection: "Medicaid Medical Loss Ratio (MLR) & Remittances",
+      formEyebrow: "MLR Reporting",
+      section: "Medicaid Medical Loss Ratio (MLR) & Remittances",
       spreadsheet: "MLR Reporting",
       header: "Enter data for each program into the online form",
       body: "The online form sections are organized by state-level, program-level, plan-level indicators. In general, the MLR online form matches the organization of the MLR Excel reference. There are some exceptions.",

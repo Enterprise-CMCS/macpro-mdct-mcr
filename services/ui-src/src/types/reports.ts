@@ -203,8 +203,8 @@ export interface ReportPageVerbiage {
   intro: {
     alert?: string;
     hint?: string;
+    formEyebrow?: string;
     section: string;
-    subsection?: string;
     spreadsheet?: string;
     info?: string | CustomHtmlElement[];
     exportSectionHeader?: string;
@@ -271,6 +271,7 @@ export interface PlanOverlayReportPageVerbiage extends ReportPageVerbiage {
 
 export interface EntityDetailsMultiformVerbiage extends ReportPageVerbiage {
   backButton?: string;
+  formRequiredText?: string;
   heading?: string;
   hint?: string;
   accordion?: {
@@ -321,7 +322,6 @@ export interface MCPARReportMetadata extends ReportMetadata {
   existingProgramNameSuggestion?: string;
   newProgramName?: string;
   naaarSubmissionDateForThisProgram?: string;
-  newQualityMeasuresSectionEnabled?: boolean;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {

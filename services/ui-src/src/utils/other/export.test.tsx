@@ -441,6 +441,14 @@ describe("Test parseFormFieldInfo", () => {
     expect(result.label).toEqual(undefined);
     expect(result.hint).toEqual(undefined);
   });
+
+  test("Correctly returns undefined number when label has no leading numeric token", () => {
+    const input = { label: "Appeals denied", hint: "Hint" };
+    const result = parseFormFieldInfo(input);
+    expect(result.number).toEqual(undefined);
+    expect(result.label).toEqual("Appeals denied");
+    expect(result.hint).toEqual("Hint");
+  });
 });
 
 describe("Test renderDefaultFieldResponse", () => {

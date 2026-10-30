@@ -82,7 +82,7 @@ describe("<ExportedPlanOverlayReportSection />", () => {
     ).toBeInTheDocument();
   });
 
-  test("ExportedPlanOverlayReportSection displays non-compliance subsection for 438.68 when not compliant", () => {
+  test("ExportedPlanOverlayReportSection displays non-compliance section for 438.68 when not compliant", () => {
     const reportWithComplianceAnswers = JSON.parse(
       JSON.stringify(mockNaaarReportStore)
     );
@@ -130,7 +130,7 @@ describe("<ExportedPlanOverlayReportSection />", () => {
     ).toBeInTheDocument();
   });
 
-  test("ExportedPlanOverlayReportSection does not display non-compliance subsection for 438.68 when compliant", () => {
+  test("ExportedPlanOverlayReportSection does not display non-compliance section for 438.68 when compliant", () => {
     const reportWithComplianceAnswers = JSON.parse(
       JSON.stringify(mockNaaarReportStore)
     );

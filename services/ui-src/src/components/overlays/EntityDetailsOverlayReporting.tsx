@@ -5,7 +5,7 @@ import { Form, ReportPageIntro, SaveReturnButton } from "components";
 // types
 import { EntityShape, EntityType, FormJson } from "types";
 // utils
-import { getProgramInfo } from "utils";
+import { getFormRequiredText, getProgramInfo } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
 import overlayVerbiage from "verbiage/pages/overlays";
@@ -20,12 +20,14 @@ export const EntityDetailsOverlayReporting = ({
   validateOnRender,
 }: Props) => {
   const programInfo = getProgramInfo(selectedEntity);
+  const formRequiredText = getFormRequiredText(form.fields);
 
   return (
     <>
       <ReportPageIntro
-        text={overlayVerbiage.MLR.intro}
         accordion={accordionVerbiage.MLR.detailIntro}
+        formRequiredText={formRequiredText}
+        text={overlayVerbiage.MLR.intro}
       />
       <Box sx={sx.programInfo}>
         <Text sx={sx.textHeading}>MLR report for:</Text>
@@ -70,8 +72,8 @@ interface Props {
 
 const sx = {
   textHeading: {
-    fontWeight: "bold",
-    lineHeight: "1.25rem",
+    fontWeight: "heading_md",
+    lineHeight: "heading_md",
   },
   programInfo: {
     ul: {
@@ -80,10 +82,10 @@ const sx = {
       li: {
         wordWrap: "break-word",
         whiteSpace: "break-spaces",
-        fontSize: "xl",
-        lineHeight: "1.75rem",
+        fontSize: "heading_xl",
+        lineHeight: "body_xl",
         "&:first-of-type": {
-          fontWeight: "bold",
+          fontWeight: "heading_xl",
         },
       },
     },

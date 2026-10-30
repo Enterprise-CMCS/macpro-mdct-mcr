@@ -32,6 +32,7 @@ describe("useFieldWarning", () => {
     mockedUseStore.mockReturnValue(mockUseStore);
     mockUseWatch.mockReturnValue(undefined);
     mockValidateFieldWarning.mockReturnValue(null);
+    (global as any).reconfigureJsdomLocation("http://localhost/mcpar");
   });
 
   test("returns null when no warning rule matches", () => {
@@ -67,5 +68,12 @@ describe("useFieldWarning", () => {
       undefined,
       expect.anything()
     );
+  });
+
+  test("returns null for non-MCPAR pages", () => {
+    (global as any).reconfigureJsdomLocation("http://localhost/mlr");
+    mockValidateFieldWarning.mockReturnValue("Some warning");
+    render(<TestComponent name="someField" />);
+    expect(screen.getByTestId("warning-output")).toHaveTextContent("");
   });
 });

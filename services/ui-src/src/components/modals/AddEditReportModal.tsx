@@ -9,9 +9,9 @@ import {
   States,
 } from "../../constants";
 // form
-import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
-import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
-import naaarFormJson from "forms/addEditNaaarReport/addEditNaaarReport.json";
+import { mcparFormJson } from "forms/addEditMcparReport/addEditMcparReport";
+import { mlrFormJson } from "forms/addEditMlrReport/addEditMlrReport";
+import { naaarFormJson } from "forms/addEditNaaarReport/addEditNaaarReport";
 // types
 import {
   AnyObject,
@@ -27,10 +27,10 @@ import {
   convertDateEtToUtc,
   convertDateUtcToEt,
   defineProgramName,
+  getFormRequiredText,
   otherSpecify,
   useStore,
 } from "utils";
-import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const AddEditReportModal = ({
   activeState,
@@ -47,12 +47,8 @@ export const AddEditReportModal = ({
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  // LaunchDarkly
-  const newQualityMeasuresSectionEnabled =
-    useFlags()?.newQualityMeasuresSectionEnabled;
-
   // get correct form
-  const modalFormJsonMap: any = {
+  const modalFormJsonMap: { [key: string]: FormJson } = {
     MCPAR: mcparFormJson,
     MLR: mlrFormJson,
     NAAAR: naaarFormJson,
@@ -60,6 +56,7 @@ export const AddEditReportModal = ({
 
   const modalFormJson = modalFormJsonMap[reportType]!;
   const [form, setForm] = useState<FormJson>(modalFormJson);
+  const formRequiredText = getFormRequiredText(form.fields);
 
   useEffect(() => {
     // make deep copy of baseline form for customization
@@ -168,7 +165,6 @@ export const AddEditReportModal = ({
         naaarSubmissionForThisProgram,
         naaarSubmissionDateForThisProgram,
         naaarExpectedSubmissionDateForThisProgram,
-        newQualityMeasuresSectionEnabled,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
@@ -325,6 +321,7 @@ export const AddEditReportModal = ({
         intro: selectedReport?.id ? "" : form.heading?.intro,
         actionButtonText: submitting ? <Spinner size="md" /> : "Save",
         closeButtonText: "Cancel",
+        formRequiredText,
       }}
     >
       <Form

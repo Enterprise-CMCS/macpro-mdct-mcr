@@ -21,7 +21,7 @@ test.describe("MLR Dashboard Page", () => {
       await expect(
         statePage.page
           .getByRole("table", { name: "MLR Submissions" })
-          .getByRole("cell", { name: programName, exact: true })
+          .getByRole("rowheader", { name: programName, exact: true })
       ).toBeVisible();
     });
 
@@ -35,7 +35,7 @@ test.describe("MLR Dashboard Page", () => {
       await expect(
         statePage.page
           .getByRole("table", { name: "MLR Submissions" })
-          .getByRole("cell", { name: newProgramName, exact: true })
+          .getByRole("rowheader", { name: newProgramName, exact: true })
       ).toBeVisible();
     });
 

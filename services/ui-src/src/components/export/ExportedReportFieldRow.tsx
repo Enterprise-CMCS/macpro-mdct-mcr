@@ -6,6 +6,7 @@ import {
   FormField,
   FormLayoutElement,
   isFieldElement,
+  ReportFormFieldType,
 } from "types";
 // utils
 import {
@@ -21,6 +22,7 @@ export const ExportedReportFieldRow = ({
   entityType,
   parentFieldCheckedChoiceIds,
   showHintText = true,
+  hasNumberColumn = true,
 }: Props) => {
   const { report } = useStore();
   const reportData = report?.fieldData;
@@ -31,13 +33,38 @@ export const ExportedReportFieldRow = ({
   const isOtherTextEntry = formField.id.endsWith("-otherText");
   if (isOtherTextEntry) return null;
 
+  // render question layout elements as a grouping header for their response rows
+  if (formField.type === ReportFormFieldType.QUESTION) {
+    return (
+      <Tr data-testid="exportQuestionHeadingRow">
+        {/* number column/cell */}
+        {hasNumberColumn && (
+          <Th sx={sx.numberColumn}>
+            <Text sx={sx.fieldNumber}>{formFieldInfo?.number ?? ""}</Text>
+          </Th>
+        )}
+
+        {/* question text and hint live in the indicator column */}
+        <Td sx={sx.labelColumn}>
+          <Text sx={sx.fieldLabel}>{formFieldInfo?.label}</Text>
+          {showHintText && formField.props?.hint && (
+            <Box sx={sx.fieldHint}>{parseCustomHtml(formField.props.hint)}</Box>
+          )}
+        </Td>
+
+        {/* empty response column/cell */}
+        <Td sx={sx.dataColumn} />
+      </Tr>
+    );
+  }
+
   return (
     <Tr data-testid="exportRow">
       {/* number column/cell */}
-      {!isDynamicField && (
+      {!isDynamicField && hasNumberColumn && (
         <Th sx={sx.numberColumn}>
           <Text sx={sx.fieldNumber}>
-            {formFieldInfo?.number?.replace(".", "") || "N/A"}
+            {formFieldInfo?.number?.replace(".", "") ?? ""}
           </Text>
         </Th>
       )}
@@ -86,6 +113,7 @@ export interface Props {
   entityType?: EntityType;
   parentFieldCheckedChoiceIds?: string[];
   showHintText?: boolean;
+  hasNumberColumn?: boolean;
 }
 
 const sx = {
@@ -94,8 +122,8 @@ const sx = {
     paddingTop: "spacer1",
   },
   fieldNumber: {
-    fontSize: "sm",
-    fontWeight: "bold",
+    fontSize: "body_sm",
+    fontWeight: "heading_sm_bold",
     textTransform: "none",
     paddingLeft: "spacer1",
   },
@@ -109,12 +137,12 @@ const sx = {
     },
   },
   fieldLabel: {
-    fontSize: "sm",
-    fontWeight: "bold",
+    fontSize: "body_sm",
+    fontWeight: "heading_sm_bold",
     marginBottom: "spacer1",
   },
   fieldHint: {
-    lineHeight: "lg",
+    lineHeight: "body_lg",
     color: "gray",
   },
   dataColumn: {

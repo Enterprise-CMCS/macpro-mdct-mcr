@@ -85,12 +85,12 @@ interface Props {
 const sx = {
   detailBox: {
     marginTop: "spacer4",
-    fontWeight: "normal",
+    fontWeight: "body_md",
     color: "base",
   },
   detailHeader: {
-    fontSize: "md",
-    fontWeight: "bold",
+    fontSize: "heading_md",
+    fontWeight: "heading_sm_bold",
     color: "gray",
   },
   grid: {
@@ -100,15 +100,15 @@ const sx = {
   },
   detailDescription: {
     marginBottom: "spacer1",
-    fontSize: "md",
+    fontSize: "body_md",
   },
   detailSubtitle: {
     marginTop: "spacer2",
-    fontSize: "xs",
-    fontWeight: "bold",
+    fontSize: "body_xs",
+    fontWeight: "body_xs",
   },
   detailSubtext: {
     marginTop: "spacer_half",
-    fontSize: "sm",
+    fontSize: "body_sm",
   },
 };

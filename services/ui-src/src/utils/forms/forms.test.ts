@@ -6,6 +6,7 @@ import {
   flattenFormFields,
   formFieldFactory,
   getEntriesToClear,
+  getFormRequiredText,
   hydrateFormFields,
   initializeChoiceListFields,
   isFieldValidationOptional,
@@ -25,7 +26,9 @@ import {
   mockMlrReportStore,
   mockNestedFormField,
   mockNumberField,
+  mockOptionalFormField,
   mockSanctionsEntity,
+  mockSectionHeaderField,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 
@@ -585,6 +588,38 @@ describe("Test defineProgramName", () => {
     it("returns false for a layout element", () => {
       const field = { id: "test", type: "sectionHeader" };
       expect(isFieldValidationOptional(field)).toBe(false);
+    });
+  });
+
+  describe("getFormRequiredText()", () => {
+    test("returns 'All fields are required.' text", () => {
+      const fields = [mockFormField, mockSectionHeaderField];
+      expect(getFormRequiredText(fields)).toBe("All fields are required.");
+    });
+
+    test("returns 'All fields are required unless marked optional.' text", () => {
+      const fields = [
+        mockFormField,
+        mockOptionalFormField,
+        mockSectionHeaderField,
+      ];
+      expect(getFormRequiredText(fields)).toBe(
+        "All fields are required unless marked optional."
+      );
+    });
+
+    test("returns undefined for only optional fields", () => {
+      const fields = [mockOptionalFormField, mockSectionHeaderField];
+      expect(getFormRequiredText(fields)).toBeUndefined();
+    });
+
+    test("returns undefined for only layout fields", () => {
+      const fields = [mockSectionHeaderField];
+      expect(getFormRequiredText(fields)).toBeUndefined();
+    });
+
+    test("returns undefined for no fields", () => {
+      expect(getFormRequiredText()).toBeUndefined();
     });
   });
 });

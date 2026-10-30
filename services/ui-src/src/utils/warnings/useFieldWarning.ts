@@ -16,6 +16,8 @@ export const useFieldWarning = (name: string): string | null => {
   const value = useWatch({ control, name }) as FieldValue | null | undefined;
   const allValues = useWatch({ control }); // watch all form values
   const { report, selectedEntity } = useStore();
+  // Warnings are only applicable for MCPAR reports. Will investigate a cleaner solution in a future PR.
+  if (!window.location.pathname.includes("mcpar")) return null;
   return validateFieldWarning(name, value, {
     report,
     selectedEntity,

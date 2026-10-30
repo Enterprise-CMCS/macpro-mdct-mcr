@@ -46,7 +46,6 @@ export interface ReportMetadataShape extends ReportKeys {
   newProgramName?: string;
   naaarSubmissionDateForThisProgram?: string;
   naaarExpectedSubmissionDateForThisProgram?: string;
-  newQualityMeasuresSectionEnabled?: boolean;
 }
 
 export interface ReportShape extends ReportMetadataShape {
@@ -66,6 +65,7 @@ export interface ReportContextMethods {
   archiveReport: Function;
   releaseReport: Function;
   submitReport: Function;
+  recalculateReport: Function;
   createReport: Function;
   updateReport: Function;
   clearReportSelection: Function;

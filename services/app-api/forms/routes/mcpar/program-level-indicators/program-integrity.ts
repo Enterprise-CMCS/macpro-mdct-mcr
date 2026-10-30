@@ -11,8 +11,8 @@ export const programIntegrityRoute: FormRoute = {
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
-      section: "Section C: Program-Level Indicators",
-      subsection: "Topic X: Program Integrity",
+      formEyebrow: "Section C: Program-Level Indicators",
+      section: "Topic X: Program Integrity",
       spreadsheet: "C1_Program_Set",
     },
   },

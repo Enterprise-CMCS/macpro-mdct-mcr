@@ -20,6 +20,7 @@ import {
 import {
   filterFormData,
   formModifications,
+  getFormRequiredText,
   getPageTitle,
   parseCustomHtml,
   useFindRoute,
@@ -74,19 +75,20 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
     report?.fieldData
   );
 
+  const formRequiredText = getFormRequiredText(formJson.fields);
+
   return (
     <Box>
       {/* page title */}
       <Helmet>
         <title>{report && getPageTitle(report.reportType, route)}</title>
       </Helmet>
-      {route.verbiage.intro && (
-        <ReportPageIntro
-          accordion={accordion}
-          text={route.verbiage.intro}
-          reportType={report?.reportType}
-        />
-      )}
+      <ReportPageIntro
+        accordion={accordion}
+        formRequiredText={formRequiredText}
+        reportType={report?.reportType}
+        text={route.verbiage.intro}
+      />
       {showError ? (
         <Box sx={sx.missingEntity}>
           {parseCustomHtml(route.verbiage.missingEntityMessage || "")}
@@ -119,7 +121,7 @@ interface Props {
 
 const sx = {
   missingEntity: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     marginBottom: "spacer4",
     a: {
       color: "primary",
@@ -131,7 +133,7 @@ const sx = {
   },
   missingEntityMessage: {
     paddingTop: "spacer2",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     a: {
       color: "primary",
       textDecoration: "underline",

@@ -16,7 +16,7 @@ export const WarningMessage = ({ message, id }: Props) => (
       boxSize="16px"
       display="inline"
       verticalAlign="middle"
-      marginRight="0.25rem"
+      marginRight="spacer_half"
     />
     {message}
   </Text>
