@@ -163,7 +163,7 @@ interface Props {
 
 const sx = {
   bottomModalMessage: {
-    fontSize: "xs",
+    fontSize: "body_xs",
     color: "primary_darker",
     marginTop: "spacer2",
     marginBottom: "-1rem",

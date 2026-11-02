@@ -531,11 +531,11 @@ const sx = {
   },
   errorText: {
     color: "error_dark",
-    fontSize: "0.75rem",
+    fontSize: "body_xs",
     marginTop: "spacer_half",
   },
   heading: {
-    fontSize: "lg",
+    fontSize: "heading_lg",
     paddingBottom: "0.75rem",
   },
   table: {
@@ -558,9 +558,9 @@ const sx = {
   },
   tableData: {
     display: "block",
-    fontSize: "1rem",
-    fontWeight: "bold",
-    lineHeight: "1.5rem",
+    fontSize: "body_md",
+    fontWeight: "heading_md",
+    lineHeight: "body_md",
     maxWidth: "19rem",
   },
   tableButton: {

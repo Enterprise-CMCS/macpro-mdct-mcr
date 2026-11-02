@@ -42,7 +42,7 @@ const sx = {
       marginBottom: "0.75rem",
     },
     "& > li::marker": {
-      fontWeight: "normal",
+      fontWeight: "body_md",
     },
   },
 };

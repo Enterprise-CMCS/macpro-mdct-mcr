@@ -81,7 +81,7 @@ export const newMcpar = (
 
   // PCCM
   const programIsPCCM = [enums.programIsPCCM[isPccm ? 0 : 1]];
-  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()}${timestamp}`;
+  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()} ${timestamp}`;
 
   // Pick an existing program name
   const existingPrograms =
@@ -92,7 +92,7 @@ export const newMcpar = (
   // Check for new program name
   const programName = isNewProgram
     ? generatedProgramName
-    : `${existingProgramName}${timestamp}`;
+    : `${existingProgramName} ${timestamp}`;
   const existingProgramNameSelection = isNewProgram
     ? undefined
     : { value: existingProgramName, label: "existingProgramNameSelection" };

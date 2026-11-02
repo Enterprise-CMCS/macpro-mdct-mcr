@@ -47,7 +47,7 @@ const sx = {
     paddingBottom: "spacer2",
   },
   headers: {
-    fontWeight: "semibold",
+    fontWeight: "heading_md",
   },
   cells: {},
 };

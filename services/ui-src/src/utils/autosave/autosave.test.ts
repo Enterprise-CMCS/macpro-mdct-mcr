@@ -68,7 +68,7 @@ describe("autosaveFieldData", () => {
     );
   });
 
-  it("should save fieldData with default value if field is invalid", async () => {
+  it("should overwrite field2 with its default value if field is invalid", async () => {
     mockTrigger.mockResolvedValue(false);
     await autosaveFieldData({ form: mockForm, fields, report, user });
     expect(mockForm.trigger).toHaveBeenCalledWith("field2");
@@ -84,20 +84,11 @@ describe("autosaveFieldData", () => {
     );
   });
 
-  it("should save fieldData with default value if no there are no fields to save", async () => {
+  it("should not call updateReport if there are no fields to save", async () => {
     mockTrigger.mockResolvedValue(false);
+    const callCountBefore = report.updateReport.mock.calls.length;
     await autosaveFieldData({ form: mockForm, fields: [], report, user });
-    expect(mockForm.trigger).toHaveBeenCalledWith("field2");
-    expect(report.updateReport).toHaveBeenCalledWith(
-      { reportType: "MCPAR", id: "reportId", state: "MN" },
-      {
-        metadata: {
-          status: "In progress",
-          lastAlteredBy: "stateuser@test.com",
-        },
-        fieldData: { field2: "defaultValue2" },
-      }
-    );
+    expect(report.updateReport.mock.calls.length).toBe(callCountBefore);
   });
 
   it("should save fieldData with value if validity check is overridden", async () => {

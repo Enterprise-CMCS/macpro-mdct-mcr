@@ -2,7 +2,7 @@ export const sizes = {
   appMax: "100vw",
   basicPageWidth: "46rem",
   reportPageWidth: "40rem",
-  // font sizes: https://design.cms.gov/utilities/font-size/
+  // Used for non-font sizing
   xs: "0.75rem", // 12px
   sm: "0.875rem", // 14px
   md: "1rem", // 16px

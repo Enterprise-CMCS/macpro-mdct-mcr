@@ -215,6 +215,7 @@ export interface PlanData {
 
 export enum ReportFormFieldType {
   CHECKBOX = "checkbox",
+  CHECKBOX_SINGLE = "checkboxSingle",
   DATE = "date",
   DATE_MONTH_YEAR = "dateMonthYear",
   DROPDOWN = "dropdown",

@@ -52,7 +52,7 @@ export const grievancesOverviewRoute: DrawerFormRoute = {
       {
         id: "plan_resolvedGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.IV.10 Grievances resolved",
           hint: [
@@ -80,7 +80,7 @@ export const grievancesOverviewRoute: DrawerFormRoute = {
       {
         id: "plan_activeGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label: "D1.IV.11 Active grievances",
           hint: "Enter the total number of grievances still pending or in process (not yet resolved) as of the end of the reporting year.",
@@ -156,7 +156,7 @@ export const grievancesOverviewRoute: DrawerFormRoute = {
       {
         id: "plan_timyleResolvedGrievances",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.INTEGER_ZERO_OR_GREATER_NO_NA,
         props: {
           label:
             "D1.IV.14 Number of grievances for which timely resolution was provided",

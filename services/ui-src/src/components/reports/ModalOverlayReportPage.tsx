@@ -333,8 +333,8 @@ const sx = {
     },
   },
   dashboardTitle: {
-    fontSize: "md",
-    fontWeight: "bold",
+    fontSize: "heading_md",
+    fontWeight: "heading_md",
     color: "gray",
     textAlign: "left",
     ".tablet &, .mobile &": {
@@ -347,9 +347,9 @@ const sx = {
       marginBottom: "spacer_half",
     },
     th: {
-      fontSize: "md",
-      fontWeight: "bold",
-      lineHeight: "130%",
+      fontSize: "heading_md",
+      fontWeight: "heading_md",
+      lineHeight: "body_md",
       color: "gray",
       paddingLeft: "spacer2",
       paddingRight: "0",

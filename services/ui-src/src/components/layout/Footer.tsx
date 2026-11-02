@@ -184,8 +184,8 @@ const sx = {
     display: "inline-block",
     textAlign: "left",
     verticalAlign: "top",
-    fontSize: "sm",
-    lineHeight: "21px",
+    fontSize: "body_sm",
+    lineHeight: "body_sm",
     marginTop: 0,
   },
   footerCMSMedicaid: {
@@ -202,7 +202,7 @@ const sx = {
 
   footerText: {
     maxW: "20rem",
-    fontSize: "0.875rem",
+    fontSize: "body_sm",
     ".mobile &": {
       maxW: "100%",
       marginX: "spacer2",
@@ -211,7 +211,7 @@ const sx = {
   footerBottom: {
     minHeight: "3rem",
     bg: "primary_darkest",
-    fontSize: 14,
+    fontSize: "body_sm",
   },
   footerBottomContainer: {
     maxW: "appMax",
@@ -256,7 +256,7 @@ const sx = {
   },
   address: {
     color: "white",
-    fontWeight: "bold",
+    fontWeight: "heading_sm_bold",
     alignSelf: "center",
     margin: "2.25rem 0 0",
     ".desktop &": {

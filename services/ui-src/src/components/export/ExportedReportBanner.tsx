@@ -60,10 +60,10 @@ const sx = {
     },
     p: {
       marginBottom: "spacer2",
-      fontSize: "xl",
-      fontWeight: "bold",
+      fontSize: "body_xl",
+      fontWeight: "heading_xl",
       ".mobile &": {
-        fontSize: "lg",
+        fontSize: "body_lg",
       },
     },
   },
