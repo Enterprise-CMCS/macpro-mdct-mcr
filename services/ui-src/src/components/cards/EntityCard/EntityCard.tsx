@@ -257,12 +257,12 @@ const sx = {
     },
     ".error-text": {
       color: "error_darker",
-      fontSize: ".75rem",
+      fontSize: "body_xs",
       textAlign: "center",
     },
     ".completed-text": {
       color: "green",
-      fontSize: ".75rem",
+      fontSize: "body_xs",
       textAlign: "center",
     },
   },
@@ -286,25 +286,25 @@ const sx = {
   },
   missingReportingPeriodMessage: {
     marginTop: "spacer2",
-    fontSize: "xs",
+    fontSize: "body_xs",
     color: "error_dark",
   },
   unfinishedMessage: {
-    fontSize: "xs",
+    fontSize: "body_xs",
     color: "error_dark",
   },
   editButton: {
     marginY: "spacer2",
-    fontWeight: "normal",
+    fontWeight: "body_md",
   },
   openDrawerButton: {
     marginTop: "spacer2",
-    fontWeight: "normal",
+    fontWeight: "body_md",
   },
   entitiesCount: {
     position: "absolute",
     right: "-2rem",
-    fontSize: ".75rem",
+    fontSize: "heading_xs",
     color: "gray",
     ".mobile &": {
       right: "-1.5rem",

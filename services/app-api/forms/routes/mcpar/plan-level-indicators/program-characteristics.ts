@@ -123,7 +123,7 @@ export const programCharacteristicsRoute: DrawerFormRoute = {
       {
         id: "plan_parentOrganization",
         type: ReportFormFieldType.TEXT,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label:
             "D1.I.4: Parent Organization: The name of the parent entity that controls the Medicaid Managed Care Plan.",

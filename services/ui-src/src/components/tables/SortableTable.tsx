@@ -253,8 +253,8 @@ const sx = {
   },
   tableHeader: {
     padding: "0.75rem 0.5rem",
-    fontSize: "sm",
-    fontWeight: "semibold",
+    fontSize: "heading_sm",
+    fontWeight: "heading_sm_bold",
     borderColor: "gray_lighter",
     textTransform: "none",
     letterSpacing: "normal",
@@ -262,12 +262,12 @@ const sx = {
   tableCell: {
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
-    fontWeight: "normal",
+    fontWeight: "body_md",
   },
   tableCellBorder: {
     padding: "0.75rem 0.5rem",
     borderBottom: "1px solid",
     borderColor: "gray_lighter",
-    fontWeight: "normal",
+    fontWeight: "body_md",
   },
 };

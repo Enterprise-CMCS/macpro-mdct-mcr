@@ -53,7 +53,7 @@ export const addBssEntitiesRoute: FormRoute = {
       {
         id: "bssEntities",
         type: ReportFormFieldType.DYNAMIC,
-        validation: ValidationType.DYNAMIC,
+        validation: ValidationType.DYNAMIC_NO_PLACEHOLDER,
         props: {
           label: "BSS entity name",
         },

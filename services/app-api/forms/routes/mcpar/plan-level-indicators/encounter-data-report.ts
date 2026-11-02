@@ -45,7 +45,7 @@ export const encounterDataReportRoute: DrawerFormRoute = {
       {
         id: "program_encounterDataSubmissionTimelinessStandardDefinition",
         type: ReportFormFieldType.TEXTAREA,
-        validation: ValidationType.TEXT,
+        validation: ValidationType.TEXT_NO_NA,
         props: {
           label: "D1.III.1 Definition of timely encounter data submissions",
           hint: "Describe the state’s standard for timely encounter data submissions used in this program.</br>If reporting frequencies and standards differ by type of encounter within this program, please explain.",
@@ -54,7 +54,7 @@ export const encounterDataReportRoute: DrawerFormRoute = {
       {
         id: "plan_encounterDataSubmissionTimelinessCompliancePercentage",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.PERCENTAGE_ZERO_TO_HUNDRED_NO_NA,
         props: {
           label:
             "D1.III.2 Share of encounter data submissions that met state’s timely submission requirements",
@@ -65,7 +65,7 @@ export const encounterDataReportRoute: DrawerFormRoute = {
       {
         id: "plan_encounterDataSubmissionHipaaCompliancePercentage",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.PERCENTAGE_ZERO_TO_HUNDRED_NO_NA,
         props: {
           label:
             "D1.III.3 Share of encounter data submissions that were HIPAA compliant",

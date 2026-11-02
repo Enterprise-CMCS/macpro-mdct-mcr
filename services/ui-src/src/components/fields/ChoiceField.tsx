@@ -87,8 +87,8 @@ const sx = {
     boxSizing: "content-box",
   },
   label: {
-    fontWeight: "bold",
-    fontSize: "md",
+    fontWeight: "heading_md",
+    fontSize: "body_md",
     marginTop: "spacer3",
   },
   ".ds-c-hint": {

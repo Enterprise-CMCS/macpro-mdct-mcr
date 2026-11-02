@@ -468,8 +468,8 @@ function dashboardTitleStyling(canAddEntities: boolean) {
     paddingBottom: "0.75rem",
     borderBottom: "1.5px solid var(--mdct-colors-gray_lighter)",
     color: "gray",
-    fontSize: "lg",
-    fontWeight: "bold",
+    fontSize: "heading_lg",
+    fontWeight: "heading_lg",
   };
 }
 
@@ -482,22 +482,22 @@ const sx = {
   },
   dashboardTitle: {
     marginBottom: "1.25rem",
-    fontSize: "md",
-    fontWeight: "bold",
+    fontSize: "heading_md",
+    fontWeight: "heading_md",
     color: "gray",
   },
   buttonIcons: {
     height: "1rem",
   },
   entityName: {
-    fontSize: "lg",
-    fontWeight: "bold",
+    fontSize: "heading_lg",
+    fontWeight: "heading_lg",
     flexGrow: 1,
     marginLeft: "2.25rem",
     paddingRight: "spacer2",
   },
   missingEntity: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     marginBottom: "spacer4",
     a: {
       color: "primary",
@@ -509,7 +509,7 @@ const sx = {
   },
   missingEntityMessage: {
     paddingTop: "spacer2",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     a: {
       color: "primary",
       textDecoration: "underline",

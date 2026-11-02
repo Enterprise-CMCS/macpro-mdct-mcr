@@ -9,9 +9,9 @@ import {
   States,
 } from "../../constants";
 // form
-import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
-import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
-import naaarFormJson from "forms/addEditNaaarReport/addEditNaaarReport.json";
+import { mcparFormJson } from "forms/addEditMcparReport/addEditMcparReport";
+import { mlrFormJson } from "forms/addEditMlrReport/addEditMlrReport";
+import { naaarFormJson } from "forms/addEditNaaarReport/addEditNaaarReport";
 // types
 import {
   AnyObject,
@@ -48,7 +48,7 @@ export const AddEditReportModal = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   // get correct form
-  const modalFormJsonMap: any = {
+  const modalFormJsonMap: { [key: string]: FormJson } = {
     MCPAR: mcparFormJson,
     MLR: mlrFormJson,
     NAAAR: naaarFormJson,

@@ -105,12 +105,12 @@ const sx = {
       maxWidth: "36rem",
     },
     h2: {
-      lineHeight: "1.3rem",
+      lineHeight: "heading_md",
     },
   },
   drawerEyebrowHeaderText: {
-    fontSize: "md",
-    fontWeight: "bold",
+    fontSize: "heading_md",
+    fontWeight: "heading_md_bold",
   },
   drawerHeader: {
     position: "relative",
@@ -118,14 +118,14 @@ const sx = {
   },
   drawerHeaderText: {
     paddingRight: "4rem",
-    fontSize: "2xl",
-    fontWeight: "bold",
+    fontSize: "heading_2xl",
+    fontWeight: "heading_2xl",
   },
   drawerReminderText: {
     marginTop: "spacer2",
     paddingRight: "4rem",
-    fontSize: "md",
-    fontWeight: "normal",
+    fontSize: "body_md",
+    fontWeight: "body_md",
   },
   drawerCloseButton: {
     position: "absolute",
@@ -136,7 +136,7 @@ const sx = {
       margin: "0 .25rem",
       paddingTop: "0.06rem",
       svg: {
-        fontSize: "xs",
+        fontSize: "body_xs",
         width: "xs",
         height: "xs",
       },
@@ -144,24 +144,24 @@ const sx = {
   },
   detailBox: {
     marginTop: "spacer4",
-    fontWeight: "normal",
+    fontWeight: "body_md",
     color: "base",
   },
   detailHeader: {
     marginBottom: "spacer1",
-    fontSize: "md",
-    fontWeight: "bold",
+    fontSize: "heading_md",
+    fontWeight: "heading_md_bold",
     color: "gray",
   },
   detailDescription: {
     marginBottom: "spacer1",
-    fontSize: "md",
+    fontSize: "body_md",
   },
   infoTextBox: {
     marginTop: "spacer4",
     "p, span": {
       color: "gray",
-      fontSize: "16px",
+      fontSize: "body_md",
     },
     a: {
       color: "primary",

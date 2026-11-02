@@ -288,7 +288,7 @@ const sx = {
   },
   count: {
     color: "gray",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     whiteSpace: "nowrap",
     ".tablet &, .mobile &": {
       whiteSpace: "normal",
@@ -303,11 +303,11 @@ const sx = {
     width: "6rem",
   },
   bold: {
-    fontWeight: "bold",
+    fontWeight: "heading_md",
   },
   exceptionsNonCompliance: {
     color: "primary_darker",
-    fontWeight: "bold",
+    fontWeight: "heading_md",
     textAlign: "center",
   },
 };
