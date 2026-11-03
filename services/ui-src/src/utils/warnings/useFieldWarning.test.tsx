@@ -43,13 +43,13 @@ describe("useFieldWarning", () => {
   test("calls validateFieldWarning with correct field name and value", () => {
     mockUseWatch.mockReturnValue("someValue");
     render(<TestComponent name="someField" />);
-    expect(mockValidateFieldWarning).toHaveBeenCalledWith(
-      "someField",
-      "someValue",
-      expect.objectContaining({
+    expect(mockValidateFieldWarning).toHaveBeenCalledWith({
+      fieldName: "someField",
+      value: "someValue",
+      context: expect.objectContaining({
         selectedEntity: expect.anything(),
-      })
-    );
+      }),
+    });
   });
 
   test("returns warning message when validateFieldWarning returns one", () => {
@@ -63,11 +63,11 @@ describe("useFieldWarning", () => {
   test("returns null when value is undefined", () => {
     mockUseWatch.mockReturnValue(undefined);
     render(<TestComponent name="someField" />);
-    expect(mockValidateFieldWarning).toHaveBeenCalledWith(
-      "someField",
-      undefined,
-      expect.anything()
-    );
+    expect(mockValidateFieldWarning).toHaveBeenCalledWith({
+      fieldName: "someField",
+      value: undefined,
+      context: expect.anything(),
+    });
   });
 
   test("returns null for non-MCPAR pages", () => {
@@ -75,5 +75,6 @@ describe("useFieldWarning", () => {
     mockValidateFieldWarning.mockReturnValue("Some warning");
     render(<TestComponent name="someField" />);
     expect(screen.getByTestId("warning-output")).toHaveTextContent("");
+    expect(mockValidateFieldWarning).not.toHaveBeenCalled();
   });
 });

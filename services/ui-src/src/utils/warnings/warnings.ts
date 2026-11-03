@@ -156,13 +156,19 @@ const fieldWarningMap: Record<string, string> = {
   sanction_remediationDate: "DATE_BEFORE_2023", // D3.VIII.8a
 };
 
-export const validateFieldWarning = (
-  fieldName: string,
-  value: FieldValue | null | undefined,
-  context: WarningContext = {},
-  map: Record<string, string> = fieldWarningMap,
-  rules: Record<string, WarningRule> = warningRules
-): string | null => {
+export const validateFieldWarning = ({
+  fieldName,
+  value,
+  context = {},
+  map = fieldWarningMap,
+  rules = warningRules,
+}: {
+  fieldName: string;
+  value?: FieldValue | null;
+  context?: WarningContext;
+  map?: Record<string, string>;
+  rules?: Record<string, WarningRule>;
+}): string | null => {
   const warningType = map[fieldName];
   if (!warningType) return null;
   const warningRule = rules[warningType];
