@@ -416,6 +416,15 @@ export const dateMonthYear = () =>
 export const dateOptional = () =>
   string().matches(optionalDateFormatRegex, error.INVALID_DATE).notRequired();
 
+export const dateOrNa = () =>
+  string().test({
+    message: error.INVALID_DATE,
+    test: (value) =>
+      value === undefined ||
+      validNAValues.includes(value) ||
+      date().isValidSync(value),
+  });
+
 export const endDate = (startDateField: string) =>
   date().test(
     "is-after-start-date",
@@ -586,6 +595,7 @@ export const schemaMap: any = {
   date: date(),
   dateMonthYear: dateMonthYear(),
   dateOptional: dateOptional(),
+  dateOrNa: dateOrNa(),
   dateYear2000OrLater: dateYear2000OrLater(),
   dropdown: dropdown(),
   dropdownOptional: dropdownOptional(),

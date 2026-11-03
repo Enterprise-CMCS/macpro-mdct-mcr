@@ -211,7 +211,7 @@ export const mentalHealthAndSubstanceUseDisorderParityRoute: FormRoute = {
                   id: "program_whenWasTheLastParityAnalysisForThisProgramSubmittedToCMS",
                   type: ReportFormFieldType.DATE,
                   validation: {
-                    type: ValidationType.DATE,
+                    type: ValidationType.DATE_OR_NA,
                     nested: true,
                     parentFieldName: "program_doesThisProgramIncludeMCOs",
                     parentOptionId: "A4uFU0YyU9useo3DsWjnH264",
@@ -220,6 +220,7 @@ export const mentalHealthAndSubstanceUseDisorderParityRoute: FormRoute = {
                     label:
                       "C1.XII.9 When was the last parity analysis(es) for this program submitted to CMS?",
                     hint: "States with ANY services provided to MCO enrollees by an entity other than an MCO should report the date the state’s most recent summary parity analysis report was submitted to CMS. States with NO services provided to MCO enrollees by an entity other than an MCO should report the most recent date the state submitted any MCO’s parity report to CMS (the state may have multiple parity reports, one for each MCO).",
+                    allowNa: true,
                   },
                 },
                 {
