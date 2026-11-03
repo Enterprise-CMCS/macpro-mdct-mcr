@@ -21,6 +21,7 @@ import {
   fieldWarningLayoutSx,
   useFieldWarning,
   fieldWarningActiveSx,
+  validNAValues,
 } from "utils";
 
 import { WarningMessage } from "utils/warnings/WarningMessage";
@@ -35,10 +36,12 @@ export const DateField = ({
   validateOnRender,
   styleAsOptional,
   clear,
+  allowNa,
   ...props
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+  const [remountKey, setRemountKey] = useState<number>(0);
 
   // state management
   const { full_name, state } = useStore().user ?? {};
@@ -79,17 +82,34 @@ export const DateField = ({
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
+  // only treat N/A specially when the field opts in via allowNa
+  const isNa = (value: string) => !!allowNa && validNAValues.includes(value);
+
   // update field display value and form field data on change
   const onChangeHandler = (rawValue: string, maskedValue: string) => {
+    // on blur the date input reports '' for text it can't parse; keep a typed N/A
+    const clearedByBlur =
+      rawValue === "" &&
+      isNa(displayValue) &&
+      document.activeElement?.id !== name;
+    if (clearedByBlur) return;
     setDisplayValue(rawValue);
-    form.setValue(name, maskedValue, { shouldValidate: true });
+    form.setValue(name, isNa(rawValue) ? rawValue : maskedValue, {
+      shouldValidate: true,
+    });
   };
 
   // if should autosave, submit field data to database on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
-    const { name, value } = event.target;
+    const { name } = event.target;
+    // the date input blanks its own text on blur, so prefer the form value for N/A
+    const formValue = form.getValues(name);
+    const keepNa = isNa(formValue);
+    const value = keepNa ? formValue : event.target.value;
     // if field is blank, trigger client-side field validation error
     if (!value.trim()) form.trigger(name);
+    // remount so the date input shows the N/A we kept in state
+    if (keepNa) setRemountKey((key) => key + 1);
     // submit field data to database
     if (autosave) {
       const fields = getAutosaveFields({
@@ -152,6 +172,7 @@ export const DateField = ({
         <WarningMessage message={warningMessage} id={`${name}__warning`} />
       )}
       <CmsdsDateField
+        key={remountKey}
         id={name}
         name={name}
         label=""
@@ -184,6 +205,7 @@ interface Props {
   sxOverride?: SystemStyleObject;
   styleAsOptional?: boolean;
   clear?: boolean;
+  allowNa?: boolean;
   [key: string]: any;
 }
 

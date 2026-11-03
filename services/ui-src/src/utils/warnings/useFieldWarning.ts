@@ -18,9 +18,13 @@ export const useFieldWarning = (name: string): string | null => {
   const { report, selectedEntity } = useStore();
   // Warnings are only applicable for MCPAR reports. Will investigate a cleaner solution in a future PR.
   if (!window.location.pathname.includes("mcpar")) return null;
-  return validateFieldWarning(name, value, {
-    report,
-    selectedEntity,
-    formValues: allValues, // pass live form values
+  return validateFieldWarning({
+    fieldName: name,
+    value,
+    context: {
+      report,
+      selectedEntity,
+      formValues: allValues, // pass live form values
+    },
   });
 };

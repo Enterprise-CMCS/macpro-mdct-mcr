@@ -17,7 +17,7 @@ import { testA11yAct } from "utils/testing/commonTests";
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
   register: () => {},
-  setValue: () => {},
+  setValue: jest.fn(),
   getValues: jest.fn(),
   trigger: mockTrigger,
 };
@@ -56,6 +56,18 @@ const dateFieldComponent = (
 const dateFieldAutosavingComponent = (
   <ReportContext.Provider value={mockMcparReportContext}>
     <DateField name="testDateField" label="test-date-field" autosave />
+  </ReportContext.Provider>
+);
+
+const dateFieldAllowNaComponent = (
+  <ReportContext.Provider value={mockMcparReportContext}>
+    <DateField name="testDateField" label="test-date-field" allowNa />
+  </ReportContext.Provider>
+);
+
+const dateFieldAllowNaAutosavingComponent = (
+  <ReportContext.Provider value={mockMcparReportContext}>
+    <DateField name="testDateField" label="test-date-field" allowNa autosave />
   </ReportContext.Provider>
 );
 
@@ -212,6 +224,95 @@ describe("<DateField />", () => {
         await userEvent.tab();
       });
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe("Test DateField N/A handling", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test("with allowNa, stores a typed N/A in the form", async () => {
+      mockGetValues(undefined);
+      render(dateFieldAllowNaComponent);
+      const dateField = screen.getByRole("textbox", {
+        name: "test-date-field",
+      });
+      await act(async () => {
+        await userEvent.type(dateField, "N/A");
+      });
+      expect(mockRhfMethods.setValue).toHaveBeenLastCalledWith(
+        "testDateField",
+        "N/A",
+        { shouldValidate: true }
+      );
+    });
+
+    test("with allowNa, does not overwrite N/A when the date input clears itself on blur", async () => {
+      mockGetValues(undefined);
+      render(dateFieldAllowNaComponent);
+      const dateField = screen.getByRole("textbox", {
+        name: "test-date-field",
+      });
+      await act(async () => {
+        await userEvent.type(dateField, "N/A");
+        await userEvent.tab();
+      });
+      expect(mockRhfMethods.setValue).toHaveBeenLastCalledWith(
+        "testDateField",
+        "N/A",
+        { shouldValidate: true }
+      );
+    });
+
+    test("with allowNa, the user can still clear the field while focused", async () => {
+      mockGetValues(undefined);
+      render(dateFieldAllowNaComponent);
+      const dateField = screen.getByRole("textbox", {
+        name: "test-date-field",
+      });
+      await act(async () => {
+        await userEvent.type(dateField, "N/A");
+        await userEvent.clear(dateField);
+      });
+      expect(mockRhfMethods.setValue).toHaveBeenLastCalledWith(
+        "testDateField",
+        "",
+        { shouldValidate: true }
+      );
+    });
+
+    test("with allowNa, autosaves N/A from the form value", async () => {
+      mockTrigger.mockReturnValue(true);
+      mockGetValues("N/A");
+      render(dateFieldAllowNaAutosavingComponent);
+      const dateField = screen.getByRole("textbox", {
+        name: "test-date-field",
+      });
+      await act(async () => {
+        await userEvent.click(dateField);
+        await userEvent.tab();
+      });
+      expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ fieldData: { testDateField: "N/A" } })
+      );
+    });
+
+    test("without allowNa, a typed N/A is not stored in the form", async () => {
+      mockGetValues(undefined);
+      render(dateFieldComponent);
+      const dateField = screen.getByRole("textbox", {
+        name: "test-date-field",
+      });
+      await act(async () => {
+        await userEvent.type(dateField, "N/A");
+      });
+      expect(mockRhfMethods.setValue).not.toHaveBeenCalledWith(
+        "testDateField",
+        "N/A",
+        expect.anything()
+      );
     });
   });
 
