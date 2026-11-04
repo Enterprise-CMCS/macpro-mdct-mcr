@@ -837,8 +837,34 @@ describe("validateFieldWarning", () => {
       });
     });
 
-    describe("NUMBER_HIGH_PER_1000_OVER_3_5", () => {
-      const map = { testField: "NUMBER_HIGH_PER_1000_OVER_3_5" };
+    describe("REFERRALS_ZERO_OR_HIGH_PER_1000", () => {
+      const map = { testField: "REFERRALS_ZERO_OR_HIGH_PER_1000" };
+
+      test.each(["0", "0.0", "0,000", 0])(
+        "returns low warning for zero: %s",
+        (value) => {
+          const result = validateFieldWarning({
+            fieldName: "testField",
+            value,
+            context: mockContext(1000),
+            map,
+          });
+          expect(result).toBe(
+            "This number is unusually low. Review for accuracy."
+          );
+        }
+      );
+
+      test("returns low warning for zero when there is no plan enrollment", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "0",
+          map,
+        });
+        expect(result).toBe(
+          "This number is unusually low. Review for accuracy."
+        );
+      });
 
       test("returns warning when per 1000 rate exceeds 3.5", () => {
         const result = validateFieldWarning({
@@ -861,6 +887,19 @@ describe("validateFieldWarning", () => {
         });
         expect(result).toBeNull();
       });
+
+      test.each([null, undefined, "", "   ", "N/A"])(
+        "returns null for %p",
+        (value) => {
+          const result = validateFieldWarning({
+            fieldName: "testField",
+            value,
+            context: mockContext(1000),
+            map,
+          });
+          expect(result).toBeNull();
+        }
+      );
     });
 
     describe("NUMBER_HIGH_PER_1000_OVER_300", () => {
@@ -974,7 +1013,7 @@ describe("validateFieldWarning", () => {
     const mockContext = (overpaymentAmount: number): WarningContext => ({
       formValues: {
         plan_overpaymentReportingToStateDollarAmount: String(overpaymentAmount),
-      } as any,
+      },
     });
 
     test("returns high proportion warning when overpayment exceeds 10% of premium revenue", () => {
@@ -1041,8 +1080,187 @@ describe("validateFieldWarning", () => {
         context: {
           formValues: {
             plan_overpaymentReportingToStateDollarAmount: undefined,
-          } as any,
+          },
         },
+        map,
+      });
+      expect(result).toBeNull();
+    });
+
+    test.each(["N/A", "n/a", "NA", "NR", "nr"])(
+      "returns the numeric response warning for %s",
+      (value) => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value,
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toBe("Enter a valid numeric response.");
+      }
+    );
+  });
+
+  describe("URL_NOT_VALID", () => {
+    const map = { testField: "URL_NOT_VALID" };
+
+    test.each([
+      "http://example.com",
+      "https://example.com",
+      "https://example.com/path?query=1",
+      "HTTPS://EXAMPLE.COM",
+    ])("returns null for valid URL: %s", (value) => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value,
+        map,
+      });
+      expect(result).toBeNull();
+    });
+
+    test.each(["N/A", "n/a", "NA"])("returns null for %s", (value) => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value,
+        map,
+      });
+      expect(result).toBeNull();
+    });
+
+    test.each([null, undefined, "", "   "])("returns null for %p", (value) => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value,
+        map,
+      });
+      expect(result).toBeNull();
+    });
+
+    test.each([
+      "www.example.com",
+      "example.com",
+      "not a url",
+      "ftp://example.com",
+      "http://",
+    ])("returns warning for invalid URL: %s", (value) => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value,
+        map,
+      });
+      expect(result).toBe(
+        "Response must be a valid hyperlink/URL starting with http"
+      );
+    });
+  });
+
+  describe("PROGRAM_ENROLLMENT", () => {
+    const map = { testField: "PROGRAM_ENROLLMENT" };
+    const mockContext = (
+      enrollments: (string | undefined)[]
+    ): WarningContext => ({
+      report: {
+        fieldData: {
+          plans: enrollments.map((plan_enrollment, index) => ({
+            id: `plan-${index}`,
+            plan_enrollment,
+          })),
+        },
+      } as any,
+    });
+
+    const differsMessage =
+      "Number differs significantly from sum of reported plan enrollments. Review for accuracy.";
+    const roundedMessage =
+      "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value.";
+
+    test("returns warning when 5% or more above the plan total", () => {
+      // plan total = 1,000; 1,050 is exactly 5% over
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "1,050",
+        context: mockContext(["400", "600"]),
+        map,
+      });
+      expect(result).toBe(differsMessage);
+    });
+
+    test("returns warning when 5% or more below the plan total", () => {
+      // plan total = 1,000; 950 is exactly 5% under
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "950",
+        context: mockContext(["400", "600"]),
+        map,
+      });
+      expect(result).toBe(differsMessage);
+    });
+
+    test("returns null when within 5% of the plan total", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "1,040",
+        context: mockContext(["400", "600"]),
+        map,
+      });
+      expect(result).toBeNull();
+    });
+
+    test("returns the rounded warning when matching the plan total", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "1000",
+        context: mockContext(["400", "600"]),
+        map,
+      });
+      expect(result).toBe(roundedMessage);
+    });
+
+    test("returns both messages on separate lines when both apply", () => {
+      // plan total = 2,000; 1,000 is 50% off and divisible by 1000
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "1000",
+        context: mockContext(["800", "1200"]),
+        map,
+      });
+      expect(result).toBe(`${differsMessage}\n${roundedMessage}`);
+    });
+
+    test("is applied to the C1.I.5 field in the real map", () => {
+      const result = validateFieldWarning({
+        fieldName: "program_enrollment",
+        value: "1,050",
+        context: mockContext(["400", "600"]),
+      });
+      expect(result).toBe(differsMessage);
+    });
+
+    test("skips the comparison when a plan is missing enrollment", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "5,500",
+        context: mockContext(["400", undefined]),
+        map,
+      });
+      expect(result).toBeNull();
+    });
+
+    test("skips the comparison when there are no plans", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "5,500",
+        context: mockContext([]),
+        map,
+      });
+      expect(result).toBeNull();
+    });
+
+    test.each([null, undefined, "", "N/A"])("returns null for %p", (value) => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value,
+        context: mockContext(["400", "600"]),
         map,
       });
       expect(result).toBeNull();

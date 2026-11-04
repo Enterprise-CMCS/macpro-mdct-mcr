@@ -1,4 +1,5 @@
 import { EntityShape, FieldValue, ReportShape } from "types";
+import { validNAValues } from "utils";
 
 // Warning rules must remain pure functions with no React dependencies.
 // This ensures they can be called from either useFieldWarning or
@@ -7,7 +8,7 @@ import { EntityShape, FieldValue, ReportShape } from "types";
 export interface WarningContext {
   report?: ReportShape;
   selectedEntity?: EntityShape;
-  formValues?: Record<string, any>;
+  formValues?: Record<string, FieldValue | null | undefined>;
 }
 
 export type WarningRule = (
@@ -69,6 +70,31 @@ const compareNumberPer1000 = (
     : null;
 };
 
+// Helper for rounded-to-nearest-1000 enrollment warnings
+const divisibleBy1000 = (
+  value: FieldValue | null | undefined
+): string | null => {
+  const num = parseNumber(value);
+  if (num === null || num === 0) return null;
+  return num % 1000 === 0
+    ? "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value."
+    : null;
+};
+
+// Sum of plan enrollments (D1.I.1), or null if any plan lacks a numeric enrollment
+const sumPlanEnrollments = (report?: ReportShape): number | null => {
+  const plans = report?.fieldData?.plans;
+  if (!plans?.length) return null;
+  const enrollments: (number | null)[] = plans.map((plan: EntityShape) =>
+    parseNumber(plan.plan_enrollment)
+  );
+  if (enrollments.some((enrollment) => enrollment === null)) return null;
+  return enrollments.reduce(
+    (total: number, enrollment) => total + (enrollment ?? 0),
+    0
+  );
+};
+
 // Warning rule functions — defined once per warning type
 const warningRules: Record<string, WarningRule> = {
   // DATE WARNINGS
@@ -89,13 +115,7 @@ const warningRules: Record<string, WarningRule> = {
   },
 
   // NUMBER WARNINGS
-  DIVISIBLE_BY_1000: (value) => {
-    const num = parseNumber(value);
-    if (num === null || num === 0) return null;
-    return num % 1000 === 0
-      ? "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value."
-      : null;
-  },
+  DIVISIBLE_BY_1000: (value) => divisibleBy1000(value),
 
   PERCENTAGE_OVER_100: (value) => {
     const num = parseNumber(value);
@@ -123,10 +143,19 @@ const warningRules: Record<string, WarningRule> = {
     compareNumberPer1000(value, 40, ">", context), // D1.X.2
   NUMBER_HIGH_PER_1000_OVER_35: (value, context) =>
     compareNumberPer1000(value, 35, ">", context), // D1.X.4
-  NUMBER_HIGH_PER_1000_OVER_3_5: (value, context) =>
-    compareNumberPer1000(value, 3.5, ">", context), // D1.X.7
   NUMBER_HIGH_PER_1000_OVER_300: (value, context) =>
     compareNumberPer1000(value, 300, ">", context), // D1.XIII.4
+
+  // D1.X.7: zero referrals is unusually low; otherwise check per 1000 enrollees
+  REFERRALS_ZERO_OR_HIGH_PER_1000: (value, context) => {
+    if (value === null || value === undefined) return null;
+    const response = String(value).replaceAll(",", "").trim();
+    if (response === "") return null;
+    if (Number(response) === 0) {
+      return "This number is unusually low. Review for accuracy.";
+    }
+    return compareNumberPer1000(value, 3.5, ">", context);
+  },
 
   IDENTICAL_TO_STATE_OR_PROGRAM_NAME: (value, context) => {
     if (!value) return null;
@@ -147,7 +176,11 @@ const warningRules: Record<string, WarningRule> = {
     return null;
   },
 
+  // D1.X.9d: N/A and NR are accepted but flagged; otherwise compare D1.X.9c to premium revenue
   OVERPAYMENT_VS_PREMIUM_REVENUE: (value, context) => {
+    if (value && validNAValues.includes(String(value).trim())) {
+      return "Enter a valid numeric response.";
+    }
     const premiumRevenue = parseNumber(value);
     if (premiumRevenue === null || premiumRevenue === 0) return null;
     const overpayment = parseNumber(
@@ -162,6 +195,41 @@ const warningRules: Record<string, WarningRule> = {
       return "The overpayment amount entered in D1.X.9c represents a very small proportion of this premium revenue. Review for accuracy.";
     }
     return null;
+  },
+
+  // URL WARNINGS
+  // D1.XIII.1, D1.XIII.2: response should be a valid URL starting with http (N/A allowed)
+  URL_NOT_VALID: (value) => {
+    if (!value) return null;
+    const response = String(value).trim();
+    if (response === "" || validNAValues.includes(response)) return null;
+    try {
+      const { protocol } = new URL(response);
+      return protocol === "http:" || protocol === "https:"
+        ? null
+        : "Response must be a valid hyperlink/URL starting with http";
+    } catch {
+      return "Response must be a valid hyperlink/URL starting with http";
+    }
+  },
+
+  // PROGRAM ENROLLMENT WARNINGS
+  // C1.I.5: differs from sum of plan enrollments (D1.I.1) by 5% or more, and/or
+  // rounded to the nearest 1,000. When both apply, the messages are returned
+  // separated by a newline and WarningMessage renders each as its own warning.
+  PROGRAM_ENROLLMENT: (value, context) => {
+    const programEnrollment = parseNumber(value);
+    const planTotal = sumPlanEnrollments(context.report);
+    const differsFromPlans =
+      programEnrollment !== null &&
+      !!planTotal &&
+      Math.abs(programEnrollment - planTotal) / planTotal >= 0.05
+        ? "Number differs significantly from sum of reported plan enrollments. Review for accuracy."
+        : null;
+    return (
+      [differsFromPlans, divisibleBy1000(value)].filter(Boolean).join("\n") ||
+      null
+    );
   },
 };
 
@@ -180,7 +248,7 @@ const fieldWarningMap: Record<string, string> = {
   state_stateTimeframeForExpeditedPriorAuthorizationDecisions: "NUMBER_OVER_72", // B.XIII.2b
 
   // C - Program Level Indicators (program-level-indicators/program-characteristics.ts)
-  program_enrollment: "DIVISIBLE_BY_1000", // C1.I.5
+  program_enrollment: "PROGRAM_ENROLLMENT", // C1.I.5
 
   // C - Program Level Indicators (program-level-indicators/mental-health-and-substance-use-disorder-parity.ts)
   program_whenWasTheLastParityAnalysisCoveringThisProgramCompleted:
@@ -210,18 +278,21 @@ const fieldWarningMap: Record<string, string> = {
   plan_dedicatedProgramIntegrityStaff: "NUMBER_HIGH_PER_1000_OVER_25", // D1.X.1
   plan_openedProgramIntegrityInvestigations: "NUMBER_HIGH_PER_1000_OVER_40", // D1.X.2
   plan_resolvedProgramIntegrityInvestigations: "NUMBER_HIGH_PER_1000_OVER_35", // D1.X.4
-  plan_mfcuProgramIntegrityReferrals: "NUMBER_HIGH_PER_1000_OVER_3_5", // D1.X.7
-  plan_smaProgramIntegrityReferrals: "NUMBER_HIGH_PER_1000_OVER_3_5", // D1.X.7
+  plan_mfcuProgramIntegrityReferrals: "REFERRALS_ZERO_OR_HIGH_PER_1000", // D1.X.7
+  plan_smaProgramIntegrityReferrals: "REFERRALS_ZERO_OR_HIGH_PER_1000", // D1.X.7
   plan_smaMfcuConcurrentProgramIntegrityReferrals:
-    "NUMBER_HIGH_PER_1000_OVER_3_5", // D1.X.7
+    "REFERRALS_ZERO_OR_HIGH_PER_1000", // D1.X.7
   plan_smaMfcuAggregateProgramIntegrityReferrals:
-    "NUMBER_HIGH_PER_1000_OVER_3_5", // D1.X.7
+    "REFERRALS_ZERO_OR_HIGH_PER_1000", // D1.X.7
   plan_overpaymentReportingToStateStartDate: "DATE_BEFORE_2020", // D1.X.9a
   plan_overpaymentReportingToStateEndDate: "DATE_BEFORE_2020", // D1.X.9b
   plan_overpaymentReportingToStateCorrespondingYearPremiumRevenue:
     "OVERPAYMENT_VS_PREMIUM_REVENUE", // D1.X.9d
 
   // D - Plan Level Indicators - Prior Authorization (plan-level-indicators/prior-authorization.ts)
+  plan_urlForPriorAuthorizationDataOnPlanWebsite: "URL_NOT_VALID", // D1.XIII.1
+  plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization:
+    "URL_NOT_VALID", // D1.XIII.2
   plan_averageTimeToDecisionForStandardPriorAuthorizations: "NUMBER_OVER_7_1", // D1.XIII.9
   plan_medianTimeToDecisionOnStandardPriorAuthorizations: "NUMBER_OVER_7", // D1.XIII.10
   plan_totalExpeditedPriorAuthorizationRequestsReceived:
