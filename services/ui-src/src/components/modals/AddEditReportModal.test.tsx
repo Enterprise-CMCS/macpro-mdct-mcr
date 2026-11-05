@@ -367,6 +367,13 @@ describe("<AddEditProgramModal />", () => {
 
     const fillForm = async (form: any) => {
       const programNameField = form.querySelector("[name='programName']")!;
+      // When the modal opens, Chakra focuses the modal itself on the next
+      // animation frame (jsdom has no layout, so Chakra finds no visible
+      // focusable elements). Wait for that frame so it can't pull focus away
+      // from the input while we type.
+      await act(async () => {
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+      });
       await act(async () => {
         await userEvent.type(programNameField, "fake program name");
         const submitButton = screen.getByRole("button", { name: "Save" });
