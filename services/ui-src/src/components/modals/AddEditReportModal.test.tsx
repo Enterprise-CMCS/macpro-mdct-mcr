@@ -58,6 +58,16 @@ const mockedNaaarReportContext = {
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
+// When the modal opens, Chakra focuses the modal itself on the next animation
+// frame (jsdom has no layout, so Chakra finds no visible focusable elements).
+// Wait for that frame before interacting so it can't pull focus away from an
+// input while we type.
+const waitForModalFocus = async () => {
+  await act(async () => {
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+  });
+};
+
 const modalComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockedMcparReportContext}>
@@ -236,9 +246,9 @@ describe("<AddEditProgramModal />", () => {
       const isNewProgram = screen.getByLabelText(
         "Add new program"
       ) as HTMLInputElement;
+      await waitForModalFocus();
       await act(async () => {
         await userEvent.click(isNewProgram);
-        await new Promise((resolve) => setTimeout(resolve, 500));
         const programNameField = form.querySelector("[name='newProgramName']")!;
         await userEvent.type(programNameField, "fake program name");
         const startDateField = form.querySelector(
@@ -367,13 +377,7 @@ describe("<AddEditProgramModal />", () => {
 
     const fillForm = async (form: any) => {
       const programNameField = form.querySelector("[name='programName']")!;
-      // When the modal opens, Chakra focuses the modal itself on the next
-      // animation frame (jsdom has no layout, so Chakra finds no visible
-      // focusable elements). Wait for that frame so it can't pull focus away
-      // from the input while we type.
-      await act(async () => {
-        await new Promise((resolve) => requestAnimationFrame(resolve));
-      });
+      await waitForModalFocus();
       await act(async () => {
         await userEvent.type(programNameField, "fake program name");
         const submitButton = screen.getByRole("button", { name: "Save" });
@@ -416,9 +420,9 @@ describe("<AddEditProgramModal />", () => {
       const isNewProgram = screen.getByLabelText(
         "Add new program"
       ) as HTMLInputElement;
+      await waitForModalFocus();
       await act(async () => {
         await userEvent.click(isNewProgram);
-        await new Promise((resolve) => setTimeout(resolve, 500));
         const programNameField = form.querySelector("[name='newProgramName']")!;
         await userEvent.type(programNameField, "fake program name");
         const startDateField = form.querySelector(
