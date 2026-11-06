@@ -35,6 +35,8 @@ repos:
           - ^tests/playwright/data/
           - --exclude-files
           - ^tests/seeds/fixtures/
+          - --exclude-files
+          - ^docs/
         stages: [pre-commit]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.0.272

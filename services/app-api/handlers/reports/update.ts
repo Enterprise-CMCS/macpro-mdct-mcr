@@ -67,18 +67,19 @@ export const updateReport = handler(async (event, context) => {
   ];
 
   // This parse is guaranteed to succeed, because handler-lib already did it.
-  const eventBody = JSON.parse(event.body);
-  if (
-    (eventBody.metadata &&
-      Object.keys(eventBody.metadata).some((_) =>
-        metadataBlocklist.includes(_)
-      )) ||
-    (eventBody.fieldData &&
-      Object.keys(eventBody.fieldData).some((_) =>
-        fieldDataBlocklist.includes(_)
-      ))
-  ) {
-    return badRequest(error.INVALID_DATA);
+  const { metadata: unvalidatedMetadata, fieldData: unvalidatedFieldData } =
+    JSON.parse(event.body);
+
+  /*
+   * Clients are not allowed to change blocklisted keys. Therefore we'll strip
+   * them instead of rejecting the request outright. We need returned reports to
+   * still hold these values from the last submission, and the stored values are kept when the update is merged in below.
+   */
+  for (const key of metadataBlocklist) {
+    delete unvalidatedMetadata?.[key];
+  }
+  for (const key of fieldDataBlocklist) {
+    delete unvalidatedFieldData?.[key];
   }
 
   // Ensure user has correct permissions to update a report.
@@ -131,12 +132,6 @@ export const updateReport = handler(async (event, context) => {
   if (!existingFieldData) {
     return notFound(error.MISSING_DATA);
   }
-
-  // Parse the passed payload.
-  const unvalidatedPayload = JSON.parse(event.body);
-
-  const { metadata: unvalidatedMetadata, fieldData: unvalidatedFieldData } =
-    unvalidatedPayload;
 
   if (!unvalidatedFieldData) {
     return badRequest(error.MISSING_DATA);
