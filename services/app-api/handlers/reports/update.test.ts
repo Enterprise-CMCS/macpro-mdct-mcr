@@ -312,30 +312,75 @@ describe("handlers/reports/update", () => {
       expect(res.body).toContain(error.MISSING_DATA);
     });
 
-    test("Test attempted report update with disallowed metadata properties returns 400", async () => {
-      const eventWritingToReadonlyMetadataFields = {
-        ...submissionEvent,
-        body: `{"metadata":{"locked":true}}`,
+    test("Test report update strips blocklisted properties and keeps stored values", async () => {
+      const storedMetadata = {
+        ...mockDynamoData,
+        submittedBy: "Original Submitter",
+        submittedOnDate: 162515200000,
       };
-      const res = await updateReport(
-        eventWritingToReadonlyMetadataFields,
-        null
-      );
-      expect(res.statusCode).toBe(StatusCodes.BadRequest);
-      expect(res.body).toContain(error.INVALID_DATA);
-    });
+      const storedFieldData = {
+        ...mockReportFieldData,
+        submitterName: "Original Submitter",
+        submitterEmailAddress: "original@example.com",
+        reportSubmissionDate: "01/01/2025",
+      };
+      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      s3GetSpy
+        .mockResolvedValueOnce(mockReportJson)
+        .mockResolvedValueOnce(storedFieldData);
+      const s3PutSpy = jest.spyOn(s3Lib, "put");
+      s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+      const mockPut = jest.fn();
+      dynamoClientMock.on(PutCommand).callsFake(mockPut);
+      mockedFetchReport.mockResolvedValue({
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "string",
+          "Access-Control-Allow-Credentials": true,
+        },
+        body: JSON.stringify(storedMetadata),
+      });
 
-    test("Test attempted report update with disallowed fieldData properties returns 400", async () => {
-      const eventWritingToReadonlyFieldDataFields = {
-        ...submissionEvent,
-        body: `{"fieldData":{"submitterName":"Abaraham Lincoln"}}`,
+      const eventWithBlocklistedFields = {
+        ...mockProxyEvent,
+        body: JSON.stringify({
+          metadata: {
+            status: "In progress",
+            submittedBy: "Someone Else",
+            submittedOnDate: 999,
+            locked: true,
+          },
+          fieldData: {
+            ...storedFieldData,
+            "mock-number-field": 3,
+            submitterName: "Someone Else",
+            submitterEmailAddress: "someone@example.com",
+            reportSubmissionDate: "12/31/2099",
+          },
+        }),
       };
-      const res = await updateReport(
-        eventWritingToReadonlyFieldDataFields,
-        null
+      const response = await updateReport(eventWithBlocklistedFields, null);
+      const body = JSON.parse(response.body!);
+
+      expect(response.statusCode).toBe(StatusCodes.Ok);
+      // The allowed change is saved
+      expect(body.status).toBe("In progress");
+      expect(body.fieldData["mock-number-field"]).toBe("3");
+      // Blocklisted values are left as they were
+      expect(body.submittedBy).toBe(storedMetadata.submittedBy);
+      expect(body.submittedOnDate).toBe(storedMetadata.submittedOnDate);
+      expect(body.locked).toBeUndefined();
+      expect(body.fieldData).toEqual(
+        expect.objectContaining({
+          submitterName: storedFieldData.submitterName,
+          submitterEmailAddress: storedFieldData.submitterEmailAddress,
+          reportSubmissionDate: storedFieldData.reportSubmissionDate,
+        })
       );
-      expect(res.statusCode).toBe(StatusCodes.BadRequest);
-      expect(res.body).toContain(error.INVALID_DATA);
+      const savedFieldData = JSON.parse(
+        s3PutSpy.mock.calls[0][0].Body as string
+      );
+      expect(savedFieldData.submitterName).toBe(storedFieldData.submitterName);
     });
 
     test("Test attempted report update with no existing record throws 404", async () => {
