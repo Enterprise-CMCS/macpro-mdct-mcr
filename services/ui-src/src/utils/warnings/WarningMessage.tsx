@@ -2,16 +2,16 @@ import { Box, Image, Text } from "@chakra-ui/react";
 import warningIconBrown from "assets/icons/icon_warning_brown.svg";
 
 interface Props {
-  message: string;
+  messages: string[];
   id: string;
 }
 
-// A message containing line breaks renders as separate warnings, each with its own icon
-export const WarningMessage = ({ message, id }: Props) => (
+// Each message renders as its own warning, each with its own icon
+export const WarningMessage = ({ messages, id }: Props) => (
   <Box role="alert" id={id}>
-    {message.split("\n").map((line) => (
+    {messages.map((message) => (
       <Text
-        key={line}
+        key={message}
         display="block"
         fontSize="sm"
         color="warn_darkest"
@@ -26,7 +26,7 @@ export const WarningMessage = ({ message, id }: Props) => (
           verticalAlign="middle"
           marginRight="spacer_half"
         />
-        {line}
+        {message}
       </Text>
     ))}
   </Box>

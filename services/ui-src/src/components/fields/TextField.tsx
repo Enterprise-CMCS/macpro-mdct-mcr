@@ -124,8 +124,8 @@ export const TextField = ({
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message as ReactNode;
-  const warningMessage = useFieldWarning(name);
-  const isWarning = !errorMessage && !!warningMessage;
+  const warningMessages = useFieldWarning(name);
+  const isWarning = !errorMessage && warningMessages.length > 0;
   const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
@@ -146,7 +146,7 @@ export const TextField = ({
       </Label>
       {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
       {isWarning && (
-        <WarningMessage message={warningMessage} id={`${name}__warning`} />
+        <WarningMessage messages={warningMessages} id={`${name}__warning`} />
       )}
       <CmsdsTextField
         id={name}

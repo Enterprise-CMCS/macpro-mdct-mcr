@@ -70,17 +70,6 @@ const compareNumberPer1000 = (
     : null;
 };
 
-// Helper for rounded-to-nearest-1000 enrollment warnings
-const divisibleBy1000 = (
-  value: FieldValue | null | undefined
-): string | null => {
-  const num = parseNumber(value);
-  if (num === null || num === 0) return null;
-  return num % 1000 === 0
-    ? "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value."
-    : null;
-};
-
 // Sum of plan enrollments (D1.I.1), or null if any plan lacks a numeric enrollment
 const sumPlanEnrollments = (report?: ReportShape): number | null => {
   const plans = report?.fieldData?.plans;
@@ -94,22 +83,6 @@ const sumPlanEnrollments = (report?: ReportShape): number | null => {
     0
   );
 };
-
-// Helper for dates before 2020
-const dateBefore2020 = (
-  value: FieldValue | null | undefined
-): string | null => {
-  const date = parseDate(value);
-  if (!date) return null;
-  return date < new Date("2020-01-01")
-    ? "Dates prior to 2020 are not expected in this field. Review for accuracy."
-    : null;
-};
-
-// Helper to combine several possible warnings into one multi-line message
-// (WarningMessage renders each line as its own warning), or null if none apply
-const joinMessages = (...messages: (string | null)[]): string | null =>
-  messages.filter(Boolean).join("\n") || null;
 
 // D1.X.9a/9b: reporting period should span exactly 12 months, end date inclusive
 // (01/01/2023 to 12/31/2023 is 12 months; 01/01/2024 is not). Confirmed by the BOs.
@@ -129,7 +102,13 @@ export const isNotTwelveMonthPeriod = (
 // Warning rule functions — defined once per warning type
 const warningRules: Record<string, WarningRule> = {
   // DATE WARNINGS
-  DATE_BEFORE_2020: (value) => dateBefore2020(value),
+  DATE_BEFORE_2020: (value) => {
+    const date = parseDate(value);
+    if (!date) return null;
+    return date < new Date("2020-01-01")
+      ? "Dates prior to 2020 are not expected in this field. Review for accuracy."
+      : null;
+  },
 
   DATE_BEFORE_2023: (value) => {
     const date = parseDate(value);
@@ -140,7 +119,13 @@ const warningRules: Record<string, WarningRule> = {
   },
 
   // NUMBER WARNINGS
-  DIVISIBLE_BY_1000: (value) => divisibleBy1000(value),
+  DIVISIBLE_BY_1000: (value) => {
+    const num = parseNumber(value);
+    if (num === null || num === 0) return null;
+    return num % 1000 === 0
+      ? "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value."
+      : null;
+  },
 
   PERCENTAGE_OVER_100: (value) => {
     const num = parseNumber(value);
@@ -223,30 +208,23 @@ const warningRules: Record<string, WarningRule> = {
   },
 
   // OVERPAYMENT REPORTING PERIOD WARNINGS
-  // D1.X.9a / D1.X.9b: dates before 2020 are unexpected, and a period that is not
-  // 12 months prompts a "double-check" on each date (the banner covers the pair).
-  // Both can apply at once; they are returned newline-separated, one warning per line.
-  OVERPAYMENT_PERIOD_START_DATE: (value, context) =>
-    joinMessages(
-      dateBefore2020(value),
-      isNotTwelveMonthPeriod(
-        value,
-        context.formValues?.plan_overpaymentReportingToStateEndDate
-      )
-        ? "Double-check the start date."
-        : null
-    ),
+  // D1.X.9a / D1.X.9b: a period that is not 12 months prompts a "double-check" on
+  // each date (the banner covers the pair). Shown alongside DATE_BEFORE_2020 (see the map).
+  DOUBLE_CHECK_START_DATE: (value, context) =>
+    isNotTwelveMonthPeriod(
+      value,
+      context.formValues?.plan_overpaymentReportingToStateEndDate
+    )
+      ? "Double-check the start date."
+      : null,
 
-  OVERPAYMENT_PERIOD_END_DATE: (value, context) =>
-    joinMessages(
-      dateBefore2020(value),
-      isNotTwelveMonthPeriod(
-        context.formValues?.plan_overpaymentReportingToStateStartDate,
-        value
-      )
-        ? "Double-check the end date."
-        : null
-    ),
+  DOUBLE_CHECK_END_DATE: (value, context) =>
+    isNotTwelveMonthPeriod(
+      context.formValues?.plan_overpaymentReportingToStateStartDate,
+      value
+    )
+      ? "Double-check the end date."
+      : null,
 
   // URL WARNINGS
   // D1.XIII.1, D1.XIII.2: response should be a valid URL starting with http (N/A allowed)
@@ -265,24 +243,21 @@ const warningRules: Record<string, WarningRule> = {
   },
 
   // PROGRAM ENROLLMENT WARNINGS
-  // C1.I.5: differs from sum of plan enrollments (D1.I.1) by 5% or more, and/or
-  // rounded to the nearest 1,000. When both apply, the messages are returned
-  // separated by a newline and WarningMessage renders each as its own warning.
-  PROGRAM_ENROLLMENT: (value, context) => {
+  // C1.I.5: differs from sum of plan enrollments (D1.I.1) by 5% or more.
+  // Shown alongside DIVISIBLE_BY_1000 (see the map).
+  PROGRAM_ENROLLMENT_DIFFERS_FROM_PLANS: (value, context) => {
     const programEnrollment = parseNumber(value);
     const planTotal = sumPlanEnrollments(context.report);
-    const differsFromPlans =
-      programEnrollment !== null &&
-      !!planTotal &&
-      Math.abs(programEnrollment - planTotal) / planTotal >= 0.05
-        ? "Number differs significantly from sum of reported plan enrollments. Review for accuracy."
-        : null;
-    return joinMessages(differsFromPlans, divisibleBy1000(value));
+    if (programEnrollment === null || !planTotal) return null;
+    return Math.abs(programEnrollment - planTotal) / planTotal >= 0.05
+      ? "Number differs significantly from sum of reported plan enrollments. Review for accuracy."
+      : null;
   },
 };
 
 // Field to warning type mapping — organized by form/file location
-const fieldWarningMap: Record<string, string> = {
+// A field can list several warning types; each one that applies is shown, in order.
+const fieldWarningMap: Record<string, string | string[]> = {
   // A - Program Information (program-information/reporting-period.ts)
   reportingPeriodStartDate: "DATE_BEFORE_2020", // A.5a
   reportingPeriodEndDate: "DATE_BEFORE_2020", // A.5b
@@ -296,7 +271,10 @@ const fieldWarningMap: Record<string, string> = {
   state_stateTimeframeForExpeditedPriorAuthorizationDecisions: "NUMBER_OVER_72", // B.XIII.2b
 
   // C - Program Level Indicators (program-level-indicators/program-characteristics.ts)
-  program_enrollment: "PROGRAM_ENROLLMENT", // C1.I.5
+  program_enrollment: [
+    "PROGRAM_ENROLLMENT_DIFFERS_FROM_PLANS",
+    "DIVISIBLE_BY_1000",
+  ], // C1.I.5
 
   // C - Program Level Indicators (program-level-indicators/mental-health-and-substance-use-disorder-parity.ts)
   program_whenWasTheLastParityAnalysisCoveringThisProgramCompleted:
@@ -332,8 +310,14 @@ const fieldWarningMap: Record<string, string> = {
     "REFERRALS_ZERO_OR_HIGH_PER_1000", // D1.X.7
   plan_smaMfcuAggregateProgramIntegrityReferrals:
     "REFERRALS_ZERO_OR_HIGH_PER_1000", // D1.X.7
-  plan_overpaymentReportingToStateStartDate: "OVERPAYMENT_PERIOD_START_DATE", // D1.X.9a
-  plan_overpaymentReportingToStateEndDate: "OVERPAYMENT_PERIOD_END_DATE", // D1.X.9b
+  plan_overpaymentReportingToStateStartDate: [
+    "DATE_BEFORE_2020",
+    "DOUBLE_CHECK_START_DATE",
+  ], // D1.X.9a
+  plan_overpaymentReportingToStateEndDate: [
+    "DATE_BEFORE_2020",
+    "DOUBLE_CHECK_END_DATE",
+  ], // D1.X.9b
   plan_overpaymentReportingToStateCorrespondingYearPremiumRevenue:
     "OVERPAYMENT_VS_PREMIUM_REVENUE", // D1.X.9d
 
@@ -365,12 +349,10 @@ export const validateFieldWarning = ({
   fieldName: string;
   value?: FieldValue | null;
   context?: WarningContext;
-  map?: Record<string, string>;
+  map?: Record<string, string | string[]>;
   rules?: Record<string, WarningRule>;
-}): string | null => {
-  const warningType = map[fieldName];
-  if (!warningType) return null;
-  const warningRule = rules[warningType];
-  if (!warningRule) return null;
-  return warningRule(value, context);
-};
+}): string[] =>
+  [map[fieldName] ?? []]
+    .flat()
+    .map((warningType) => rules[warningType]?.(value, context))
+    .filter((message): message is string => !!message);

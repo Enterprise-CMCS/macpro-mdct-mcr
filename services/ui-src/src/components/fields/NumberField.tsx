@@ -173,14 +173,14 @@ export const NumberField = ({
 
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message as ReactNode;
-  const warningMessage = useFieldWarning(name);
+  const warningMessages = useFieldWarning(name);
   const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const maskClass = mask || "";
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
-  const isWarning = !errorMessage && !!warningMessage;
+  const isWarning = !errorMessage && warningMessages.length > 0;
 
   return (
     <Box
@@ -197,7 +197,7 @@ export const NumberField = ({
       </Label>
       {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
       {isWarning && (
-        <WarningMessage message={warningMessage} id={`${name}__warning`} />
+        <WarningMessage messages={warningMessages} id={`${name}__warning`} />
       )}
       <Box sx={sx.numberFieldContainer} className={maskClass}>
         <CmsdsTextField

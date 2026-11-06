@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 // components
@@ -42,7 +42,7 @@ mockedUseStore.mockReturnValue({
 });
 
 jest.mock("utils/warnings/useFieldWarning", () => ({
-  useFieldWarning: jest.fn().mockReturnValue(null),
+  useFieldWarning: jest.fn().mockReturnValue([]),
 }));
 const mockUseFieldWarning = useFieldWarning as jest.Mock;
 
@@ -276,16 +276,20 @@ describe("<TextField />", () => {
   });
 
   describe("Test TextField warning functionality", () => {
-    test("warning message is not displayed when useFieldWarning returns null", () => {
+    afterEach(() => {
+      mockUseFieldWarning.mockReturnValue([]);
+    });
+
+    test("warning message is not displayed when useFieldWarning returns no warnings", () => {
       mockGetValues(undefined);
-      mockUseFieldWarning.mockReturnValue(null);
+      mockUseFieldWarning.mockReturnValue([]);
       render(textFieldComponent);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
 
     test("warning message is displayed when useFieldWarning returns a message", () => {
       mockGetValues(undefined);
-      mockUseFieldWarning.mockReturnValue("Test warning message");
+      mockUseFieldWarning.mockReturnValue(["Test warning message"]);
       render(textFieldComponent);
       expect(screen.getByRole("alert")).toBeVisible();
       expect(screen.getByRole("alert")).toHaveTextContent(
@@ -294,7 +298,7 @@ describe("<TextField />", () => {
     });
 
     test("warning message is not displayed when field has an error", () => {
-      mockUseFieldWarning.mockReturnValue("Test warning message");
+      mockUseFieldWarning.mockReturnValue(["Test warning message"]);
       mockUseFormContext.mockImplementation((): any => ({
         ...mockRhfMethods,
         getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(undefined),
@@ -312,6 +316,16 @@ describe("<TextField />", () => {
       ).toHaveAccessibleDescription(
         expect.stringContaining("This field is required")
       );
+    });
+
+    test("displays each warning as its own message when useFieldWarning returns several", () => {
+      mockGetValues(undefined);
+      mockUseFieldWarning.mockReturnValue(["First warning", "Second warning"]);
+      render(textFieldComponent);
+      const warnings = within(screen.getByRole("alert")).getAllByRole(
+        "paragraph"
+      );
+      expect(warnings).toHaveLength(2);
     });
   });
 

@@ -43,7 +43,7 @@ mockedUseStore.mockReturnValue({
 });
 
 jest.mock("utils/warnings/useFieldWarning", () => ({
-  useFieldWarning: jest.fn().mockReturnValue(null),
+  useFieldWarning: jest.fn().mockReturnValue([]),
 }));
 const mockUseFieldWarning = useFieldWarning as jest.Mock;
 
@@ -352,16 +352,20 @@ describe("<DateField />", () => {
   });
 
   describe("Test DateField warning functionality", () => {
-    test("warning message is not displayed when useFieldWarning returns null", () => {
+    afterEach(() => {
+      mockUseFieldWarning.mockReturnValue([]);
+    });
+
+    test("warning message is not displayed when useFieldWarning returns no warnings", () => {
       mockGetValues(undefined);
-      mockUseFieldWarning.mockReturnValue(null);
+      mockUseFieldWarning.mockReturnValue([]);
       render(dateFieldComponent);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
 
     test("warning message is displayed when useFieldWarning returns a message", () => {
       mockGetValues(undefined);
-      mockUseFieldWarning.mockReturnValue("Test warning message");
+      mockUseFieldWarning.mockReturnValue(["Test warning message"]);
       render(dateFieldComponent);
       expect(screen.getByRole("alert")).toBeVisible();
       expect(screen.getByRole("alert")).toHaveTextContent(
@@ -370,7 +374,7 @@ describe("<DateField />", () => {
     });
 
     test("warning message is not displayed when field has an error", () => {
-      mockUseFieldWarning.mockReturnValue("Test warning message");
+      mockUseFieldWarning.mockReturnValue(["Test warning message"]);
       mockUseFormContext.mockImplementation((): any => ({
         ...mockRhfMethods,
         getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(undefined),
@@ -392,7 +396,7 @@ describe("<DateField />", () => {
 
     test("warning message is not displayed when field is disabled", () => {
       mockGetValues(undefined);
-      mockUseFieldWarning.mockReturnValue("Test warning message");
+      mockUseFieldWarning.mockReturnValue(["Test warning message"]);
       render(
         <ReportContext.Provider value={mockMcparReportContext}>
           <DateField name="testDateField" label="test-date-field" disabled />
