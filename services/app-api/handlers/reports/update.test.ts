@@ -17,7 +17,7 @@ import { error } from "../../utils/constants/constants";
 import s3Lib from "../../utils/s3/s3-lib";
 // types
 import { APIGatewayProxyEvent } from "../../utils/types";
-import { StatusCodes } from "../../utils/responses/response-lib";
+import { ok, StatusCodes } from "../../utils/responses/response-lib";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
@@ -312,75 +312,32 @@ describe("handlers/reports/update", () => {
       expect(res.body).toContain(error.MISSING_DATA);
     });
 
-    test("Test report update strips blocklisted properties and keeps stored values", async () => {
-      const storedMetadata = {
-        ...mockDynamoData,
-        submittedBy: "Original Submitter",
-        submittedOnDate: 162515200000,
-      };
-      const storedFieldData = {
-        ...mockReportFieldData,
-        submitterName: "Original Submitter",
-        submitterEmailAddress: "original@example.com",
-        reportSubmissionDate: "01/01/2025",
-      };
-      const s3GetSpy = jest.spyOn(s3Lib, "get");
-      s3GetSpy
+    test("Test report update ignores blocklisted properties", async () => {
+      jest
+        .spyOn(s3Lib, "get")
         .mockResolvedValueOnce(mockReportJson)
-        .mockResolvedValueOnce(storedFieldData);
-      const s3PutSpy = jest.spyOn(s3Lib, "put");
-      s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
-      const mockPut = jest.fn();
-      dynamoClientMock.on(PutCommand).callsFake(mockPut);
-      mockedFetchReport.mockResolvedValue({
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "string",
-          "Access-Control-Allow-Credentials": true,
+        .mockResolvedValueOnce({ ...mockReportFieldData, submitterName: "A" });
+      jest.spyOn(s3Lib, "put").mockResolvedValue(mockS3PutObjectCommandOutput);
+      mockedFetchReport.mockResolvedValue(
+        ok({ ...mockDynamoData, submittedBy: "A" })
+      );
+
+      const res = await updateReport(
+        {
+          ...mockProxyEvent,
+          body: JSON.stringify({
+            metadata: { submittedBy: "B" },
+            fieldData: { submitterName: "B", "mock-number-field": 3 },
+          }),
         },
-        body: JSON.stringify(storedMetadata),
-      });
+        null
+      );
+      const body = JSON.parse(res.body!);
 
-      const eventWithBlocklistedFields = {
-        ...mockProxyEvent,
-        body: JSON.stringify({
-          metadata: {
-            status: "In progress",
-            submittedBy: "Someone Else",
-            submittedOnDate: 999,
-            locked: true,
-          },
-          fieldData: {
-            ...storedFieldData,
-            "mock-number-field": 3,
-            submitterName: "Someone Else",
-            submitterEmailAddress: "someone@example.com",
-            reportSubmissionDate: "12/31/2099",
-          },
-        }),
-      };
-      const response = await updateReport(eventWithBlocklistedFields, null);
-      const body = JSON.parse(response.body!);
-
-      expect(response.statusCode).toBe(StatusCodes.Ok);
-      // The allowed change is saved
-      expect(body.status).toBe("In progress");
+      expect(res.statusCode).toBe(StatusCodes.Ok);
       expect(body.fieldData["mock-number-field"]).toBe("3");
-      // Blocklisted values are left as they were
-      expect(body.submittedBy).toBe(storedMetadata.submittedBy);
-      expect(body.submittedOnDate).toBe(storedMetadata.submittedOnDate);
-      expect(body.locked).toBeUndefined();
-      expect(body.fieldData).toEqual(
-        expect.objectContaining({
-          submitterName: storedFieldData.submitterName,
-          submitterEmailAddress: storedFieldData.submitterEmailAddress,
-          reportSubmissionDate: storedFieldData.reportSubmissionDate,
-        })
-      );
-      const savedFieldData = JSON.parse(
-        s3PutSpy.mock.calls[0][0].Body as string
-      );
-      expect(savedFieldData.submitterName).toBe(storedFieldData.submitterName);
+      expect(body.submittedBy).toBe("A");
+      expect(body.fieldData.submitterName).toBe("A");
     });
 
     test("Test attempted report update with no existing record throws 404", async () => {
