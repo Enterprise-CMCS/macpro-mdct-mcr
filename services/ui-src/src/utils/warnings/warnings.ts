@@ -192,7 +192,7 @@ const warningRules: Record<string, WarningRule> = {
       return "Enter a valid numeric response.";
     }
     const premiumRevenue = parseNumber(value);
-    if (premiumRevenue === null || premiumRevenue === 0) return null;
+    if (premiumRevenue === null || premiumRevenue <= 0) return null;
     const overpayment = parseNumber(
       context.formValues?.plan_overpaymentReportingToStateDollarAmount
     );
