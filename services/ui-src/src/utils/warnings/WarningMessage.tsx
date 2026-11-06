@@ -1,23 +1,33 @@
-import { Image, Text } from "@chakra-ui/react";
+import { Box, Image, Text } from "@chakra-ui/react";
 import warningIconBrown from "assets/icons/icon_warning_brown.svg";
-import { warningMessageSx } from "utils";
 
 interface Props {
-  message: string;
+  messages: string[];
   id: string;
 }
 
-export const WarningMessage = ({ message, id }: Props) => (
-  <Text sx={warningMessageSx} role="alert" id={id}>
-    <Image
-      src={warningIconBrown}
-      alt=""
-      aria-hidden="true"
-      boxSize="16px"
-      display="inline"
-      verticalAlign="middle"
-      marginRight="spacer_half"
-    />
-    {message}
-  </Text>
+// Each message renders as its own warning, each with its own icon
+export const WarningMessage = ({ messages, id }: Props) => (
+  <Box role="alert" id={id}>
+    {messages.map((message) => (
+      <Text
+        key={message}
+        display="block"
+        fontSize="sm"
+        color="warn_darkest"
+        marginTop="spacer_half"
+      >
+        <Image
+          src={warningIconBrown}
+          alt=""
+          aria-hidden="true"
+          boxSize="16px"
+          display="inline"
+          verticalAlign="middle"
+          marginRight="spacer_half"
+        />
+        {message}
+      </Text>
+    ))}
+  </Box>
 );

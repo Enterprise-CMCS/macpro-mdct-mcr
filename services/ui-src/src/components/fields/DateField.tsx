@@ -5,7 +5,6 @@ import {
   SingleInputDateField as CmsdsDateField,
   Label,
   Hint,
-  InlineError,
 } from "@cmsgov/design-system";
 import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
@@ -144,14 +143,15 @@ export const DateField = ({
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message as ReactNode;
-  const warningMessage = useFieldWarning(name);
+  const warningMessages = useFieldWarning(name);
   const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
 
-  const isWarning = !errorMessage && !!warningMessage && !props?.disabled;
+  const isWarning =
+    !errorMessage && warningMessages.length > 0 && !props?.disabled;
 
   return (
     <Box
@@ -167,9 +167,8 @@ export const DateField = ({
         {labelText || ""}
       </Label>
       {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
-      <InlineError id={`${name}__error`} />
       {isWarning && (
-        <WarningMessage message={warningMessage} id={`${name}__warning`} />
+        <WarningMessage messages={warningMessages} id={`${name}__warning`} />
       )}
       <CmsdsDateField
         key={remountKey}

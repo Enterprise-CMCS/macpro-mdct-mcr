@@ -166,6 +166,21 @@ describe("Schemas", () => {
     testDate(schemaMap.pastDateOptional, badPastDateOptionalTestCases, false);
   });
 
+  test("Test dateOrNa schema", () => {
+    testDate(
+      schemaMap.dateOrNa,
+      ["01/01/2023", "12/31/2023", undefined, ...validNAValues],
+      true
+    );
+    testDate(schemaMap.dateOrNa, ["abc", "not a date"], false);
+  });
+
+  test("dateOrNa error message says N/A is allowed", () => {
+    expect(() => schemaMap.dateOrNa.validateSync("not a date")).toThrow(
+      'Response must be a valid date or "N/A"'
+    );
+  });
+
   test("Evaluate End Date Schema using date scheme", () => {
     expect(isEndDateAfterStartDate("01/01/1989", "01/01/1990")).toBeTruthy();
     expect(isEndDateAfterStartDate("01/01/1990", "01/01/1989")).toBeFalsy();

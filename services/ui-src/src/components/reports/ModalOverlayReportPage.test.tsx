@@ -33,6 +33,7 @@ import {
   mockMLRReportEntityStartedFieldData,
   mockEmptyReportStore,
   mockEntityStore,
+  mockMcparReportStore,
 } from "utils/testing/setupJest";
 import {
   makeMediaQueryClasses,
@@ -43,6 +44,7 @@ import {
 import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
+import { EntityType, ModalOverlayReportPageShape } from "types";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -502,6 +504,78 @@ describe("<ModalOverlayReportPage />", () => {
       });
       const headerAndCaptionArray = screen.getAllByText(verbiage.tableHeader);
       expect(headerAndCaptionArray).toHaveLength(2);
+    });
+  });
+
+  describe("Test ModalOverlayReportPage quality measures warning banner", () => {
+    const bannerText = /quality and performance measures reported appears low/i;
+
+    const mockQualityMeasuresRoute = {
+      ...mockModalOverlayReportPageWithOverlayJson,
+      path: "/mcpar/plan-level-indicators/quality-measures/measures-and-results",
+      entityType: EntityType.QUALITY_MEASURES,
+    };
+
+    const componentWithRoute = (route: ModalOverlayReportPageShape) => (
+      <RouterWrappedComponent>
+        <UserProvider>
+          <ReportProvider>
+            <ModalOverlayReportPage
+              route={route}
+              setSidebarHidden={mockSetSidebarHidden}
+            />
+          </ReportProvider>
+        </UserProvider>
+      </RouterWrappedComponent>
+    );
+
+    const storeWithQualityMeasures = (count: number) => {
+      const [mockMeasure] = mockMcparReportStore.report?.fieldData
+        ?.qualityMeasures ?? [{}];
+      return {
+        ...mockStateUserStore,
+        ...mockMcparReportStore,
+        report: {
+          ...mockMcparReportStore.report,
+          fieldData: {
+            ...mockMcparReportStore.report?.fieldData,
+            qualityMeasures: Array.from({ length: count }, (_, i) => ({
+              ...mockMeasure,
+              id: `mock-measure-${i}`,
+            })),
+          },
+        },
+      };
+    };
+
+    test.each([0, 3, 10])(
+      "shows warning banner with %s quality measures",
+      async (count) => {
+        mockedUseStore.mockReturnValue(storeWithQualityMeasures(count));
+        await act(async () => {
+          render(componentWithRoute(mockQualityMeasuresRoute));
+        });
+        expect(screen.getByText(bannerText)).toBeVisible();
+      }
+    );
+
+    test("does not show warning banner with more than 10 quality measures", async () => {
+      mockedUseStore.mockReturnValue(storeWithQualityMeasures(11));
+      await act(async () => {
+        render(componentWithRoute(mockQualityMeasuresRoute));
+      });
+      expect(screen.queryByText(bannerText)).not.toBeInTheDocument();
+    });
+
+    test("does not show warning banner on other overlay pages", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMlrEntityStartedStore,
+      });
+      await act(async () => {
+        render(componentWithRoute(mockModalOverlayReportPageWithOverlayJson));
+      });
+      expect(screen.queryByText(bannerText)).not.toBeInTheDocument();
     });
   });
 

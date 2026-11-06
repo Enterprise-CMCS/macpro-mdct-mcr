@@ -59,6 +59,7 @@ export { MonthYearField } from "./fields/MonthYearField";
 export { NumberField } from "./fields/NumberField";
 export { NumberSuppressibleField } from "./fields/NumberSuppressibleField";
 export { RadioField } from "./fields/RadioField";
+export { ReportingPeriodLengthBanner } from "./fields/ReportingPeriodLengthBanner";
 export { TextField } from "./fields/TextField";
 export { TextAreaField } from "./fields/TextAreaField";
 // forms

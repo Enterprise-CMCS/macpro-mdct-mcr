@@ -5,7 +5,7 @@ import { ReportContext, ModalDrawerReportPage } from "components";
 // constants
 import { saveAndCloseText } from "../../constants";
 // types
-import { ModalDrawerReportPageShape } from "types";
+import { EntityType, ModalDrawerReportPageShape } from "types";
 // utils
 import { useBreakpoint, useStore } from "utils";
 import {
@@ -15,6 +15,7 @@ import {
   mockStateUserStore,
   RouterWrappedComponent,
   mockMcparReportStore,
+  mockSanctionsEntity,
 } from "utils/testing/setupJest";
 import { testA11yAct } from "utils/testing/commonTests";
 
@@ -198,6 +199,51 @@ describe("<ModalDrawerReportPage />", () => {
       // there are 2 plans in the mock report context and 1 field to repeat, so 2 fields should render
       const renderedFields = screen.getAllByRole("textbox");
       expect(renderedFields.length).toEqual(2);
+    });
+  });
+
+  describe("Test ModalDrawerReportPage sanctions warning banner", () => {
+    const bannerText =
+      /sanctions, corrective actions, or other interventions reported appears low/i;
+
+    const mockSanctionsRoute = {
+      ...mockModalDrawerReportPageJson,
+      entityType: EntityType.SANCTIONS,
+    };
+
+    const storeWithSanctions = (count: number) => ({
+      ...mockStateUserStore,
+      report: {
+        ...mockMcparReportStore.report,
+        fieldData: {
+          ...mockMcparReportStore.report?.fieldData,
+          sanctions: Array.from({ length: count }, (_, i) => ({
+            ...mockSanctionsEntity,
+            id: `mock-sanction-${i}`,
+          })),
+        },
+      },
+    });
+
+    test.each([1, 2])("shows warning banner with %s sanctions", (count) => {
+      mockedUseStore.mockReturnValue(storeWithSanctions(count));
+      render(modalDrawerReportPageComponentWithEntities(mockSanctionsRoute));
+      expect(screen.getByText(bannerText)).toBeVisible();
+    });
+
+    test("does not show warning banner with more than 2 sanctions", () => {
+      mockedUseStore.mockReturnValue(storeWithSanctions(3));
+      render(modalDrawerReportPageComponentWithEntities(mockSanctionsRoute));
+      expect(screen.queryByText(bannerText)).not.toBeInTheDocument();
+    });
+
+    test("does not show sanctions banner for non-sanctions pages", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMcparReportStore,
+      });
+      render(modalDrawerReportPageComponentWithEntities());
+      expect(screen.queryByText(bannerText)).not.toBeInTheDocument();
     });
   });
 

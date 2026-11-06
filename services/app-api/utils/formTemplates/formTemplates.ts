@@ -288,6 +288,7 @@ export function isFieldElement(
     ReportFormFieldType.SECTION_CONTENT,
     ReportFormFieldType.SECTION_DIVIDER,
     ReportFormFieldType.QUESTION,
+    ReportFormFieldType.WARNING_BANNER,
   ];
   return !formLayoutElementTypes.includes(field.type);
 }

@@ -4,6 +4,7 @@ import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 import { Box, Button, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
+  Alert,
   DeleteEntityModal,
   EntityDetailsOverlay,
   EntityProvider,
@@ -15,6 +16,7 @@ import {
 } from "components";
 // types
 import {
+  AlertTypes,
   AnyObject,
   EntityShape,
   isFieldElement,
@@ -257,6 +259,13 @@ export const ModalOverlayReportPage = ({
             accordion={accordionReport && accordionReport.formIntro}
             reportType={reportType}
           />
+
+          {isMeasuresAndResultsPage && reportFieldDataEntities.length <= 10 && (
+            <Alert
+              status={AlertTypes.WARN}
+              description="The number of quality and performance measures reported appears low. Review the instructions and confirm that all applicable measures are included. If the reported information is accurate, no action is needed."
+            />
+          )}
 
           <Box>
             {reportFieldDataEntities.length === 0 ? (
