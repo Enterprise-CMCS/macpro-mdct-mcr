@@ -71,9 +71,9 @@ export const updateReport = handler(async (event, context) => {
     JSON.parse(event.body);
 
   /*
-   * Clients can't change blocklisted keys. Strip them instead of rejecting the
-   * request: returned reports still hold these values from the last submission,
-   * and the stored values are kept when the update is merged in below.
+   * Clients are not allowed to change blocklisted keys. Therefore we'll strip
+   * them instead of rejecting the request outright. We need returned reports to
+   * still hold these values from the last submission, and the stored values are kept when the update is merged in below.
    */
   for (const key of metadataBlocklist) {
     delete unvalidatedMetadata?.[key];
