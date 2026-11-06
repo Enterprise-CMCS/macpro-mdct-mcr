@@ -95,16 +95,41 @@ const sumPlanEnrollments = (report?: ReportShape): number | null => {
   );
 };
 
+// Helper for dates before 2020
+const dateBefore2020 = (
+  value: FieldValue | null | undefined
+): string | null => {
+  const date = parseDate(value);
+  if (!date) return null;
+  return date < new Date("2020-01-01")
+    ? "Dates prior to 2020 are not expected in this field. Review for accuracy."
+    : null;
+};
+
+// Helper to combine several possible warnings into one multi-line message
+// (WarningMessage renders each line as its own warning), or null if none apply
+const joinMessages = (...messages: (string | null)[]): string | null =>
+  messages.filter(Boolean).join("\n") || null;
+
+// D1.X.9a/9b: reporting period should span exactly 12 months, end date inclusive
+// (01/01/2023 to 12/31/2023 is 12 months; 01/01/2024 is not). Confirmed by the BOs.
+export const isNotTwelveMonthPeriod = (
+  start: FieldValue | null | undefined,
+  end: FieldValue | null | undefined
+): boolean => {
+  const startDate = parseDate(start);
+  const endDate = parseDate(end);
+  if (!startDate || !endDate) return false;
+  const expectedEnd = new Date(startDate);
+  expectedEnd.setFullYear(expectedEnd.getFullYear() + 1);
+  expectedEnd.setDate(expectedEnd.getDate() - 1);
+  return expectedEnd.getTime() !== endDate.getTime();
+};
+
 // Warning rule functions — defined once per warning type
 const warningRules: Record<string, WarningRule> = {
   // DATE WARNINGS
-  DATE_BEFORE_2020: (value) => {
-    const date = parseDate(value);
-    if (!date) return null;
-    return date < new Date("2020-01-01")
-      ? "Dates prior to 2020 are not expected in this field. Review for accuracy."
-      : null;
-  },
+  DATE_BEFORE_2020: (value) => dateBefore2020(value),
 
   DATE_BEFORE_2023: (value) => {
     const date = parseDate(value);
@@ -197,6 +222,32 @@ const warningRules: Record<string, WarningRule> = {
     return null;
   },
 
+  // OVERPAYMENT REPORTING PERIOD WARNINGS
+  // D1.X.9a / D1.X.9b: dates before 2020 are unexpected, and a period that is not
+  // 12 months prompts a "double-check" on each date (the banner covers the pair).
+  // Both can apply at once; they are returned newline-separated, one warning per line.
+  OVERPAYMENT_PERIOD_START_DATE: (value, context) =>
+    joinMessages(
+      dateBefore2020(value),
+      isNotTwelveMonthPeriod(
+        value,
+        context.formValues?.plan_overpaymentReportingToStateEndDate
+      )
+        ? "Double-check the start date."
+        : null
+    ),
+
+  OVERPAYMENT_PERIOD_END_DATE: (value, context) =>
+    joinMessages(
+      dateBefore2020(value),
+      isNotTwelveMonthPeriod(
+        context.formValues?.plan_overpaymentReportingToStateStartDate,
+        value
+      )
+        ? "Double-check the end date."
+        : null
+    ),
+
   // URL WARNINGS
   // D1.XIII.1, D1.XIII.2: response should be a valid URL starting with http (N/A allowed)
   URL_NOT_VALID: (value) => {
@@ -226,10 +277,7 @@ const warningRules: Record<string, WarningRule> = {
       Math.abs(programEnrollment - planTotal) / planTotal >= 0.05
         ? "Number differs significantly from sum of reported plan enrollments. Review for accuracy."
         : null;
-    return (
-      [differsFromPlans, divisibleBy1000(value)].filter(Boolean).join("\n") ||
-      null
-    );
+    return joinMessages(differsFromPlans, divisibleBy1000(value));
   },
 };
 
@@ -284,8 +332,8 @@ const fieldWarningMap: Record<string, string> = {
     "REFERRALS_ZERO_OR_HIGH_PER_1000", // D1.X.7
   plan_smaMfcuAggregateProgramIntegrityReferrals:
     "REFERRALS_ZERO_OR_HIGH_PER_1000", // D1.X.7
-  plan_overpaymentReportingToStateStartDate: "DATE_BEFORE_2020", // D1.X.9a
-  plan_overpaymentReportingToStateEndDate: "DATE_BEFORE_2020", // D1.X.9b
+  plan_overpaymentReportingToStateStartDate: "OVERPAYMENT_PERIOD_START_DATE", // D1.X.9a
+  plan_overpaymentReportingToStateEndDate: "OVERPAYMENT_PERIOD_END_DATE", // D1.X.9b
   plan_overpaymentReportingToStateCorrespondingYearPremiumRevenue:
     "OVERPAYMENT_VS_PREMIUM_REVENUE", // D1.X.9d
 

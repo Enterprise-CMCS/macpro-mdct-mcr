@@ -47,6 +47,7 @@ export enum ReportFormFieldType {
   SECTION_HEADER = "sectionHeader",
   TEXT = "text",
   TEXTAREA = "textarea",
+  WARNING_BANNER = "warningBanner",
 }
 
 export interface ReportFormField {
@@ -88,12 +89,14 @@ export interface ReportFormFieldProps {
   decimalPlacesToRoundTo?: number;
   disabled?: boolean;
   divider?: string;
+  endDateFieldId?: string;
   hint?: any;
   isRequired?: boolean;
   dynamicLabel?: string;
   label?: string;
   mask?: string;
   options?: string;
+  startDateFieldId?: string;
   styleAsOptional?: boolean;
   sxOverride?: any;
 }

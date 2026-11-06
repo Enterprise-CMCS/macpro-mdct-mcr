@@ -1,5 +1,10 @@
 import { ReportShape } from "types";
-import { validateFieldWarning, WarningContext, WarningRule } from "./warnings";
+import {
+  isNotTwelveMonthPeriod,
+  validateFieldWarning,
+  WarningContext,
+  WarningRule,
+} from "./warnings";
 
 describe("validateFieldWarning", () => {
   describe("returns null for fields not in fieldWarningMap", () => {
@@ -1101,6 +1106,81 @@ describe("validateFieldWarning", () => {
     );
   });
 
+  describe("overpayment reporting period dates (D1.X.9a and D1.X.9b)", () => {
+    const startField = "plan_overpaymentReportingToStateStartDate";
+    const endField = "plan_overpaymentReportingToStateEndDate";
+    const before2020Message =
+      "Dates prior to 2020 are not expected in this field. Review for accuracy.";
+    const startMessage = "Double-check the start date.";
+    const endMessage = "Double-check the end date.";
+
+    // each helper validates one date field, with the other date in the live form values
+    const checkStart = (start?: string | null, end?: string) =>
+      validateFieldWarning({
+        fieldName: startField,
+        value: start,
+        context: { formValues: { [endField]: end } },
+      });
+    const checkEnd = (start?: string, end?: string | null) =>
+      validateFieldWarning({
+        fieldName: endField,
+        value: end,
+        context: { formValues: { [startField]: start } },
+      });
+
+    describe("start date (D1.X.9a)", () => {
+      test("returns the double-check message when the period is not 12 months", () => {
+        expect(checkStart("02/01/2024", "04/01/2024")).toBe(startMessage);
+      });
+
+      test("returns null for a 12-month period", () => {
+        expect(checkStart("01/01/2023", "12/31/2023")).toBeNull();
+      });
+
+      test("returns only the before-2020 message for a 12-month period before 2020", () => {
+        expect(checkStart("01/01/2019", "12/31/2019")).toBe(before2020Message);
+      });
+
+      test("returns both messages on separate lines when both apply", () => {
+        expect(checkStart("01/01/2019", "06/01/2019")).toBe(
+          `${before2020Message}\n${startMessage}`
+        );
+      });
+
+      test.each([null, undefined, "N/A"])("returns null for %p", (start) => {
+        expect(checkStart(start, "04/01/2024")).toBeNull();
+      });
+
+      test("returns null when there is no end date yet", () => {
+        expect(checkStart("02/01/2024", undefined)).toBeNull();
+      });
+    });
+
+    describe("end date (D1.X.9b)", () => {
+      test("returns the double-check message when the period is not 12 months", () => {
+        expect(checkEnd("02/01/2024", "04/01/2024")).toBe(endMessage);
+      });
+
+      test("returns null for a 12-month period", () => {
+        expect(checkEnd("01/01/2023", "12/31/2023")).toBeNull();
+      });
+
+      test("returns both messages on separate lines when both apply", () => {
+        expect(checkEnd("01/01/2019", "06/01/2019")).toBe(
+          `${before2020Message}\n${endMessage}`
+        );
+      });
+
+      test.each([null, undefined, "N/A"])("returns null for %p", (end) => {
+        expect(checkEnd("02/01/2024", end)).toBeNull();
+      });
+
+      test("returns null when there is no start date yet", () => {
+        expect(checkEnd(undefined, "04/01/2024")).toBeNull();
+      });
+    });
+  });
+
   describe("URL_NOT_VALID", () => {
     const map = { testField: "URL_NOT_VALID" };
 
@@ -1265,5 +1345,37 @@ describe("validateFieldWarning", () => {
       });
       expect(result).toBeNull();
     });
+  });
+});
+
+describe("isNotTwelveMonthPeriod", () => {
+  test.each([
+    ["01/01/2023", "12/31/2023"],
+    ["01/01/2024", "12/31/2024"], // leap year
+    ["07/01/2023", "06/30/2024"], // not a calendar year
+  ])("returns false for a 12-month period: %s to %s", (start, end) => {
+    expect(isNotTwelveMonthPeriod(start, end)).toBe(false);
+  });
+
+  test.each([
+    ["01/01/2023", "01/01/2024"], // one day too long
+    ["01/01/2023", "12/30/2023"], // one day too short
+    ["02/01/2023", "04/01/2024"], // much longer
+    ["02/01/2024", "04/01/2024"], // much shorter
+  ])(
+    "returns true for a period that is not 12 months: %s to %s",
+    (start, end) => {
+      expect(isNotTwelveMonthPeriod(start, end)).toBe(true);
+    }
+  );
+
+  test.each([
+    [null, "12/31/2023"],
+    ["01/01/2023", null],
+    ["N/A", "12/31/2023"],
+    ["01/01/2023", "N/A"],
+    [undefined, undefined],
+  ])("returns false when a date is missing or N/A: %p, %p", (start, end) => {
+    expect(isNotTwelveMonthPeriod(start, end)).toBe(false);
   });
 });

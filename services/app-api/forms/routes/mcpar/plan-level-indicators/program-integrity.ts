@@ -195,6 +195,16 @@ export const programIntegrityRoute: DrawerFormRoute = {
         },
       },
       {
+        id: "plan_overpaymentReportingPeriodLengthWarning",
+        type: ReportFormFieldType.WARNING_BANNER,
+        props: {
+          content:
+            "This reporting period entered in D1.X.9a-9b is not 12 months in length. Review for accuracy.",
+          startDateFieldId: "plan_overpaymentReportingToStateStartDate",
+          endDateFieldId: "plan_overpaymentReportingToStateEndDate",
+        },
+      },
+      {
         id: "plan_overpaymentReportingToStateDollarAmount",
         type: ReportFormFieldType.NUMBER,
         validation: ValidationType.NUMBER_ZERO_OR_GREATER_TWO_DECIMALS_NO_NA,
