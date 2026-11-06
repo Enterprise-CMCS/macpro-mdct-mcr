@@ -17,7 +17,7 @@ import { error } from "../../utils/constants/constants";
 import s3Lib from "../../utils/s3/s3-lib";
 // types
 import { APIGatewayProxyEvent } from "../../utils/types";
-import { StatusCodes } from "../../utils/responses/response-lib";
+import { ok, StatusCodes } from "../../utils/responses/response-lib";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
@@ -312,30 +312,32 @@ describe("handlers/reports/update", () => {
       expect(res.body).toContain(error.MISSING_DATA);
     });
 
-    test("Test attempted report update with disallowed metadata properties returns 400", async () => {
-      const eventWritingToReadonlyMetadataFields = {
-        ...submissionEvent,
-        body: `{"metadata":{"locked":true}}`,
-      };
-      const res = await updateReport(
-        eventWritingToReadonlyMetadataFields,
-        null
+    test("Test report update ignores blocklisted properties", async () => {
+      jest
+        .spyOn(s3Lib, "get")
+        .mockResolvedValueOnce(mockReportJson)
+        .mockResolvedValueOnce({ ...mockReportFieldData, submitterName: "A" });
+      jest.spyOn(s3Lib, "put").mockResolvedValue(mockS3PutObjectCommandOutput);
+      mockedFetchReport.mockResolvedValue(
+        ok({ ...mockDynamoData, submittedBy: "A" })
       );
-      expect(res.statusCode).toBe(StatusCodes.BadRequest);
-      expect(res.body).toContain(error.INVALID_DATA);
-    });
 
-    test("Test attempted report update with disallowed fieldData properties returns 400", async () => {
-      const eventWritingToReadonlyFieldDataFields = {
-        ...submissionEvent,
-        body: `{"fieldData":{"submitterName":"Abaraham Lincoln"}}`,
-      };
       const res = await updateReport(
-        eventWritingToReadonlyFieldDataFields,
+        {
+          ...mockProxyEvent,
+          body: JSON.stringify({
+            metadata: { submittedBy: "B" },
+            fieldData: { submitterName: "B", "mock-number-field": 3 },
+          }),
+        },
         null
       );
-      expect(res.statusCode).toBe(StatusCodes.BadRequest);
-      expect(res.body).toContain(error.INVALID_DATA);
+      const body = JSON.parse(res.body!);
+
+      expect(res.statusCode).toBe(StatusCodes.Ok);
+      expect(body.fieldData["mock-number-field"]).toBe("3");
+      expect(body.submittedBy).toBe("A");
+      expect(body.fieldData.submitterName).toBe("A");
     });
 
     test("Test attempted report update with no existing record throws 404", async () => {
