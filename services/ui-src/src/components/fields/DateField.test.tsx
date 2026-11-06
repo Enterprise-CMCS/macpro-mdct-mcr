@@ -383,6 +383,11 @@ describe("<DateField />", () => {
       render(dateFieldComponent);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
       expect(screen.getByText("This field is required")).toBeVisible();
+      expect(
+        screen.getByRole("textbox", { name: "test-date-field" })
+      ).toHaveAccessibleDescription(
+        expect.stringContaining("This field is required")
+      );
     });
 
     test("warning message is not displayed when field is disabled", () => {

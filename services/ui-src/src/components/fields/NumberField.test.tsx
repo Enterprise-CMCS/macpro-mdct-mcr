@@ -467,6 +467,11 @@ describe("<NumberField />", () => {
       render(numberFieldComponent);
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();
       expect(screen.getByText("This field is required")).toBeVisible();
+      expect(
+        screen.getByRole("textbox", { name: "test-label" })
+      ).toHaveAccessibleDescription(
+        expect.stringContaining("This field is required")
+      );
     });
   });
 

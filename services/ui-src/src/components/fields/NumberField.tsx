@@ -7,7 +7,6 @@ import {
   TextField as CmsdsTextField,
   Label,
   Hint,
-  InlineError,
 } from "@cmsgov/design-system";
 // constants
 import { suppressionText } from "../../constants";
@@ -197,7 +196,6 @@ export const NumberField = ({
         {labelText || ""}
       </Label>
       {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
-      <InlineError id={`${name}__error`} />
       {isWarning && (
         <WarningMessage message={warningMessage} id={`${name}__warning`} />
       )}

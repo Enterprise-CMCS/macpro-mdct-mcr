@@ -4,7 +4,6 @@ import { useFormContext } from "react-hook-form";
 import {
   TextField as CmsdsTextField,
   Hint,
-  InlineError,
   Label,
 } from "@cmsgov/design-system";
 import { Box, SystemStyleObject } from "@chakra-ui/react";
@@ -146,7 +145,6 @@ export const TextField = ({
         {labelText || ""}
       </Label>
       {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
-      <InlineError id={`${name}__error`} />
       {isWarning && (
         <WarningMessage message={warningMessage} id={`${name}__warning`} />
       )}

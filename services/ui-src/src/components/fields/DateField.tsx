@@ -5,7 +5,6 @@ import {
   SingleInputDateField as CmsdsDateField,
   Label,
   Hint,
-  InlineError,
 } from "@cmsgov/design-system";
 import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
@@ -167,7 +166,6 @@ export const DateField = ({
         {labelText || ""}
       </Label>
       {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
-      <InlineError id={`${name}__error`} />
       {isWarning && (
         <WarningMessage message={warningMessage} id={`${name}__warning`} />
       )}
