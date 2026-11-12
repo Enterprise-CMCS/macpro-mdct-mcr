@@ -392,12 +392,30 @@ describe("<DateField />", () => {
       ).toHaveAccessibleDescription("Error: This field is required MM/DD/YYYY");
     });
 
-    test("warning message is not displayed when field is disabled", () => {
+    test("warning message is displayed when field is disabled", () => {
       mockGetValues(undefined);
       mockUseFieldWarning.mockReturnValue(["Test warning message"]);
       render(
         <ReportContext.Provider value={mockMcparReportContext}>
           <DateField name="testDateField" label="test-date-field" disabled />
+        </ReportContext.Provider>
+      );
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        "Test warning message"
+      );
+    });
+
+    test("warning message is not displayed when suppressWarning is set", () => {
+      mockGetValues(undefined);
+      mockUseFieldWarning.mockReturnValue(["Test warning message"]);
+      render(
+        <ReportContext.Provider value={mockMcparReportContext}>
+          <DateField
+            name="testDateField"
+            label="test-date-field"
+            disabled
+            suppressWarning
+          />
         </ReportContext.Provider>
       );
       expect(screen.queryByRole("alert")).not.toBeInTheDocument();

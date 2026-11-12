@@ -98,6 +98,7 @@ export interface ReportFormFieldProps {
   options?: string;
   startDateFieldId?: string;
   styleAsOptional?: boolean;
+  suppressWarning?: boolean;
   sxOverride?: any;
 }
 

@@ -36,6 +36,7 @@ export const DateField = ({
   styleAsOptional,
   clear,
   allowNa,
+  suppressWarning,
   ...props
 }: Props) => {
   const defaultValue = "";
@@ -151,7 +152,7 @@ export const DateField = ({
     label && styleAsOptional ? labelTextWithOptional(label) : label;
 
   const isWarning =
-    !errorMessage && warningMessages.length > 0 && !props?.disabled;
+    !errorMessage && warningMessages.length > 0 && !suppressWarning;
 
   return (
     <Box
