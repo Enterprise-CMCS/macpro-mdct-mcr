@@ -1129,7 +1129,9 @@ describe("validateFieldWarning", () => {
           context: mockContext(1000),
           map,
         });
-        expect(result).toEqual(["Enter a valid numeric response."]);
+        expect(result).toEqual([
+          "This response is typically a numeric value. If N/A or NR is accurate, no action is needed.",
+        ]);
       }
     );
   });
@@ -1264,7 +1266,7 @@ describe("validateFieldWarning", () => {
         map,
       });
       expect(result).toEqual([
-        "Response must be a valid hyperlink/URL starting with http",
+        "Enter a valid web address beginning with http:// or https://",
       ]);
     });
   });

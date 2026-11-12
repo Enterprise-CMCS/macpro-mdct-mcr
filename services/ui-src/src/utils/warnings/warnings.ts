@@ -65,8 +65,9 @@ const compareNumberPer1000 = (
   const enrollment = parseNumber(context.selectedEntity?.plan_enrollment);
   if (enrollment === null || enrollment === 0) return null;
   const per1000 = (num / enrollment) * 1000;
+  const isHigh = comparator === ">" || comparator === ">=";
   return comparatorMap[comparator](per1000, limit)
-    ? `This number is unusually high based on your reported plan enrollment (D1.I.1: ${enrollment.toLocaleString()}). Review for accuracy.`
+    ? `This number is unusually ${isHigh ? "high" : "low"} based on your reported plan enrollment (D1.I.1: ${enrollment.toLocaleString()}). Review for accuracy.`
     : null;
 };
 
@@ -189,7 +190,7 @@ const warningRules: Record<string, WarningRule> = {
   // D1.X.9d: N/A and NR are accepted but flagged; otherwise compare D1.X.9c to premium revenue
   OVERPAYMENT_VS_PREMIUM_REVENUE: (value, context) => {
     if (value && validNAValues.includes(String(value).trim())) {
-      return "Enter a valid numeric response.";
+      return "This response is typically a numeric value. If N/A or NR is accurate, no action is needed.";
     }
     const premiumRevenue = parseNumber(value);
     if (premiumRevenue === null || premiumRevenue <= 0) return null;
@@ -227,7 +228,7 @@ const warningRules: Record<string, WarningRule> = {
       : null,
 
   // URL WARNINGS
-  // D1.XIII.1, D1.XIII.2: response should be a valid URL starting with http (N/A allowed)
+  // D1.XIII.1, D1.XIII.2: response should be a valid URL starting with http(s) (N/A allowed)
   URL_NOT_VALID: (value) => {
     if (!value) return null;
     const response = String(value).trim();
@@ -236,9 +237,9 @@ const warningRules: Record<string, WarningRule> = {
       const { protocol } = new URL(response);
       return protocol === "http:" || protocol === "https:"
         ? null
-        : "Response must be a valid hyperlink/URL starting with http";
+        : "Enter a valid web address beginning with http:// or https://";
     } catch {
-      return "Response must be a valid hyperlink/URL starting with http";
+      return "Enter a valid web address beginning with http:// or https://";
     }
   },
 
