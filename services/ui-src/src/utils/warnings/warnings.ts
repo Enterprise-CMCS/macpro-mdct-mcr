@@ -71,20 +71,6 @@ const compareNumberPer1000 = (
     : null;
 };
 
-// Sum of plan enrollments (D1.I.1), or null if any plan lacks a numeric enrollment
-const sumPlanEnrollments = (report?: ReportShape): number | null => {
-  const plans = report?.fieldData?.plans;
-  if (!plans?.length) return null;
-  const enrollments: (number | null)[] = plans.map((plan: EntityShape) =>
-    parseNumber(plan.plan_enrollment)
-  );
-  if (enrollments.some((enrollment) => enrollment === null)) return null;
-  return enrollments.reduce(
-    (total: number, enrollment) => total + (enrollment ?? 0),
-    0
-  );
-};
-
 // D1.X.9a/9b: reporting period should span exactly 12 months, end date inclusive
 // (01/01/2023 to 12/31/2023 is 12 months; 01/01/2024 is not). Confirmed by the BOs.
 export const isNotTwelveMonthPeriod = (
@@ -242,18 +228,6 @@ const warningRules: Record<string, WarningRule> = {
       return "Enter a valid web address beginning with http:// or https://";
     }
   },
-
-  // PROGRAM ENROLLMENT WARNINGS
-  // C1.I.5: differs from sum of plan enrollments (D1.I.1) by 5% or more.
-  // Shown alongside DIVISIBLE_BY_1000 (see the map).
-  PROGRAM_ENROLLMENT_DIFFERS_FROM_PLANS: (value, context) => {
-    const programEnrollment = parseNumber(value);
-    const planTotal = sumPlanEnrollments(context.report);
-    if (programEnrollment === null || !planTotal) return null;
-    return Math.abs(programEnrollment - planTotal) / planTotal >= 0.05
-      ? "Number differs significantly from sum of reported plan enrollments. Review for accuracy."
-      : null;
-  },
 };
 
 // Field to warning type mapping — organized by form/file location
@@ -272,10 +246,7 @@ const fieldWarningMap: Record<string, string | string[]> = {
   state_stateTimeframeForExpeditedPriorAuthorizationDecisions: "NUMBER_OVER_72", // B.XIII.2b
 
   // C - Program Level Indicators (program-level-indicators/program-characteristics.ts)
-  program_enrollment: [
-    "PROGRAM_ENROLLMENT_DIFFERS_FROM_PLANS",
-    "DIVISIBLE_BY_1000",
-  ], // C1.I.5
+  program_enrollment: "DIVISIBLE_BY_1000", // C1.I.5
 
   // C - Program Level Indicators (program-level-indicators/mental-health-and-substance-use-disorder-parity.ts)
   program_whenWasTheLastParityAnalysisCoveringThisProgramCompleted:
