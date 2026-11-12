@@ -169,10 +169,10 @@ describe("Schemas", () => {
   test("Test dateOrNa schema", () => {
     testDate(
       schemaMap.dateOrNa,
-      ["01/01/2023", "12/31/2023", undefined, ...validNAValues],
+      [...goodDateTestCases, undefined, ...validNAValues],
       true
     );
-    testDate(schemaMap.dateOrNa, ["abc", "not a date"], false);
+    testDate(schemaMap.dateOrNa, badDateTestCases, false);
   });
 
   test("dateOrNa error message says N/A is allowed", () => {
