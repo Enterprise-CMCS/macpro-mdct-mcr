@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 // components
 import { ReportContext, ModalDrawerReportPage } from "components";
 // constants
-import { saveAndCloseText } from "../../constants";
+import { sanctionsLowCountWarning, saveAndCloseText } from "../../constants";
 // types
 import { EntityType, ModalDrawerReportPageShape } from "types";
 // utils
@@ -203,8 +203,7 @@ describe("<ModalDrawerReportPage />", () => {
   });
 
   describe("Test ModalDrawerReportPage sanctions warning banner", () => {
-    const bannerText =
-      /sanctions, corrective actions, or other interventions reported appears low/i;
+    const bannerText = sanctionsLowCountWarning;
 
     const mockSanctionsRoute = {
       ...mockModalDrawerReportPageJson,

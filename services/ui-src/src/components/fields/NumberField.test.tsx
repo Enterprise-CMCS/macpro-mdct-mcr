@@ -473,9 +473,7 @@ describe("<NumberField />", () => {
       expect(screen.getByText("This field is required")).toBeVisible();
       expect(
         screen.getByRole("textbox", { name: "test-label" })
-      ).toHaveAccessibleDescription(
-        expect.stringContaining("This field is required")
-      );
+      ).toHaveAccessibleDescription("Error: This field is required");
     });
   });
 

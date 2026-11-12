@@ -45,6 +45,7 @@ import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
 import { EntityType, ModalOverlayReportPageShape } from "types";
+import { qualityMeasuresLowCountWarning } from "../../constants";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -508,7 +509,7 @@ describe("<ModalOverlayReportPage />", () => {
   });
 
   describe("Test ModalOverlayReportPage quality measures warning banner", () => {
-    const bannerText = /quality and performance measures reported appears low/i;
+    const bannerText = qualityMeasuresLowCountWarning;
 
     const mockQualityMeasuresRoute = {
       ...mockModalOverlayReportPageWithOverlayJson,

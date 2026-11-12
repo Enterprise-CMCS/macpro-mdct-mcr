@@ -389,9 +389,7 @@ describe("<DateField />", () => {
       expect(screen.getByText("This field is required")).toBeVisible();
       expect(
         screen.getByRole("textbox", { name: "test-date-field" })
-      ).toHaveAccessibleDescription(
-        expect.stringContaining("This field is required")
-      );
+      ).toHaveAccessibleDescription("Error: This field is required MM/DD/YYYY");
     });
 
     test("warning message is not displayed when field is disabled", () => {

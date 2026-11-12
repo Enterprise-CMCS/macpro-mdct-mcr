@@ -165,3 +165,9 @@ export const suppressionText = "Suppressed for data privacy purposes";
 export const UNIT_MILES = "miles";
 export const UNIT_MINUTES = "minutes";
 export const UNIT_PERCENT = "%";
+
+// WARNING BANNERS
+export const sanctionsLowCountWarning =
+  "The number of sanctions, corrective actions, or other interventions reported appears low. Review the instructions and confirm that all applicable actions, including informal interventions such as compliance letters, are included. If the reported information is accurate, no action is needed.";
+export const qualityMeasuresLowCountWarning =
+  "The number of quality and performance measures reported appears low. Review the instructions and confirm that all applicable measures are included. If the reported information is accurate, no action is needed.";

@@ -39,6 +39,7 @@ import {
 } from "utils";
 // assets
 import addIcon from "assets/icons/icon_add.png";
+import { sanctionsLowCountWarning } from "../../constants";
 
 export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
   const Helmet = HelmetImport as ComponentClass<HelmetProps>;
@@ -199,10 +200,10 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
 
       {entityType === EntityType.SANCTIONS &&
-        reportFieldDataEntities.length <= 2 && (
+        reportFieldDataEntities.length < 3 && (
           <Alert
             status={AlertTypes.WARN}
-            description="The number of sanctions, corrective actions, or other interventions reported appears low. Review the instructions and confirm that all applicable actions, including informal interventions such as compliance letters, are included. If the reported information is accurate, no action is needed."
+            description={sanctionsLowCountWarning}
           />
         )}
       <Box>

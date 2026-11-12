@@ -39,6 +39,7 @@ import {
 } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
+import { qualityMeasuresLowCountWarning } from "../../constants";
 
 export const ModalOverlayReportPage = ({
   route,
@@ -260,10 +261,10 @@ export const ModalOverlayReportPage = ({
             reportType={reportType}
           />
 
-          {isMeasuresAndResultsPage && reportFieldDataEntities.length <= 10 && (
+          {isMeasuresAndResultsPage && reportFieldDataEntities.length < 11 && (
             <Alert
               status={AlertTypes.WARN}
-              description="The number of quality and performance measures reported appears low. Review the instructions and confirm that all applicable measures are included. If the reported information is accurate, no action is needed."
+              description={qualityMeasuresLowCountWarning}
             />
           )}
 
