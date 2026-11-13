@@ -640,7 +640,7 @@ export const programLevelAccessAndNetworkAdequacyStandardsRoute: DrawerFormRoute
           validation: ValidationType.RADIO,
           props: {
             label: "II.A.6 Population covered by standard",
-            hint: "Enter the population that the standard applies to.",
+            hint: "Enter the population that the standard applies to. If the same standard applies to multiple populations, create a standard for each population.",
             choices: [
               {
                 id: "I71x1VFmmQJmKSUlFcJVS8cT",
