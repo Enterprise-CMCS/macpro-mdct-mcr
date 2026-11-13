@@ -27,6 +27,7 @@ export const reportingPeriodRoute: FormRoute = {
           label: "A.5a Reporting period start date",
           hint: "Auto-populated from report dashboard.",
           disabled: true,
+          suppressWarning: true,
         },
       },
       {
@@ -37,6 +38,7 @@ export const reportingPeriodRoute: FormRoute = {
           label: "A.5b Reporting period end date",
           hint: "Auto-populated from report dashboard.",
           disabled: true,
+          suppressWarning: true,
         },
       },
       {

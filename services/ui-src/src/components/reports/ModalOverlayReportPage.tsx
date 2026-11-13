@@ -4,6 +4,7 @@ import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 import { Box, Button, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
+  Alert,
   DeleteEntityModal,
   EntityDetailsOverlay,
   EntityProvider,
@@ -15,6 +16,7 @@ import {
 } from "components";
 // types
 import {
+  AlertTypes,
   AnyObject,
   EntityShape,
   isFieldElement,
@@ -37,6 +39,7 @@ import {
 } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
+import { qualityMeasuresLowCountWarning } from "../../constants";
 
 export const ModalOverlayReportPage = ({
   route,
@@ -257,6 +260,13 @@ export const ModalOverlayReportPage = ({
             accordion={accordionReport && accordionReport.formIntro}
             reportType={reportType}
           />
+
+          {isMeasuresAndResultsPage && reportFieldDataEntities.length < 11 && (
+            <Alert
+              status={AlertTypes.WARN}
+              description={qualityMeasuresLowCountWarning}
+            />
+          )}
 
           <Box>
             {reportFieldDataEntities.length === 0 ? (

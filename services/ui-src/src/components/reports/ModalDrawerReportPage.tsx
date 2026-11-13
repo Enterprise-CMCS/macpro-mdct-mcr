@@ -4,6 +4,7 @@ import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 import { Box, Button, Heading, Image, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
+  Alert,
   DeleteEntityModal,
   EntityCard,
   ReportContext,
@@ -20,6 +21,7 @@ import {
   EntityType,
   ModalDrawerReportPageShape,
   ReportStatus,
+  AlertTypes,
 } from "types";
 // utils
 import {
@@ -37,6 +39,7 @@ import {
 } from "utils";
 // assets
 import addIcon from "assets/icons/icon_add.png";
+import { sanctionsLowCountWarning } from "../../constants";
 
 export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
   const Helmet = HelmetImport as ComponentClass<HelmetProps>;
@@ -195,6 +198,14 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
         <title>{report && getPageTitle(report.reportType, route)}</title>
       </Helmet>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
+
+      {entityType === EntityType.SANCTIONS &&
+        reportFieldDataEntities.length < 3 && (
+          <Alert
+            status={AlertTypes.WARN}
+            description={sanctionsLowCountWarning}
+          />
+        )}
       <Box>
         {!checkForPlans() ? (
           <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">

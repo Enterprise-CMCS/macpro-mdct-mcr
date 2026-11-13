@@ -447,7 +447,7 @@ export const dateOrNa = () =>
       message: error.REQUIRED_GENERIC,
       test: (value) => !isWhitespaceString(value),
     })
-    .test("is-valid-date-or-na", error.INVALID_DATE, (value) => {
+    .test("is-valid-date-or-na", error.INVALID_DATE_OR_NA, (value) => {
       if (!value) return false;
       if (validNAValues.includes(value)) return true;
       return date().isValidSync(value);

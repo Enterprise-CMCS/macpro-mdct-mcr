@@ -12,6 +12,7 @@ import {
   TextAreaField,
   ChoiceField,
   MonthYearField,
+  ReportingPeriodLengthBanner,
 } from "components";
 import {
   SectionContent,
@@ -77,6 +78,7 @@ export const formFieldFactory = (
     sectionHeader: SectionHeader,
     sectionContent: SectionContent,
     sectionDivider: SectionDivider,
+    warningBanner: ReportingPeriodLengthBanner,
   };
   fields = initializeChoiceListFields(fields);
   return fields.map((field) => {

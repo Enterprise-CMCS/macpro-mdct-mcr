@@ -1,32 +1,37 @@
 import { ReportShape } from "types";
-import { validateFieldWarning, WarningContext, WarningRule } from "./warnings";
+import {
+  isNotTwelveMonthPeriod,
+  validateFieldWarning,
+  WarningContext,
+  WarningRule,
+} from "./warnings";
 
 describe("validateFieldWarning", () => {
-  describe("returns null for fields not in fieldWarningMap", () => {
-    test("returns null for a field with no warning rule", () => {
+  describe("returns no warnings for fields not in fieldWarningMap", () => {
+    test("returns no warnings for a field with no warning rule", () => {
       const result = validateFieldWarning({
         fieldName: "unknownFieldId",
         value: "someValue",
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for an empty field id", () => {
+    test("returns no warnings for an empty field id", () => {
       const result = validateFieldWarning({
         fieldName: "",
         value: "someValue",
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
-  describe("returns null for a field not in the warning map", () => {
+  describe("returns no warnings for a field not in the warning map", () => {
     const testValues = ["some string", 0, 100, null, undefined];
 
     testValues.forEach((value) => {
-      test(`returns null for value: ${value}`, () => {
+      test(`returns no warnings for value: ${value}`, () => {
         const result = validateFieldWarning({ fieldName: "anyFieldId", value });
-        expect(result).toBeNull();
+        expect(result).toEqual([]);
       });
     });
   });
@@ -47,27 +52,27 @@ describe("validateFieldWarning", () => {
         map: mockMap,
         rules: mockRules,
       });
-      expect(result).toBe("This value is bad");
+      expect(result).toEqual(["This value is bad"]);
     });
 
-    test("returns null when value does not trigger warning", () => {
+    test("returns no warnings when value does not trigger warning", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "good",
         map: mockMap,
         rules: mockRules,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null when field not in injected map", () => {
+    test("returns no warnings when field not in injected map", () => {
       const result = validateFieldWarning({
         fieldName: "unknownField",
         value: "bad",
         map: mockMap,
         rules: mockRules,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
     test("passes context to warning rule", () => {
@@ -84,6 +89,30 @@ describe("validateFieldWarning", () => {
       });
       expect(contextRule).toHaveBeenCalledWith("value", mockContext);
     });
+
+    test("returns every applicable message, in the order the rules are listed", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "value",
+        map: { testField: ["FIRST", "NONE", "SECOND"] },
+        rules: {
+          FIRST: () => "first",
+          NONE: () => null,
+          SECOND: () => "second",
+        },
+      });
+      expect(result).toEqual(["first", "second"]);
+    });
+
+    test("ignores warning types that have no rule", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "bad",
+        map: { testField: ["MISSING", "TEST_WARNING"] },
+        rules: mockRules,
+      });
+      expect(result).toEqual(["This value is bad"]);
+    });
   });
 
   describe("DATE_BEFORE_2020", () => {
@@ -95,54 +124,54 @@ describe("validateFieldWarning", () => {
         value: "01/01/2019",
         map,
       });
-      expect(result).toBe(
-        "Dates prior to 2020 are not expected in this field. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "Dates prior to 2020 are not expected in this field. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for date in 2020", () => {
+    test("returns no warnings for date in 2020", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "01/01/2020",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for date after 2020", () => {
+    test("returns no warnings for date after 2020", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "06/15/2023",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for N/A", () => {
+    test("returns no warnings for N/A", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "N/A",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for undefined", () => {
+    test("returns no warnings for undefined", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: undefined,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -155,45 +184,45 @@ describe("validateFieldWarning", () => {
         value: "01/01/2022",
         map,
       });
-      expect(result).toBe(
-        "Dates prior to 2023 are not expected in this field. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "Dates prior to 2023 are not expected in this field. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for date in 2023", () => {
+    test("returns no warnings for date in 2023", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "01/01/2023",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for date after 2023", () => {
+    test("returns no warnings for date after 2023", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "06/15/2024",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for N/A", () => {
+    test("returns no warnings for N/A", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "N/A",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -206,9 +235,9 @@ describe("validateFieldWarning", () => {
         value: "1000",
         map,
       });
-      expect(result).toBe(
-        "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value."
-      );
+      expect(result).toEqual([
+        "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value.",
+      ]);
     });
 
     test("returns warning for comma-formatted number divisible by 1000", () => {
@@ -217,54 +246,54 @@ describe("validateFieldWarning", () => {
         value: "10,000",
         map,
       });
-      expect(result).toBe(
-        "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value."
-      );
+      expect(result).toEqual([
+        "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value.",
+      ]);
     });
 
-    test("returns null for number not divisible by 1000", () => {
+    test("returns no warnings for number not divisible by 1000", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "1500",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for N/A", () => {
+    test("returns no warnings for N/A", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "N/A",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for zero", () => {
+    test("returns no warnings for zero", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "0",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for Suppressed", () => {
+    test("returns no warnings for Suppressed", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "Suppressed",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -277,45 +306,45 @@ describe("validateFieldWarning", () => {
         value: "101",
         map,
       });
-      expect(result).toBe(
-        "Percentage is higher than 100%. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "Percentage is higher than 100%. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for exactly 100", () => {
+    test("returns no warnings for exactly 100", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "100",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for percentage under 100", () => {
+    test("returns no warnings for percentage under 100", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "75",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for N/A", () => {
+    test("returns no warnings for N/A", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "N/A",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -328,9 +357,9 @@ describe("validateFieldWarning", () => {
         value: "100",
         map,
       });
-      expect(result).toBe(
-        "This number is unusually high. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "This number is unusually high. Review for accuracy.",
+      ]);
     });
 
     test("returns warning for number over 100", () => {
@@ -339,36 +368,36 @@ describe("validateFieldWarning", () => {
         value: "101",
         map,
       });
-      expect(result).toBe(
-        "This number is unusually high. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "This number is unusually high. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for number under 100", () => {
+    test("returns no warnings for number under 100", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "99",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for N/A", () => {
+    test("returns no warnings for N/A", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "N/A",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -381,36 +410,36 @@ describe("validateFieldWarning", () => {
         value: "15",
         map,
       });
-      expect(result).toBe(
-        "This number is unusually high. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "This number is unusually high. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for exactly 14", () => {
+    test("returns no warnings for exactly 14", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "14",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for number under 14", () => {
+    test("returns no warnings for number under 14", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "10",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -423,27 +452,27 @@ describe("validateFieldWarning", () => {
         value: "73",
         map,
       });
-      expect(result).toBe(
-        "This number is unusually high. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "This number is unusually high. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for exactly 72", () => {
+    test("returns no warnings for exactly 72", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "72",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -456,9 +485,9 @@ describe("validateFieldWarning", () => {
         value: "215001",
         map,
       });
-      expect(result).toBe(
-        "This number is unusually high. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "This number is unusually high. Review for accuracy.",
+      ]);
     });
 
     test("returns warning for comma-formatted number over 215000", () => {
@@ -467,27 +496,27 @@ describe("validateFieldWarning", () => {
         value: "215,001",
         map,
       });
-      expect(result).toBe(
-        "This number is unusually high. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "This number is unusually high. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for exactly 215000", () => {
+    test("returns no warnings for exactly 215000", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "215000",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -500,43 +529,45 @@ describe("validateFieldWarning", () => {
         value: "74",
         map,
       });
-      expect(result).toBe("This number is unusually low. Review for accuracy.");
+      expect(result).toEqual([
+        "This number is unusually low. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for exactly 75", () => {
+    test("returns no warnings for exactly 75", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "75",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for number above 75", () => {
+    test("returns no warnings for number above 75", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "80",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for N/A", () => {
+    test("returns no warnings for N/A", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "N/A",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -549,25 +580,27 @@ describe("validateFieldWarning", () => {
         value: "89",
         map,
       });
-      expect(result).toBe("This number is unusually low. Review for accuracy.");
+      expect(result).toEqual([
+        "This number is unusually low. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for exactly 90", () => {
+    test("returns no warnings for exactly 90", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "90",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -580,36 +613,36 @@ describe("validateFieldWarning", () => {
         value: "7.2",
         map,
       });
-      expect(result).toBe(
-        "This number is unusually high. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "This number is unusually high. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for exactly 7.1", () => {
+    test("returns no warnings for exactly 7.1", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "7.1",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for number under 7.1", () => {
+    test("returns no warnings for number under 7.1", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "7",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -622,27 +655,27 @@ describe("validateFieldWarning", () => {
         value: "8",
         map,
       });
-      expect(result).toBe(
-        "This number is unusually high. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "This number is unusually high. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for exactly 7", () => {
+    test("returns no warnings for exactly 7", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "7",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -655,27 +688,27 @@ describe("validateFieldWarning", () => {
         value: "61",
         map,
       });
-      expect(result).toBe(
-        "This number is unusually high. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "This number is unusually high. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for exactly 60", () => {
+    test("returns no warnings for exactly 60", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "60",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
@@ -688,27 +721,585 @@ describe("validateFieldWarning", () => {
         value: "25",
         map,
       });
-      expect(result).toBe(
-        "This number is unusually high. Review for accuracy."
-      );
+      expect(result).toEqual([
+        "This number is unusually high. Review for accuracy.",
+      ]);
     });
 
-    test("returns null for exactly 24", () => {
+    test("returns no warnings for exactly 24", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: "24",
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
 
-    test("returns null for empty value", () => {
+    test("returns no warnings for empty value", () => {
       const result = validateFieldWarning({
         fieldName: "testField",
         value: null,
         map,
       });
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
+  });
+
+  describe("compareNumberPer1000 rules", () => {
+    const mockContext = (enrollment: number): WarningContext => ({
+      selectedEntity: { plan_enrollment: String(enrollment) } as any,
+    });
+
+    describe("NUMBER_HIGH_PER_1000_OVER_25", () => {
+      const map = { testField: "NUMBER_HIGH_PER_1000_OVER_25" };
+
+      test("returns warning when per 1000 rate exceeds 25", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "26",
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toEqual([
+          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy.",
+        ]);
+      });
+
+      test("returns no warnings when per 1000 rate is below 25", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "24",
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toEqual([]);
+      });
+
+      test("returns no warnings when enrollment is null", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "100",
+          context: { selectedEntity: { plan_enrollment: undefined } as any },
+          map,
+        });
+        expect(result).toEqual([]);
+      });
+
+      test("returns no warnings when enrollment is zero", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "100",
+          context: mockContext(0),
+          map,
+        });
+        expect(result).toEqual([]);
+      });
+
+      test("returns no warnings when value is null", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: null,
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toEqual([]);
+      });
+
+      test("interpolates enrollment value in message", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "251",
+          context: mockContext(10000),
+          map,
+        });
+        expect(result).toEqual([
+          "This number is unusually high based on your reported plan enrollment (D1.I.1: 10,000). Review for accuracy.",
+        ]);
+      });
+    });
+
+    describe("NUMBER_HIGH_PER_1000_OVER_40", () => {
+      const map = { testField: "NUMBER_HIGH_PER_1000_OVER_40" };
+
+      test("returns warning when per 1000 rate exceeds 40", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "41",
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toEqual([
+          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy.",
+        ]);
+      });
+
+      test("returns no warnings when per 1000 rate is below 40", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "39",
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe("NUMBER_HIGH_PER_1000_OVER_35", () => {
+      const map = { testField: "NUMBER_HIGH_PER_1000_OVER_35" };
+
+      test("returns warning when per 1000 rate exceeds 35", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "36",
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toEqual([
+          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy.",
+        ]);
+      });
+
+      test("returns no warnings when per 1000 rate is below 35", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "34",
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe("REFERRALS_ZERO_OR_HIGH_PER_1000", () => {
+      const map = { testField: "REFERRALS_ZERO_OR_HIGH_PER_1000" };
+
+      test.each(["0", "0.0", "0,000", 0])(
+        "returns low warning for zero: %s",
+        (value) => {
+          const result = validateFieldWarning({
+            fieldName: "testField",
+            value,
+            context: mockContext(1000),
+            map,
+          });
+          expect(result).toEqual([
+            "This number is unusually low. Review for accuracy.",
+          ]);
+        }
+      );
+
+      test("returns low warning for zero when there is no plan enrollment", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "0",
+          map,
+        });
+        expect(result).toEqual([
+          "This number is unusually low. Review for accuracy.",
+        ]);
+      });
+
+      test("returns warning when per 1000 rate exceeds 3.5", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "4",
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toEqual([
+          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy.",
+        ]);
+      });
+
+      test("returns no warnings when per 1000 rate is below 3.5", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "3",
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toEqual([]);
+      });
+
+      test.each([null, undefined, "", "   ", "N/A"])(
+        "returns no warnings for %p",
+        (value) => {
+          const result = validateFieldWarning({
+            fieldName: "testField",
+            value,
+            context: mockContext(1000),
+            map,
+          });
+          expect(result).toEqual([]);
+        }
+      );
+    });
+
+    describe("NUMBER_HIGH_PER_1000_OVER_300", () => {
+      const map = { testField: "NUMBER_HIGH_PER_1000_OVER_300" };
+
+      test("returns warning when per 1000 rate exceeds 300", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "301",
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toEqual([
+          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy.",
+        ]);
+      });
+
+      test("returns no warnings when per 1000 rate is below 300", () => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value: "299",
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toEqual([]);
+      });
+    });
+  });
+
+  describe("IDENTICAL_TO_STATE_OR_PROGRAM_NAME", () => {
+    const map = { testField: "IDENTICAL_TO_STATE_OR_PROGRAM_NAME" };
+    const mockContext = (
+      stateName: string,
+      programName: string
+    ): WarningContext => ({
+      report: {
+        fieldData: { stateName },
+        programName: `${programName}2026-10-26t19:41:37.798z`, // timestamp appended as in real data
+      } as any,
+    });
+
+    test("returns warning when value matches state name", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "Texas",
+        context: mockContext("Texas", "Star Plus"),
+        map,
+      });
+      expect(result).toEqual([
+        "Response is identical to program or state name. Review for accuracy.",
+      ]);
+    });
+
+    test("returns warning when value matches program name", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "Star Plus",
+        context: mockContext("Texas", "Star Plus"),
+        map,
+      });
+      expect(result).toEqual([
+        "Response is identical to program or state name. Review for accuracy.",
+      ]);
+    });
+
+    test("is case insensitive", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "texas",
+        context: mockContext("Texas", "Star Plus"),
+        map,
+      });
+      expect(result).toEqual([
+        "Response is identical to program or state name. Review for accuracy.",
+      ]);
+    });
+
+    test("returns no warnings when value does not match state or program name", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "Acme Health Plan",
+        context: mockContext("Texas", "Star Plus"),
+        map,
+      });
+      expect(result).toEqual([]);
+    });
+
+    test("returns no warnings for empty value", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: null,
+        context: mockContext("Texas", "Star Plus"),
+        map,
+      });
+      expect(result).toEqual([]);
+    });
+
+    test("returns no warnings when context has no state or program name", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "Texas",
+        context: { report: undefined },
+        map,
+      });
+      expect(result).toEqual([]);
+    });
+  });
+
+  describe("OVERPAYMENT_VS_PREMIUM_REVENUE", () => {
+    const map = { testField: "OVERPAYMENT_VS_PREMIUM_REVENUE" };
+    const mockContext = (overpaymentAmount: number): WarningContext => ({
+      formValues: {
+        plan_overpaymentReportingToStateDollarAmount: String(overpaymentAmount),
+      },
+    });
+
+    test("returns high proportion warning when overpayment exceeds 10% of premium revenue", () => {
+      // overpayment = 1500, premium = 10000, percentage = 15% > 10%
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "10000",
+        context: mockContext(1500),
+        map,
+      });
+      expect(result).toEqual([
+        "The overpayment amount entered in D1.X.9c represents a high proportion of this premium revenue. Review for accuracy.",
+      ]);
+    });
+
+    test("returns low proportion warning when overpayment is less than 0.001% of premium revenue", () => {
+      // overpayment = 1, premium = 1000000, percentage = 0.0001% < 0.001%
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "1000000",
+        context: mockContext(1),
+        map,
+      });
+      expect(result).toEqual([
+        "The overpayment amount entered in D1.X.9c represents a very small proportion of this premium revenue. Review for accuracy.",
+      ]);
+    });
+
+    test("returns no warnings when percentage is within normal range", () => {
+      // overpayment = 500, premium = 10000, percentage = 5%
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "10000",
+        context: mockContext(500),
+        map,
+      });
+      expect(result).toEqual([]);
+    });
+
+    test("returns no warnings when premium revenue is null", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: null,
+        context: mockContext(1000),
+        map,
+      });
+      expect(result).toEqual([]);
+    });
+
+    test("returns no warnings when premium revenue is zero", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "0",
+        context: mockContext(1000),
+        map,
+      });
+      expect(result).toEqual([]);
+    });
+
+    test("returns no warnings when overpayment amount is null", () => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value: "10000",
+        context: {
+          formValues: {
+            plan_overpaymentReportingToStateDollarAmount: undefined,
+          },
+        },
+        map,
+      });
+      expect(result).toEqual([]);
+    });
+
+    test.each(["N/A", "n/a", "NA", "NR", "nr"])(
+      "returns the numeric response warning for %s",
+      (value) => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value,
+          context: mockContext(1000),
+          map,
+        });
+        expect(result).toEqual([
+          "This response is typically a numeric value. If N/A or NR is accurate, no action is needed.",
+        ]);
+      }
+    );
+  });
+
+  describe("overpayment reporting period dates (D1.X.9a and D1.X.9b)", () => {
+    const startField = "plan_overpaymentReportingToStateStartDate";
+    const endField = "plan_overpaymentReportingToStateEndDate";
+    const before2020Message =
+      "Dates prior to 2020 are not expected in this field. Review for accuracy.";
+    const startMessage = "Double-check the start date.";
+    const endMessage = "Double-check the end date.";
+
+    // each helper validates one date field, with the other date in the live form values
+    const checkStart = (start?: string | null, end?: string) =>
+      validateFieldWarning({
+        fieldName: startField,
+        value: start,
+        context: { formValues: { [endField]: end } },
+      });
+    const checkEnd = (start?: string, end?: string | null) =>
+      validateFieldWarning({
+        fieldName: endField,
+        value: end,
+        context: { formValues: { [startField]: start } },
+      });
+
+    describe("start date (D1.X.9a)", () => {
+      test("shows the double-check message when the period is not 12 months", () => {
+        expect(checkStart("02/01/2024", "04/01/2024")).toEqual([startMessage]);
+      });
+
+      test("shows nothing for a 12-month period", () => {
+        expect(checkStart("01/01/2023", "12/31/2023")).toEqual([]);
+      });
+
+      test("shows only the before-2020 message for a 12-month period before 2020", () => {
+        expect(checkStart("01/01/2019", "12/31/2019")).toEqual([
+          before2020Message,
+        ]);
+      });
+
+      test("shows both messages, before-2020 first, when both apply", () => {
+        expect(checkStart("01/01/2019", "06/01/2019")).toEqual([
+          before2020Message,
+          startMessage,
+        ]);
+      });
+
+      test.each([null, undefined, "N/A"])("shows nothing for %p", (start) => {
+        expect(checkStart(start, "04/01/2024")).toEqual([]);
+      });
+
+      test("shows nothing when there is no end date yet", () => {
+        expect(checkStart("02/01/2024", undefined)).toEqual([]);
+      });
+    });
+
+    describe("end date (D1.X.9b)", () => {
+      test("shows the double-check message when the period is not 12 months", () => {
+        expect(checkEnd("02/01/2024", "04/01/2024")).toEqual([endMessage]);
+      });
+
+      test("shows nothing for a 12-month period", () => {
+        expect(checkEnd("01/01/2023", "12/31/2023")).toEqual([]);
+      });
+
+      test("shows both messages, before-2020 first, when both apply", () => {
+        expect(checkEnd("01/01/2019", "06/01/2019")).toEqual([
+          before2020Message,
+          endMessage,
+        ]);
+      });
+
+      test.each([null, undefined, "N/A"])("shows nothing for %p", (end) => {
+        expect(checkEnd("02/01/2024", end)).toEqual([]);
+      });
+
+      test("shows nothing when there is no start date yet", () => {
+        expect(checkEnd(undefined, "04/01/2024")).toEqual([]);
+      });
+    });
+  });
+
+  describe("URL_NOT_VALID", () => {
+    const map = { testField: "URL_NOT_VALID" };
+
+    test.each([
+      "http://example.com",
+      "https://example.com",
+      "https://example.com/path?query=1",
+      "HTTPS://EXAMPLE.COM",
+    ])("returns no warnings for valid URL: %s", (value) => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value,
+        map,
+      });
+      expect(result).toEqual([]);
+    });
+
+    test.each(["N/A", "n/a", "NA"])("returns no warnings for %s", (value) => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value,
+        map,
+      });
+      expect(result).toEqual([]);
+    });
+
+    test.each([null, undefined, "", "   "])(
+      "returns no warnings for %p",
+      (value) => {
+        const result = validateFieldWarning({
+          fieldName: "testField",
+          value,
+          map,
+        });
+        expect(result).toEqual([]);
+      }
+    );
+
+    test.each([
+      "www.example.com",
+      "example.com",
+      "not a url",
+      "ftp://example.com",
+      "http://",
+    ])("returns warning for invalid URL: %s", (value) => {
+      const result = validateFieldWarning({
+        fieldName: "testField",
+        value,
+        map,
+      });
+      expect(result).toEqual([
+        "Enter a valid web address beginning with http:// or https://",
+      ]);
+    });
+  });
+});
+
+describe("isNotTwelveMonthPeriod", () => {
+  test.each([
+    ["01/01/2023", "12/31/2023"],
+    ["01/01/2024", "12/31/2024"], // leap year
+    ["07/01/2023", "06/30/2024"], // not a calendar year
+  ])("returns false for a 12-month period: %s to %s", (start, end) => {
+    expect(isNotTwelveMonthPeriod(start, end)).toBe(false);
+  });
+
+  test.each([
+    ["01/01/2023", "01/01/2024"], // one day too long
+    ["01/01/2023", "12/30/2023"], // one day too short
+    ["02/01/2023", "04/01/2024"], // much longer
+    ["02/01/2024", "04/01/2024"], // much shorter
+  ])(
+    "returns true for a period that is not 12 months: %s to %s",
+    (start, end) => {
+      expect(isNotTwelveMonthPeriod(start, end)).toBe(true);
+    }
+  );
+
+  test.each([
+    [null, "12/31/2023"],
+    ["01/01/2023", null],
+    ["N/A", "12/31/2023"],
+    ["01/01/2023", "N/A"],
+    [undefined, undefined],
+  ])("returns false when a date is missing or N/A: %p, %p", (start, end) => {
+    expect(isNotTwelveMonthPeriod(start, end)).toBe(false);
   });
 });
