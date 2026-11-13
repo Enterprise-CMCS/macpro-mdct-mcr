@@ -11,13 +11,13 @@ import {
   mockMcparReportStore,
   mockStateUserStore,
 } from "utils/testing/setupJest";
-import { useStore } from "utils";
+import { useFieldWarning, useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
   register: () => {},
-  setValue: () => {},
+  setValue: jest.fn(),
   getValues: jest.fn(),
   trigger: mockTrigger,
 };
@@ -26,6 +26,7 @@ const mockUseFormContext = useFormContext as unknown as jest.Mock<
 >;
 jest.mock("react-hook-form", () => ({
   useFormContext: jest.fn(() => mockRhfMethods),
+  useWatch: jest.fn().mockReturnValue(undefined),
 }));
 
 const mockGetValues = (returnValue: any) =>
@@ -41,6 +42,11 @@ mockedUseStore.mockReturnValue({
   ...mockMcparReportStore,
 });
 
+jest.mock("utils/warnings/useFieldWarning", () => ({
+  useFieldWarning: jest.fn().mockReturnValue(null),
+}));
+const mockUseFieldWarning = useFieldWarning as jest.Mock;
+
 const dateFieldComponent = (
   <ReportContext.Provider value={mockMcparReportContext}>
     <DateField name="testDateField" label="test-date-field" />
@@ -50,6 +56,18 @@ const dateFieldComponent = (
 const dateFieldAutosavingComponent = (
   <ReportContext.Provider value={mockMcparReportContext}>
     <DateField name="testDateField" label="test-date-field" autosave />
+  </ReportContext.Provider>
+);
+
+const dateFieldAllowNaComponent = (
+  <ReportContext.Provider value={mockMcparReportContext}>
+    <DateField name="testDateField" label="test-date-field" allowNa />
+  </ReportContext.Provider>
+);
+
+const dateFieldAllowNaAutosavingComponent = (
+  <ReportContext.Provider value={mockMcparReportContext}>
+    <DateField name="testDateField" label="test-date-field" allowNa autosave />
   </ReportContext.Provider>
 );
 
@@ -209,6 +227,95 @@ describe("<DateField />", () => {
     });
   });
 
+  describe("Test DateField N/A handling", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test("with allowNa, stores a typed N/A in the form", async () => {
+      mockGetValues(undefined);
+      render(dateFieldAllowNaComponent);
+      const dateField = screen.getByRole("textbox", {
+        name: "test-date-field",
+      });
+      await act(async () => {
+        await userEvent.type(dateField, "N/A");
+      });
+      expect(mockRhfMethods.setValue).toHaveBeenLastCalledWith(
+        "testDateField",
+        "N/A",
+        { shouldValidate: true }
+      );
+    });
+
+    test("with allowNa, does not overwrite N/A when the date input clears itself on blur", async () => {
+      mockGetValues(undefined);
+      render(dateFieldAllowNaComponent);
+      const dateField = screen.getByRole("textbox", {
+        name: "test-date-field",
+      });
+      await act(async () => {
+        await userEvent.type(dateField, "N/A");
+        await userEvent.tab();
+      });
+      expect(mockRhfMethods.setValue).toHaveBeenLastCalledWith(
+        "testDateField",
+        "N/A",
+        { shouldValidate: true }
+      );
+    });
+
+    test("with allowNa, the user can still clear the field while focused", async () => {
+      mockGetValues(undefined);
+      render(dateFieldAllowNaComponent);
+      const dateField = screen.getByRole("textbox", {
+        name: "test-date-field",
+      });
+      await act(async () => {
+        await userEvent.type(dateField, "N/A");
+        await userEvent.clear(dateField);
+      });
+      expect(mockRhfMethods.setValue).toHaveBeenLastCalledWith(
+        "testDateField",
+        "",
+        { shouldValidate: true }
+      );
+    });
+
+    test("with allowNa, autosaves N/A from the form value", async () => {
+      mockTrigger.mockReturnValue(true);
+      mockGetValues("N/A");
+      render(dateFieldAllowNaAutosavingComponent);
+      const dateField = screen.getByRole("textbox", {
+        name: "test-date-field",
+      });
+      await act(async () => {
+        await userEvent.click(dateField);
+        await userEvent.tab();
+      });
+      expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ fieldData: { testDateField: "N/A" } })
+      );
+    });
+
+    test("without allowNa, a typed N/A is not stored in the form", async () => {
+      mockGetValues(undefined);
+      render(dateFieldComponent);
+      const dateField = screen.getByRole("textbox", {
+        name: "test-date-field",
+      });
+      await act(async () => {
+        await userEvent.type(dateField, "N/A");
+      });
+      expect(mockRhfMethods.setValue).not.toHaveBeenCalledWith(
+        "testDateField",
+        "N/A",
+        expect.anything()
+      );
+    });
+  });
+
   describe("Datefield handles triggering validation", () => {
     const dateFieldComponentWithValidateOnRender = (
       <DateField
@@ -241,6 +348,52 @@ describe("<DateField />", () => {
       mockGetValues(undefined);
       render(dateFieldComponentWithValidateOnRender);
       expect(mockTrigger).toHaveBeenCalled();
+    });
+  });
+
+  describe("Test DateField warning functionality", () => {
+    test("warning message is not displayed when useFieldWarning returns null", () => {
+      mockGetValues(undefined);
+      mockUseFieldWarning.mockReturnValue(null);
+      render(dateFieldComponent);
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    });
+
+    test("warning message is displayed when useFieldWarning returns a message", () => {
+      mockGetValues(undefined);
+      mockUseFieldWarning.mockReturnValue("Test warning message");
+      render(dateFieldComponent);
+      expect(screen.getByRole("alert")).toBeVisible();
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        "Test warning message"
+      );
+    });
+
+    test("warning message is not displayed when field has an error", () => {
+      mockUseFieldWarning.mockReturnValue("Test warning message");
+      mockUseFormContext.mockImplementation((): any => ({
+        ...mockRhfMethods,
+        getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(undefined),
+        formState: {
+          errors: {
+            testDateField: { message: "This field is required" },
+          },
+        },
+      }));
+      render(dateFieldComponent);
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      expect(screen.getByText("This field is required")).toBeVisible();
+    });
+
+    test("warning message is not displayed when field is disabled", () => {
+      mockGetValues(undefined);
+      mockUseFieldWarning.mockReturnValue("Test warning message");
+      render(
+        <ReportContext.Provider value={mockMcparReportContext}>
+          <DateField name="testDateField" label="test-date-field" disabled />
+        </ReportContext.Provider>
+      );
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
   });
 

@@ -56,6 +56,12 @@ const mockedNaaarReportContext = {
 };
 
 jest.mock("utils/state/useStore");
+
+jest.mock("react-hook-form", () => ({
+  ...jest.requireActual("react-hook-form"),
+  useWatch: jest.fn().mockReturnValue(undefined),
+}));
+
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const modalComponent = (
