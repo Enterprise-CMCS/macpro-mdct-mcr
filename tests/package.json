@@ -20,12 +20,12 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
     "@faker-js/faker": "^10.6.0",
-    "@playwright/test": "^1.56.1",
+    "@playwright/test": "1.61.0",
     "@types/aws4": "^1.11.6",
     "aws4": "^1.13.2",
     "axe-core": "^4.10.2",
     "concurrently": "^8.2.2",
     "dotenv": "^16.4.7",
-    "playwright-core": "^1.57.0"
+    "playwright-core": "1.61.0"
   }
 }
