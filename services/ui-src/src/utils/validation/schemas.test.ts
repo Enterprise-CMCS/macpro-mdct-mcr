@@ -161,6 +161,28 @@ describe("Schemas", () => {
     testDate(schemaMap.dateOptional, badDateOptionalTestCases, false);
   });
 
+  test("Test dateOrNa schema", () => {
+    testDate(
+      schemaMap.dateOrNa,
+      ["01/01/2023", "12/31/2023", ...validNAValues],
+      true
+    );
+    testDate(
+      schemaMap.dateOrNa,
+      [
+        undefined,
+        "",
+        "   ",
+        "abc",
+        "13/01/2023",
+        "02/30/2023",
+        "1/1/23",
+        "01012023",
+      ],
+      false
+    );
+  });
+
   test("Test futureDate schema", () => {
     testDate(schemaMap.futureDate, goodFutureDateTestCases, true);
     testDate(schemaMap.futureDate, badFutureDateTestCases, false);

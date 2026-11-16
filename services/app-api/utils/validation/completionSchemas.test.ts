@@ -500,6 +500,18 @@ describe("Completion schemas", () => {
 
   test.each([
     ...reject(emptyResponses),
+    ...reject(["    "]),
+    ...reject(invalidDates),
+    ...reject([{ value: "01012023", description: "date without slashes" }]),
+    ...accept(pastDates),
+    ...accept(futureDates),
+    ...accept(notApplicableValues),
+  ])("dateOrNa() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.dateOrNa.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...reject(emptyResponses),
     ...reject(pastDates), // reject mm/dd/yyyy dates
     ...reject(futureDates), // reject mm/dd/yyyy dates
     ...reject(["132022", "13/2022", "00/2022"]),

@@ -1,7 +1,12 @@
 import { ReactNode, useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
-import { SingleInputDateField as CmsdsDateField } from "@cmsgov/design-system";
+import {
+  SingleInputDateField as CmsdsDateField,
+  Label,
+  Hint,
+  InlineError,
+} from "@cmsgov/design-system";
 import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 // types
@@ -13,7 +18,13 @@ import {
   parseCustomHtml,
   useStore,
   getAutosaveFields,
+  fieldWarningLayoutSx,
+  useFieldWarning,
+  fieldWarningActiveSx,
+  validNAValues,
 } from "utils";
+
+import { WarningMessage } from "utils/warnings/WarningMessage";
 
 export const DateField = ({
   name,
@@ -25,10 +36,12 @@ export const DateField = ({
   validateOnRender,
   styleAsOptional,
   clear,
+  allowNa,
   ...props
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+  const [remountKey, setRemountKey] = useState<number>(0);
 
   // state management
   const { full_name, state } = useStore().user ?? {};
@@ -69,17 +82,34 @@ export const DateField = ({
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
+  // only treat N/A specially when the field opts in via allowNa
+  const isNa = (value: string) => !!allowNa && validNAValues.includes(value);
+
   // update field display value and form field data on change
   const onChangeHandler = (rawValue: string, maskedValue: string) => {
+    // on blur the date input reports '' for text it can't parse; keep a typed N/A
+    const clearedByBlur =
+      rawValue === "" &&
+      isNa(displayValue) &&
+      document.activeElement?.id !== name;
+    if (clearedByBlur) return;
     setDisplayValue(rawValue);
-    form.setValue(name, maskedValue, { shouldValidate: true });
+    form.setValue(name, isNa(rawValue) ? rawValue : maskedValue, {
+      shouldValidate: true,
+    });
   };
 
   // if should autosave, submit field data to database on blur
   const onBlurHandler = async (event: InputChangeEvent) => {
-    const { name, value } = event.target;
+    const { name } = event.target;
+    // the date input blanks its own text on blur, so prefer the form value for N/A
+    const formValue = form.getValues(name);
+    const keepNa = isNa(formValue);
+    const value = keepNa ? formValue : event.target.value;
     // if field is blank, trigger client-side field validation error
     if (!value.trim()) form.trigger(name);
+    // remount so the date input shows the N/A we kept in state
+    if (keepNa) setRemountKey((key) => key + 1);
     // submit field data to database
     if (autosave) {
       const fields = getAutosaveFields({
@@ -114,25 +144,51 @@ export const DateField = ({
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message as ReactNode;
+  const warningMessage = useFieldWarning(name);
   const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
 
+  const isWarning = !errorMessage && !!warningMessage && !props?.disabled;
+
   return (
     <Box
-      sx={{ ...sx, ...sxOverride }}
+      sx={{
+        ...sx,
+        ...sxOverride,
+        ...fieldWarningLayoutSx,
+        ...(isWarning ? fieldWarningActiveSx : {}),
+      }}
       className={`${labelClass} ${nestedChildClasses} date-field`}
     >
+      <Label htmlFor={name} id={`${name}-label`}>
+        {labelText || ""}
+      </Label>
+      {parsedHint && <Hint id={`${name}-hint`}>{parsedHint}</Hint>}
+      <InlineError id={`${name}__error`} />
+      {isWarning && (
+        <WarningMessage message={warningMessage} id={`${name}__warning`} />
+      )}
       <CmsdsDateField
+        key={remountKey}
+        id={name}
         name={name}
-        label={labelText || ""}
+        label=""
+        hint=""
+        errorMessage={errorMessage}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         value={displayValue}
-        hint={parsedHint}
-        errorMessage={errorMessage}
+        aria-describedby={
+          [
+            parsedHint ? `${name}-hint` : "",
+            isWarning ? `${name}__warning` : "",
+          ]
+            .filter(Boolean)
+            .join(" ") || undefined
+        }
         {...props}
       />
     </Box>
@@ -149,6 +205,7 @@ interface Props {
   sxOverride?: SystemStyleObject;
   styleAsOptional?: boolean;
   clear?: boolean;
+  allowNa?: boolean;
   [key: string]: any;
 }
 

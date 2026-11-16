@@ -59,6 +59,7 @@ export interface ReportFormField {
 }
 
 export interface ReportFormFieldProps {
+  allowNa?: boolean;
   choices?: {
     id: string;
     hint?: any;
@@ -68,6 +69,7 @@ export interface ReportFormFieldProps {
     children?: {
       id: string;
       props?: {
+        allowNa?: boolean;
         choices?: any[];
         decimalPlacesToRoundTo?: number;
         clear?: boolean;

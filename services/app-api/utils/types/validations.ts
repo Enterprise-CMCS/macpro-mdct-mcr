@@ -6,6 +6,7 @@ export enum ValidationType {
   DATE = "date",
   DATE_MONTH_YEAR = "dateMonthYear",
   DATE_OPTIONAL = "dateOptional",
+  DATE_OR_NA = "dateOrNa",
   DATE_YEAR_2000_OR_LATER = "dateYear2000OrLater",
   DROPDOWN = "dropdown",
   DROPDOWN_OPTIONAL = "dropdownOptional",
