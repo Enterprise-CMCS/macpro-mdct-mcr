@@ -111,7 +111,7 @@
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|wav|mp3|m4a)$": "<rootDir>/src/utils/testing/mockAsset.ts",
-      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
+      "^.+\\.(css|less|scss)$": "<rootDir>/src/utils/testing/mockAsset.ts"
     },
     "setupFiles": [
       "jest-launchdarkly-mock"
@@ -124,7 +124,7 @@
       "\\.[jt]sx?$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "/node_modules/(?!(@hookform/resolvers|date-fns|date-fns-tz))"
+      "/node_modules/(?!(@hookform/resolvers|date-fns|date-fns-tz|jsondiffpatch))"
     ],
     "verbose": true
   }
