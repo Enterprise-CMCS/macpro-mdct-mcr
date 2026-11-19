@@ -50,6 +50,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
           label: "D1.X.1 Dedicated program integrity staff",
           hint: "Report or enter the number of dedicated program integrity staff for routine internal monitoring and compliance risks. Refer to 42 CFR 438.608(a)(1)(vii).",
           mask: "comma-separated",
+          decimalPlacesToRoundTo: 2,
         },
       },
       {
