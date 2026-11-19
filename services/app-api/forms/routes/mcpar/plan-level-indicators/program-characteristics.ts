@@ -84,6 +84,7 @@ export const programCharacteristicsRoute: DrawerFormRoute = {
             },
           ],
           mask: "percentage",
+          decimalPlacesToRoundTo: 2,
         },
       },
       {
@@ -118,6 +119,7 @@ export const programCharacteristicsRoute: DrawerFormRoute = {
             },
           ],
           mask: "percentage",
+          decimalPlacesToRoundTo: 2,
         },
       },
       {
