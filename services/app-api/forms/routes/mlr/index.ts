@@ -4,6 +4,7 @@ import { ReportJsonFile, ReportType } from "../../../utils/types";
 import { mlrReportingRoute } from "./mlr-reporting";
 import { informationForPrimaryContactRoute } from "./information-for-primary-contact";
 import { reviewAndSubmitRoute } from "./review-and-submit";
+import { diffRoute } from "./diff";
 
 export const mlrReportJson: ReportJsonFile = {
   type: ReportType.MLR,
@@ -18,6 +19,7 @@ export const mlrReportJson: ReportJsonFile = {
   routes: [
     informationForPrimaryContactRoute,
     mlrReportingRoute,
+    diffRoute,
     reviewAndSubmitRoute,
   ],
 };

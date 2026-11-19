@@ -64,6 +64,7 @@ export const ReportProvider = ({ children }: Props) => {
     clearReportsByState,
     setCopyEligibleReportsByState,
     setLastSavedTime,
+    setPreviousReport,
   } = useStore();
   const { state: userState } = useStore().user ?? {};
 
@@ -75,6 +76,8 @@ export const ReportProvider = ({ children }: Props) => {
     }
     setReport(report);
     setContextIsLoaded(true);
+    // Reset previous report selection
+    setPreviousReport(undefined);
   };
 
   const fetchReport = async (reportKeys: ReportKeys) => {

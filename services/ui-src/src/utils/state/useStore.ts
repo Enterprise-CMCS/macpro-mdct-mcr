@@ -8,6 +8,7 @@ import {
   EntityShape,
   ErrorVerbiage,
   McrEntityState,
+  McrPreviousReportState,
   McrReportState,
   MCRUser,
   McrUserState,
@@ -95,6 +96,14 @@ const reportStore = (set: Function) => ({
     }),
 });
 
+const previousReportStore = (set: Function) => ({
+  previousReport: undefined,
+  setPreviousReport: (newReport: ReportShape | undefined) =>
+    set(() => ({ previousReport: newReport }), false, {
+      type: "setPreviousReport",
+    }),
+});
+
 // ENTITY STORE
 const entityStore = (set: Function) => ({
   // initial state
@@ -119,14 +128,19 @@ const entityStore = (set: Function) => ({
 export const useStore = create(
   // persist and devtools are being used for debugging state
   persist(
-    devtools<McrUserState & AdminBannerState & McrReportState & McrEntityState>(
-      (set) => ({
-        ...userStore(set),
-        ...bannerStore(set),
-        ...reportStore(set),
-        ...entityStore(set),
-      })
-    ),
+    devtools<
+      McrUserState &
+        AdminBannerState &
+        McrReportState &
+        McrEntityState &
+        McrPreviousReportState
+    >((set) => ({
+      ...userStore(set),
+      ...bannerStore(set),
+      ...reportStore(set),
+      ...previousReportStore(set),
+      ...entityStore(set),
+    })),
     {
       name: "mcr-store",
       partialize: (state) => ({ report: state.report }),

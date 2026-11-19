@@ -2,6 +2,7 @@
 import { ReportJsonFile, ReportType } from "../../../utils/types";
 // routes
 import { bssEntityIndicatorsRoute } from "./bss-entity-indicators";
+import { diffRoute } from "./diff";
 import { notesRoute } from "./notes";
 import { planLevelIndicatorsRoute } from "./plan-level-indicators";
 import { programInformationRoute } from "./program-information";
@@ -41,6 +42,7 @@ export const mcparReportJson: ReportJsonFile = {
     planLevelIndicatorsRoute,
     bssEntityIndicatorsRoute,
     notesRoute,
+    diffRoute,
     reviewAndSubmitRoute,
   ],
 };

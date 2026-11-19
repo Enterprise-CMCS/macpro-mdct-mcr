@@ -33,7 +33,12 @@ export const fetchReport = handler(async (event, _context) => {
     return badRequest(error.NO_KEY);
   }
 
-  const { reportType, state, id } = event.pathParameters!;
+  const {
+    reportType,
+    state,
+    id,
+    fieldDataId: previousRevisionId,
+  } = event.pathParameters!;
 
   if (!isState(state)) {
     return badRequest(error.NO_KEY);
@@ -58,7 +63,17 @@ export const fetchReport = handler(async (event, _context) => {
     }
 
     const reportMetadata = response.Item as Record<string, any>;
-    const { formTemplateId, fieldDataId } = reportMetadata;
+    const { formTemplateId } = reportMetadata;
+    let fieldDataId = reportMetadata.fieldDataId;
+
+    // If revision id is provided, use that for fieldData
+    if (previousRevisionId) {
+      if (!reportMetadata.previousRevisions?.includes(previousRevisionId)) {
+        return notFound(error.NO_MATCHING_RECORD);
+      }
+      fieldDataId = previousRevisionId;
+      reportMetadata.fieldDataId = previousRevisionId;
+    }
 
     // Get form template from S3
     const formTemplateParams: GetObjectCommandInput = {
@@ -99,6 +114,15 @@ export const fetchReport = handler(async (event, _context) => {
   } catch {
     return notFound(error.NO_MATCHING_RECORD);
   }
+});
+
+export const fetchReportByRevision = handler(async (event, context) => {
+  const requiredParams = ["reportType", "id", "state", "fieldDataId"];
+  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
+    return badRequest(error.NO_KEY);
+  }
+
+  return fetchReport(event, context);
 });
 
 export const fetchReportsByState = handler(async (event, _context) => {

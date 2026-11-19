@@ -69,3 +69,10 @@ export interface McrEntityState {
   setEntityType: (newEntityType: EntityType | undefined) => void;
   setEntities: (newEntities: EntityShape[] | undefined) => void;
 }
+
+// initial report state
+export interface McrPreviousReportState {
+  // INITIAL STATE
+  previousReport: ReportShape | undefined;
+  setPreviousReport: (newReport: ReportShape | undefined) => void;
+}
