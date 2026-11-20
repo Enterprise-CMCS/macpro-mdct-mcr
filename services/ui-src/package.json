@@ -16,7 +16,7 @@
     "@cmsgov/design-system": "^13.0.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@hookform/resolvers": "^2.9.11",
+    "@hookform/resolvers": "^7.0.7",
     "@tanstack/react-table": "^8.20.6",
     "@vitejs/plugin-react": "^5.0.3",
     "aws-amplify": "~6.20.0",
@@ -27,7 +27,10 @@
     "framer-motion": "^4.1.17",
     "history": "^5.3.0",
     "html-react-parser": "^3.0.16",
+    "json-diff-ts": "^5.1.1",
+    "jsondiffpatch": "^0.7.7",
     "launchdarkly-react-client-sdk": "^3.9.3",
+    "microdiff": "^1.6.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-error-boundary": "^3.1.4",
@@ -108,7 +111,7 @@
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|wav|mp3|m4a)$": "<rootDir>/src/utils/testing/mockAsset.ts",
-      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
+      "^.+\\.(css|less|scss)$": "<rootDir>/src/utils/testing/mockAsset.ts"
     },
     "setupFiles": [
       "jest-launchdarkly-mock"
@@ -121,7 +124,7 @@
       "\\.[jt]sx?$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "/node_modules/(?!(@hookform/resolvers|date-fns|date-fns-tz))"
+      "/node_modules/(?!(@hookform/resolvers|date-fns|date-fns-tz|jsondiffpatch))"
     ],
     "verbose": true
   }

@@ -10,6 +10,7 @@ import {
   Sidebar,
   StandardReportPage,
   ModalOverlayReportPage,
+  OverlayReportPage,
   OverlayProvider,
 } from "components";
 // types
@@ -25,7 +26,7 @@ import {
 } from "types";
 // utils
 import { useStore } from "utils";
-import { OverlayReportPage } from "./OverlayReportPage";
+import { DiffPage } from "./DiffPage";
 
 export const ReportPageWrapper = () => {
   const { user: state, report } = useStore();
@@ -53,6 +54,8 @@ export const ReportPageWrapper = () => {
   };
 
   const renderPageSection = (route: ReportRoute) => {
+    if (route.path.includes("diff")) return <DiffPage />;
+
     switch (route.pageType) {
       case PageTypes.DRAWER:
         showSidebar();

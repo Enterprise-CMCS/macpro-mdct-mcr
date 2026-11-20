@@ -12,6 +12,7 @@ export interface ReportKeys {
   reportType: string;
   state: string;
   id: string;
+  fieldDataId?: string;
 }
 
 export interface ReportMetadataShape extends ReportKeys {
@@ -30,7 +31,7 @@ export interface ReportMetadataShape extends ReportKeys {
   submittedBy?: string;
   submitterEmail?: string;
   submittedOnDate?: number;
-  submissionDates?: { revisionId: string; submittedOnDate: number }[];
+  submissionDates?: { fieldDataId: string; submittedOnDate: number }[];
   archived?: boolean;
   locked: boolean;
   fieldDataId: string;

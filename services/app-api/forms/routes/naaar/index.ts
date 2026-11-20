@@ -5,6 +5,7 @@ import { planComplianceRoute } from "./plan-compliance";
 import { programLevelAccessAndNetworkAdequacyStandardsRoute } from "./program-level-access-and-network-adequacy-standards";
 import { reviewAndSubmitRoute } from "./review-and-submit";
 import { stateAndProgramInformationRoute } from "./state-and-program-information";
+import { diffRoute } from "./diff";
 
 export const naaarReportJson: ReportJsonFile = {
   type: ReportType.NAAAR,
@@ -26,6 +27,7 @@ export const naaarReportJson: ReportJsonFile = {
     stateAndProgramInformationRoute,
     programLevelAccessAndNetworkAdequacyStandardsRoute,
     planComplianceRoute,
+    diffRoute,
     reviewAndSubmitRoute,
   ],
 };
