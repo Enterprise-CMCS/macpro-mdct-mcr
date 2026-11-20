@@ -125,6 +125,19 @@ describe("Test mask types", () => {
     }
   });
 
+  test("Check if percentage mask rounds to specified number of decimal places", () => {
+    const percentageTestCases = [
+      { test: "88.88999", expected: "88.89" },
+      { test: "88.884", expected: "88.88" },
+      { test: "12", expected: "12.00" },
+    ];
+    for (let testCase of percentageTestCases) {
+      expect(applyMask(testCase.test, "percentage", 2).maskedValue).toEqual(
+        testCase.expected
+      );
+    }
+  });
+
   test("Check if all masks have masking functions", () => {
     for (let maskFunction of Object.values(maskMap)) {
       expect(typeof maskFunction).toBe("function");

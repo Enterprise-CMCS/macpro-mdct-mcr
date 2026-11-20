@@ -198,6 +198,25 @@ describe("<NumberField />", () => {
       expect(numberFieldInput.value).toEqual("12,055.99");
     });
 
+    test("Percentage field with decimalPlacesToRoundTo rounds value on blur", async () => {
+      const result = render(
+        <NumberField
+          name="testNumberField"
+          label="test-label"
+          mask="percentage"
+          decimalPlacesToRoundTo={2}
+        />
+      );
+      const numberFieldInput: HTMLInputElement = result.container.querySelector(
+        "[name='testNumberField']"
+      )!;
+      await act(async () => {
+        await userEvent.type(numberFieldInput, "88.88999");
+        await userEvent.tab();
+      });
+      expect(numberFieldInput.value).toEqual("88.89");
+    });
+
     test("onChangeHandler updates ratio field value", async () => {
       const result = render(ratioMaskedNumberFieldComponent);
       const numberFieldInput: HTMLInputElement = result.container.querySelector(

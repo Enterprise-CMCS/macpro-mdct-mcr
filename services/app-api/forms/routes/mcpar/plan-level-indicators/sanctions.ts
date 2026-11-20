@@ -217,6 +217,7 @@ export const sanctionsRoute: ModalDrawerRoute = {
           label: "D3.VIII.5 Instances of non-compliance",
           hint: "How many instances were there of non-compliance in the reporting year? Add a number.",
           mask: "comma-separated",
+          decimalPlacesToRoundTo: 0,
         },
       },
       {
