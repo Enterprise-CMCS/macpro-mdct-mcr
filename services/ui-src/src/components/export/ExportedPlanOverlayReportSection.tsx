@@ -22,6 +22,7 @@ import {
   NaaarStandardsTableShape,
   PlanData,
   PlanOverlayReportPageShape,
+  ReportShape,
 } from "types";
 // utils
 import {
@@ -38,8 +39,11 @@ import {
  * Designed originally for the plan compliance portion of the NAAAR report
  * Expected entity is plans
  */
-export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
-  const { report } = useStore();
+export const ExportedPlanOverlayReportSection = ({
+  section,
+  reportToUse,
+}: Props) => {
+  const report = reportToUse ?? useStore().report;
 
   const plans = report?.fieldData?.plans;
   const standards = report?.fieldData?.standards ?? [];
@@ -190,6 +194,7 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
 
 export interface Props {
   section: PlanOverlayReportPageShape;
+  reportToUse?: ReportShape;
 }
 
 const complianceTable = (

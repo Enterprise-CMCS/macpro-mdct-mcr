@@ -27,9 +27,11 @@ import {
 } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
+import diff from "microdiff";
 
-export const ExportedReportFieldTable = ({ section }: Props) => {
-  const { report } = useStore();
+export const ExportedReportFieldTable = ({ section, reportToUse }: Props) => {
+  const { report: currentReport, previousReport } = useStore();
+  const report = reportToUse ?? currentReport;
   const { tableHeaders } = verbiage;
 
   const pageType = section.pageType;
@@ -98,7 +100,9 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
         pageType!,
         report,
         !hideHintText,
-        entityType
+        entityType,
+        currentReport,
+        previousReport
       )
     : { tableRows: [], hasAnyNumberedRow: false };
 
@@ -145,7 +149,9 @@ export const renderFieldTableBody = (
   pageType: string,
   report: ReportShape | undefined,
   showHintText: boolean,
-  entityType?: EntityType
+  entityType?: EntityType,
+  currentReport?: ReportShape,
+  previousReport?: ReportShape
 ) => {
   const rowDescriptors: {
     formField: FormField | FormLayoutElement;
@@ -220,6 +226,17 @@ export const renderFieldTableBody = (
     ({ formField }) => !!parseFormFieldInfo(formField.props)?.number
   );
 
+  // Example of how to highlight diff
+  const hasDiff = (fieldId: string) => {
+    if (!previousReport || !currentReport) return false;
+    const fieldDataDiff = previousReport
+      ? diff(previousReport?.fieldData, currentReport?.fieldData)
+      : [];
+    return fieldDataDiff.some((change) =>
+      [change.path].flat().includes(fieldId)
+    );
+  };
+
   const tableRows: ReactElement[] = rowDescriptors.map(
     ({ formField, parentFieldCheckedChoiceIds }) => (
       <ExportedReportFieldRow
@@ -230,6 +247,8 @@ export const renderFieldTableBody = (
         parentFieldCheckedChoiceIds={parentFieldCheckedChoiceIds}
         showHintText={showHintText}
         hasNumberColumn={hasAnyNumberedRow}
+        reportToUse={report}
+        hasDiff={hasDiff(formField.id)}
       />
     )
   );
@@ -240,6 +259,7 @@ export const renderFieldTableBody = (
 export interface Props {
   section: StandardReportPageShape | DrawerReportPageShape;
   showHintText?: boolean;
+  reportToUse?: ReportShape;
 }
 
 export const exportTableSx = {

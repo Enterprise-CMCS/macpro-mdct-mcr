@@ -19,10 +19,9 @@ import {
 // utils
 import { assertExhaustive, getReportVerbiage, useStore } from "utils";
 
-export const ExportedReportPage = () => {
-  const { report } = useStore();
+export const ExportedReportPage = ({ reportToUse }: any) => {
+  const report = reportToUse ?? useStore().report;
   const routesToRender = report?.formTemplate.routes.filter(Boolean);
-
   const reportType = (report?.reportType ||
     localStorage.getItem("selectedReportType")) as ReportType;
 
@@ -50,6 +49,7 @@ export const ExportedReportPage = () => {
           <ExportedReportMetadataTable
             reportType={reportType}
             verbiage={reportPage}
+            reportToUse={report}
           />
           {/* combined data table */}
           {reportType === ReportType.MCPAR && (
@@ -82,7 +82,7 @@ export const ExportedReportPage = () => {
             </Table>
           )}
           {/* report sections */}
-          {renderReportSections(report.formTemplate.routes)}
+          {renderReportSections(report.formTemplate.routes, report)}
         </Box>
       )) || (
         <Center>
@@ -127,7 +127,10 @@ export const getNaaarSubmissionDate = (report: ReportShape) => {
   }
 };
 
-export const renderReportSections = (reportRoutes: ReportRoute[]) => {
+export const renderReportSections = (
+  reportRoutes: ReportRoute[],
+  reportToUse: ReportShape
+) => {
   // recursively render sections
   const renderSection = (section: ReportRoute) => {
     const childSections = section?.children;
@@ -142,7 +145,10 @@ export const renderReportSections = (reportRoutes: ReportRoute[]) => {
               heading={section.verbiage?.intro?.section || section.name}
               verbiage={section.verbiage || undefined}
             />
-            <ExportedReportWrapper section={section as ReportRouteWithForm} />
+            <ExportedReportWrapper
+              reportToUse={reportToUse}
+              section={section as ReportRouteWithForm}
+            />
           </Box>
         )}
       </Box>

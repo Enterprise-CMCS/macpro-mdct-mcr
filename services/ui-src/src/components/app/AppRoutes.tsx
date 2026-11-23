@@ -19,6 +19,7 @@ import {
 import { ReportRoute, ReportType } from "types";
 // utils
 import { ScrollToTopComponent, useStore } from "utils";
+import { ExportedReportDiffPage } from "components/pages/Export/ExportDiffPage";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
@@ -68,6 +69,10 @@ export const AppRoutes = () => {
                 )
               )}
               <Route path="/mcpar/export" element={<ExportedReportPage />} />
+              <Route
+                path="/mcpar/export/diff"
+                element={<ExportedReportDiffPage />}
+              />
             </>
           )}
           <Route
@@ -101,6 +106,10 @@ export const AppRoutes = () => {
                 )
               )}
               <Route path="/mlr/export" element={<ExportedReportPage />} />
+              <Route
+                path="/mlr/export/diff"
+                element={<ExportedReportDiffPage />}
+              />
             </>
           )}
           <Route
@@ -134,6 +143,10 @@ export const AppRoutes = () => {
                   )
                 )}
                 <Route path="/naaar/export" element={<ExportedReportPage />} />
+                <Route
+                  path="/naaar/export/diff"
+                  element={<ExportedReportDiffPage />}
+                />
               </>
             )}
             <Route

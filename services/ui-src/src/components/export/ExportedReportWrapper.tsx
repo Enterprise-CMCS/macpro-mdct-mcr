@@ -16,11 +16,12 @@ import {
   PageTypes,
   PlanOverlayReportPageShape,
   ReportRouteWithForm,
+  ReportShape,
   StandardReportPageShape,
 } from "types";
 import { routeChecker } from "utils";
 
-export const ExportedReportWrapper = ({ section }: Props) => {
+export const ExportedReportWrapper = ({ section, reportToUse }: Props) => {
   switch (section.pageType) {
     case PageTypes.STANDARD:
       if (
@@ -34,6 +35,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
       return (
         <Box data-testid="exportedStandardReportSection" mt="2rem">
           <ExportedReportFieldTable
+            reportToUse={reportToUse}
             section={section as StandardReportPageShape}
           />
         </Box>
@@ -43,6 +45,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
       if (section.entityType === EntityType.STANDARDS) {
         return (
           <ExportedModalOverlayReportSection
+            reportToUse={reportToUse}
             section={section as ModalOverlayReportPageShape}
           />
         );
@@ -50,6 +53,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
       return (
         <Box data-testid="exportedDrawerReportSection" mt="2rem">
           <ExportedReportFieldTable
+            reportToUse={reportToUse}
             section={section as DrawerReportPageShape}
           />
         </Box>
@@ -57,6 +61,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
     case PageTypes.MODAL_DRAWER:
       return (
         <ExportedModalDrawerReportSection
+          reportToUse={reportToUse}
           section={section as ModalDrawerReportPageShape}
         />
       );
@@ -66,14 +71,17 @@ export const ExportedReportWrapper = ({ section }: Props) => {
           {/* quality measures uses the card pattern from the modal overlay component */}
           {section.entityType === EntityType.QUALITY_MEASURES ? (
             <ExportedModalDrawerReportSection
+              reportToUse={reportToUse}
               section={section as ModalDrawerReportPageShape}
             />
           ) : (
             <>
               <ExportedModalOverlayReportSection
+                reportToUse={reportToUse}
                 section={section as ModalOverlayReportPageShape}
               />
               <ExportedEntityDetailsOverlaySection
+                reportToUse={reportToUse}
                 section={section as ModalOverlayReportPageShape}
               />
             </>
@@ -83,6 +91,7 @@ export const ExportedReportWrapper = ({ section }: Props) => {
     case PageTypes.PLAN_OVERLAY:
       return (
         <ExportedPlanOverlayReportSection
+          reportToUse={reportToUse}
           section={section as PlanOverlayReportPageShape}
         />
       );
@@ -93,4 +102,5 @@ export const ExportedReportWrapper = ({ section }: Props) => {
 
 export interface Props {
   section: ReportRouteWithForm;
+  reportToUse?: ReportShape;
 }

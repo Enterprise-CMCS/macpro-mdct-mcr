@@ -171,6 +171,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...commonProps,
   });
 
+  new Lambda(scope, "fetchReportByRevision", {
+    entry: "services/app-api/handlers/reports/fetch.ts",
+    handler: "fetchReportByRevision",
+    path: "/reports/{reportType}/{state}/{id}/{fieldDataId}",
+    method: "GET",
+    ...commonProps,
+  });
+
   new Lambda(scope, "fetchReportsByState", {
     entry: "services/app-api/handlers/reports/fetch.ts",
     handler: "fetchReportsByState",

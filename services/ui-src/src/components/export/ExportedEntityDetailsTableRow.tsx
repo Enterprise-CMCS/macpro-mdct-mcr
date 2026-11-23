@@ -6,6 +6,7 @@ import {
   FormField,
   FormLayoutElement,
   isFieldElement,
+  ReportShape,
 } from "types";
 // utils
 import {
@@ -23,8 +24,9 @@ export const ExportedEntityDetailsTableRow = ({
   entityId,
   optional,
   entityIndex,
+  reportToUse,
 }: Props) => {
-  const { report } = useStore();
+  const report = reportToUse ?? useStore().report;
   const reportData = report?.fieldData;
   const isDynamicField = formField.type === "dynamic";
   const formFieldInfo = parseFormFieldInfo(formField?.props!);
@@ -100,6 +102,7 @@ export interface Props {
   showHintText?: boolean;
   optional?: boolean;
   entityIndex?: number;
+  reportToUse?: ReportShape;
 }
 
 const sx = {

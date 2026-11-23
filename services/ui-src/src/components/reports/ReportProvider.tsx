@@ -16,6 +16,7 @@ import {
   flattenReportRoutesArray,
   getLocalHourMinuteTime,
   getReport,
+  getReportByRevision,
   getReportsByState,
   postReport,
   putReport,
@@ -64,23 +65,45 @@ export const ReportProvider = ({ children }: Props) => {
     clearReportsByState,
     setCopyEligibleReportsByState,
     setLastSavedTime,
+    setPreviousReport,
   } = useStore();
   const { state: userState } = useStore().user ?? {};
 
-  const hydrateAndSetReport = (report: ReportShape | undefined) => {
-    if (report) {
+  const hydrateAndSetReport = async (report: ReportShape | undefined) => {
+    if (report && report.formTemplate) {
       report.formTemplate.flatRoutes = flattenReportRoutesArray(
         report.formTemplate.routes
       );
     }
     setReport(report);
     setContextIsLoaded(true);
+    const previousReport = await fetchPreviousReport(report);
+    setPreviousReport(previousReport);
   };
 
   const fetchReport = async (reportKeys: ReportKeys) => {
     try {
       const result = await getReport(reportKeys);
       hydrateAndSetReport(result);
+      return result;
+    } catch {
+      setError(reportErrors.GET_REPORT_FAILED);
+      return;
+    }
+  };
+
+  const fetchPreviousReport = async (report?: ReportShape) => {
+    if (!report) return undefined;
+    const previousRevisionId = report.previousRevisions?.at(-1);
+    if (!previousRevisionId) return undefined;
+    const reportKeys = {
+      reportType: report.reportType,
+      state: report.state,
+      id: report.id,
+      fieldDataId: previousRevisionId,
+    };
+    try {
+      const result = await getReportByRevision(reportKeys);
       return result;
     } catch {
       setError(reportErrors.GET_REPORT_FAILED);

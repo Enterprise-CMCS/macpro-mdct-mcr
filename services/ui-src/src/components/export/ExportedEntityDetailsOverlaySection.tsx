@@ -9,6 +9,7 @@ import {
   FormField,
   FormLayoutElement,
   ModalOverlayReportPageShape,
+  ReportShape,
   ReportType,
 } from "types";
 // utils
@@ -16,8 +17,9 @@ import { assertExhaustive, getProgramInfo, useStore } from "utils";
 
 export const ExportedEntityDetailsOverlaySection = ({
   section,
+  reportToUse,
 }: ExportedEntityDetailsOverlaySectionProps) => {
-  const { report } = useStore();
+  const report = reportToUse ?? useStore().report;
   const entityType = section.entityType;
 
   return (
@@ -46,6 +48,7 @@ export const ExportedEntityDetailsOverlaySection = ({
 
 export interface ExportedEntityDetailsOverlaySectionProps {
   section: ModalOverlayReportPageShape;
+  reportToUse?: ReportShape;
 }
 /**
  * Split a list of form fields by the "sectionHeader" layout element type.

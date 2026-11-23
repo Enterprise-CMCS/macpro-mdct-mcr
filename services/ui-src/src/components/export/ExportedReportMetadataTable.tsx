@@ -15,8 +15,9 @@ import { assertExhaustive, convertDateUtcToEt, useStore } from "utils";
 export const ExportedReportMetadataTable = ({
   reportType,
   verbiage,
+  reportToUse,
 }: Props) => {
-  const { report } = useStore();
+  const report = reportToUse ?? useStore().report;
 
   return (
     <Table
@@ -119,6 +120,7 @@ export interface Props {
   verbiage: {
     metadataTableHeaders: ReportMetadataTableVerbiage;
   };
+  reportToUse?: ReportShape;
 }
 
 const sx = {

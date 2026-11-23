@@ -2,7 +2,7 @@
 import { Box, Text } from "@chakra-ui/react";
 import { EntityCard } from "components";
 // types
-import { EntityShape, ModalDrawerReportPageShape } from "types";
+import { EntityShape, ModalDrawerReportPageShape, ReportShape } from "types";
 // utils
 import { getFormattedEntityData, useStore } from "utils";
 // verbiage
@@ -10,8 +10,9 @@ import exportVerbiage from "verbiage/pages/mcpar/mcpar-export";
 
 export const ExportedModalDrawerReportSection = ({
   section: { entityType, verbiage },
+  reportToUse,
 }: Props) => {
-  const { report } = useStore();
+  const report = reportToUse ?? useStore().report;
   const { emptyEntityMessage } = exportVerbiage;
   const entities = report?.fieldData?.[entityType];
   const entityCount = entities?.length;
@@ -51,6 +52,7 @@ export const ExportedModalDrawerReportSection = ({
 
 export interface Props {
   section: ModalDrawerReportPageShape;
+  reportToUse?: ReportShape;
 }
 
 const sx = {

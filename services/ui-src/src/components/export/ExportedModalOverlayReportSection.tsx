@@ -23,8 +23,11 @@ import {
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import finishedIcon from "assets/icons/icon_check_circle.png";
 
-export const ExportedModalOverlayReportSection = ({ section }: Props) => {
-  const { report } = useStore();
+export const ExportedModalOverlayReportSection = ({
+  section,
+  reportToUse,
+}: Props) => {
+  const report = reportToUse ?? useStore().report;
   const entityType = section.entityType;
   const entities = report?.fieldData?.[entityType];
   const entityCount = entities?.length;
@@ -69,6 +72,7 @@ export const ExportedModalOverlayReportSection = ({ section }: Props) => {
 
 export interface Props {
   section: ModalOverlayReportPageShape;
+  reportToUse?: ReportShape;
 }
 
 export function renderStatusIcon(status: boolean) {

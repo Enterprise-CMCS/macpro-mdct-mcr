@@ -13,6 +13,7 @@ import {
   AdminBannerState,
   EntityType,
   McrEntityState,
+  McrPreviousReportState,
   McrReportState,
   McrUserState,
   UserRoles,
@@ -193,6 +194,11 @@ export const mockEmptyReportStore: McrReportState = {
   setLastSavedTime: () => {},
 };
 
+export const mockPreviousReportStore: McrPreviousReportState = {
+  previousReport: undefined,
+  setPreviousReport: () => {},
+};
+
 // ENTITY STATES / STORE
 export const mockEntityStore: McrEntityState = {
   entities: [],
@@ -265,4 +271,5 @@ export const mockUseStore: McrUserState & AdminBannerState & McrReportState = {
   ...mockMlrReport,
   ...mockEmptyReportStore,
   ...mockEntityStore,
+  ...mockPreviousReportStore,
 };

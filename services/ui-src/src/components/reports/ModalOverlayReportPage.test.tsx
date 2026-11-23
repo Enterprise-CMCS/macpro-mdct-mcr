@@ -33,6 +33,7 @@ import {
   mockMLRReportEntityStartedFieldData,
   mockEmptyReportStore,
   mockEntityStore,
+  mockPreviousReportStore,
 } from "utils/testing/setupJest";
 import {
   makeMediaQueryClasses,
@@ -49,6 +50,7 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 const mockMlrEntityStartedStore = {
   ...mockEntityStore,
   ...mockMlrReportStore,
+  ...mockPreviousReportStore,
   report: {
     ...mockMlrReportStore.report,
     fieldData: mockMLRReportEntityStartedFieldData,

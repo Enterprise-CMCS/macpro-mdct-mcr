@@ -31,6 +31,12 @@ async function getReport(reportKeys: ReportKeys) {
   return get<ReportShape>(path);
 }
 
+async function getReportByRevision(reportKeys: ReportKeys) {
+  const { reportType, state, id, fieldDataId } = reportKeys;
+  const path = `/reports/${reportType}/${state}/${id}/${fieldDataId}`;
+  return get<ReportShape>(path);
+}
+
 async function getReportsByState(reportType: string, state: string) {
   const path = `/reports/${reportType}/${state}`;
   return get<ReportShape[]>(path);
@@ -66,4 +72,5 @@ export {
   getReportsByState,
   recalculateReport,
   submitReport,
+  getReportByRevision,
 };
