@@ -63,7 +63,7 @@ export const fetchReport = handler(async (event, _context) => {
     }
 
     const reportMetadata = response.Item as Record<string, any>;
-    const { formTemplateId } = reportMetadata;
+    const { formTemplateId, submittedBy, submittedOnDate } = reportMetadata;
     let fieldDataId = reportMetadata.fieldDataId;
 
     // If revision id is provided, use that for fieldData
@@ -73,6 +73,8 @@ export const fetchReport = handler(async (event, _context) => {
       }
       fieldDataId = previousRevisionId;
       reportMetadata.fieldDataId = previousRevisionId;
+      reportMetadata.lastAltered = submittedOnDate;
+      reportMetadata.lastAlteredBy = submittedBy;
     }
 
     // Get form template from S3

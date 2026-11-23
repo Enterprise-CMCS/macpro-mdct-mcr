@@ -49,6 +49,7 @@ export const ExportedReportPage = ({ reportToUse }: any) => {
           <ExportedReportMetadataTable
             reportType={reportType}
             verbiage={reportPage}
+            reportToUse={report}
           />
           {/* combined data table */}
           {reportType === ReportType.MCPAR && (
