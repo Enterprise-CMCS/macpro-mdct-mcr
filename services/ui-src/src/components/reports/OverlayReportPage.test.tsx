@@ -14,6 +14,7 @@ import {
   mockNaaarWithPlanCreated,
   mockNaaarStandards,
   mockOverlayReportPageVerbiage,
+  mockPreviousReportStore,
 } from "utils/testing/setupJest";
 import { UserProvider, getEntityStatus, useBreakpoint, useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
@@ -36,6 +37,7 @@ const mockedGetEntityStatus = getEntityStatus as jest.MockedFunction<
 const mockNaaarWithoutPlansStore = {
   ...mockEntityStore,
   ...mockNaaarReportStore,
+  ...mockPreviousReportStore,
   report: {
     ...mockNaaarReportStore.report,
     fieldData: mockNaaarEmptyFieldData,
@@ -45,6 +47,7 @@ const mockNaaarWithoutPlansStore = {
 const mockNaaarWithPlansStore = {
   ...mockEntityStore,
   ...mockNaaarReportStore,
+  ...mockPreviousReportStore,
   report: {
     ...mockNaaarReportStore.report,
     fieldData: mockNaaarWithPlanCreated,
@@ -54,6 +57,7 @@ const mockNaaarWithPlansStore = {
 const mockNaaarWithPlansAndStandardsStore = {
   ...mockEntityStore,
   ...mockNaaarReportStore,
+  ...mockPreviousReportStore,
   report: {
     ...mockNaaarReportStore.report,
     fieldData: { ...mockNaaarWithPlanCreated, standards: mockNaaarStandards },

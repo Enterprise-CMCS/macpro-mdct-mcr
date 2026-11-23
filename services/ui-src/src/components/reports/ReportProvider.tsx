@@ -70,7 +70,7 @@ export const ReportProvider = ({ children }: Props) => {
   const { state: userState } = useStore().user ?? {};
 
   const hydrateAndSetReport = async (report: ReportShape | undefined) => {
-    if (report) {
+    if (report && report.formTemplate) {
       report.formTemplate.flatRoutes = flattenReportRoutesArray(
         report.formTemplate.routes
       );
@@ -92,9 +92,9 @@ export const ReportProvider = ({ children }: Props) => {
     }
   };
 
-  const fetchPreviousReport = async (report: ReportShape | undefined) => {
+  const fetchPreviousReport = async (report?: ReportShape) => {
     if (!report) return undefined;
-    const previousRevisionId = report.previousRevisions.at(-1);
+    const previousRevisionId = report.previousRevisions?.at(-1);
     if (!previousRevisionId) return undefined;
     const reportKeys = {
       reportType: report.reportType,
