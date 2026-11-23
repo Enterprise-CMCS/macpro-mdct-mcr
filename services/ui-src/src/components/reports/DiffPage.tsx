@@ -18,10 +18,10 @@ import diff from "microdiff";
 import * as jsondiffpatch from "jsondiffpatch";
 import * as htmlFormatter from "jsondiffpatch/formatters/html";
 import "jsondiffpatch/formatters/styles/html.css";
-import { getReportByRevision, useStore } from "utils";
+import { useStore } from "utils";
 
 export const DiffPage = () => {
-  const { report, previousReport, setPreviousReport } = useStore();
+  const { report, previousReport } = useStore();
   const diffLibraries = ["json-diff-ts", "microdiff", "jsondiffpatch"];
   const [diffId, setDiffId] = useState<string>(diffLibraries[0]);
   const [differences, setDifferences] = useState<any[] | null>(null);
@@ -40,11 +40,9 @@ export const DiffPage = () => {
   useEffect(() => {
     reset();
 
-    if (!report || report.previousRevisions.length === 0) {
+    if (!report || !previousReport || report.previousRevisions.length === 0) {
       return;
     }
-
-    const latestRevisionId = report.previousRevisions.at(-1);
 
     const normalizeDiffs = (diffs: any, diffId: string) => {
       if (diffId !== "json-diff-ts") return diffs;
@@ -70,63 +68,29 @@ export const DiffPage = () => {
       });
     };
 
-    const fetchRevision = async () => {
-      try {
-        const reportKeys = {
-          reportType: report.reportType,
-          state: report.state,
-          id: report.id,
-          fieldDataId: latestRevisionId,
-        };
-        let previsionRevision;
+    let fieldDataDiff: any;
 
-        if (previousReport) {
-          // Use previous report from store
-          previsionRevision = previousReport;
-        } else {
-          // Fetch previous report if not in store
-          previsionRevision = await getReportByRevision(reportKeys);
+    if (diffId === "microdiff") {
+      fieldDataDiff = diff(previousReport.fieldData, report.fieldData);
+    } else if (diffId === "json-diff-ts") {
+      fieldDataDiff = diffAtom(previousReport.fieldData, report.fieldData);
+    } else if (diffId === "jsondiffpatch") {
+      fieldDataDiff = jsondiffpatch.diff(
+        previousReport.fieldData,
+        report.fieldData
+      );
+    }
+    const newDiff = normalizeDiffs(fieldDataDiff, diffId);
 
-          if (!previsionRevision) {
-            reset();
-            return;
-          }
-          setPreviousReport(previsionRevision);
-        }
+    if (diffId === "jsondiffpatch") {
+      setHtml(htmlFormatter.format(fieldDataDiff) || "");
+    }
 
-        let fieldDataDiff: any;
-
-        if (diffId === "microdiff") {
-          fieldDataDiff = diff(previsionRevision.fieldData, report.fieldData);
-        } else if (diffId === "json-diff-ts") {
-          fieldDataDiff = diffAtom(
-            previsionRevision.fieldData,
-            report.fieldData
-          );
-        } else if (diffId === "jsondiffpatch") {
-          fieldDataDiff = jsondiffpatch.diff(
-            previsionRevision.fieldData,
-            report.fieldData
-          );
-        }
-        const newDiff = normalizeDiffs(fieldDataDiff, diffId);
-
-        if (diffId === "jsondiffpatch") {
-          setHtml(htmlFormatter.format(fieldDataDiff) || "");
-        }
-
-        setDifferences(newDiff);
-        setShowText(false);
-        setShowTable(diffId !== "jsondiffpatch");
-        setShowVisualization(diffId === "jsondiffpatch");
-      } catch (error) {
-        console.error(error);
-        reset();
-      }
-    };
-
-    fetchRevision();
-  }, [report, diffId]);
+    setDifferences(newDiff);
+    setShowText(false);
+    setShowTable(diffId !== "jsondiffpatch");
+    setShowVisualization(diffId === "jsondiffpatch");
+  }, [report, previousReport, diffId]);
 
   const displayPreviousValue = (d: any) => {
     if (d.type === "CREATE") {
@@ -179,6 +143,16 @@ export const DiffPage = () => {
       <Heading as="h2" fontSize="body_xl" mb="spacer3">
         Compare to Previous Revision
       </Heading>
+
+      <Button
+        as="a"
+        href={`/${report?.reportType.toLowerCase()}/export/diff`}
+        mb="spacer3"
+        target="_blank"
+        variant="outline"
+      >
+        View PDF
+      </Button>
 
       {showText && <Text mb="spacer3">{getText()}</Text>}
 

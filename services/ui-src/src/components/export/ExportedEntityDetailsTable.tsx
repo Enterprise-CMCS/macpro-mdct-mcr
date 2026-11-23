@@ -21,8 +21,9 @@ export const ExportedEntityDetailsTable = ({
   entity,
   entityType: passedEntityType,
   entityIndex,
+  reportToUse,
 }: Props) => {
-  const { report } = useStore();
+  const report = reportToUse ?? useStore().report;
   const { exportVerbiage } = getReportVerbiage(report?.reportType);
   const { tableHeaders } = exportVerbiage;
 
@@ -128,6 +129,7 @@ export interface Props {
   entity: EntityShape;
   entityType?: EntityType;
   entityIndex?: number;
+  reportToUse?: ReportShape;
 }
 
 const sx = {

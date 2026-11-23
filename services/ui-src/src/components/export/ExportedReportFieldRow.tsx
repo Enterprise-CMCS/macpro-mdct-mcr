@@ -7,6 +7,7 @@ import {
   FormLayoutElement,
   isFieldElement,
   ReportFormFieldType,
+  ReportShape,
 } from "types";
 // utils
 import {
@@ -23,8 +24,9 @@ export const ExportedReportFieldRow = ({
   parentFieldCheckedChoiceIds,
   showHintText = true,
   hasNumberColumn = true,
+  reportToUse,
 }: Props) => {
-  const { report } = useStore();
+  const report = reportToUse ?? useStore().report;
   const reportData = report?.fieldData;
   const isDynamicField = formField.type === "dynamic";
   const formFieldInfo = parseFormFieldInfo(formField?.props);
@@ -114,6 +116,7 @@ export interface Props {
   parentFieldCheckedChoiceIds?: string[];
   showHintText?: boolean;
   hasNumberColumn?: boolean;
+  reportToUse?: ReportShape;
 }
 
 const sx = {

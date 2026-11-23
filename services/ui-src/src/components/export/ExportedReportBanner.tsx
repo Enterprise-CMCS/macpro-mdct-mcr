@@ -4,9 +4,14 @@ import { Box, Button, Image, Spinner, Text } from "@chakra-ui/react";
 import { getReportVerbiage, useStore } from "utils";
 // assets
 import pdfIcon from "assets/icons/icon_pdf_white.png";
+import { ReportShape } from "types";
 
-export const ExportedReportBanner = () => {
-  const { report } = useStore();
+export const ExportedReportBanner = ({
+  reportToUse,
+}: {
+  reportToUse?: ReportShape;
+}) => {
+  const report = reportToUse ?? useStore().report;
 
   const { exportVerbiage } = getReportVerbiage(report?.reportType);
   const { reportBanner } = exportVerbiage;

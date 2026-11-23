@@ -28,8 +28,8 @@ import {
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
-export const ExportedReportFieldTable = ({ section }: Props) => {
-  const { report } = useStore();
+export const ExportedReportFieldTable = ({ section, reportToUse }: Props) => {
+  const report = reportToUse ?? useStore().report;
   const { tableHeaders } = verbiage;
 
   const pageType = section.pageType;
@@ -230,6 +230,7 @@ export const renderFieldTableBody = (
         parentFieldCheckedChoiceIds={parentFieldCheckedChoiceIds}
         showHintText={showHintText}
         hasNumberColumn={hasAnyNumberedRow}
+        reportToUse={report}
       />
     )
   );
@@ -240,6 +241,7 @@ export const renderFieldTableBody = (
 export interface Props {
   section: StandardReportPageShape | DrawerReportPageShape;
   showHintText?: boolean;
+  reportToUse?: ReportShape;
 }
 
 export const exportTableSx = {
