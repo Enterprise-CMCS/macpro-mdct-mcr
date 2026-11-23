@@ -25,6 +25,7 @@ export const ExportedReportFieldRow = ({
   showHintText = true,
   hasNumberColumn = true,
   reportToUse,
+  hasDiff = false,
 }: Props) => {
   const report = reportToUse ?? useStore().report;
   const reportData = report?.fieldData;
@@ -38,7 +39,7 @@ export const ExportedReportFieldRow = ({
   // render question layout elements as a grouping header for their response rows
   if (formField.type === ReportFormFieldType.QUESTION) {
     return (
-      <Tr data-testid="exportQuestionHeadingRow">
+      <Tr data-testid="exportQuestionHeadingRow" sx={hasDiff ? sx.hasDiff : {}}>
         {/* number column/cell */}
         {hasNumberColumn && (
           <Th sx={sx.numberColumn}>
@@ -61,7 +62,7 @@ export const ExportedReportFieldRow = ({
   }
 
   return (
-    <Tr data-testid="exportRow">
+    <Tr data-testid="exportRow" sx={hasDiff ? sx.hasDiff : {}}>
       {/* number column/cell */}
       {!isDynamicField && hasNumberColumn && (
         <Th sx={sx.numberColumn}>
@@ -117,9 +118,15 @@ export interface Props {
   showHintText?: boolean;
   hasNumberColumn?: boolean;
   reportToUse?: ReportShape;
+  hasDiff?: boolean;
 }
 
 const sx = {
+  hasDiff: {
+    "td, th": {
+      backgroundColor: "warn_lightest",
+    },
+  },
   numberColumn: {
     width: "5.5rem",
     paddingTop: "spacer1",
