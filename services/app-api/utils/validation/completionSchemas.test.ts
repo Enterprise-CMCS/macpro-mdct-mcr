@@ -4,6 +4,7 @@ import {
   endDate,
   endDateOptional,
   nested,
+  error,
 } from "./completionSchemas";
 import * as yup from "yup";
 
@@ -496,6 +497,30 @@ describe("Completion schemas", () => {
     ...accept(futureDates),
   ])("dateOptional() $description -> $expected", ({ value, expected }) => {
     expect(schemaMap.dateOptional.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(["    "]),
+    ...reject(invalidDates),
+    ...reject([{ value: "01012023", description: "date without slashes" }]),
+    ...accept(pastDates),
+    ...accept(futureDates),
+    ...accept(notApplicableValues),
+  ])("dateOrNa() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.dateOrNa.isValidSync(value)).toBe(expected);
+  });
+
+  test("dateOrNa() reports an invalid date with the date-or-N/A message", () => {
+    expect(() => schemaMap.dateOrNa.validateSync("not a date")).toThrow(
+      error.INVALID_DATE_OR_NA
+    );
+  });
+
+  test("dateOrNa() reports a blank value as required", () => {
+    expect(() => schemaMap.dateOrNa.validateSync("")).toThrow(
+      error.REQUIRED_GENERIC
+    );
   });
 
   test.each([

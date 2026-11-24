@@ -1,0 +1,30 @@
+import { useFormContext, useWatch } from "react-hook-form";
+// types
+import { FieldValue } from "types";
+// utils
+import { useStore } from "utils";
+import { validateFieldWarning } from "./warnings";
+
+/**
+ * Returns the warning messages for a single form field (an empty array if none).
+ * Call from inside a field component, the same way the field reads its own
+ * error from form.formState.errors.
+ * Re-evaluates when the field's value, any other form value, or the report data changes.
+ */
+export const useFieldWarning = (name: string): string[] => {
+  const { control } = useFormContext();
+  const value = useWatch({ control, name }) as FieldValue | null | undefined;
+  const allValues = useWatch({ control }); // watch all form values
+  const { report, selectedEntity } = useStore();
+  // Warnings are only applicable for MCPAR reports. Will investigate a cleaner solution in a future PR.
+  if (!window.location.pathname.includes("mcpar")) return [];
+  return validateFieldWarning({
+    fieldName: name,
+    value,
+    context: {
+      report,
+      selectedEntity,
+      formValues: allValues, // pass live form values
+    },
+  });
+};

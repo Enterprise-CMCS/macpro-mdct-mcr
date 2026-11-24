@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 // components
@@ -11,7 +11,7 @@ import {
   mockMcparReportStore,
   mockStateUserStore,
 } from "utils/testing/setupJest";
-import { useStore } from "utils";
+import { useFieldWarning, useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 
 const mockTrigger = jest.fn();
@@ -26,6 +26,7 @@ const mockUseFormContext = useFormContext as unknown as jest.Mock<
 >;
 jest.mock("react-hook-form", () => ({
   useFormContext: jest.fn(() => mockRhfMethods),
+  useWatch: jest.fn().mockReturnValue(undefined),
 }));
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
@@ -39,6 +40,11 @@ mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
 });
+
+jest.mock("utils/warnings/useFieldWarning", () => ({
+  useFieldWarning: jest.fn().mockReturnValue([]),
+}));
+const mockUseFieldWarning = useFieldWarning as jest.Mock;
 
 const textFieldComponent = (
   <TextField
@@ -266,6 +272,58 @@ describe("<TextField />", () => {
       mockGetValues(undefined);
       render(textFieldValidateOnRenderComponent);
       expect(mockTrigger).toHaveBeenCalled();
+    });
+  });
+
+  describe("Test TextField warning functionality", () => {
+    afterEach(() => {
+      mockUseFieldWarning.mockReturnValue([]);
+    });
+
+    test("warning message is not displayed when useFieldWarning returns no warnings", () => {
+      mockGetValues(undefined);
+      mockUseFieldWarning.mockReturnValue([]);
+      render(textFieldComponent);
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    });
+
+    test("warning message is displayed when useFieldWarning returns a message", () => {
+      mockGetValues(undefined);
+      mockUseFieldWarning.mockReturnValue(["Test warning message"]);
+      render(textFieldComponent);
+      expect(screen.getByRole("alert")).toBeVisible();
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        "Test warning message"
+      );
+    });
+
+    test("warning message is not displayed when field has an error", () => {
+      mockUseFieldWarning.mockReturnValue(["Test warning message"]);
+      mockUseFormContext.mockImplementation((): any => ({
+        ...mockRhfMethods,
+        getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(undefined),
+        formState: {
+          errors: {
+            testTextField: { message: "This field is required" },
+          },
+        },
+      }));
+      render(textFieldComponent);
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      expect(screen.getByText("This field is required")).toBeVisible();
+      expect(
+        screen.getByRole("textbox", { name: "test-label" })
+      ).toHaveAccessibleDescription("Error: This field is required");
+    });
+
+    test("displays each warning as its own message when useFieldWarning returns several", () => {
+      mockGetValues(undefined);
+      mockUseFieldWarning.mockReturnValue(["First warning", "Second warning"]);
+      render(textFieldComponent);
+      const warnings = within(screen.getByRole("alert")).getAllByRole(
+        "paragraph"
+      );
+      expect(warnings).toHaveLength(2);
     });
   });
 

@@ -18,6 +18,7 @@ const error = {
   INVALID_EMAIL: "Response must be a valid email address",
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_DATE: "Response must be a valid date",
+  INVALID_DATE_OR_NA: 'Response must be a valid date or "N/A"',
   INVALID_END_DATE: "End date can't be before start date",
   INVALID_FUTURE_DATE: "Response must be today's date or in the future",
   INVALID_PAST_DATE: "Response must be before today's date",
@@ -416,6 +417,15 @@ export const dateMonthYear = () =>
 export const dateOptional = () =>
   string().matches(optionalDateFormatRegex, error.INVALID_DATE).notRequired();
 
+export const dateOrNa = () =>
+  string().test({
+    message: error.INVALID_DATE_OR_NA,
+    test: (value) =>
+      value === undefined ||
+      validNAValues.includes(value) ||
+      date().isValidSync(value),
+  });
+
 export const endDate = (startDateField: string) =>
   date().test(
     "is-after-start-date",
@@ -586,6 +596,7 @@ export const schemaMap: any = {
   date: date(),
   dateMonthYear: dateMonthYear(),
   dateOptional: dateOptional(),
+  dateOrNa: dateOrNa(),
   dateYear2000OrLater: dateYear2000OrLater(),
   dropdown: dropdown(),
   dropdownOptional: dropdownOptional(),
