@@ -107,6 +107,26 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     },
   });
 
+  api.addGatewayResponse("InvalidSignatureResponse", {
+    type: apigateway.ResponseType.INVALID_SIGNATURE,
+    responseHeaders: {
+      "Access-Control-Allow-Origin": "'*'",
+      "Access-Control-Allow-Headers": "'*'",
+    },
+    // API Gateway's default bodies for this say more than a caller needs
+    templates: { "application/json": '{"message":"Forbidden"}' },
+  });
+
+  api.addGatewayResponse("AccessDeniedResponse", {
+    type: apigateway.ResponseType.ACCESS_DENIED,
+    responseHeaders: {
+      "Access-Control-Allow-Origin": "'*'",
+      "Access-Control-Allow-Headers": "'*'",
+    },
+    // API Gateway's default bodies for this say more than a caller needs
+    templates: { "application/json": '{"message":"Forbidden"}' },
+  });
+
   api.addGatewayResponse("Default5XXResponse", {
     type: apigateway.ResponseType.DEFAULT_5XX,
     responseHeaders: {
