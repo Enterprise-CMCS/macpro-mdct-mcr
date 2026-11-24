@@ -1,6 +1,9 @@
 import { request } from "@playwright/test";
 import { adminUserAuth, stateUserAuth } from "./consts";
 import * as aws4 from "aws4";
+import * as crypto from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
 import { Banner } from "./types";
 
 /**
@@ -54,27 +57,15 @@ function signHeadersAws4(
 }
 
 /**
- * Generates request headers, optionally signing them with AWS SigV4 if needed.
- * @param method - HTTP method (e.g., "GET", "POST")
- * @param endpoint - API endpoint path
- * @param body - Optional request body for POST/PUT requests
+ * Reads a logged-in user's Cognito ID token.
  * @param storageStatePath - Optional storage state path to extract ID token from
- * @returns The generated headers as a record of key-value pairs.
+ * @returns The ID token, defaulting to the admin user's
  */
-function generateRequestHeaders(
-  method?: string,
-  endpoint?: string,
-  body?: string,
-  storageStatePath?: string
-): Record<string, string> {
-  const now = new Date();
-  const amzDate = now.toISOString().replaceAll(/[:-]|\.\d{3}/g, "");
+function getIdToken(storageStatePath?: string): string {
   let idToken = process.env.ID_TOKEN || "";
 
   // If a different storage state is provided, try to read the ID token from it
   if (storageStatePath) {
-    const fs = require("node:fs");
-    const path = require("node:path");
     try {
       const storagePath = path.resolve(storageStatePath);
       const storageData = JSON.parse(fs.readFileSync(storagePath, "utf8"));
@@ -93,6 +84,26 @@ function generateRequestHeaders(
       console.warn(`Could not read ID token from storage state: ${error}`);
     }
   }
+
+  return idToken;
+}
+
+/**
+ * Generates request headers, optionally signing them with AWS SigV4 if needed.
+ * @param idToken - The token to send as x-api-key
+ * @param method - HTTP method (e.g., "GET", "POST")
+ * @param endpoint - API endpoint path
+ * @param body - Optional request body for POST/PUT requests
+ * @returns The generated headers as a record of key-value pairs.
+ */
+function generateRequestHeaders(
+  idToken: string,
+  method?: string,
+  endpoint?: string,
+  body?: string
+): Record<string, string> {
+  const now = new Date();
+  const amzDate = now.toISOString().replaceAll(/[:-]|\.\d{3}/g, "");
 
   const baseHeaders = {
     Accept: "*/*",
@@ -116,6 +127,126 @@ function generateRequestHeaders(
   return signHeadersAws4(baseHeaders, endpoint || "", method, body);
 }
 
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+
+export interface RawApiResponse {
+  status: number;
+  statusText: string;
+  rawText: string;
+}
+
+/**
+ * Sends a signed API request with the given token, and returns the response
+ * whatever its status.
+ */
+async function executeSignedRequest(
+  method: HttpMethod,
+  apiPath: string,
+  token: string,
+  body?: any,
+  storageStatePath?: string
+): Promise<RawApiResponse> {
+  const endpoint = process.env.API_URL + apiPath;
+
+  const bodyString =
+    (method === "POST" || method === "PUT") && body
+      ? JSON.stringify(body)
+      : undefined;
+
+  // The token is set before SigV4 signing, so x-api-key is a signed header
+  const headers = generateRequestHeaders(token, method, endpoint, bodyString);
+
+  const apiContext = await request.newContext({
+    storageState: storageStatePath || adminUserAuth,
+    extraHTTPHeaders: headers,
+  });
+
+  try {
+    const response = await apiContext.fetch(endpoint, {
+      method,
+      headers,
+      data: bodyString,
+    });
+    return {
+      status: response.status(),
+      statusText: response.statusText(),
+      rawText: await response.text(),
+    };
+  } finally {
+    await apiContext.dispose();
+  }
+}
+
+/**
+ * Makes an API request with a real user's token, without throwing on an
+ * error status.
+ */
+export async function authenticatedRawRequest(
+  method: HttpMethod,
+  apiPath: string,
+  body?: any,
+  storageStatePath?: string
+): Promise<RawApiResponse> {
+  return executeSignedRequest(
+    method,
+    apiPath,
+    getIdToken(storageStatePath),
+    body,
+    storageStatePath
+  );
+}
+
+/** Makes an API request with a token of the caller's choosing. */
+export async function requestWithCustomToken(
+  method: HttpMethod,
+  apiPath: string,
+  customToken: string,
+  body?: any
+): Promise<RawApiResponse> {
+  return executeSignedRequest(method, apiPath, customToken, body);
+}
+
+/** Builds a token that was not issued by Cognito, for negative tests. */
+export function buildForgedJwt(
+  state: string = "TX",
+  role: string = "mdctmcr-bor",
+  storageStatePath: string = stateUserAuth,
+  expiration: number = 9999999999
+): string {
+  // Pulls the real issuer for the active test environment from the saved token
+  const realToken = getIdToken(storageStatePath);
+  const realPayload = JSON.parse(
+    Buffer.from(realToken.split(".")[1], "base64url").toString("utf8")
+  );
+
+  const header = {
+    alg: "HS256",
+    typ: "JWT",
+  };
+
+  const payload = {
+    "cognito:username": "retest-forge-user",
+    "custom:cms_roles": role,
+    "custom:cms_state": state,
+    email: "retest-user@example.com",
+    iss: realPayload.iss,
+    exp: expiration,
+  };
+
+  const encodedHeader = Buffer.from(JSON.stringify(header)).toString(
+    "base64url"
+  );
+  const encodedPayload = Buffer.from(JSON.stringify(payload)).toString(
+    "base64url"
+  );
+  const fakeSignature = crypto
+    .createHash("sha256")
+    .update("fake_secret")
+    .digest("base64url");
+
+  return `${encodedHeader}.${encodedPayload}.${fakeSignature}`;
+}
+
 /**
  * Makes an authenticated API request using the admin user's credentials.
  * @param method - HTTP method (e.g., "GET", "POST")
@@ -125,66 +256,27 @@ function generateRequestHeaders(
  * @returns The response from the API request.
  */
 async function authenticatedRequest(
-  method: "GET" | "POST" | "PUT" | "DELETE",
+  method: HttpMethod,
   path: string,
   body?: any,
   storageStatePath?: string
 ): Promise<any> {
-  const endpoint = process.env.API_URL + path;
-
-  const bodyString =
-    (method === "POST" || method === "PUT") && body
-      ? JSON.stringify(body)
-      : undefined;
-
-  const headers = generateRequestHeaders(
+  const response = await authenticatedRawRequest(
     method,
-    endpoint,
-    bodyString,
+    path,
+    body,
     storageStatePath
   );
 
-  const apiContext = await request.newContext({
-    storageState: storageStatePath || adminUserAuth,
-    extraHTTPHeaders: headers,
-  });
-
-  const requestOptions: any = {
-    headers,
-    ...(bodyString !== undefined && { data: bodyString }),
-  };
-
-  let response;
-  switch (method) {
-    case "GET":
-      response = await apiContext.get(endpoint, { headers });
-      break;
-    case "POST":
-      response = await apiContext.post(endpoint, requestOptions);
-      break;
-    case "PUT":
-      response = await apiContext.put(endpoint, requestOptions);
-      break;
-    case "DELETE":
-      response = await apiContext.delete(endpoint, { headers });
-      break;
-  }
-
-  if (!response.ok()) {
-    const responseText = await response.text();
-    console.log(
-      `❌ Request failed: ${response.status()} ${response.statusText()}`
-    );
-    console.log(`📄 Response body: ${responseText}`);
-    await apiContext.dispose();
+  if (response.status < 200 || response.status >= 300) {
+    console.log(`❌ Request failed: ${response.status} ${response.statusText}`);
+    console.log(`📄 Response body: ${response.rawText}`);
     throw new Error(
-      `API request failed: ${response.status()} ${response.statusText()} Endpoint: ${endpoint} Response: ${responseText}`
+      `API request failed: ${response.status} ${response.statusText} Endpoint: ${process.env.API_URL + path} Response: ${response.rawText}`
     );
   }
 
-  const responseData = method === "DELETE" ? null : await response.json();
-  await apiContext.dispose();
-  return responseData;
+  return method === "DELETE" ? null : JSON.parse(response.rawText);
 }
 
 /**
