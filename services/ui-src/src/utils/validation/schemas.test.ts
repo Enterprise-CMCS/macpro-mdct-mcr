@@ -28,6 +28,7 @@ import {
   negativeNumberTestCases,
   zeroTest,
 } from "utils/testing/mockSchemaValidation";
+import { validationErrors as error } from "verbiage/errors";
 
 describe("Schemas", () => {
   const testSchema = <T>(
@@ -180,6 +181,18 @@ describe("Schemas", () => {
         "01012023",
       ],
       false
+    );
+  });
+
+  test("dateOrNa error message says N/A is allowed", () => {
+    expect(() => schemaMap.dateOrNa.validateSync("not a date")).toThrow(
+      error.INVALID_DATE_OR_NA
+    );
+  });
+
+  test("dateOrNa still reports a blank value as required", () => {
+    expect(() => schemaMap.dateOrNa.validateSync("")).toThrow(
+      error.REQUIRED_GENERIC
     );
   });
 

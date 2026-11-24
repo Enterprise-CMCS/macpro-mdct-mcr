@@ -10,6 +10,7 @@ jest.mock("react-hook-form", () => ({
     register: () => {},
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue("test"),
   }),
+  useWatch: jest.fn().mockReturnValue(undefined),
 }));
 
 const textAreaFieldComponent = (

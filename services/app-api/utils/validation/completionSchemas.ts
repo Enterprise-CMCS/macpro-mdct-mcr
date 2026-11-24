@@ -21,6 +21,7 @@ export const error = {
   INVALID_EMAIL: "Response must be a valid email address",
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_DATE: "Response must be a valid date",
+  INVALID_DATE_OR_NA: 'Response must be a valid date or "N/A"',
   INVALID_END_DATE: "End date can't be before start date",
   INVALID_FUTURE_DATE: "Response must be today's date or in the future",
   INVALID_PAST_DATE: "Response must be before today's date",
@@ -444,7 +445,7 @@ export const dateOrNa = () =>
   string()
     .required(error.REQUIRED_GENERIC)
     .test({
-      message: error.INVALID_DATE,
+      message: error.INVALID_DATE_OR_NA,
       test: (value) =>
         !value ||
         validNAValues.includes(value) ||

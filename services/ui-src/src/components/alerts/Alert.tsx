@@ -27,7 +27,12 @@ export const Alert = ({
           )}
           {content && (
             <>
-              <Box sx={sx.descriptionText}>{content}</Box>
+              <Box
+                marginTop={title ? "spacer_half" : 0}
+                sx={sx.descriptionText}
+              >
+                {content}
+              </Box>
               {link && (
                 <Link href={link} isExternal>
                   {link}
@@ -55,7 +60,6 @@ const sx = {
     fontSize: "heading_lg",
   },
   descriptionText: {
-    marginTop: "spacer_half",
     a: {
       color: "primary",
       ":hover": {

@@ -195,6 +195,16 @@ export const programIntegrityRoute: DrawerFormRoute = {
         },
       },
       {
+        id: "plan_overpaymentReportingPeriodLengthWarning",
+        type: ReportFormFieldType.WARNING_BANNER,
+        props: {
+          content:
+            "This reporting period entered in D1.X.9a-9b is not 12 months in length. Review for accuracy.",
+          startDateFieldId: "plan_overpaymentReportingToStateStartDate",
+          endDateFieldId: "plan_overpaymentReportingToStateEndDate",
+        },
+      },
+      {
         id: "plan_overpaymentReportingToStateDollarAmount",
         type: ReportFormFieldType.NUMBER,
         validation: ValidationType.NUMBER_ZERO_OR_GREATER_TWO_DECIMALS_NO_NA,
@@ -208,7 +218,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
       {
         id: "plan_overpaymentReportingToStateCorrespondingYearPremiumRevenue",
         type: ReportFormFieldType.NUMBER,
-        validation: ValidationType.NUMBER,
+        validation: ValidationType.NUMBER_NOT_LESS_THAN_ZERO,
         props: {
           label:
             "D1.X.9d: Plan overpayment reporting to the state: Corresponding premium revenue",

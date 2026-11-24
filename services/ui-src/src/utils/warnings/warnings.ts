@@ -1,4 +1,5 @@
 import { EntityShape, FieldValue, ReportShape } from "types";
+import { validNAValues } from "utils";
 
 // Warning rules must remain pure functions with no React dependencies.
 // This ensures they can be called from either useFieldWarning or
@@ -7,6 +8,7 @@ import { EntityShape, FieldValue, ReportShape } from "types";
 export interface WarningContext {
   report?: ReportShape;
   selectedEntity?: EntityShape;
+  formValues?: Record<string, FieldValue | null | undefined>;
 }
 
 export type WarningRule = (
@@ -49,6 +51,39 @@ const compareNumber = (
   return comparatorMap[comparator](num, limit)
     ? `This number is unusually ${isHigh ? "high" : "low"}. Review for accuracy.`
     : null;
+};
+
+// Helper for per-1000-enrollees warnings
+const compareNumberPer1000 = (
+  value: FieldValue | null | undefined,
+  limit: number,
+  comparator: Comparator,
+  context: WarningContext
+): string | null => {
+  const num = parseNumber(value);
+  if (num === null) return null;
+  const enrollment = parseNumber(context.selectedEntity?.plan_enrollment);
+  if (enrollment === null || enrollment === 0) return null;
+  const per1000 = (num / enrollment) * 1000;
+  const isHigh = comparator === ">" || comparator === ">=";
+  return comparatorMap[comparator](per1000, limit)
+    ? `This number is unusually ${isHigh ? "high" : "low"} based on your reported plan enrollment (D1.I.1: ${enrollment.toLocaleString()}). Review for accuracy.`
+    : null;
+};
+
+// D1.X.9a/9b: reporting period should span exactly 12 months, end date inclusive
+// (01/01/2023 to 12/31/2023 is 12 months; 01/01/2024 is not). Confirmed by the BOs.
+export const isNotTwelveMonthPeriod = (
+  start: FieldValue | null | undefined,
+  end: FieldValue | null | undefined
+): boolean => {
+  const startDate = parseDate(start);
+  const endDate = parseDate(end);
+  if (!startDate || !endDate) return false;
+  const expectedEnd = new Date(startDate);
+  expectedEnd.setFullYear(expectedEnd.getFullYear() + 1);
+  expectedEnd.setDate(expectedEnd.getDate() - 1);
+  return expectedEnd.getTime() !== endDate.getTime();
 };
 
 // Warning rule functions — defined once per warning type
@@ -97,10 +132,107 @@ const warningRules: Record<string, WarningRule> = {
   NUMBER_OVER_7: (value) => compareNumber(value, 7, ">"),
   NUMBER_OVER_60: (value) => compareNumber(value, 60, ">"),
   NUMBER_OVER_24: (value) => compareNumber(value, 24, ">"),
+
+  // PER 1000 ENROLLEES WARNINGS
+  NUMBER_HIGH_PER_1000_OVER_25: (value, context) =>
+    compareNumberPer1000(value, 25, ">", context), // D1.X.1
+  NUMBER_HIGH_PER_1000_OVER_40: (value, context) =>
+    compareNumberPer1000(value, 40, ">", context), // D1.X.2
+  NUMBER_HIGH_PER_1000_OVER_35: (value, context) =>
+    compareNumberPer1000(value, 35, ">", context), // D1.X.4
+  NUMBER_HIGH_PER_1000_OVER_300: (value, context) =>
+    compareNumberPer1000(value, 300, ">", context), // D1.XIII.4
+
+  // D1.X.7: zero referrals is unusually low; otherwise check per 1000 enrollees
+  REFERRALS_ZERO_OR_HIGH_PER_1000: (value, context) => {
+    if (value === null || value === undefined) return null;
+    const response = String(value).replaceAll(",", "").trim();
+    if (response === "") return null;
+    if (Number(response) === 0) {
+      return "This number is unusually low. Review for accuracy.";
+    }
+    return compareNumberPer1000(value, 3.5, ">", context);
+  },
+
+  IDENTICAL_TO_STATE_OR_PROGRAM_NAME: (value, context) => {
+    if (!value) return null;
+    const valueStr = String(value).trim().toLowerCase();
+    const stateName = context.report?.fieldData?.stateName
+      ?.trim()
+      .toLowerCase();
+    const programName = context.report?.programName
+      ?.replace(/\d{4}-\d{2}-\d{2}t[\d:.z]+$/i, "")
+      .trim()
+      .toLowerCase();
+    if (
+      (stateName && valueStr === stateName) ||
+      (programName && valueStr === programName)
+    ) {
+      return "Response is identical to program or state name. Review for accuracy.";
+    }
+    return null;
+  },
+
+  // D1.X.9d: N/A and NR are accepted but flagged; otherwise compare D1.X.9c to premium revenue
+  OVERPAYMENT_VS_PREMIUM_REVENUE: (value, context) => {
+    if (value && validNAValues.includes(String(value).trim())) {
+      return "This response is typically a numeric value. If N/A or NR is accurate, no action is needed.";
+    }
+    const premiumRevenue = parseNumber(value);
+    if (premiumRevenue === null || premiumRevenue <= 0) return null;
+    const overpayment = parseNumber(
+      context.formValues?.plan_overpaymentReportingToStateDollarAmount
+    );
+    if (overpayment === null) return null;
+    const percentage = (overpayment / premiumRevenue) * 100;
+    if (percentage > 10) {
+      return "The overpayment amount entered in D1.X.9c represents a high proportion of this premium revenue. Review for accuracy.";
+    }
+    if (percentage < 0.001) {
+      return "The overpayment amount entered in D1.X.9c represents a very small proportion of this premium revenue. Review for accuracy.";
+    }
+    return null;
+  },
+
+  // OVERPAYMENT REPORTING PERIOD WARNINGS
+  // D1.X.9a / D1.X.9b: a period that is not 12 months prompts a "double-check" on
+  // each date (the banner covers the pair). Shown alongside DATE_BEFORE_2020 (see the map).
+  DOUBLE_CHECK_START_DATE: (value, context) =>
+    isNotTwelveMonthPeriod(
+      value,
+      context.formValues?.plan_overpaymentReportingToStateEndDate
+    )
+      ? "Double-check the start date."
+      : null,
+
+  DOUBLE_CHECK_END_DATE: (value, context) =>
+    isNotTwelveMonthPeriod(
+      context.formValues?.plan_overpaymentReportingToStateStartDate,
+      value
+    )
+      ? "Double-check the end date."
+      : null,
+
+  // URL WARNINGS
+  // D1.XIII.1, D1.XIII.2: response should be a valid URL starting with http(s) (N/A allowed)
+  URL_NOT_VALID: (value) => {
+    if (!value) return null;
+    const response = String(value).trim();
+    if (response === "" || validNAValues.includes(response)) return null;
+    try {
+      const { protocol } = new URL(response);
+      return protocol === "http:" || protocol === "https:"
+        ? null
+        : "Enter a valid web address beginning with http:// or https://";
+    } catch {
+      return "Enter a valid web address beginning with http:// or https://";
+    }
+  },
 };
 
 // Field to warning type mapping — organized by form/file location
-const fieldWarningMap: Record<string, string> = {
+// A field can list several warning types; each one that applies is shown, in order.
+const fieldWarningMap: Record<string, string | string[]> = {
   // A - Program Information (program-information/reporting-period.ts)
   reportingPeriodStartDate: "DATE_BEFORE_2020", // A.5a
   reportingPeriodEndDate: "DATE_BEFORE_2020", // A.5b
@@ -124,6 +256,7 @@ const fieldWarningMap: Record<string, string> = {
   dateStateWillRemediateThisAreaOfNoncompliance: "DATE_BEFORE_2020", // C1.XII.12c
 
   // D - Plan Level Indicators (plan-level-indicators/program-characteristics.ts)
+  plan_parentOrganization: "IDENTICAL_TO_STATE_OR_PROGRAM_NAME", // D1.I.4
   plan_medicaidEnrollmentSharePercentage: "PERCENTAGE_OVER_100", // D1.I.2
   plan_medicaidManagedCareEnrollmentSharePercentage: "PERCENTAGE_OVER_100", // D1.I.3
 
@@ -140,12 +273,34 @@ const fieldWarningMap: Record<string, string> = {
     "NUMBER_OVER_OR_EQUAL_100", // D1.IV.13
 
   // D - Plan Level Indicators - Program Integrity (plan-level-indicators/program-integrity.ts)
-  plan_overpaymentReportingToStateStartDate: "DATE_BEFORE_2020", // D1.X.9a
-  plan_overpaymentReportingToStateEndDate: "DATE_BEFORE_2020", // D1.X.9b
+  plan_dedicatedProgramIntegrityStaff: "NUMBER_HIGH_PER_1000_OVER_25", // D1.X.1
+  plan_openedProgramIntegrityInvestigations: "NUMBER_HIGH_PER_1000_OVER_40", // D1.X.2
+  plan_resolvedProgramIntegrityInvestigations: "NUMBER_HIGH_PER_1000_OVER_35", // D1.X.4
+  plan_mfcuProgramIntegrityReferrals: "REFERRALS_ZERO_OR_HIGH_PER_1000", // D1.X.7
+  plan_smaProgramIntegrityReferrals: "REFERRALS_ZERO_OR_HIGH_PER_1000", // D1.X.7
+  plan_smaMfcuConcurrentProgramIntegrityReferrals:
+    "REFERRALS_ZERO_OR_HIGH_PER_1000", // D1.X.7
+  plan_smaMfcuAggregateProgramIntegrityReferrals:
+    "REFERRALS_ZERO_OR_HIGH_PER_1000", // D1.X.7
+  plan_overpaymentReportingToStateStartDate: [
+    "DATE_BEFORE_2020",
+    "DOUBLE_CHECK_START_DATE",
+  ], // D1.X.9a
+  plan_overpaymentReportingToStateEndDate: [
+    "DATE_BEFORE_2020",
+    "DOUBLE_CHECK_END_DATE",
+  ], // D1.X.9b
+  plan_overpaymentReportingToStateCorrespondingYearPremiumRevenue:
+    "OVERPAYMENT_VS_PREMIUM_REVENUE", // D1.X.9d
 
   // D - Plan Level Indicators - Prior Authorization (plan-level-indicators/prior-authorization.ts)
+  plan_urlForPriorAuthorizationDataOnPlanWebsite: "URL_NOT_VALID", // D1.XIII.1
+  plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization:
+    "URL_NOT_VALID", // D1.XIII.2
   plan_averageTimeToDecisionForStandardPriorAuthorizations: "NUMBER_OVER_7_1", // D1.XIII.9
   plan_medianTimeToDecisionOnStandardPriorAuthorizations: "NUMBER_OVER_7", // D1.XIII.10
+  plan_totalExpeditedPriorAuthorizationRequestsReceived:
+    "NUMBER_HIGH_PER_1000_OVER_300", // D1.XIII.4
   plan_averageTimeToDecisionForExpeditedPriorAuthorizations: "NUMBER_OVER_60", // D1.XIII.13
   plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests:
     "NUMBER_OVER_24", // D1.XIII.14
@@ -166,12 +321,10 @@ export const validateFieldWarning = ({
   fieldName: string;
   value?: FieldValue | null;
   context?: WarningContext;
-  map?: Record<string, string>;
+  map?: Record<string, string | string[]>;
   rules?: Record<string, WarningRule>;
-}): string | null => {
-  const warningType = map[fieldName];
-  if (!warningType) return null;
-  const warningRule = rules[warningType];
-  if (!warningRule) return null;
-  return warningRule(value, context);
-};
+}): string[] =>
+  [map[fieldName] ?? []]
+    .flat()
+    .map((warningType) => rules[warningType]?.(value, context))
+    .filter((message): message is string => !!message);
