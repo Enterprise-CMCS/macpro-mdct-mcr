@@ -127,6 +127,11 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...Object.fromEntries(
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
+    ...(isLocalStack && {
+      // Deployed stages get these from setCognitoEnvironment; locally, use .env
+      COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
+      COGNITO_USER_POOL_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID,
+    }),
   };
 
   const commonProps = {
@@ -139,100 +144,92 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     buckets: [mcparFormBucket, mlrFormBucket, naaarFormBucket],
   };
 
-  new Lambda(scope, "fetchBanner", {
-    entry: "services/app-api/handlers/banners/fetch.ts",
-    handler: "fetchBanner",
-    path: "/banners",
-    method: "GET",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "createBanner", {
-    entry: "services/app-api/handlers/banners/create.ts",
-    handler: "createBanner",
-    path: "/banners",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "deleteBanner", {
-    entry: "services/app-api/handlers/banners/delete.ts",
-    handler: "deleteBanner",
-    path: "/banners/{bannerId}",
-    method: "DELETE",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "fetchReport", {
-    entry: "services/app-api/handlers/reports/fetch.ts",
-    handler: "fetchReport",
-    path: "/reports/{reportType}/{state}/{id}",
-    method: "GET",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "fetchReportsByState", {
-    entry: "services/app-api/handlers/reports/fetch.ts",
-    handler: "fetchReportsByState",
-    path: "/reports/{reportType}/{state}",
-    method: "GET",
-    timeout: Duration.seconds(30),
-    ...commonProps,
-  });
-
-  new Lambda(scope, "archiveReport", {
-    entry: "services/app-api/handlers/reports/archive.ts",
-    handler: "archiveReport",
-    path: "/reports/archive/{reportType}/{state}/{id}",
-    method: "PUT",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "releaseReport", {
-    entry: "services/app-api/handlers/reports/release.ts",
-    handler: "releaseReport",
-    path: "/reports/release/{reportType}/{state}/{id}",
-    method: "PUT",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "createReport", {
-    entry: "services/app-api/handlers/reports/create.ts",
-    handler: "createReport",
-    path: "/reports/{reportType}/{state}",
-    method: "POST",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "updateReport", {
-    entry: "services/app-api/handlers/reports/update.ts",
-    handler: "updateReport",
-    path: "/reports/{reportType}/{state}/{id}",
-    method: "PUT",
-    memorySize: 2048,
-    timeout: Duration.seconds(30),
-    ...commonProps,
-  });
-
-  new Lambda(scope, "submitReport", {
-    entry: "services/app-api/handlers/reports/submit.ts",
-    handler: "submitReport",
-    path: "/reports/submit/{reportType}/{state}/{id}",
-    method: "POST",
-    memorySize: 2048,
-    timeout: Duration.seconds(30),
-    ...commonProps,
-  });
-
-  new Lambda(scope, "recalculateReport", {
-    entry: "services/app-api/handlers/reports/recalculate.ts",
-    handler: "recalculateReport",
-    path: "/reports/recalculate/{reportType}/{state}/{id}",
-    method: "PUT",
-    memorySize: 2048,
-    timeout: Duration.seconds(30),
-    ...commonProps,
-  });
+  const apiLambdas = [
+    new Lambda(scope, "fetchBanner", {
+      entry: "services/app-api/handlers/banners/fetch.ts",
+      handler: "fetchBanner",
+      path: "/banners",
+      method: "GET",
+      ...commonProps,
+    }),
+    new Lambda(scope, "createBanner", {
+      entry: "services/app-api/handlers/banners/create.ts",
+      handler: "createBanner",
+      path: "/banners",
+      method: "POST",
+      ...commonProps,
+    }),
+    new Lambda(scope, "deleteBanner", {
+      entry: "services/app-api/handlers/banners/delete.ts",
+      handler: "deleteBanner",
+      path: "/banners/{bannerId}",
+      method: "DELETE",
+      ...commonProps,
+    }),
+    new Lambda(scope, "fetchReport", {
+      entry: "services/app-api/handlers/reports/fetch.ts",
+      handler: "fetchReport",
+      path: "/reports/{reportType}/{state}/{id}",
+      method: "GET",
+      ...commonProps,
+    }),
+    new Lambda(scope, "fetchReportsByState", {
+      entry: "services/app-api/handlers/reports/fetch.ts",
+      handler: "fetchReportsByState",
+      path: "/reports/{reportType}/{state}",
+      method: "GET",
+      timeout: Duration.seconds(30),
+      ...commonProps,
+    }),
+    new Lambda(scope, "archiveReport", {
+      entry: "services/app-api/handlers/reports/archive.ts",
+      handler: "archiveReport",
+      path: "/reports/archive/{reportType}/{state}/{id}",
+      method: "PUT",
+      ...commonProps,
+    }),
+    new Lambda(scope, "releaseReport", {
+      entry: "services/app-api/handlers/reports/release.ts",
+      handler: "releaseReport",
+      path: "/reports/release/{reportType}/{state}/{id}",
+      method: "PUT",
+      ...commonProps,
+    }),
+    new Lambda(scope, "createReport", {
+      entry: "services/app-api/handlers/reports/create.ts",
+      handler: "createReport",
+      path: "/reports/{reportType}/{state}",
+      method: "POST",
+      ...commonProps,
+    }),
+    new Lambda(scope, "updateReport", {
+      entry: "services/app-api/handlers/reports/update.ts",
+      handler: "updateReport",
+      path: "/reports/{reportType}/{state}/{id}",
+      method: "PUT",
+      memorySize: 2048,
+      timeout: Duration.seconds(30),
+      ...commonProps,
+    }),
+    new Lambda(scope, "submitReport", {
+      entry: "services/app-api/handlers/reports/submit.ts",
+      handler: "submitReport",
+      path: "/reports/submit/{reportType}/{state}/{id}",
+      method: "POST",
+      memorySize: 2048,
+      timeout: Duration.seconds(30),
+      ...commonProps,
+    }),
+    new Lambda(scope, "recalculateReport", {
+      entry: "services/app-api/handlers/reports/recalculate.ts",
+      handler: "recalculateReport",
+      path: "/reports/recalculate/{reportType}/{state}/{id}",
+      method: "PUT",
+      memorySize: 2048,
+      timeout: Duration.seconds(30),
+      ...commonProps,
+    }),
+  ];
 
   new LambdaDynamoEventSource(scope, "postKafkaData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
@@ -320,6 +317,16 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     { suffix: ".json" }
   );
 
+  const setCognitoEnvironment = (
+    userPoolId: string,
+    userPoolClientId: string
+  ) => {
+    for (const { lambda } of apiLambdas) {
+      lambda.addEnvironment("COGNITO_USER_POOL_ID", userPoolId);
+      lambda.addEnvironment("COGNITO_USER_POOL_CLIENT_ID", userPoolClientId);
+    }
+  };
+
   if (!isLocalStack) {
     const waf = new WafConstruct(
       scope,
@@ -346,5 +353,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   return {
     restApiId: api.restApiId,
     apiGatewayRestApiUrl,
+    setCognitoEnvironment,
   };
 }
