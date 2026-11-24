@@ -77,7 +77,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       loggingLevel: isDev
         ? apigateway.MethodLoggingLevel.OFF
         : apigateway.MethodLoggingLevel.INFO,
-      dataTraceEnabled: true,
+      // This logs full request headers and bodies, so keep it out of production
+      dataTraceEnabled: stage !== "production",
       metricsEnabled: false,
       throttlingBurstLimit: 5000,
       throttlingRateLimit: 10000,
