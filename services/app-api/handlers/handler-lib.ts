@@ -1,8 +1,11 @@
 // utils
 import * as logger from "../utils/debugging/debug-lib";
+import { isAuthenticated } from "../utils/auth/authorization";
+import { error } from "../utils/constants/constants";
 import {
   HttpResponse,
   internalServerError,
+  unauthenticated,
 } from "../utils/responses/response-lib";
 import { sanitizeObject } from "../utils/sanitize/sanitize";
 // types
@@ -23,6 +26,9 @@ export default function handler(lambda: LambdaFunction) {
       queryStringParameters: event.queryStringParameters,
     });
     try {
+      if (!(await isAuthenticated(event))) {
+        return unauthenticated(error.UNAUTHORIZED);
+      }
       if (event.body) {
         const newEventBody = sanitizeObject(JSON.parse(event.body));
         event.body = JSON.stringify(newEventBody);

@@ -23,6 +23,7 @@ import { APIGatewayProxyEvent } from "../../utils/types";
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
+  isAuthenticated: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn().mockReturnValue(true),
 }));
 
