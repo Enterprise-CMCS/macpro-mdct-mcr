@@ -1,5 +1,9 @@
 import { proxyEvent } from "../testing/proxyEvent";
-import { hasPermissions, isAuthorizedToFetchState } from "./authorization";
+import {
+  hasPermissions,
+  isAuthenticated,
+  isAuthorizedToFetchState,
+} from "./authorization";
 import { UserRoles } from "../types";
 
 const noApiKeyEvent = { ...proxyEvent };
@@ -13,6 +17,34 @@ jest.mock("jwt-decode", () => ({
     return mockedDecode();
   },
 }));
+
+const mockVerify = jest.fn();
+
+jest.mock("aws-jwt-verify", () => ({
+  __esModule: true,
+  CognitoJwtVerifier: {
+    create: jest.fn().mockImplementation(() => ({
+      verify: mockVerify,
+    })),
+  },
+}));
+
+describe("Check user is authenticated", () => {
+  test("is authenticated when the token passes verification", async () => {
+    mockVerify.mockResolvedValue({});
+    expect(await isAuthenticated(apiKeyEvent)).toBe(true);
+    expect(mockVerify).toHaveBeenCalledWith("test");
+  });
+  test("is not authenticated when the token fails verification", async () => {
+    mockVerify.mockRejectedValue(new Error("could not verify"));
+    expect(await isAuthenticated(apiKeyEvent)).toBe(false);
+  });
+  test("is not authenticated when the token is missing", async () => {
+    mockVerify.mockClear();
+    expect(await isAuthenticated(noApiKeyEvent)).toBe(false);
+    expect(mockVerify).not.toHaveBeenCalled();
+  });
+});
 
 describe("Check user has permissions", () => {
   beforeEach(() => {

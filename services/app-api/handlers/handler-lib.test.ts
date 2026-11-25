@@ -1,6 +1,7 @@
 import handlerLib from "./handler-lib";
 // utils
 import { proxyEvent } from "../utils/testing/proxyEvent";
+import { isAuthenticated } from "../utils/auth/authorization";
 import * as logger from "../utils/debugging/debug-lib";
 import { ok, StatusCodes } from "../utils/responses/response-lib";
 
@@ -11,7 +12,15 @@ jest.mock("../utils/debugging/debug-lib", () => ({
   flush: jest.fn(),
 }));
 
+jest.mock("../utils/auth/authorization", () => ({
+  isAuthenticated: jest.fn(),
+}));
+
 describe("Test Lambda Handler Lib", () => {
+  beforeEach(() => {
+    (isAuthenticated as jest.Mock).mockResolvedValue(true);
+  });
+
   test("Test successful authorized lambda workflow", async () => {
     const testFunc = jest.fn().mockReturnValue(ok("test"));
     const handler = handlerLib(testFunc);
@@ -31,6 +40,21 @@ describe("Test Lambda Handler Lib", () => {
     );
     expect(logger.flush).toHaveBeenCalled();
     expect(testFunc).toHaveBeenCalledWith(proxyEvent, null);
+  });
+
+  test("Test unauthenticated lambda workflow", async () => {
+    const testFunc = jest.fn();
+    const handler = handlerLib(testFunc);
+
+    (isAuthenticated as jest.Mock).mockResolvedValue(false);
+    const res = await handler(proxyEvent, null);
+
+    expect(res.statusCode).toBe(StatusCodes.Unauthenticated);
+    expect(res.body).toStrictEqual(
+      JSON.stringify("User is not authorized to access this resource.")
+    );
+    expect(testFunc).not.toHaveBeenCalled();
+    expect(logger.flush).toHaveBeenCalled();
   });
 
   test("Test Errored lambda workflow", async () => {

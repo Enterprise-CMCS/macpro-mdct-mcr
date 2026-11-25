@@ -1,4 +1,5 @@
 import jwt_decode from "jwt-decode";
+import { CognitoJwtVerifier } from "aws-jwt-verify";
 // types
 import { APIGatewayProxyEvent, UserRoles } from "../types";
 import { logger } from "../debugging/debug-lib";
@@ -9,6 +10,34 @@ interface DecodedToken {
   sub?: string;
 }
 
+const createVerifier = () =>
+  CognitoJwtVerifier.create({
+    userPoolId: process.env.COGNITO_USER_POOL_ID!,
+    tokenUse: "id",
+    clientId: process.env.COGNITO_USER_POOL_CLIENT_ID!,
+  });
+
+// Kept between requests so Cognito's signing keys are only downloaded once
+let verifier: ReturnType<typeof createVerifier> | undefined;
+
+/** Checks that the ID token in x-api-key was signed by our Cognito user pool */
+export const isAuthenticated = async (event: APIGatewayProxyEvent) => {
+  const token = event?.headers?.["x-api-key"];
+  if (!token) {
+    return false;
+  }
+
+  try {
+    verifier ??= createVerifier();
+    await verifier.verify(token);
+    return true;
+  } catch (error) {
+    logger.warn("Token rejected: %s", (error as Error).message);
+    return false;
+  }
+};
+
+/** Only call after isAuthenticated: this reads the token without verifying it */
 export const hasPermissions = (
   event: APIGatewayProxyEvent,
   allowedRoles: UserRoles[],

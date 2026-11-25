@@ -57,21 +57,21 @@ export class ParentStack extends Stack {
         loggingBucket,
       });
 
-    const { apiGatewayRestApiUrl, restApiId } = createApiComponents({
-      ...commonProps,
-      tables,
-      vpc,
-      kafkaAuthorizedSubnets,
-      mcparFormBucket,
-      mlrFormBucket,
-      naaarFormBucket,
-    });
+    const { apiGatewayRestApiUrl, restApiId, setCognitoEnvironment } =
+      createApiComponents({
+        ...commonProps,
+        tables,
+        vpc,
+        kafkaAuthorizedSubnets,
+        mcparFormBucket,
+        mlrFormBucket,
+        naaarFormBucket,
+      });
 
     /*
      * For local dev, the LocalStack container will host the database and API.
      * The UI will self-host, so we don't need to tell CDK anything about it.
-     * Also, we skip authorization locally. So we don't set up Cognito,
-     * or configure the API to interact with it. Therefore, we're done.
+     * We don't set up Cognito locally; api.ts uses the pool from .env.
      */
     if (isLocalStack) return;
 
@@ -84,6 +84,9 @@ export class ParentStack extends Stack {
         applicationEndpointUrl,
         restApiId,
       });
+
+    // ui-auth needs the API's ID, so the pool IDs go to the API afterwards
+    setCognitoEnvironment(userPoolId, userPoolClientId);
 
     deployFrontend({
       ...commonProps,
