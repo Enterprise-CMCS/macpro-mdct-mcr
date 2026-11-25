@@ -7,6 +7,16 @@ import {
 } from "./warnings";
 
 describe("validateFieldWarning", () => {
+  // messages reused across the tests below
+  const priorAuthMaxTimeframeMessage =
+    "The maximum timeframe entered for prior authorization decisions appears longer than expected. Review this response. If it is accurate, no action is needed.";
+  const priorAuthDecisionTimeMessage =
+    "The reported time between submission of a prior authorization request and the plan’s decision appears longer than expected. Review this response. If it is accurate, no action is needed.";
+  const percentageLowMessage =
+    "The percentage reported appears unusually low. Review this response. If it is accurate, no action is needed.";
+  const before2020Message =
+    "Dates prior to 2020 are not expected in this field. Review the reporting period date entered. If it is accurate, no action is needed.";
+
   describe("returns no warnings for fields not in fieldWarningMap", () => {
     test("returns no warnings for a field with no warning rule", () => {
       const result = validateFieldWarning({
@@ -124,9 +134,7 @@ describe("validateFieldWarning", () => {
         value: "01/01/2019",
         map,
       });
-      expect(result).toEqual([
-        "Dates prior to 2020 are not expected in this field. Review for accuracy.",
-      ]);
+      expect(result).toEqual([before2020Message]);
     });
 
     test("returns no warnings for date in 2020", () => {
@@ -185,7 +193,7 @@ describe("validateFieldWarning", () => {
         map,
       });
       expect(result).toEqual([
-        "Dates prior to 2023 are not expected in this field. Review for accuracy.",
+        "Dates prior to 2023 are not expected in this field. Review the reporting period date entered. If it is accurate, no action is needed.",
       ]);
     });
 
@@ -228,6 +236,8 @@ describe("validateFieldWarning", () => {
 
   describe("DIVISIBLE_BY_1000", () => {
     const map = { testField: "DIVISIBLE_BY_1000" };
+    const roundedMessage =
+      "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value.";
 
     test("returns warning for number divisible by 1000", () => {
       const result = validateFieldWarning({
@@ -235,9 +245,7 @@ describe("validateFieldWarning", () => {
         value: "1000",
         map,
       });
-      expect(result).toEqual([
-        "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value.",
-      ]);
+      expect(result).toEqual([roundedMessage]);
     });
 
     test("returns warning for comma-formatted number divisible by 1000", () => {
@@ -246,9 +254,7 @@ describe("validateFieldWarning", () => {
         value: "10,000",
         map,
       });
-      expect(result).toEqual([
-        "This value appears to be rounded to the nearest 1,000. If the value is accurate, no action is needed. Otherwise, enter the exact enrollment value.",
-      ]);
+      expect(result).toEqual([roundedMessage]);
     });
 
     test("returns no warnings for number not divisible by 1000", () => {
@@ -306,9 +312,7 @@ describe("validateFieldWarning", () => {
         value: "101",
         map,
       });
-      expect(result).toEqual([
-        "Percentage is higher than 100%. Review for accuracy.",
-      ]);
+      expect(result).toEqual(["Enter a percentage from 0 through 100."]);
     });
 
     test("returns no warnings for exactly 100", () => {
@@ -350,6 +354,8 @@ describe("validateFieldWarning", () => {
 
   describe("NUMBER_OVER_OR_EQUAL_100", () => {
     const map = { testField: "NUMBER_OVER_OR_EQUAL_100" };
+    const ltssCriticalIncidentsMessage =
+      "The reported number of critical incidents involving LTSS users who previously filed an appeal or grievance appears higher than expected. Review this response. If it is accurate, no action is needed.";
 
     test("returns warning for number equal to 100", () => {
       const result = validateFieldWarning({
@@ -357,9 +363,7 @@ describe("validateFieldWarning", () => {
         value: "100",
         map,
       });
-      expect(result).toEqual([
-        "This number is unusually high. Review for accuracy.",
-      ]);
+      expect(result).toEqual([ltssCriticalIncidentsMessage]);
     });
 
     test("returns warning for number over 100", () => {
@@ -368,9 +372,7 @@ describe("validateFieldWarning", () => {
         value: "101",
         map,
       });
-      expect(result).toEqual([
-        "This number is unusually high. Review for accuracy.",
-      ]);
+      expect(result).toEqual([ltssCriticalIncidentsMessage]);
     });
 
     test("returns no warnings for number under 100", () => {
@@ -410,9 +412,7 @@ describe("validateFieldWarning", () => {
         value: "15",
         map,
       });
-      expect(result).toEqual([
-        "This number is unusually high. Review for accuracy.",
-      ]);
+      expect(result).toEqual([priorAuthMaxTimeframeMessage]);
     });
 
     test("returns no warnings for exactly 14", () => {
@@ -452,9 +452,7 @@ describe("validateFieldWarning", () => {
         value: "73",
         map,
       });
-      expect(result).toEqual([
-        "This number is unusually high. Review for accuracy.",
-      ]);
+      expect(result).toEqual([priorAuthMaxTimeframeMessage]);
     });
 
     test("returns no warnings for exactly 72", () => {
@@ -478,6 +476,8 @@ describe("validateFieldWarning", () => {
 
   describe("NUMBER_OVER_215000", () => {
     const map = { testField: "NUMBER_OVER_215000" };
+    const sanctionAmountMessage =
+      "The reported sanction amount appears higher than expected. Review this amount. If it is accurate, no action is needed.";
 
     test("returns warning for number over 215000", () => {
       const result = validateFieldWarning({
@@ -485,9 +485,7 @@ describe("validateFieldWarning", () => {
         value: "215001",
         map,
       });
-      expect(result).toEqual([
-        "This number is unusually high. Review for accuracy.",
-      ]);
+      expect(result).toEqual([sanctionAmountMessage]);
     });
 
     test("returns warning for comma-formatted number over 215000", () => {
@@ -496,9 +494,7 @@ describe("validateFieldWarning", () => {
         value: "215,001",
         map,
       });
-      expect(result).toEqual([
-        "This number is unusually high. Review for accuracy.",
-      ]);
+      expect(result).toEqual([sanctionAmountMessage]);
     });
 
     test("returns no warnings for exactly 215000", () => {
@@ -529,9 +525,7 @@ describe("validateFieldWarning", () => {
         value: "74",
         map,
       });
-      expect(result).toEqual([
-        "This number is unusually low. Review for accuracy.",
-      ]);
+      expect(result).toEqual([percentageLowMessage]);
     });
 
     test("returns no warnings for exactly 75", () => {
@@ -580,9 +574,7 @@ describe("validateFieldWarning", () => {
         value: "89",
         map,
       });
-      expect(result).toEqual([
-        "This number is unusually low. Review for accuracy.",
-      ]);
+      expect(result).toEqual([percentageLowMessage]);
     });
 
     test("returns no warnings for exactly 90", () => {
@@ -604,144 +596,26 @@ describe("validateFieldWarning", () => {
     });
   });
 
-  describe("NUMBER_OVER_7_1", () => {
-    const map = { testField: "NUMBER_OVER_7_1" };
-
-    test("returns warning for number over 7.1", () => {
-      const result = validateFieldWarning({
+  // D1.XIII.9, D1.XIII.10, D1.XIII.13, D1.XIII.14
+  describe.each([
+    ["NUMBER_OVER_7_1", "7.2", "7.1", "7"],
+    ["NUMBER_OVER_7", "8", "7", "6"],
+    ["NUMBER_OVER_60", "61", "60", "59"],
+    ["NUMBER_OVER_24", "25", "24", "23"],
+  ])("%s", (rule, over, exactly, under) => {
+    const check = (value: string | null) =>
+      validateFieldWarning({
         fieldName: "testField",
-        value: "7.2",
-        map,
+        value,
+        map: { testField: rule },
       });
-      expect(result).toEqual([
-        "This number is unusually high. Review for accuracy.",
-      ]);
+
+    test(`returns warning for ${over}`, () => {
+      expect(check(over)).toEqual([priorAuthDecisionTimeMessage]);
     });
 
-    test("returns no warnings for exactly 7.1", () => {
-      const result = validateFieldWarning({
-        fieldName: "testField",
-        value: "7.1",
-        map,
-      });
-      expect(result).toEqual([]);
-    });
-
-    test("returns no warnings for number under 7.1", () => {
-      const result = validateFieldWarning({
-        fieldName: "testField",
-        value: "7",
-        map,
-      });
-      expect(result).toEqual([]);
-    });
-
-    test("returns no warnings for empty value", () => {
-      const result = validateFieldWarning({
-        fieldName: "testField",
-        value: null,
-        map,
-      });
-      expect(result).toEqual([]);
-    });
-  });
-
-  describe("NUMBER_OVER_7", () => {
-    const map = { testField: "NUMBER_OVER_7" };
-
-    test("returns warning for number over 7", () => {
-      const result = validateFieldWarning({
-        fieldName: "testField",
-        value: "8",
-        map,
-      });
-      expect(result).toEqual([
-        "This number is unusually high. Review for accuracy.",
-      ]);
-    });
-
-    test("returns no warnings for exactly 7", () => {
-      const result = validateFieldWarning({
-        fieldName: "testField",
-        value: "7",
-        map,
-      });
-      expect(result).toEqual([]);
-    });
-
-    test("returns no warnings for empty value", () => {
-      const result = validateFieldWarning({
-        fieldName: "testField",
-        value: null,
-        map,
-      });
-      expect(result).toEqual([]);
-    });
-  });
-
-  describe("NUMBER_OVER_60", () => {
-    const map = { testField: "NUMBER_OVER_60" };
-
-    test("returns warning for number over 60", () => {
-      const result = validateFieldWarning({
-        fieldName: "testField",
-        value: "61",
-        map,
-      });
-      expect(result).toEqual([
-        "This number is unusually high. Review for accuracy.",
-      ]);
-    });
-
-    test("returns no warnings for exactly 60", () => {
-      const result = validateFieldWarning({
-        fieldName: "testField",
-        value: "60",
-        map,
-      });
-      expect(result).toEqual([]);
-    });
-
-    test("returns no warnings for empty value", () => {
-      const result = validateFieldWarning({
-        fieldName: "testField",
-        value: null,
-        map,
-      });
-      expect(result).toEqual([]);
-    });
-  });
-
-  describe("NUMBER_OVER_24", () => {
-    const map = { testField: "NUMBER_OVER_24" };
-
-    test("returns warning for number over 24", () => {
-      const result = validateFieldWarning({
-        fieldName: "testField",
-        value: "25",
-        map,
-      });
-      expect(result).toEqual([
-        "This number is unusually high. Review for accuracy.",
-      ]);
-    });
-
-    test("returns no warnings for exactly 24", () => {
-      const result = validateFieldWarning({
-        fieldName: "testField",
-        value: "24",
-        map,
-      });
-      expect(result).toEqual([]);
-    });
-
-    test("returns no warnings for empty value", () => {
-      const result = validateFieldWarning({
-        fieldName: "testField",
-        value: null,
-        map,
-      });
-      expect(result).toEqual([]);
+    test.each([exactly, under, null])("returns no warnings for %p", (value) => {
+      expect(check(value)).toEqual([]);
     });
   });
 
@@ -749,6 +623,10 @@ describe("validateFieldWarning", () => {
     const mockContext = (enrollment: number): WarningContext => ({
       selectedEntity: { plan_enrollment: String(enrollment) } as any,
     });
+
+    // for a plan enrollment of 1,000
+    const per1000HighMessage =
+      "The value reported in this field appears higher than expected based on the plan enrollment reported in D1.I.1: 1,000. Review both responses. If they are accurate, no action is needed.";
 
     describe("NUMBER_HIGH_PER_1000_OVER_25", () => {
       const map = { testField: "NUMBER_HIGH_PER_1000_OVER_25" };
@@ -760,9 +638,7 @@ describe("validateFieldWarning", () => {
           context: mockContext(1000),
           map,
         });
-        expect(result).toEqual([
-          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy.",
-        ]);
+        expect(result).toEqual([per1000HighMessage]);
       });
 
       test("returns no warnings when per 1000 rate is below 25", () => {
@@ -813,7 +689,7 @@ describe("validateFieldWarning", () => {
           map,
         });
         expect(result).toEqual([
-          "This number is unusually high based on your reported plan enrollment (D1.I.1: 10,000). Review for accuracy.",
+          "The value reported in this field appears higher than expected based on the plan enrollment reported in D1.I.1: 10,000. Review both responses. If they are accurate, no action is needed.",
         ]);
       });
     });
@@ -828,9 +704,7 @@ describe("validateFieldWarning", () => {
           context: mockContext(1000),
           map,
         });
-        expect(result).toEqual([
-          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy.",
-        ]);
+        expect(result).toEqual([per1000HighMessage]);
       });
 
       test("returns no warnings when per 1000 rate is below 40", () => {
@@ -854,9 +728,7 @@ describe("validateFieldWarning", () => {
           context: mockContext(1000),
           map,
         });
-        expect(result).toEqual([
-          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy.",
-        ]);
+        expect(result).toEqual([per1000HighMessage]);
       });
 
       test("returns no warnings when per 1000 rate is below 35", () => {
@@ -872,6 +744,8 @@ describe("validateFieldWarning", () => {
 
     describe("REFERRALS_ZERO_OR_HIGH_PER_1000", () => {
       const map = { testField: "REFERRALS_ZERO_OR_HIGH_PER_1000" };
+      const referralsZeroMessage =
+        "You reported zero for this field. Review this response and confirm that it is accurate. If zero is correct, no action is needed.";
 
       test.each(["0", "0.0", "0,000", 0])(
         "returns low warning for zero: %s",
@@ -882,9 +756,7 @@ describe("validateFieldWarning", () => {
             context: mockContext(1000),
             map,
           });
-          expect(result).toEqual([
-            "This number is unusually low. Review for accuracy.",
-          ]);
+          expect(result).toEqual([referralsZeroMessage]);
         }
       );
 
@@ -894,9 +766,7 @@ describe("validateFieldWarning", () => {
           value: "0",
           map,
         });
-        expect(result).toEqual([
-          "This number is unusually low. Review for accuracy.",
-        ]);
+        expect(result).toEqual([referralsZeroMessage]);
       });
 
       test("returns warning when per 1000 rate exceeds 3.5", () => {
@@ -906,9 +776,7 @@ describe("validateFieldWarning", () => {
           context: mockContext(1000),
           map,
         });
-        expect(result).toEqual([
-          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy.",
-        ]);
+        expect(result).toEqual([per1000HighMessage]);
       });
 
       test("returns no warnings when per 1000 rate is below 3.5", () => {
@@ -945,9 +813,7 @@ describe("validateFieldWarning", () => {
           context: mockContext(1000),
           map,
         });
-        expect(result).toEqual([
-          "This number is unusually high based on your reported plan enrollment (D1.I.1: 1,000). Review for accuracy.",
-        ]);
+        expect(result).toEqual([per1000HighMessage]);
       });
 
       test("returns no warnings when per 1000 rate is below 300", () => {
@@ -973,6 +839,8 @@ describe("validateFieldWarning", () => {
         programName: `${programName}2026-10-26t19:41:37.798z`, // timestamp appended as in real data
       } as any,
     });
+    const identicalNameMessage =
+      "The parent organization name matches the state or program name. Confirm that the correct parent organization was entered. If the response is accurate, no action is needed.";
 
     test("returns warning when value matches state name", () => {
       const result = validateFieldWarning({
@@ -981,9 +849,7 @@ describe("validateFieldWarning", () => {
         context: mockContext("Texas", "Star Plus"),
         map,
       });
-      expect(result).toEqual([
-        "Response is identical to program or state name. Review for accuracy.",
-      ]);
+      expect(result).toEqual([identicalNameMessage]);
     });
 
     test("returns warning when value matches program name", () => {
@@ -993,9 +859,7 @@ describe("validateFieldWarning", () => {
         context: mockContext("Texas", "Star Plus"),
         map,
       });
-      expect(result).toEqual([
-        "Response is identical to program or state name. Review for accuracy.",
-      ]);
+      expect(result).toEqual([identicalNameMessage]);
     });
 
     test("is case insensitive", () => {
@@ -1005,9 +869,7 @@ describe("validateFieldWarning", () => {
         context: mockContext("Texas", "Star Plus"),
         map,
       });
-      expect(result).toEqual([
-        "Response is identical to program or state name. Review for accuracy.",
-      ]);
+      expect(result).toEqual([identicalNameMessage]);
     });
 
     test("returns no warnings when value does not match state or program name", () => {
@@ -1058,7 +920,7 @@ describe("validateFieldWarning", () => {
         map,
       });
       expect(result).toEqual([
-        "The overpayment amount entered in D1.X.9c represents a high proportion of this premium revenue. Review for accuracy.",
+        "The overpayment amount reported in D1.X.9c appears higher than expected relative to the premium revenue reported in this field. Review both responses. If they are accurate, no action is needed.",
       ]);
     });
 
@@ -1071,7 +933,7 @@ describe("validateFieldWarning", () => {
         map,
       });
       expect(result).toEqual([
-        "The overpayment amount entered in D1.X.9c represents a very small proportion of this premium revenue. Review for accuracy.",
+        "The overpayment amount reported in D1.X.9c appears lower than expected relative to the premium revenue reported in this field. Review both responses. If they are accurate, no action is needed.",
       ]);
     });
 
@@ -1139,8 +1001,6 @@ describe("validateFieldWarning", () => {
   describe("overpayment reporting period dates (D1.X.9a and D1.X.9b)", () => {
     const startField = "plan_overpaymentReportingToStateStartDate";
     const endField = "plan_overpaymentReportingToStateEndDate";
-    const before2020Message =
-      "Dates prior to 2020 are not expected in this field. Review for accuracy.";
     const startMessage = "Double-check the start date.";
     const endMessage = "Double-check the end date.";
 

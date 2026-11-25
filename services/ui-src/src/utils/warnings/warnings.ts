@@ -43,14 +43,12 @@ const comparatorMap: Record<Comparator, (a: number, b: number) => boolean> = {
 const compareNumber = (
   value: FieldValue | null | undefined,
   limit: number,
-  comparator: Comparator
+  comparator: Comparator,
+  message: string
 ): string | null => {
   const num = parseNumber(value);
   if (num === null) return null;
-  const isHigh = comparator === ">" || comparator === ">=";
-  return comparatorMap[comparator](num, limit)
-    ? `This number is unusually ${isHigh ? "high" : "low"}. Review for accuracy.`
-    : null;
+  return comparatorMap[comparator](num, limit) ? message : null;
 };
 
 // Helper for per-1000-enrollees warnings
@@ -67,7 +65,7 @@ const compareNumberPer1000 = (
   const per1000 = (num / enrollment) * 1000;
   const isHigh = comparator === ">" || comparator === ">=";
   return comparatorMap[comparator](per1000, limit)
-    ? `This number is unusually ${isHigh ? "high" : "low"} based on your reported plan enrollment (D1.I.1: ${enrollment.toLocaleString()}). Review for accuracy.`
+    ? `The value reported in this field appears ${isHigh ? "higher" : "lower"} than expected based on the plan enrollment reported in D1.I.1: ${enrollment.toLocaleString()}. Review both responses. If they are accurate, no action is needed.`
     : null;
 };
 
@@ -86,6 +84,23 @@ export const isNotTwelveMonthPeriod = (
   return expectedEnd.getTime() !== endDate.getTime();
 };
 
+// Messages shared by several number threshold rules (fields noted for each)
+// B.XIII.1b, B.XIII.2b
+const priorAuthMaxTimeframeMessage =
+  "The maximum timeframe entered for prior authorization decisions appears longer than expected. Review this response. If it is accurate, no action is needed.";
+// D1.XIII.9, D1.XIII.10, D1.XIII.13, D1.XIII.14
+const priorAuthDecisionTimeMessage =
+  "The reported time between submission of a prior authorization request and the plan’s decision appears longer than expected. Review this response. If it is accurate, no action is needed.";
+// D1.III.2, D1.III.3
+const percentageLowMessage =
+  "The percentage reported appears unusually low. Review this response. If it is accurate, no action is needed.";
+// D1.IV.4, D1.IV.13
+const ltssCriticalIncidentsMessage =
+  "The reported number of critical incidents involving LTSS users who previously filed an appeal or grievance appears higher than expected. Review this response. If it is accurate, no action is needed.";
+// D3.VIII.6
+const sanctionAmountMessage =
+  "The reported sanction amount appears higher than expected. Review this amount. If it is accurate, no action is needed.";
+
 // Warning rule functions — defined once per warning type
 const warningRules: Record<string, WarningRule> = {
   // DATE WARNINGS
@@ -93,7 +108,7 @@ const warningRules: Record<string, WarningRule> = {
     const date = parseDate(value);
     if (!date) return null;
     return date < new Date("2020-01-01")
-      ? "Dates prior to 2020 are not expected in this field. Review for accuracy."
+      ? "Dates prior to 2020 are not expected in this field. Review the reporting period date entered. If it is accurate, no action is needed."
       : null;
   },
 
@@ -101,7 +116,7 @@ const warningRules: Record<string, WarningRule> = {
     const date = parseDate(value);
     if (!date) return null;
     return date < new Date("2023-01-01")
-      ? "Dates prior to 2023 are not expected in this field. Review for accuracy."
+      ? "Dates prior to 2023 are not expected in this field. Review the reporting period date entered. If it is accurate, no action is needed."
       : null;
   },
 
@@ -117,21 +132,29 @@ const warningRules: Record<string, WarningRule> = {
   PERCENTAGE_OVER_100: (value) => {
     const num = parseNumber(value);
     if (num === null) return null;
-    return num > 100
-      ? "Percentage is higher than 100%. Review for accuracy."
-      : null;
+    return num > 100 ? "Enter a percentage from 0 through 100." : null;
   },
 
-  NUMBER_OVER_OR_EQUAL_100: (value) => compareNumber(value, 100, ">="),
-  NUMBER_OVER_14: (value) => compareNumber(value, 14, ">"),
-  NUMBER_OVER_72: (value) => compareNumber(value, 72, ">"),
-  NUMBER_OVER_215000: (value) => compareNumber(value, 215000, ">"),
-  NUMBER_BELOW_75: (value) => compareNumber(value, 75, "<"),
-  NUMBER_BELOW_90: (value) => compareNumber(value, 90, "<"),
-  NUMBER_OVER_7_1: (value) => compareNumber(value, 7.1, ">"),
-  NUMBER_OVER_7: (value) => compareNumber(value, 7, ">"),
-  NUMBER_OVER_60: (value) => compareNumber(value, 60, ">"),
-  NUMBER_OVER_24: (value) => compareNumber(value, 24, ">"),
+  NUMBER_OVER_OR_EQUAL_100: (value) =>
+    compareNumber(value, 100, ">=", ltssCriticalIncidentsMessage),
+  NUMBER_OVER_14: (value) =>
+    compareNumber(value, 14, ">", priorAuthMaxTimeframeMessage),
+  NUMBER_OVER_72: (value) =>
+    compareNumber(value, 72, ">", priorAuthMaxTimeframeMessage),
+  NUMBER_OVER_215000: (value) =>
+    compareNumber(value, 215000, ">", sanctionAmountMessage),
+  NUMBER_BELOW_75: (value) =>
+    compareNumber(value, 75, "<", percentageLowMessage),
+  NUMBER_BELOW_90: (value) =>
+    compareNumber(value, 90, "<", percentageLowMessage),
+  NUMBER_OVER_7_1: (value) =>
+    compareNumber(value, 7.1, ">", priorAuthDecisionTimeMessage),
+  NUMBER_OVER_7: (value) =>
+    compareNumber(value, 7, ">", priorAuthDecisionTimeMessage),
+  NUMBER_OVER_60: (value) =>
+    compareNumber(value, 60, ">", priorAuthDecisionTimeMessage),
+  NUMBER_OVER_24: (value) =>
+    compareNumber(value, 24, ">", priorAuthDecisionTimeMessage),
 
   // PER 1000 ENROLLEES WARNINGS
   NUMBER_HIGH_PER_1000_OVER_25: (value, context) =>
@@ -149,7 +172,7 @@ const warningRules: Record<string, WarningRule> = {
     const response = String(value).replaceAll(",", "").trim();
     if (response === "") return null;
     if (Number(response) === 0) {
-      return "This number is unusually low. Review for accuracy.";
+      return "You reported zero for this field. Review this response and confirm that it is accurate. If zero is correct, no action is needed.";
     }
     return compareNumberPer1000(value, 3.5, ">", context);
   },
@@ -168,7 +191,7 @@ const warningRules: Record<string, WarningRule> = {
       (stateName && valueStr === stateName) ||
       (programName && valueStr === programName)
     ) {
-      return "Response is identical to program or state name. Review for accuracy.";
+      return "The parent organization name matches the state or program name. Confirm that the correct parent organization was entered. If the response is accurate, no action is needed.";
     }
     return null;
   },
@@ -186,10 +209,10 @@ const warningRules: Record<string, WarningRule> = {
     if (overpayment === null) return null;
     const percentage = (overpayment / premiumRevenue) * 100;
     if (percentage > 10) {
-      return "The overpayment amount entered in D1.X.9c represents a high proportion of this premium revenue. Review for accuracy.";
+      return "The overpayment amount reported in D1.X.9c appears higher than expected relative to the premium revenue reported in this field. Review both responses. If they are accurate, no action is needed.";
     }
     if (percentage < 0.001) {
-      return "The overpayment amount entered in D1.X.9c represents a very small proportion of this premium revenue. Review for accuracy.";
+      return "The overpayment amount reported in D1.X.9c appears lower than expected relative to the premium revenue reported in this field. Review both responses. If they are accurate, no action is needed.";
     }
     return null;
   },
