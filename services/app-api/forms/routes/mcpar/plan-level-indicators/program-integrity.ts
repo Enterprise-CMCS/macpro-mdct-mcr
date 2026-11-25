@@ -199,7 +199,7 @@ export const programIntegrityRoute: DrawerFormRoute = {
         type: ReportFormFieldType.WARNING_BANNER,
         props: {
           content:
-            "This reporting period entered in D1.X.9a-9b is not 12 months in length. Review for accuracy.",
+            "The overpayment reporting period in D1.X.9a and D1.X.9b does not cover 12 months. Review the start and end dates. If they are accurate, no action is needed.",
           startDateFieldId: "plan_overpaymentReportingToStateStartDate",
           endDateFieldId: "plan_overpaymentReportingToStateEndDate",
         },

@@ -168,6 +168,6 @@ export const UNIT_PERCENT = "%";
 
 // WARNING BANNERS
 export const sanctionsLowCountWarning =
-  "Enter all applicable sanctions, including informal interventions such as compliance letters. Typically, plans have three or more sanctions. If the reported information is accurate, no action is needed.";
+  "The number of sanctions, corrective actions, or other interventions reported appears low. Review the instructions and confirm that all applicable actions, including informal interventions such as compliance or warning letters, are included. If the reported information is accurate, no action is needed.";
 export const qualityMeasuresLowCountWarning =
-  "Enter all applicable quality and performance measures. Typically, plans have 11 or more measures. If the reported information is accurate, no action is needed.";
+  "The number of quality and performance measures reported appears low. Review the instructions and confirm that all applicable measures are included. If the reported information is accurate, no action is needed.";
